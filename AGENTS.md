@@ -23,12 +23,14 @@ Issue -> Branch -> Plan -> Diff -> Commit -> Report
 
 ## Branch Policy
 
-- `feat/MMDD-short-name`
-- `fix/MMDD-short-name`
-- `docs/MMDD-short-name`
-- `chore/MMDD-short-name`
-- `exp/MMDD-short-name`
-- `refactor/MMDD-short-name`
+Project-specific override:
+- Maintenance / repository setup branches must use `zzf/MMDD-short-name`.
+- Do not use `chore/MMDD-short-name` in this repository.
+- Feature branches use `feat/MMDD-short-name`.
+- Fix branches use `fix/MMDD-short-name`.
+- Documentation branches use `docs/MMDD-short-name`.
+- Experiment branches use `exp/MMDD-short-name`.
+- Refactor branches use `refactor/MMDD-short-name`.
 
 Do not develop directly on `master` unless the task is trivial or the user explicitly requests it.
 

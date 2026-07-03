@@ -1,6 +1,10 @@
 # Changelog
 
 ## 2026-07-04
+
+### Governance & Remote Configuration
+- Added GitHub remote (`github` → `git@github.com:zzf/SimEnv.git`), origin retained as Gitee.
+- Branch naming policy: maintenance/setup branches now use `zzf/MMDD-short-name`; `chore/` prefix is deprecated for this project.
 - Initialized project governance skeleton (AGENTS.md, PROJECT_STATE.md, ROADMAP.md, docs/architecture.md, docs/module_status.md).
 
 ## Historical (from git log)

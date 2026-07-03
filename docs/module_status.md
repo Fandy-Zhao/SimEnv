@@ -4,6 +4,8 @@
 
 ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 
+> **2026-07-04 update**: 仓库远程配置更新 (新增 GitHub remote `zzf/0704-connect-github-remote`)。业务模块代码无变动。
+
 ## Modules
 
 | Module | Purpose | Status | Tests / Checks | Notes |
