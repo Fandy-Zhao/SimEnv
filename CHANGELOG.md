@@ -7,6 +7,11 @@
 - Branch naming policy: maintenance/setup branches now use `zzf/MMDD-short-name`; `chore/` prefix is deprecated for this project.
 - Initialized project governance skeleton (AGENTS.md, PROJECT_STATE.md, ROADMAP.md, docs/architecture.md, docs/module_status.md).
 
+### FAST-LIO2 Mapping Integration (feat/0704-fast-lio2-mapping)
+- Added `src/simenv_fast_lio2_integration/` ROS package with PointCloud adapter, FAST-LIO2 config, and launch files.
+- Added `ENABLE_FAST_LIO2` optional flag in auto.sh.
+- FAST-LIO2 operates as external catkin workspace dependency (not vendored).
+
 ## Historical (from git log)
 
 ### 2025

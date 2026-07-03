@@ -36,6 +36,7 @@ ENABLE_JOY_NODE="$(as_ros_bool "${ENABLE_JOY_NODE:-0}")"
 ENABLE_POINTCLOUD_CONVERTER="$(as_ros_bool "${ENABLE_POINTCLOUD_CONVERTER:-1}")"
 POINTCLOUD_USE_GROUND_TRUTH_ODOM="$(as_ros_bool "${POINTCLOUD_USE_GROUND_TRUTH_ODOM:-1}")"
 WRITE_GENERATED_TRUTH_COPY="$(as_ros_bool "${WRITE_GENERATED_TRUTH_COPY:-1}")"
+ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-0}")"
 UNITREE_CTRL_DT="${UNITREE_CTRL_DT:-0.004}"
 GAZEBO_PHYSICS_MAX_STEP_SIZE="${GAZEBO_PHYSICS_MAX_STEP_SIZE:-0.002}"
 GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE:-500}"
@@ -136,6 +137,7 @@ echo "  Sensor data: $ENABLE_SENSOR_DATA"
 echo "  PointCloud2 converter: $ENABLE_POINTCLOUD_CONVERTER"
 echo "  Ground truth topics: $ENABLE_GROUND_TRUTH"
 echo "  Referee odom: $ENABLE_REFEREE_ODOM"
+echo "  FAST-LIO2 mapping: $ENABLE_FAST_LIO2"
 echo "  Gazebo starts paused: $PAUSED"
 echo "  Auto unpause: $AUTO_UNPAUSE after ${AUTO_UNPAUSE_DELAY}s"
 echo "  Gazebo physics: max_step=$GAZEBO_PHYSICS_MAX_STEP_SIZE update_rate=$GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE ode_iters=$GAZEBO_PHYSICS_ODE_ITERS"
@@ -182,6 +184,18 @@ if [ "$START_BUILDING_CONTROL" = "1" ]; then
     --elevator-config "$SCENE_OUTPUT_DIR/elevator_config.yaml" \
     > "$WORKSPACE_DIR/logs/building_control.log" 2>&1 &
   echo $! > "$WORKSPACE_DIR/logs/building_control.pid"
+fi
+
+if [ "$ENABLE_FAST_LIO2" = "true" ]; then
+  echo "Starting FAST-LIO2 mapping (scan adapter + fastlio_mapping)..."
+  rosrun simenv_fast_lio2_integration scan_to_pointcloud2.py \
+    > "$WORKSPACE_DIR/logs/scan_adapter.log" 2>&1 &
+  echo $! > "$WORKSPACE_DIR/logs/scan_adapter.pid"
+  sleep 2
+  roslaunch simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch \
+    > "$WORKSPACE_DIR/logs/fast_lio2.log" 2>&1 &
+  echo $! > "$WORKSPACE_DIR/logs/fast_lio2.pid"
+  echo "FAST-LIO2 mapping launched in background (logs: logs/fast_lio2.log)"
 fi
 
 if [ "$START_CONTROLLER" = "1" ]; then

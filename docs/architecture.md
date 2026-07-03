@@ -57,6 +57,11 @@ uav_simulator/          (独立; 与地面机器人解耦)
     ├── so3_quadrotor_simulator
     ├── so3_control
     └── map_generator
+
+simenv_fast_lio2_integration (external FAST_LIO dep)
+    ├── scan_to_pointcloud2.py  →  /scan (PointCloud) → /scan_pointcloud2 (PointCloud2)
+    ├── config/simenv_mid360.yaml
+    └── launch/simenv_fast_lio2_mapping.launch
 ```
 
 ## Key Interfaces
@@ -65,18 +70,23 @@ uav_simulator/          (独立; 与地面机器人解耦)
 |-----------|-----------|----------|
 | `/cmd_vel` | Contest algorithm → Robot | `geometry_msgs/Twist` |
 | `/Odometry_gazebo` | Gazebo → Contest algorithm | `nav_msgs/Odometry` |
-| `/scan` | Livox Mid-360 → Contest algorithm | `sensor_msgs/PointCloud2` |
+| `/scan` | Livox Mid-360 → Contest algorithm | `sensor_msgs/PointCloud` |
+| `/scan_pointcloud2` | Adapter → FAST-LIO2 | `sensor_msgs/PointCloud2` |
+| `/livox/imu` | Livox IMU → FAST-LIO2 | `sensor_msgs/Imu` |
 | `/camera/image_raw` | RGB camera → Contest algorithm | `sensor_msgs/Image` |
 | `/real_sense/depth/points` | Depth camera → Contest algorithm | `sensor_msgs/PointCloud2` |
 | Door/Elevator control | building_generator_classic ↔ Gazebo | ROS services + Gazebo model state |
+| FAST-LIO2 output | `/Odometry`, `/cloud_registered`, TF | In development |
 
 ## Data Flow
 
 1. **Scene Generation** (`generate_competition_scene.py`): randomized building layout → SDF world + metadata + ground truth
 2. **Simulation Launch** (`auto.sh`): world loading → Gazebo + sensors → robot controller
-3. **Control** (`junior_ctrl`): receives `/cmd_vel`, applies RL locomotion
-4. **Detection** (contest algorithm): reads sensor data, detects danger sources
-5. **Evaluation** (`evaluate_danger.py`): compares `detected_danger.json` against `danger_truth.json`
+3. **PointCloud Adapter** (`scan_to_pointcloud2.py`): `/scan` → `/scan_pointcloud2` (sensor-frame PointCloud2)
+4. **SLAM** (FAST-LIO2, optional via `ENABLE_FAST_LIO2=1`): `/scan_pointcloud2` + `/livox/imu` → map + odometry
+5. **Control** (`junior_ctrl`): receives `/cmd_vel`, applies RL locomotion
+6. **Detection** (contest algorithm): reads sensor data, detects danger sources
+7. **Evaluation** (`evaluate_danger.py`): compares `detected_danger.json` against `danger_truth.json`
 
 ## Tech Stack
 

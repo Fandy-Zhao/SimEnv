@@ -2,14 +2,16 @@
 
 ## Snapshot
 - Date: 2026-07-04
-- Branch: zzf/0704-connect-github-remote (from develop)
+- Branch: feat/0704-fast-lio2-mapping (from develop)
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: 仓库远程配置 — 连接 GitHub remote
+- Current focus: FAST-LIO2 SLAM 建图集成 (Phase 1 — mapping only)
 
 ## Active Work
-- 连接 GitHub remote (`github` → `git@github.com:zzf/SimEnv.git`)
-- 维护类分支命名规则从 `chore/` 迁移到 `zzf/`
-- 治理文档初始化 (已在上一轮完成)
+- FAST-LIO2 集成骨架: `src/simenv_fast_lio2_integration/`
+- PointCloud→PointCloud2 适配器
+- FAST-LIO2 配置 (simenv_mid360.yaml) 和 launch
+- auto.sh 可选启动入口 (`ENABLE_FAST_LIO2`)
+- 连接 GitHub remote (`github` → `git@github.com:zzf/SimEnv.git`, 尚未 push)
 
 ## Git Remotes
 - `origin`: https://gitee.com/guoyulun/SimEnv.git (Gitee, 主远程)
