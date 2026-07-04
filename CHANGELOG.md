@@ -5,6 +5,7 @@
 ### Documentation
 - Fixed FAST-LIO2 workspace layout documentation: SimEnv is the catkin workspace root, FAST_LIO belongs at `SimEnv/src/FAST_LIO`, not nested under another `catkin_ws/`.
 - FAST-LIO2 build environment audit: static checks all pass; catkin_make blocked by missing libtorch (C++ SDK) at hardcoded path in unitree_guide. Logs at `experiments/runs/0704_fast-lio2-build-check/`.
+- `tools/build_with_venv.sh`: added auto-detection of pip torch CMake prefix (`torch.utils.cmake_prefix_path`), passes `-DCMAKE_PREFIX_PATH` to catkin_make without overwriting ROS paths.
 
 ### Build Tooling
 - Added `tools/build_with_venv.sh`: builds catkin workspace with project `.venv` Python, ensuring consistent interpreter for torch and other Python deps.
