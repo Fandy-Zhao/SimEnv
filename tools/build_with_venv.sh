@@ -155,7 +155,33 @@ CATKIN_CMAKE_ARGS=(
   -DCMAKE_CXX_STANDARD=17
   -DCMAKE_CXX_STANDARD_REQUIRED=ON
   "-DCMAKE_EXE_LINKER_FLAGS=-no-pie"
+  -DBUILD_LIVOX_DRIVER_NODE=OFF
 )
+
+
+# ---------------------------------------------------------------------------
+# Catkin package selection
+# ---------------------------------------------------------------------------
+# Default: build only FAST-LIO2 mapping/localization related packages.
+# This skips unrelated SimEnv packages such as uav_simulator and unitree_guide.
+#
+# Override examples:
+#   SIMENV_CATKIN_WHITELIST="" ./tools/build_with_venv.sh
+#   SIMENV_CATKIN_WHITELIST="livox_ros_driver;fast_lio" ./tools/build_with_venv.sh
+#
+# Notes:
+# - livox_ros_driver is kept for CustomMsg / CustomPoint message definitions.
+# - BUILD_LIVOX_DRIVER_NODE=OFF means the real Livox hardware driver node is skipped.
+if [[ -z "${SIMENV_CATKIN_WHITELIST+x}" ]]; then
+  SIMENV_CATKIN_WHITELIST="livox_ros_driver;fast_lio;simenv_fast_lio2_integration"
+fi
+
+if [[ -n "$SIMENV_CATKIN_WHITELIST" ]]; then
+  CATKIN_CMAKE_ARGS+=("-DCATKIN_WHITELIST_PACKAGES=$SIMENV_CATKIN_WHITELIST")
+  echo "[build_with_venv] Catkin whitelist: $SIMENV_CATKIN_WHITELIST"
+else
+  echo "[build_with_venv] Catkin whitelist disabled: building all packages."
+fi
 
 # CUDA toolkit root
 if [[ -d "$CUDA_HOME" ]]; then

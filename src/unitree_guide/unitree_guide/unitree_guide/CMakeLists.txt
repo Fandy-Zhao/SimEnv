@@ -67,9 +67,14 @@ if(CATKIN_MAKE)
     if(SIMULATION)
         add_definitions(-DCOMPILE_WITH_SIMULATION)
         find_package(catkin REQUIRED COMPONENTS
-            controller_manager
-            joint_state_controller
-            gazebo_ros
+            roscpp
+            rospy
+            std_msgs
+            sensor_msgs
+            geometry_msgs
+            nav_msgs
+            rosgraph_msgs
+            unitree_legged_msgs
             # gazebo
         )
     endif()
@@ -160,7 +165,7 @@ target_link_libraries(state_from_gazebo ${catkin_LIBRARIES})
 
 
 add_executable(junior_ctrl src/main.cpp ${SRC_LIST})
-target_link_libraries(junior_ctrl ${TORCH_LIBRARIES})
+target_link_libraries(junior_ctrl ${TORCH_LIBRARIES} ${catkin_LIBRARIES})
 if(CATKIN_MAKE)
     target_link_libraries(junior_ctrl ${catkin_LIBRARIES})
     add_dependencies(junior_ctrl ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
