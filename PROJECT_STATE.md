@@ -16,6 +16,7 @@
 - FAST-LIO2 workspace 文档修正: 明确 SimEnv 是 catkin workspace 根目录 (docs/0704-fast-lio2-workspace-docs)
 - FAST-LIO2 编译环境审计: 静态检查全部通过，catkin_make 被 libtorch (C++ SDK) 阻塞 (feat/0704-fast-lio2-mapping)
 - build_with_venv.sh: 现已支持自动检测 torch CMake prefix，TorchConfig.cmake 路径问题已解决；剩余阻塞: CUDA toolkit + livox_ros_driver
+- build_with_venv.sh: 现已强制使用 gcc-11/g++-11 构建，CUDA host compiler 错误已消除；CMakeCache 需清理后重试
 
 ## Git Remotes
 - `origin`: https://gitee.com/guoyulun/SimEnv.git (Gitee, 主远程)
