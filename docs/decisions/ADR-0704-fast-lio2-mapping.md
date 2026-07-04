@@ -9,7 +9,7 @@ SimEnv 仿真环境需要 SLAM 建图能力，FAST-LIO2 是 LiDAR-Inertial SLAM 
 ## Decision
 
 ### 1. 不 vendor FAST_LIO 源码
-**决定**: 使用外部 catkin workspace 依赖，不把 FAST_LIO 复制进 SimEnv 仓库。
+**决定**: 不 vendor FAST_LIO。FAST_LIO 作为外部源码 ROS package，放在 `SimEnv/src/FAST_LIO`（SimEnv 仓库本身就是 catkin workspace 根目录）。用户通过 `git clone` 自行安装。
 **理由**: 避免维护外部代码的负担、许可证兼容性风险、以及仓库膨胀。用户通过 README 中的 `git clone` 指令自行安装。
 
 ### 2. 新增 PointCloud2 适配器
@@ -36,7 +36,7 @@ SimEnv 仿真环境需要 SLAM 建图能力，FAST-LIO2 是 LiDAR-Inertial SLAM 
 3. **修改 Gazebo 插件添加 per-point 时间**: 被推迟——需要重新编译插件，且注释代码已有 `PublishPointCloud2XYZRTL` 实现，可作为后续参考。
 
 ## Consequences
-- 用户需手动安装 FAST_LIO 作为 catkin workspace 依赖
+- 用户需手动安装 FAST_LIO: 将 FAST_LIO clone 到 `SimEnv/src/FAST_LIO`，然后使用 `./tools/build_with_venv.sh` 构建
 - 建图精度受限：缺少 per-point 运动补偿和强度信息
 - 后续导航探索模块需依赖 FAST-LIO2 输出的 `/Odometry`、`/cloud_registered`、TF `camera_init → body`
 

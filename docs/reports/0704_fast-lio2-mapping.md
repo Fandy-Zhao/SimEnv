@@ -13,7 +13,7 @@
 - 原因: catkin_make 编译环境需 ROS 依赖, Gazebo 显示环境需 X server
 
 ## FAST-LIO2 Integration
-- FAST-LIO2 依赖方式: 外部 catkin workspace 依赖 (不 vendor)
+- FAST-LIO2 依赖方式: 不 vendor。FAST_LIO 作为外部源码放在 `SimEnv/src/FAST_LIO` 构建。
 - 是否 vendor FAST_LIO: 否
 - SimEnv LiDAR topic: `/scan` → `/scan_pointcloud2` (via adapter)
 - SimEnv IMU topic: `/livox/imu` (frame: livox_imu_link)
@@ -55,7 +55,7 @@
 
 ## Risks
 - 剩余风险: 运行时验证无法在当前环境完成
-- 需要用户确认: FAST_LIO 外部依赖需手动安装
+- 需要用户确认: FAST_LIO 需手动 clone 到 `SimEnv/src/FAST_LIO`
 - 运行时验证限制: 需要 Gazebo + A1 模型 + FAST_LIO 编译
 
 ## Next Step

@@ -6,20 +6,25 @@ SimEnv 与 FAST-LIO2 的集成桥接包。提供点云格式适配、配置文�
 
 - ROS1 Noetic
 - SimEnv 仿真环境 (提供 `/scan` 和 `/livox/imu`)
-- **外部依赖**: [FAST_LIO](https://github.com/hku-mars/FAST_LIO) 必须单独克隆到同一 catkin workspace
+- **外部依赖**: [FAST_LIO](https://github.com/hku-mars/FAST_LIO) 作为外部源码 ROS package，放在 `SimEnv/src/FAST_LIO`（SimEnv 仓库本身就是 catkin workspace 根目录）
 
 ## 安装 FAST_LIO
 
 ```bash
-cd <catkin_ws>/src
+cd SimEnv/src
 git clone https://github.com/hku-mars/FAST_LIO.git
 cd FAST_LIO
 git submodule update --init
-cd <catkin_ws>
-catkin_make
+cd ../..
+
+# 使用 venv 构建脚本（推荐）
+source /opt/ros/noetic/setup.bash
+source .venv/bin/activate
+./tools/build_with_venv.sh
+source devel/setup.bash
 ```
 
-> ⚠️ 不要将 FAST_LIO 源码放入 SimEnv 仓库。本包仅提供桥接配置和适配脚本。
+> ⚠️ 不要将 FAST_LIO 源码 vendor 到 SimEnv 仓库或 simenv_fast_lio2_integration 内。本包仅提供桥接配置和适配脚本。FAST_LIO 放在 `SimEnv/src/FAST_LIO` 即可被 catkin_make 构建。
 
 ## 文件结构
 

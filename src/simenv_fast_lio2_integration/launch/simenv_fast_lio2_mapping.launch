@@ -5,7 +5,7 @@
     ================================
     Assumes:
       - Gazebo + SimEnv (auto.sh) is already running with sensors publishing.
-      - FAST_LIO package is cloned into the same catkin workspace.
+      - FAST_LIO package is cloned into SimEnv/src/ (SimEnv is the catkin workspace root).
       - The scan_to_pointcloud2 adapter node is providing /scan_pointcloud2.
 
     Does NOT start Gazebo, the robot controller, or building control.
@@ -38,7 +38,7 @@
   </node>
 
   <!-- FAST-LIO2 node (from external FAST_LIO package) -->
-  <!-- Uncomment this block after FAST_LIO is cloned and built in the workspace.
+  <!-- Uncomment this block after FAST_LIO is cloned to SimEnv/src/FAST_LIO and built.
   <node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen">
     <param name="config_file" value="$(arg fast_lio_config)"/>
     <param name="lid_topic" value="$(arg lidar_topic)"/>

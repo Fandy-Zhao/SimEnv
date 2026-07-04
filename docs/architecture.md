@@ -58,7 +58,7 @@ uav_simulator/          (独立; 与地面机器人解耦)
     ├── so3_control
     └── map_generator
 
-simenv_fast_lio2_integration (external FAST_LIO dep)
+simenv_fast_lio2_integration (FAST_LIO in SimEnv/src/)
     ├── scan_to_pointcloud2.py  →  /scan (PointCloud) → /scan_pointcloud2 (PointCloud2)
     ├── config/simenv_mid360.yaml
     └── launch/simenv_fast_lio2_mapping.launch

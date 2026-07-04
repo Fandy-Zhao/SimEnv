@@ -6,6 +6,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 
 > **2026-07-04 update**: 仓库远程配置更新 (新增 GitHub remote `zzf/0704-connect-github-remote`)。业务模块代码无变动。
 > **2026-07-04 update**: 新增 `tools/build_with_venv.sh` venv 构建脚本 (`zzf/0704-build-with-venv`)。
+> **2026-07-04 update**: 修正 FAST-LIO2 文档中 workspace 结构描述 (`docs/0704-fast-lio2-workspace-docs`)。
 
 ## Modules
 
