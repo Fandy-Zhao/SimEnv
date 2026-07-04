@@ -5,6 +5,7 @@
 ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 
 > **2026-07-04 update**: 仓库远程配置更新 (新增 GitHub remote `zzf/0704-connect-github-remote`)。业务模块代码无变动。
+> **2026-07-04 update**: 新增 `tools/build_with_venv.sh` venv 构建脚本 (`zzf/0704-build-with-venv`)。
 
 ## Modules
 
@@ -18,6 +19,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 | `Mid360_imu_sim` | Livox Mid-360 LiDAR plugin | stable | 编译检查 + 话题发布检查 | Gazebo plugin，依赖 Gazebo 开发头文件 |
 | `simenv_fast_lio2_integration` | FAST-LIO2 bridge: adapter, config, launch | new | py_compile, roslaunch --files | External dep: FAST_LIO must be cloned separately |
 | `uav_simulator` (5 sub-pkgs) | UAV local sensing, mapping, SO3 control | experimental | 编译检查 (含部分测试) | 与地面机器人大赛解耦，为独立实验功能 |
+| `tools/` | 构建和仓库治理工具脚本 | new | `bash -n` 语法检查 + 权限检查 | `build_with_venv.sh` 提供 venv 版 catkin 构建 |
 | SimEnv workspace | 整体集成 | stable | `catkin_make` + `./auto.sh` 冒烟测试 | 比赛入口 |
 
 ## Risks

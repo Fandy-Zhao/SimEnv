@@ -12,6 +12,7 @@
 - FAST-LIO2 配置 (simenv_mid360.yaml) 和 launch
 - auto.sh 可选启动入口 (`ENABLE_FAST_LIO2`)
 - 连接 GitHub remote (`github` → `git@github.com:zzf/SimEnv.git`, 尚未 push)
+- venv 构建脚本: `tools/build_with_venv.sh` (zzf/0704-build-with-venv)
 
 ## Git Remotes
 - `origin`: https://gitee.com/guoyulun/SimEnv.git (Gitee, 主远程)
