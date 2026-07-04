@@ -13,6 +13,7 @@
 - auto.sh 可选启动入口 (`ENABLE_FAST_LIO2`)
 - 连接 GitHub remote (`github` → `git@github.com:zzf/SimEnv.git`, 尚未 push)
 - venv 构建脚本: `tools/build_with_venv.sh` (zzf/0704-build-with-venv)
+- FAST-LIO2 workspace 文档修正: 明确 SimEnv 是 catkin workspace 根目录 (docs/0704-fast-lio2-workspace-docs)
 
 ## Git Remotes
 - `origin`: https://gitee.com/guoyulun/SimEnv.git (Gitee, 主远程)

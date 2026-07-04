@@ -3,11 +3,13 @@
 # This file is designed for the external FAST_LIO package:
 #   https://github.com/hku-mars/FAST_LIO
 #
-# Prerequisite: clone FAST_LIO into the same catkin workspace.
-#   cd <catkin_ws>/src
+# Prerequisite: clone FAST_LIO into the SimEnv workspace.
+#   cd SimEnv/src
 #   git clone https://github.com/hku-mars/FAST_LIO.git
 #   cd FAST_LIO && git submodule update --init
-#   cd <catkin_ws> && catkin_make
+#   cd ../..
+#   ./tools/build_with_venv.sh
+#   source devel/setup.bash
 
 common:
   lid_topic: "/scan_pointcloud2"
