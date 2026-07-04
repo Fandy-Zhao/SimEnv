@@ -41,7 +41,7 @@
 | `rospack find simenv_fast_lio2_integration` | ✅ PASS | package discovered correctly |
 | `rospack find fast_lio` | ✅ PASS | FAST_LIO at `src/FAST_LIO` |
 | `check_repo_clean.py` | ✅ PASS | no governance issues |
-| `catkin_make` / `build_with_venv.sh` | ❌ FAIL | blocked by libtorch (C++ SDK) missing — ENV_MISSING, not FAST-LIO2 issue |
+| `catkin_make` / `build_with_venv.sh` | ⚠️ PROGRESS | Torch CMake path detected; blocked by CUDA (cu118) + livox_ros_driver C++11 |
 
 ## Documentation Updated
 - 治理文档: PROJECT_STATE.md, CHANGELOG.md, docs/module_status.md, docs/architecture.md
@@ -56,7 +56,7 @@
 
 ## Risks
 - 剩余风险: 运行时验证无法在当前环境完成
-- 需要用户确认: FAST_LIO 需手动 clone 到 `SimEnv/src/FAST_LIO`
+- 需要用户确认: FAST_LIO 已存在于 `SimEnv/src/FAST_LIO`；当前阻塞点是 CUDA toolkit (torch cu118 需要) + livox_ros_driver C++11 编译问题
 - 运行时验证限制: 需要 Gazebo + A1 模型 + FAST_LIO 编译
 
 ## Next Step

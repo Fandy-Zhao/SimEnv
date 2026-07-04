@@ -69,8 +69,37 @@ source "$VENV_ACTIVATE"
 echo "[build_with_venv] Active python: $(command -v python)"
 python --version
 
+# Detect PyTorch C++ CMake prefix (for packages that need LibTorch, e.g. unitree_guide).
+# Python torch imports do not guarantee that CMake can find TorchConfig.cmake.
+TORCH_CMAKE_PREFIX="$("$VENV_PYTHON" - <<'PY'
+try:
+    import torch
+    print(torch.utils.cmake_prefix_path)
+except Exception:
+    pass
+PY
+)"
+
+CATKIN_CMAKE_ARGS=(-DPYTHON_EXECUTABLE="$VENV_PYTHON")
+
+if [[ -n "$TORCH_CMAKE_PREFIX" ]]; then
+  if find "$TORCH_CMAKE_PREFIX" \( -name "TorchConfig.cmake" -o -name "torch-config.cmake" \) 2>/dev/null | grep -q .; then
+    # Append to existing CMAKE_PREFIX_PATH so ROS package discovery is preserved.
+    CATKIN_CMAKE_ARGS+=("-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${TORCH_CMAKE_PREFIX}")
+    echo "[build_with_venv] Torch CMake prefix: $TORCH_CMAKE_PREFIX"
+  else
+    echo "WARN: torch import works but TorchConfig.cmake was not found under: $TORCH_CMAKE_PREFIX" >&2
+    echo "WARN: LibTorch-dependent packages (e.g. unitree_guide) may fail to configure." >&2
+  fi
+else
+  echo "WARN: Python torch is not importable from venv. If a package needs LibTorch," >&2
+  echo "      install a compatible torch wheel:" >&2
+  echo "      source .venv/bin/activate" >&2
+  echo "      python -m pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2" >&2
+fi
+
 echo "[build_with_venv] Starting catkin_make..."
-catkin_make -DPYTHON_EXECUTABLE="$VENV_PYTHON" "$@"
+catkin_make "${CATKIN_CMAKE_ARGS[@]}" "$@"
 
 if [[ -f "$REPO_ROOT/devel/setup.bash" ]]; then
   # shellcheck source=/dev/null
