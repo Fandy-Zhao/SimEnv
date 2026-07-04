@@ -2,6 +2,10 @@
 
 ## 2026-07-04
 
+### Build Tooling
+- Added `tools/build_with_venv.sh`: builds catkin workspace with project `.venv` Python, ensuring consistent interpreter for torch and other Python deps.
+- README updated with venv setup and build instructions (torch 2.0.1 pin for Python 3.8 / ROS Noetic).
+
 ### Governance & Remote Configuration
 - Added GitHub remote (`github` → `git@github.com:zzf/SimEnv.git`), origin retained as Gitee.
 - Branch naming policy: maintenance/setup branches now use `zzf/MMDD-short-name`; `chore/` prefix is deprecated for this project.

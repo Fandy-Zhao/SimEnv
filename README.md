@@ -39,6 +39,35 @@ source ./devel/setup.bash
 
 `auto.sh` 会自动完成随机场景生成、Gazebo 启动、A1 模型与传感器启动、门/电梯控制服务启动和 `junior_ctrl` 控制器启动。更多启动方式见 [快速启动](docs/quick-start.md)。
 
+## 使用 venv 构建（推荐）
+
+项目根目录提供了 `tools/build_with_venv.sh`，自动使用项目 `.venv` 构建 catkin workspace，确保 CMake 使用一致的 Python 解释器：
+
+```bash
+# 1. 创建项目 venv（首次）
+python3 -m venv --system-site-packages .venv
+source .venv/bin/activate
+python -m pip install -U pip setuptools wheel
+python -m pip install numpy pyyaml rospkg catkin_pkg empy
+
+# 如果项目需要 torch（如 FAST-LIO2 集成）：
+python -m pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+
+# 2. 使用 venv 构建脚本
+./tools/build_with_venv.sh
+
+# 3. 加载工作空间（必须手动执行，脚本内的 source 不影响当前 shell）
+source devel/setup.bash
+
+# 4. 启动仿真
+./auto.sh
+```
+
+> **注意**：
+> - torch 版本固定为 2.0.1，适用于 Python 3.8 / ROS Noetic 环境。不要安装最新版 torch，除非确认 Python 版本兼容。
+> - 不要使用 `sudo pip` 污染系统 Python。
+> - `./tools/build_with_venv.sh` 内部的 `source devel/setup.bash` 只影响脚本子进程。构建完成后必须在你的终端中手动 `source devel/setup.bash`。
+
 ## 算法接口
 
 | 接口 | 类型 | 用途 |
