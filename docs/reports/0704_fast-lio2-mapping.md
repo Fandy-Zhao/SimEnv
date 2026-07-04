@@ -36,11 +36,12 @@
 ## Tests
 | 测试 | 结果 | 说明 |
 |------|------|------|
-| `python3 -m py_compile` (3 scripts) | (pending) | |
-| `roslaunch --files` | (pending) | |
-| `rospack find` | (pending) | |
-| `catkin_make` | (pending) | |
-| `check_repo_clean.py` | (pending) | |
+| `python3 -m py_compile` (2 scripts) | ✅ PASS | system + venv Python 3.10 both OK |
+| `roslaunch --files` | ✅ PASS | launch file syntax valid |
+| `rospack find simenv_fast_lio2_integration` | ✅ PASS | package discovered correctly |
+| `rospack find fast_lio` | ✅ PASS | FAST_LIO at `src/FAST_LIO` |
+| `check_repo_clean.py` | ✅ PASS | no governance issues |
+| `catkin_make` / `build_with_venv.sh` | ❌ FAIL | blocked by libtorch (C++ SDK) missing — ENV_MISSING, not FAST-LIO2 issue |
 
 ## Documentation Updated
 - 治理文档: PROJECT_STATE.md, CHANGELOG.md, docs/module_status.md, docs/architecture.md
