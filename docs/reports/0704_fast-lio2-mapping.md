@@ -41,7 +41,7 @@
 | `rospack find simenv_fast_lio2_integration` | ✅ PASS | package discovered correctly |
 | `rospack find fast_lio` | ✅ PASS | FAST_LIO at `src/FAST_LIO` |
 | `check_repo_clean.py` | ✅ PASS | no governance issues |
-| `catkin_make` / `build_with_venv.sh` | ⚠️ PROGRESS | Torch CMake path detected; blocked by CUDA (cu118) + livox_ros_driver C++11 |
+| `catkin_make` / `build_with_venv.sh` | ⚠️ PROGRESS | CUDA host compiler FIXED; blocked by CMakeCache mismatch + livox_ros_driver C++11 |
 
 ## Documentation Updated
 - 治理文档: PROJECT_STATE.md, CHANGELOG.md, docs/module_status.md, docs/architecture.md
