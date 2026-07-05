@@ -9,7 +9,9 @@
 #include "FSM/State_FixedStand.h"
 #include "FSM/State_Passive.h"
 #include "FSM/State_FreeStand.h"
+#ifndef UNITREE_DISABLE_TORCH_POLICY
 #include "FSM/State_Trotting.h"
+#endif  // UNITREE_DISABLE_TORCH_POLICY
 #include "FSM/State_BalanceTest.h"
 #include "FSM/State_SwingTest.h"
 #include "FSM/State_StepTest.h"
@@ -18,35 +20,45 @@
 #ifdef COMPILE_WITH_MOVE_BASE
     #include "FSM/State_move_base.h"
 #endif  // COMPILE_WITH_MOVE_BASE
+#ifndef UNITREE_DISABLE_TORCH_POLICY
 #include "FSM/State_RL_test.h"
+#endif  // UNITREE_DISABLE_TORCH_POLICY
 
 struct FSMStateList{
     FSMState *invalid;
     State_Passive *passive;
     State_FixedStand *fixedStand;
     State_FreeStand *freeStand;
+#ifndef UNITREE_DISABLE_TORCH_POLICY
     State_Trotting *trotting;
+#endif  // UNITREE_DISABLE_TORCH_POLICY
     State_BalanceTest *balanceTest;
     State_SwingTest *swingTest;
     State_StepTest *stepTest;
 #ifdef COMPILE_WITH_MOVE_BASE
     State_move_base *moveBase;
 #endif  // COMPILE_WITH_MOVE_BASE
+#ifndef UNITREE_DISABLE_TORCH_POLICY
     State_RL *rl;
+#endif  // UNITREE_DISABLE_TORCH_POLICY
 
     void deletePtr(){
         delete invalid;
         delete passive;
         delete fixedStand;
         delete freeStand;
+#ifndef UNITREE_DISABLE_TORCH_POLICY
         delete trotting;
+#endif  // UNITREE_DISABLE_TORCH_POLICY
         delete balanceTest;
         delete swingTest;
         delete stepTest;
 #ifdef COMPILE_WITH_MOVE_BASE
         delete moveBase;
 #endif  // COMPILE_WITH_MOVE_BASE
+#ifndef UNITREE_DISABLE_TORCH_POLICY
         delete rl;
+#endif  // UNITREE_DISABLE_TORCH_POLICY
     }
 };
 

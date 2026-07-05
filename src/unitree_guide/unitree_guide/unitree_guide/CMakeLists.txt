@@ -1,16 +1,29 @@
 cmake_minimum_required(VERSION 3.14)
 project(unitree_guide)
-# 添加 torch 依赖，默认使用 /home/ros/Guoyulun/Download/libtorch（如不同，请提供正确路径）
-# 确保 CMake 可以加载 libtorch 附带的 cmake 模块（例如 CheckLinkerFlag）
-list(APPEND CMAKE_MODULE_PATH "/home/ros/Guoyulun/Download/libtorch/share/cmake/Caffe2/public")
-list(APPEND CMAKE_MODULE_PATH "/home/ros/Guoyulun/Download/libtorch/share/cmake")
-if(NOT DEFINED TORCH_CUDA_ARCH_LIST)
-    set(TORCH_CUDA_ARCH_LIST "5.2" CACHE STRING "CUDA architectures for libtorch")
+
+# ---- Torch / RL Policy ----
+# Default OFF: junior_ctrl compiles without libtorch, RL policy and torch-dependent
+# trotting quaternion helpers are excluded. This avoids _GLIBCXX_USE_CXX11_ABI=0
+# pollution of ROS controller code.
+# Set ON to re-enable Torch RL policy (requires libtorch + CUDA + ABI management).
+option(UNITREE_ENABLE_TORCH_POLICY "Build unitree torch policy support" OFF)
+message(STATUS "UNITREE_ENABLE_TORCH_POLICY=${UNITREE_ENABLE_TORCH_POLICY}")
+
+if(UNITREE_ENABLE_TORCH_POLICY)
+    # 添加 torch 依赖，默认使用 /home/ros/Guoyulun/Download/libtorch（如不同，请提供正确路径）
+    # 确保 CMake 可以加载 libtorch 附带的 cmake 模块（例如 CheckLinkerFlag）
+    list(APPEND CMAKE_MODULE_PATH "/home/ros/Guoyulun/Download/libtorch/share/cmake/Caffe2/public")
+    list(APPEND CMAKE_MODULE_PATH "/home/ros/Guoyulun/Download/libtorch/share/cmake")
+    if(NOT DEFINED TORCH_CUDA_ARCH_LIST)
+        set(TORCH_CUDA_ARCH_LIST "5.2" CACHE STRING "CUDA architectures for libtorch")
+    endif()
+    if(NOT CMAKE_CUDA_FLAGS MATCHES "-arch=sm_")
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -arch=sm_52" CACHE STRING "CUDA flags" FORCE)
+    endif()
+    find_package(Torch REQUIRED PATHS "/home/ros/Guoyulun/Download/libtorch")
+    set(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)  # torch 编译加速
+    set(CMAKE_CXX_STANDARD 17) # torch 编译加速需要 C++17
 endif()
-if(NOT CMAKE_CUDA_FLAGS MATCHES "-arch=sm_")
-    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -arch=sm_52" CACHE STRING "CUDA flags" FORCE)
-endif()
-find_package(Torch REQUIRED PATHS "/home/ros/Guoyulun/Download/libtorch")
 
 set(ROBOT_TYPE A1)         # The type of robot, support Go1 and A1 currently
 set(PLATFORM amd64)         # The platform to compile, support amd64 and arm64
@@ -46,6 +59,11 @@ if(SIMULATION OR MOVE_BASE)
 endif()
 
 set(CMAKE_CXX_STANDARD 11)
+
+# C++17 is required for log4cxx std::shared_mutex on Ubuntu 20.04 / ROS Noetic.
+# Previously masked by torch's C++17 override. Apply unconditionally.
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Boost)
 
 if(CATKIN_MAKE)
@@ -156,8 +174,17 @@ file(GLOB_RECURSE SRC_LIST
     "src/*/*.cc"
 )
 
-set(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)  # torch 编译加速
-set(CMAKE_CXX_STANDARD 17) #torch编译加速
+if(NOT UNITREE_ENABLE_TORCH_POLICY)
+    # Exclude torch-dependent source files when Torch policy is OFF.
+    # State_RL_test.cpp   : RL policy inference (torch::jit, torch::Tensor)
+    # State_Trotting.cpp  : quaternion helpers use torch::from_blob / torch::Tensor
+    # State_move_base.cpp : inherits State_Trotting → transitively depends on torch
+    list(FILTER SRC_LIST EXCLUDE REGEX "State_RL_test\\.cpp$")
+    list(FILTER SRC_LIST EXCLUDE REGEX "State_Trotting\\.cpp$")
+    list(FILTER SRC_LIST EXCLUDE REGEX "State_move_base\\.cpp$")
+    add_definitions(-DUNITREE_DISABLE_TORCH_POLICY)
+    message(STATUS "Torch policy OFF: excluded State_RL_test.cpp, State_Trotting.cpp, State_move_base.cpp")
+endif()
 
 
 add_executable(state_from_gazebo src/state_from_gazebo.cpp)
@@ -165,7 +192,11 @@ target_link_libraries(state_from_gazebo ${catkin_LIBRARIES})
 
 
 add_executable(junior_ctrl src/main.cpp ${SRC_LIST})
-target_link_libraries(junior_ctrl ${TORCH_LIBRARIES} ${catkin_LIBRARIES})
+if(UNITREE_ENABLE_TORCH_POLICY)
+    target_link_libraries(junior_ctrl ${TORCH_LIBRARIES} ${catkin_LIBRARIES})
+else()
+    target_link_libraries(junior_ctrl ${catkin_LIBRARIES})
+endif()
 if(CATKIN_MAKE)
     target_link_libraries(junior_ctrl ${catkin_LIBRARIES})
     add_dependencies(junior_ctrl ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

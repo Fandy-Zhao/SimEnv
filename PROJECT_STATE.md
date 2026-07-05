@@ -2,9 +2,9 @@
 
 ## Snapshot
 - Date: 2026-07-06
-- Branch: docs/0706-fast-lio2-deploy-guide (from develop)
+- Branch: fix/0704-unitree-torch-abi-isolation (from develop)
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: FAST-LIO2 SLAM 建图集成 (Phase 1 — mapping only), 部署文档完善
+- Current focus: FAST-LIO2 SLAM 建图集成 (Phase 1 — mapping only), 编译修复, 部署文档完善
 
 ## Active Work
 - FAST-LIO2 集成骨架: `src/simenv_fast_lio2_integration/`
@@ -19,6 +19,7 @@
 - build_with_venv.sh: 现已强制使用 gcc-11/g++-11 构建，CUDA host compiler 错误已消除；CMakeCache 需清理后重试
 - 编译修复: unitree PIE, FAST_LIO C++17, livox shared_ptr/serialization/missing-includes 共6个文件修复 (fix/0704-fast-lio2-build-errors)
 - FAST-LIO2 部署指南: 新增 `docs/slam/fast_lio2_deployment_guide.md`，系统整理部署流程、传感器配置映射、参数说明、编译环境、运行验证和排错指南 (docs/0706-fast-lio2-deploy-guide)
+- Torch ABI 隔离: `unitree_guide/junior_ctrl` 现已默认不依赖 Torch 编译，新增 `UNITREE_ENABLE_TORCH_POLICY` option (OFF)，`_GLIBCXX_USE_CXX11_ABI=0` 污染已消除 (fix/0704-unitree-torch-abi-isolation)
 
 ## Git Remotes
 - `origin`: https://gitee.com/guoyulun/SimEnv.git (Gitee, 主远程)

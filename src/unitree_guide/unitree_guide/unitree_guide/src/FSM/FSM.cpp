@@ -11,14 +11,18 @@ FSM::FSM(CtrlComponents *ctrlComp)
     _stateList.passive = new State_Passive(_ctrlComp);
     _stateList.fixedStand = new State_FixedStand(_ctrlComp);
     _stateList.freeStand = new State_FreeStand(_ctrlComp);
+#ifndef UNITREE_DISABLE_TORCH_POLICY
     _stateList.trotting = new State_Trotting(_ctrlComp);
+#endif  // UNITREE_DISABLE_TORCH_POLICY
     _stateList.balanceTest = new State_BalanceTest(_ctrlComp);
     _stateList.swingTest = new State_SwingTest(_ctrlComp);
     _stateList.stepTest = new State_StepTest(_ctrlComp);
 #ifdef COMPILE_WITH_MOVE_BASE
     _stateList.moveBase = new State_move_base(_ctrlComp);
 #endif  // COMPILE_WITH_MOVE_BASE
+#ifndef UNITREE_DISABLE_TORCH_POLICY
     _stateList.rl = new State_RL(_ctrlComp);
+#endif  // UNITREE_DISABLE_TORCH_POLICY
     initialize();
 }
 
@@ -96,9 +100,11 @@ FSMState* FSM::getNextState(FSMStateName stateName){
     case FSMStateName::FREESTAND:
         return _stateList.freeStand;
         break;
+#ifndef UNITREE_DISABLE_TORCH_POLICY
     case FSMStateName::TROTTING:
         return _stateList.trotting;
         break;
+#endif  // UNITREE_DISABLE_TORCH_POLICY
     case FSMStateName::BALANCETEST:
         return _stateList.balanceTest;
         break;
@@ -113,9 +119,11 @@ FSMState* FSM::getNextState(FSMStateName stateName){
         return _stateList.moveBase;
         break;
 #endif  // COMPILE_WITH_MOVE_BASE
+#ifndef UNITREE_DISABLE_TORCH_POLICY
     case FSMStateName::RL:
         return _stateList.rl;
     break;
+#endif  // UNITREE_DISABLE_TORCH_POLICY
     default:
         return _stateList.invalid;
         break;

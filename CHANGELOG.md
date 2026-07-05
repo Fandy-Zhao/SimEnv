@@ -2,9 +2,12 @@
 
 ## 2026-07-06
 
+### Build Fix
+- Fixed `unitree_guide/junior_ctrl` Torch ABI pollution: `find_package(Torch)` injected `-D_GLIBCXX_USE_CXX11_ABI=0` globally, causing `ros::init` undefined references. Added `UNITREE_ENABLE_TORCH_POLICY` option (default OFF) to isolate Torch flags; excluded 3 torch-dependent source files; guarded transitive header includes in `FSM.h`/`FSM.cpp`. `junior_ctrl` now compiles and links with ROS Noetic (fix/0704-unitree-torch-abi-isolation).
+
 ### Documentation
 - Added `docs/slam/fast_lio2_deployment_guide.md`: comprehensive FAST-LIO2 deployment guide covering repository layout, sensor topic mapping, parameter reference, pointcloud compatibility, IMU selection, extrinsic calibration, build environment, deployment steps, runtime validation checklist, common failure modes, experiment tracking parameters, and output contract for future navigation (docs/0706-fast-lio2-deploy-guide).
-- Added `docs/decisions/ADR-0706-fast-lio2-deploy-guide.md`: architecture decisions for deployment guide (docs directory, no-vendor policy, default IMU selection, PointCloud time field risk, output contract).
+- Added `docs/decisions/ADR-0706-fast-lio2-deploy-guide.md`: architecture decisions for deployment guide.
 - Added `docs/reports/0706_fast-lio2-deploy-guide.md`: task report with coverage table.
 
 ## 2026-07-04

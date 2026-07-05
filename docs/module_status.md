@@ -10,6 +10,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 > **2026-07-04 update**: FAST-LIO2 编译环境审计: 静态检查全通过, catkin_make 被 libtorch 阻塞 (`feat/0704-fast-lio2-mapping`)。
 > **2026-07-04 update**: `tools/build_with_venv.sh` 现已自动检测 torch CMake 前缀; TorchConfig.cmake 路径问题已解决。
 > **2026-07-04 update**: `tools/build_with_venv.sh` 现已强制 gcc-11/g++-11 构建; CUDA host compiler 错误已消除。
+> **2026-07-06 update**: Torch ABI 隔离修复: `unitree_guide/junior_ctrl` 现已默认不依赖 Torch 编译，`UNITREE_ENABLE_TORCH_POLICY=OFF` (fix/0704-unitree-torch-abi-isolation)。
 > **2026-07-06 update**: 新增 FAST-LIO2 部署指南 `docs/slam/fast_lio2_deployment_guide.md`，系统整理部署流程、传感器映射、参数说明与排错指南 (docs/0706-fast-lio2-deploy-guide)。
 
 ## Modules
