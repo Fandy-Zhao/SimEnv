@@ -1,0 +1,1047 @@
+src/unitree_guide/unitree_ros/.gitmodules:1:[submodule "unitree_ros_to_real"]
+src/unitree_guide/readme.md:19:7.  修改ros工作目录/src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt中的libtorch路径以及CMAKE_CUDA_COMPILER路径
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/setup.py:4:# Setup script for PyPI; use CMakeFile.txt to build extension modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindEigen3.cmake:3:# This module supports requiring a minimum version, e.g. you can do
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:1:# tools/pybind11NewTools.cmake -- Build system for the pybind11 modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:18:  message(FATAL_ERROR "You cannot use the new FindPython module with CMake < 3.12")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:35:  # If we are in submodule mode, export the Python targets to global targets.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:40:    if(TARGET Python::Module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:41:      set_property(TARGET Python::Module PROPERTY IMPORTED_GLOBAL TRUE)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:96:if(NOT DEFINED PYTHON_MODULE_EXTENSION)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:100:    OUTPUT_VARIABLE _PYTHON_MODULE_EXTENSION
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:101:    ERROR_VARIABLE _PYTHON_MODULE_EXTENSION_ERR
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:104:  if(_PYTHON_MODULE_EXTENSION STREQUAL "")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:106:      FATAL_ERROR "pybind11 could not query the module file extension, likely the 'distutils'"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:107:                  "package is not installed. Full error message:\n${_PYTHON_MODULE_EXTENSION_ERR}")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:111:  set(PYTHON_MODULE_EXTENSION
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:112:      "${_PYTHON_MODULE_EXTENSION}"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:118:# https://stackoverflow.com/questions/39161202/how-to-work-around-missing-pymodule-create2-in-amd64-win-python35-d-lib
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:151:if(TARGET ${_Python}::Module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:153:    TARGET pybind11::module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:155:    PROPERTY INTERFACE_LINK_LIBRARIES ${_Python}::Module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:158:    TARGET pybind11::module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:165:function(pybind11_add_module target_name)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:167:                        "STATIC;SHARED;MODULE;THIN_LTO;OPT_SIZE;NO_EXTRAS;WITHOUT_SOABI" "" "")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:174:    set(type MODULE)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:189:  if(type STREQUAL "MODULE")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:190:    target_link_libraries(${target_name} PRIVATE pybind11::module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:207:  if("${type}" STREQUAL "MODULE" AND (NOT ARG_WITHOUT_SOABI OR NOT "WITH_SOABI" IN_LIST
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11NewTools.cmake:240:  set_target_properties(${name} PROPERTIES PREFIX "" SUFFIX "${PYTHON_MODULE_EXTENSION}")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/eval.h:55:    auto expr = (s[0] == '\n') ? str(module_::import("textwrap").attr("dedent")(s))
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:50:// Python loads modules by default with dlopen with the RTLD_LOCAL flag; under libc++ and possibly
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:51:// other STLs, this means `typeid(A)` from one module won't equal `typeid(A)` from another module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:140:    void *(*module_local_load)(PyObject *, const type_info *) = nullptr;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:148:    /* true if this is a type registered with py::module_local */
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:149:    bool module_local : 1;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:205:#define PYBIND11_MODULE_LOCAL_ID "__pybind11_module_local_v" \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:208:/// Each module locally stores a pointer to the `internals` data. The data
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:209:/// itself is shared among modules with the same `PYBIND11_INTERNALS_ID`.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:303:/// Works like `internals.registered_types_cpp`, but for module-local registered types:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/internals.h:322:/// Returns a named pointer that is shared among all extension modules (using the same
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_union.cpp:12:TEST_SUBMODULE(union_, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/python_interface.cpp:21:PYBIND11_MODULE(robot_interface, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:2:    tests/test_local_bindings.cpp -- tests the py::module_local class feature which makes a class
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:3:                                     binding local to the module in which it is defined.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:17:TEST_SUBMODULE(local_bindings, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:23:    // Register a class with py::module_local:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:24:    bind_local<LocalType, -1>(m, "LocalType", py::module_local())
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:31:    // The main pybind11 test module is loaded first, so this registration will succeed (the second
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:32:    // one, in pybind11_cross_module_tests.cpp, is designed to fail):
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:39:    // py::module_local declarations should be visible across compilation units that get linked together;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:44:        auto main = py::module_::import("pybind11_tests");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:46:            bind_local<LocalExternal, 7>(m, "LocalExternal", py::module_local());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:52:    // stl_bind.h binders defaults to py::module_local if the types are local or converting:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:60:    // They can, however, be overridden to global using `py::module_local(false)`:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:62:    py::bind_vector<LocalVec2>(m, "LocalVec2", py::module_local());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:63:    py::bind_map<NonLocalMap2>(m, "NonLocalMap2", py::module_local(false));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:69:        bind_local<MixedGlobalLocal, 100>(m, "MixedGlobalLocal", py::module_local(false));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:72:        bind_local<MixedLocalGlobal, 1000>(m, "MixedLocalGlobal", py::module_local());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:85:    // test_cross_module_calls
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.cpp:90:    py::class_<pets::Pet>(m, "Pet", py::module_local())
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_numpy_array.cpp:25:    py::module_ np = py::module_::import("numpy");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_numpy_array.cpp:135:TEST_SUBMODULE(numpy_array, sm) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_numpy_array.cpp:136:    try { py::module_::import("numpy"); }
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:31:    auto module_name = handle((PyObject *) type).attr("__module__").cast<std::string>();
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:32:    if (module_name == PYBIND11_BUILTINS_MODULE)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:35:        return std::move(module_name) + "." + type->tp_name;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:87:    setattr((PyObject *) type, "__module__", str("pybind11_builtins"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:231:    setattr((PyObject *) type, "__module__", str("pybind11_builtins"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:390:    // the type here. For cross-module compatibility, we shouldn't compare directly
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:438:    setattr((PyObject *) type, "__module__", str("pybind11_builtins"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:563:    if (rec.scope && !PyModule_Check(rec.scope.ptr()) && hasattr(rec.scope, "__qualname__")) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:572:    object module_;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:574:        if (hasattr(rec.scope, "__module__"))
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:575:            module_ = rec.scope.attr("__module__");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:577:            module_ = rec.scope.attr("__name__");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:582:        module_ ? str(module_).cast<std::string>() + "." + rec.name :
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:661:    if (module_) // Needed by pydoc
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/class.h:662:        setattr((PyObject *) type, "__module__", module_);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:2:    tests/cross_module_gil_utils.cpp -- tools for acquiring GIL from a different module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:13:// PYBIND11_MODULE. The purpose is to test that such a DSO can create a
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:16:// Note that we define a Python module here for convenience, but in general
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:18:// shared logic used internally by multiple pybind11 modules.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:25:constexpr char kModuleName[] = "cross_module_gil_utils";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:28:struct PyModuleDef moduledef = {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:29:    PyModuleDef_HEAD_INIT,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:30:    kModuleName,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:40:PyMethodDef module_methods[] = {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:49:PyObject* PyInit_cross_module_gil_utils()
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:51:void initcross_module_gil_utils()
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:57:        PyModule_Create(&moduledef);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:59:        Py_InitModule(kModuleName, module_methods);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/cross_module_gil_utils.cpp:66:        PyModule_AddObject(m, "gil_acquire_funcaddr",
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_custom_type_casters.cpp:86:TEST_SUBMODULE(custom_type_casters, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_docstring_options.cpp:12:TEST_SUBMODULE(docstring_options, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/.github/workflows/ci.yml:184:    # This makes sure the setup_helpers module can build packages using
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/.github/workflows/ci.yml:268:      run: yum update -y && yum install -y git python3-devel python3-numpy python3-pytest make environment-modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/.github/workflows/ci.yml:281:        source /etc/profile.d/modules.sh
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/.github/workflows/ci.yml:282:        module load /opt/nvidia/hpc_sdk/modulefiles/nvhpc/20.7
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/.github/workflows/ci.yml:308:      run: yum update -y && yum install -y epel-release && yum install -y git python3-devel make environment-modules cmake3
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/.github/workflows/ci.yml:320:        source /etc/profile.d/modules.sh
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/.github/workflows/ci.yml:321:        module load /opt/nvidia/hpc_sdk/modulefiles/nvhpc/20.9
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_stl_binders.cpp:65:TEST_SUBMODULE(stl_binders, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_stl_binders.cpp:120:    try { py::module_::import("numpy"); }
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_opaque_types.cpp:23:TEST_SUBMODULE(opaque_types, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_exceptions.cpp:87:TEST_SUBMODULE(exceptions, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_exceptions.cpp:163:    m.def("modulenotfound_exception_matches_base", []() {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_exceptions.cpp:165:            // On Python >= 3.6, this raises a ModuleNotFoundError, a subclass of ImportError
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_exceptions.cpp:166:            py::module_::import("nonexistent");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_gil_scoped.py:89:def test_cross_module_gil():
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_gil_scoped.py:90:    """Makes sure that the GIL can be acquired by another module from a GIL-released state."""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_gil_scoped.py:91:    m.test_cross_module_gil()  # Should not raise a SIGSEGV
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:52:list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/../tools")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:110:    test_modules.cpp
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:156:# Contains the set of test files that require pybind11_cross_module_tests to be
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:158:# doesn't include them) the second module doesn't get built.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:159:set(PYBIND11_CROSS_MODULE_TESTS test_exceptions.py test_local_bindings.py test_stl.py
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:162:set(PYBIND11_CROSS_MODULE_GIL_TESTS test_gil_scoped.py)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:198:      # Couldn't load via target, so fall back to allowing module mode finding, which will pick up
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:274:# Build pybind11_cross_module_tests if any test_whatever.py are being built that require it
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:275:foreach(t ${PYBIND11_CROSS_MODULE_TESTS})
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:278:    list(APPEND test_targets pybind11_cross_module_tests)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:283:foreach(t ${PYBIND11_CROSS_MODULE_GIL_TESTS})
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:286:    list(APPEND test_targets cross_module_gil_utils)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/CMakeLists.txt:308:  pybind11_add_module(${target} THIN_LTO ${target}.cpp ${test_files} ${PYBIND11_HEADERS})
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_chrono.cpp:33:TEST_SUBMODULE(chrono, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.py:2:from widget_module import Widget
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/installed_function/CMakeLists.txt:2:project(test_installed_module CXX)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/installed_function/CMakeLists.txt:19:pybind11_add_module(test_installed_function SHARED NO_EXTRAS ../main.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.cpp:29:std::list<std::function<void(py::module_ &)>> &initializers() {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.cpp:30:    static std::list<std::function<void(py::module_ &)>> inits;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.cpp:38:test_initializer::test_initializer(const char *submodule_name, Initializer init) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.cpp:39:    initializers().emplace_back([=](py::module_ &parent) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.cpp:40:        auto m = parent.def_submodule(submodule_name);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.cpp:45:void bind_ConstructorStats(py::module_ &m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.cpp:65:PYBIND11_MODULE(pybind11_tests, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.cpp:66:    m.doc() = "pybind11 test module";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/external_module.cpp:5:/* Simple test module/test class to check that the referenced internals data of external pybind11
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/external_module.cpp:6: * modules aren't preserved over a finalize/initialize.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/external_module.cpp:9:PYBIND11_MODULE(external_module, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_eval.cpp:14:TEST_SUBMODULE(eval_, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_eval.cpp:17:    auto global = py::dict(py::module_::import("__main__").attr("__dict__"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/installed_target/CMakeLists.txt:17:add_library(test_installed_target MODULE ../main.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/installed_target/CMakeLists.txt:19:target_link_libraries(test_installed_target PRIVATE pybind11::module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/installed_target/CMakeLists.txt:25:# Do not treat includes from IMPORTED target as SYSTEM (Python headers in pybind11::module).
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_tagbased_polymorphic.cpp:122:TEST_SUBMODULE(tagbased_polymorphic, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/stl_bind.h:431:    // module-local then make the vector binding module-local as well:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/stl_bind.h:434:    bool local = !vtype_info || vtype_info->module_local;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/stl_bind.h:436:    Class_ cl(scope, name.c_str(), pybind11::module_local(local), std::forward<Args>(args)...);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/stl_bind.h:593:    // If either type is a non-module-local bound type then make the map binding non-local as well;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/stl_bind.h:594:    // otherwise (e.g. both types are either module-local or converting) the map will be
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/stl_bind.h:595:    // module-local.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/stl_bind.h:597:    bool local = !tinfo || tinfo->module_local;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/stl_bind.h:600:        local = !tinfo || tinfo->module_local;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/stl_bind.h:603:    Class_ cl(scope, name.c_str(), pybind11::module_local(local), std::forward<Args>(args)...);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:36:PYBIND11_EMBEDDED_MODULE(widget_module, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:44:PYBIND11_EMBEDDED_MODULE(throw_exception, ) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:48:PYBIND11_EMBEDDED_MODULE(throw_error_already_set, ) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:53:TEST_CASE("Pass classes and data between modules defined in C++ and Python") {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:54:    auto module_ = py::module_::import("test_interpreter");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:55:    REQUIRE(py::hasattr(module_, "DerivedWidget"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:57:    auto locals = py::dict("hello"_a="Hello, World!", "x"_a=5, **module_.attr("__dict__"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:64:    auto py_widget = module_.attr("DerivedWidget")("The question");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:73:    REQUIRE_NOTHROW(py::module_::import("widget_module"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:74:    REQUIRE_THROWS_WITH(py::module_::import("throw_exception"),
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:76:    REQUIRE_THROWS_WITH(py::module_::import("throw_error_already_set"),
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:110:    REQUIRE(py::module_::import("widget_module").attr("add")(1, 2).cast<int>() == 3);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:113:    REQUIRE(py::module_::import("external_module").attr("A")(123).attr("value").cast<int>() == 123);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:115:    // local and foreign module internals should point to the same internals:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:117:            py::module_::import("external_module").attr("internals_at")().cast<uintptr_t>());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:133:            py::module_::import("external_module").attr("internals_at")().cast<uintptr_t>());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:140:    py::module_::import("__main__").attr("internals_destroy_test") =
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:151:    // C++ modules can be reloaded.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:152:    auto cpp_module = py::module_::import("widget_module");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:153:    REQUIRE(cpp_module.attr("add")(1, 2).cast<int>() == 3);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:155:    // C++ type information is reloaded and can be used in python modules.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:156:    auto py_module = py::module_::import("test_interpreter");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:157:    auto py_widget = py_module.attr("DerivedWidget")("Hello after restart");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:162:    // Add tags to the modules in the main interpreter and test the basics.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:163:    py::module_::import("__main__").attr("main_tag") = "main interpreter";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:165:        auto m = py::module_::import("widget_module");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:166:        m.attr("extension_module_tag") = "added to module in main interpreter";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:183:    // Modules tags should be gone.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:184:    REQUIRE_FALSE(py::hasattr(py::module_::import("__main__"), "tag"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:186:        auto m = py::module_::import("widget_module");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:187:        REQUIRE_FALSE(py::hasattr(m, "extension_module_tag"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:197:    REQUIRE(py::hasattr(py::module_::import("__main__"), "main_tag"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:198:    REQUIRE(py::hasattr(py::module_::import("widget_module"), "extension_module_tag"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:244:TEST_CASE("Reload module from file") {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:248:    auto sys = py::module_::import("sys");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:256:    std::string module_name = "test_module_reload";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:257:    std::string module_file = module_name + ".py";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:259:    // Create the module .py file
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:260:    std::ofstream test_module(module_file);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:261:    test_module << "def test():\n";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:262:    test_module << "    return 1\n";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:263:    test_module.close();
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:265:    scope_exit delete_module_file([&]() {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:266:        std::remove(module_file.c_str());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:269:    // Import the module from file
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:270:    auto module_ = py::module_::import(module_name.c_str());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:271:    int result = module_.attr("test")().cast<int>();
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:274:    // Update the module .py file with a small change
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:275:    test_module.open(module_file);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:276:    test_module << "def test():\n";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:277:    test_module << "    return 2\n";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:278:    test_module.close();
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:280:    // Reload the module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:281:    module_.reload();
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/test_interpreter.cpp:282:    result = module_.attr("test")().cast<int>();
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/benchmark.py:37:    result += "PYBIND11_MODULE(example, m) {\n"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/benchmark.py:69:    result += "BOOST_PYTHON_MODULE(example) {\n"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/setup.cfg:13:    Topic :: Software Development :: Libraries :: Python Modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/setup.cfg:26:    Topic :: Software Development :: Libraries :: Python Modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/setup.cfg:47:    .gitmodules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/constructor_stats.h:123:        py::module_::import("gc").attr("collect")();
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:38:    ext_modules = [
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:47:        ext_modules=ext_modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:60:    ext_modules = [
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:70:        ext_modules=ext_modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:159:so you can use it with git submodules and a specific git version. If you use
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:169:Suggested usage if you have pybind11 as a submodule in ``extern/pybind11``:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:189:source file whose name matches the requested module. If there is, the file is
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:191:the C++ source file. Python is then able to find the module and load it.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:201:extension module can be created with just a few lines of code:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:209:    pybind11_add_module(example example.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:214:provides the ``pybind11_add_module`` function. It will take care of all the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:215:details needed to build a Python extension module on any platform.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:227:pybind11_add_module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:230:To ease the creation of Python extension modules, pybind11 provides a CMake
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:235:    pybind11_add_module(<name> [MODULE | SHARED] [EXCLUDE_FROM_ALL]
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:245:``MODULE`` or ``SHARED`` may be given to specify the type of library. If no
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:246:type is given, ``MODULE`` is used by default which ensures the creation of a
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:247:Python-exclusive module. Specifying ``SHARED`` will create a more traditional
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:251:Since pybind11 is a template library, ``pybind11_add_module`` adds compiler
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:255:features and functionality when attempting to load multiple pybind11 modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:288:By default, pybind11 will compile modules with the compiler default or the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:332:    pybind11_add_module(example example.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:353:Once detected, the aforementioned ``pybind11_add_module`` can be employed as
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:367:CMake 3.12+ (3.15+ recommended) added a new module called FindPython that had a
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:380:    pybind11_add_module(example example.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:394:installation <https://cmake.org/cmake/help/latest/module/FindPython.html>`_),
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:417:     Just the "linking" part of pybind11:module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:419:   ``pybind11::module``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:420:     Everything for extension modules - ``pybind11::pybind11`` + ``Python::Module`` (FindPython CMake 3.15+) or ``pybind11::python_link_helper``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:443:``add_python_module`` function is identical to:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:452:    add_library(example MODULE main.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:454:    target_link_libraries(example PRIVATE pybind11::module pybind11::lto pybind11::windows_extras)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:468:    contrast to the ``pybind11_add_module()`` command, the CMake interface
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:485:``pybind11_add_module`` and ``pybind11_extension`` will be unavailable, and the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:493:In addition to extension modules, pybind11 also supports embedding Python into
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:496:headers and libraries are attached to the target. Unlike ``pybind11::module``,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:534:Note that Python 2.7 modules don't use a special suffix, so you should simply
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:537:on the distribution; in the latter case, the module extension can be manually
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/compiling.rst:542:building the module:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/cmake/index.rst:8:.. cmake-module:: ../../tools/pybind11Config.cmake.in
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindPythonLibsNew.cmake:2:# This module finds the libraries corresponding to the Python interpreter
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindPythonLibsNew.cmake:10:#  PYTHON_MODULE_EXTENSION    - lib extension, e.g. '.so' or '.pyd'
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindPythonLibsNew.cmake:11:#  PYTHON_MODULE_PREFIX       - lib name prefix: usually an empty string
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindPythonLibsNew.cmake:54:if(PYTHONLIBS_FOUND AND PYTHON_MODULE_EXTENSION)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindPythonLibsNew.cmake:148:list(GET _PYTHON_VALUES 4 PYTHON_MODULE_EXTENSION)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindPythonLibsNew.cmake:239:# module.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindPythonLibsNew.cmake:253:if(NOT PYTHON_MODULE_PREFIX)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindPythonLibsNew.cmake:254:  set(PYTHON_MODULE_PREFIX "")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:2:    tests/pybind11_cross_module_tests.cpp -- contains tests that require multiple modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:15:PYBIND11_MODULE(pybind11_cross_module_tests, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:16:    m.doc() = "pybind11 cross-module test module";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:20:    // Definitions here are tested by importing both this module and the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:21:    // relevant pybind11_tests submodule from a test_whatever.py
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:24:    bind_local<ExternalType1>(m, "ExternalType1", py::module_local());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:25:    bind_local<ExternalType2>(m, "ExternalType2", py::module_local());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:36:    bind_local<LocalType, 1>(m, "LocalType", py::module_local())
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:45:    // globally in the main test module):
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:51:    // stl_bind.h binders defaults to py::module_local if the types are local or converting:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:64:    // The default can, however, be overridden to global using `py::module_local()` or
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:65:    // `py::module_local(false)`.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:67:    py::bind_vector<NonLocalVec2>(m, "NonLocalVec2", py::module_local());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:70:        py::bind_map<NonLocalMap2>(m, "NonLocalMap2", py::module_local(false));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:77:        bind_local<MixedGlobalLocal, 200>(m, "MixedGlobalLocal", py::module_local());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:80:        bind_local<MixedLocalGlobal, 2000>(m, "MixedLocalGlobal", py::module_local(false));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:95:    // test_cross_module_calls
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:100:    py::class_<pets::Pet>(m, "Pet", py::module_local())
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:107:    py::class_<MixGL>(m, "MixGL", py::module_local()).def(py::init<int>());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:110:    py::class_<MixGL2>(m, "MixGL2", py::module_local()).def(py::init<int>());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:114:    // the same module (it would be an ODR violation). Therefore `bind_vector` of `bool`
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_cross_module_tests.cpp:119:    // The main module already includes stl.h, but we need to test the error message
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/CMakeLists.txt:1:if("${PYTHON_MODULE_EXTENSION}" MATCHES "pypy" OR "${Python_INTERPRETER_ID}" STREQUAL "PyPy")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/CMakeLists.txt:33:pybind11_add_module(external_module THIN_LTO external_module.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/CMakeLists.txt:34:set_target_properties(external_module PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/CMakeLists.txt:38:  set_target_properties(external_module PROPERTIES LIBRARY_OUTPUT_DIRECTORY_${config}
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_embed/CMakeLists.txt:41:add_dependencies(cpptest external_module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/subdirectory_target/CMakeLists.txt:16:add_library(test_subdirectory_target MODULE ../main.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/subdirectory_target/CMakeLists.txt:19:target_link_libraries(test_subdirectory_target PRIVATE pybind11::module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:4:"ImportError: dynamic module does not define init function"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:7:1. Make sure that the name specified in PYBIND11_MODULE is identical to the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:20:"SystemError: dynamic module not initialized properly"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:25:The Python interpreter immediately crashes when importing my module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:91:    void init_ex1(py::module_ &);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:92:    void init_ex2(py::module_ &);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:95:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:105:    void init_ex1(py::module_ &m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:113:    void init_ex2(py::module_ &m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:162:As to why ``-fvisibility=hidden`` is necessary, because pybind modules could
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:164:important that the symbols defined in one module do not clash with the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:166:modules are usually loaded with localized symbols (under POSIX systems
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:222:potential serious issues when loading multiple modules and is required for
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:254:    PYBIND11_MODULE(example, m)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:322:   of the old, deprecated search tools, and these modules are much better at
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/faq.rst:327:   Python, like ``pybind11_add_module``. This might be ideal for integrating
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_multiple_inheritance.cpp:46:TEST_SUBMODULE(multiple_inheritance, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/classes.rst:30:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/numpy.rst:193:    PYBIND11_MODULE(test, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/numpy.rst:287:    PYBIND11_MODULE(test, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/numpy.rst:373:middle dimensions of a tensor with the first and last index set to zero.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_operator_overloading.cpp:102:TEST_SUBMODULE(operators, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/exceptions.rst:76:    py::register_exception<CppExp>(module, "PyExp");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/exceptions.rst:79:module and automatically converts any encountered exceptions of type ``CppExp``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/exceptions.rst:87:    py::register_exception<CppExp>(module, "PyExp", PyExc_RuntimeError);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/exceptions.rst:185:        auto file = py::module_::import("io").attr("open")("missing.txt", "r");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/pybind11/setup_helpers.py:4:This module provides helpers for C++11+ projects using pybind11.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/pybind11/setup_helpers.py:61:# It is recommended to use PEP 518 builds if using this module. However, this
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/pybind11/setup_helpers.py:70:    Build a C++11+ Extension module with pybind11. This automatically adds the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/pybind11/setup_helpers.py:287:# and: https://github.com/tbenthompson/cppimport/blob/stable/cppimport/build_module.py
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/pybind11/setup_helpers.py:288:# and NumPy's parallel distutils module:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/local_bindings.h:11:/// Registered with py::module_local in both main and secondary modules:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/local_bindings.h:13:/// Registered without py::module_local in both modules:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/local_bindings.h:17:/// Tests within-module, different-compilation-unit local definition conflict:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/local_bindings.h:24:/// Registered with py::module_local only in the secondary module:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pytypes.h:1435:        :param shape: Shape of the tensor (1 entry per dimension).
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_factory_constructors.cpp:142:TEST_SUBMODULE(factory_constructors, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_factory_constructors.cpp:145:    py::module_ m_tag = m.def_submodule("tag");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_call_policies.cpp:32:TEST_SUBMODULE(call_policies, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:19:// Robust support for some features and loading modules compiled against different pybind versions
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:185:#define PYBIND11_BUILTINS_MODULE "builtins"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:187:// See comment for PYBIND11_MODULE below for why this is marked "maybe unused".
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:213:#define PYBIND11_BUILTINS_MODULE "__builtin__"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:215:// See comment for PYBIND11_MODULE below for why this is marked "maybe unused".
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:248:                "Python version mismatch: module was compiled for Python %s, " \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:265:    ***Deprecated in favor of PYBIND11_MODULE***
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:268:    imports a plugin library. Please create a `module_` in the function body and return
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:274:            pybind11::module_ m("example", "pybind11 example plugin");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:280:    PYBIND11_DEPRECATED("PYBIND11_PLUGIN is deprecated, use PYBIND11_MODULE")  \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:293:    imports an extension module. The module name is given as the fist argument and it
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:295:    `py::module_` which can be used to initialize the module.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:303:        PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:304:            m.doc() = "pybind11 example module";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:312:#define PYBIND11_MODULE(name, variable)                                        \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:313:    static ::pybind11::module_::module_def                                     \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:314:        PYBIND11_CONCAT(pybind11_module_def_, name);                           \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:316:    static void PYBIND11_CONCAT(pybind11_init_, name)(::pybind11::module_ &);  \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:320:        auto m = ::pybind11::module_::create_extension_module(                 \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:322:            &PYBIND11_CONCAT(pybind11_module_def_, name));                     \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/detail/common.h:328:    void PYBIND11_CONCAT(pybind11_init_, name)(::pybind11::module_ &variable)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/cast.h:637:    PYBIND11_NOINLINE bool try_load_foreign_module_local(handle src) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/cast.h:638:        constexpr auto *local_key = PYBIND11_MODULE_LOCAL_ID;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/cast.h:645:        if (foreign_typeinfo->module_local_load == &local_load
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/cast.h:649:        if (auto result = foreign_typeinfo->module_local_load(src.ptr(), foreign_typeinfo)) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/cast.h:662:        if (!typeinfo) return try_load_foreign_module_local(src);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/cast.h:729:        if (typeinfo->module_local) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/cast.h:736:        // Global typeinfo has precedence over foreign module_local
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/cast.h:737:        return try_load_foreign_module_local(src);
+src/unitree_guide/unitree_ros_to_real/.gitmodules:1:[submodule "unitree_legged_sdk"]
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_stl.cpp:64:TEST_SUBMODULE(stl, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:10:    """Load a `py::module_local` type that's only registered in an external module"""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:11:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:26:    """Tests that duplicate `py::module_local` class bindings work across modules"""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:28:    # Make sure we can load the second module with the conflicting (but local) definition:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:29:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:42:    # Loading within the local module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:46:    # Cross-module loading works as well (on failure, the type loader looks for
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:47:    # external module-local converters):
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:53:    """Tests that attempting to register a non-local type in multiple modules fails"""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:54:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:62:    """Tests expected failure when registering a class twice with py::local in the same module"""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:72:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:80:    # Cross module value loading:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:106:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:122:    """Local types take precedence over globally registered types: a module with a `module_local`
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:123:    type can be registered even if the type is already registered globally.  With the module,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:124:    casting will go to the local type; outside the module casting goes to the global type."""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:125:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:153:    """Makes sure the internal local type map differs across the two modules"""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:154:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:160:    """One module uses a generic vector caster from `<pybind11/stl.h>` while the other
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:161:    exports `std::vector<int>` via `py:bind_vector` and `py::module_local`"""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:162:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:174:        1. (arg0: pybind11_cross_module_tests.VectorInt) -> int
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:180:def test_cross_module_calls():
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_local_bindings.py:181:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/.cmake-format.yaml:3:    pybind11_add_module:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/.cmake-format.yaml:6:        - MODULE
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_gil_scoped.cpp:32:TEST_SUBMODULE(gil_scoped, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_gil_scoped.cpp:46:    m.def("test_cross_module_gil",
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_gil_scoped.cpp:48:              auto cm = py::module_::import("cross_module_gil_utils");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_stl.py:210:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_stl.py:215:                        "when compiling your pybind11 module.")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_kwargs_and_defaults.cpp:14:TEST_SUBMODULE(kwargs_and_defaults, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_kwargs_and_defaults.cpp:110:    m.def("register_invalid_kw_only", [](py::module_ m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_kwargs_and_defaults.cpp:139:    // The return value doesn't matter, only that the module is importable.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_kwargs_and_defaults.cpp:141:        "a"_a = py::module_::import("decimal").attr("Decimal"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:1:# tools/pybind11Tools.cmake -- Build system for the pybind11 modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:22:      CACHE STRING "Python version to use for compiling modules")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:29:      CACHE STRING "Python version to use for compiling modules")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:37:list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:38:find_package(PythonLibsNew ${PYBIND11_PYTHON_VERSION} MODULE REQUIRED ${_pybind11_quiet})
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:39:list(REMOVE_AT CMAKE_MODULE_PATH -1)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:41:# Cache variables so pybind11_add_module can be used in parent projects
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:48:set(PYTHON_MODULE_PREFIX
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:49:    ${PYTHON_MODULE_PREFIX}
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:51:set(PYTHON_MODULE_EXTENSION
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:52:    ${PYTHON_MODULE_EXTENSION}
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:68:  if(PYTHON_MODULE_EXTENSION MATCHES "pypy")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:92:# https://stackoverflow.com/questions/39161202/how-to-work-around-missing-pymodule-create2-in-amd64-win-python35-d-lib
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:101:  TARGET pybind11::module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:121:  set_target_properties(${name} PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:122:                                           SUFFIX "${PYTHON_MODULE_EXTENSION}")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:125:# Build a Python extension module:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:126:# pybind11_add_module(<name> [MODULE | SHARED] [EXCLUDE_FROM_ALL]
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:129:function(pybind11_add_module target_name)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:130:  set(options "MODULE;SHARED;EXCLUDE_FROM_ALL;NO_EXTRAS;SYSTEM;THIN_LTO;OPT_SIZE")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:133:  if(ARG_MODULE AND ARG_SHARED)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:134:    message(FATAL_ERROR "Can't be both MODULE and SHARED")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:138:    set(lib_type MODULE)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:149:  target_link_libraries(${target_name} PRIVATE pybind11::module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:160:  # -fvisibility=hidden is required to allow multiple modules compiled against
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:162:  # py::module_local).  We force it on everything inside the `pybind11`
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Tools.cmake:163:  # namespace; also turning it on for a pybind module compilation here avoids
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/pybind11/__main__.py:37:        help="Print the CMake module directory, ideal for setting -Dpybind11_ROOT in CMake.",
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_async.cpp:12:TEST_SUBMODULE(async_module, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_async.cpp:21:            py::object loop = py::module_::import("asyncio.events").attr("get_event_loop")();
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:3:# 添加 torch 依赖，默认使用 /home/ros/Guoyulun/Download/libtorch（如不同，请提供正确路径）
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:4:# 确保 CMake 可以加载 libtorch 附带的 cmake 模块（例如 CheckLinkerFlag）
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:5:list(APPEND CMAKE_MODULE_PATH "/home/ros/Guoyulun/Download/libtorch/share/cmake/Caffe2/public")
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:6:list(APPEND CMAKE_MODULE_PATH "/home/ros/Guoyulun/Download/libtorch/share/cmake")
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:7:if(NOT DEFINED TORCH_CUDA_ARCH_LIST)
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:8:    set(TORCH_CUDA_ARCH_LIST "5.2" CACHE STRING "CUDA architectures for libtorch")
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:13:find_package(Torch REQUIRED PATHS "/home/ros/Guoyulun/Download/libtorch")
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:159:set(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)  # torch 编译加速
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:160:set(CMAKE_CXX_STANDARD 17) #torch编译加速
+src/unitree_guide/unitree_guide/unitree_guide/CMakeLists.txt:168:target_link_libraries(junior_ctrl ${TORCH_LIBRARIES} ${catkin_LIBRARIES})
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_smart_ptr.cpp:89:TEST_SUBMODULE(smart_ptr, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/object.rst:59:    py::object Decimal = py::module_::import("decimal").attr("Decimal");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/object.rst:64:    py::object scipy = py::module_::import("scipy");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/object.rst:84:    py::object os = py::module_::import("os");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/object.rst:199:    py::module_ os = py::module_::import("os");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/object.rst:200:    py::module_ path = py::module_::import("os.path");  // like 'import os.path as path'
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/object.rst:201:    py::module_ np = py::module_::import("numpy");  // like 'import numpy as np'
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/iostream.h:105:            py::scoped_ostream_redirect output{std::cerr, py::module_::import("sys").attr("stderr")};
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/iostream.h:118:            object pyostream = module_::import("sys").attr("stdout"))
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/iostream.h:149:            object pyostream = module_::import("sys").attr("stderr"))
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/iostream.h:209:inline class_<detail::OstreamRedirect> add_ostream_redirect(module_ m, std::string name = "ostream_redirect") {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/iostream.h:210:    return class_<detail::OstreamRedirect>(m, name.c_str(), module_local())
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_numpy_vectorize.cpp:19:TEST_SUBMODULE(numpy_vectorize, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_numpy_vectorize.cpp:20:    try { py::module_::import("numpy"); }
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/extra_setuptools/test_setuphelper.py:30:            ext_modules = [
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/extra_setuptools/test_setuphelper.py:51:                ext_modules=ext_modules,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/extra_setuptools/test_setuphelper.py:66:            PYBIND11_MODULE(simple_setup, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_enum.cpp:12:TEST_SUBMODULE(enums, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_numpy_dtypes.py:13:@pytest.fixture(scope='module')
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_numpy_dtypes.py:21:@pytest.fixture(scope='module')
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_copy_move.cpp:103:TEST_SUBMODULE(copy_move_policies, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pytest.ini:15:    # importing scipy submodules on some version of Python
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/benchmark.rst:5:time and module size of pybind11 against Boost.Python. A detailed report about a
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/benchmark.rst:34:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/benchmark.rst:77:Module size
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:2:from pybind11_tests import modules as m
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:3:from pybind11_tests.modules import subsubmodule as ms
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:7:def test_nested_modules():
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:10:    assert pybind11_tests.modules.__name__ == "pybind11_tests.modules"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:11:    assert pybind11_tests.modules.subsubmodule.__name__ == "pybind11_tests.modules.subsubmodule"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:12:    assert m.__name__ == "pybind11_tests.modules"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:13:    assert ms.__name__ == "pybind11_tests.modules.subsubmodule"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:15:    assert ms.submodule_func() == "submodule_func()"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:53:    from pybind11_tests.modules import OD
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:61:    """Pydoc needs to be able to provide help() for everything inside a pybind11 module"""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:66:    assert pybind11_tests.__doc__ == "pybind11 test module"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.py:67:    assert pydoc.text.docmodule(pybind11_tests)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:67:* ``py::module`` was renamed ``py::module_`` to avoid issues with C++20 when
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:68:  used unqualified, but an alias ``py::module`` is provided for backward
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:72:* Public constructors for ``py::module_`` have been deprecated; please use
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:73:  ``pybind11::module_::create_extension_module`` if you were using the public
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:74:  constructor (fairly rare after ``PYBIND11_MODULE`` was introduced).
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:90:    ``pybind11.setup_helpers`` module, which provides utilities to use
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:97:    site-packages location in your ``CMAKE_MODULE_PATH``. Or you can use the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:136:* ``pybind11_add_module()`` now accepts an optional ``OPT_SIZE`` flag that
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:146:  submodules in the main repo.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:258:* Exception handling during module initialization.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:308:* ``pybind11_add_module()``: don't strip symbols when compiling in
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:358:* Significantly reduced module binary size (10-20%) when compiled in C++11 mode
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:397:* ``pybind11_add_module()``: allow including Python as a ``SYSTEM`` include path.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:427:  files (e.g. plain C, CUDA) in ``pybind11_add_module`` et al.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:480:* Properly report exceptions thrown during module initialization.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:520:  shutdown/reinitialization with external loaded pybind11 modules.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:584:* Added ``py::module_::reload()`` member function for reloading a module.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:601:* Fixed a nullptr dereference when loading a ``py::module_local`` type
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:602:  that's only registered in an external module.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:608:* The ``name`` in ``PYBIND11_MODULE(name, variable)`` can now be a macro.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:645:      from cpp_module import CppBase1, CppBase2
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:652:* ``PYBIND11_MODULE`` is now the preferred way to create module entry points.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:659:      PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:665:          py::module m("example");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:671:  visibility for extension modules. This should be seamless for most users,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:675:* Support for ``py::module_local`` types which allow multiple modules to
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:678:  now default to ``py::module_local`` if their elements are builtins or
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:679:  local types. See :ref:`module_local` for details.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:750:* Improved handling of types and exceptions across module boundaries.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:892:  modules compiled with different revisions of pybind11.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:1015:  callbacks that are involved at module destruction time.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:1228:        py::module m = /* ... */
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:1348:  ``pybind11_add_module`` function to parent projects.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:1419:* Added a ``get_include()`` function to the Python module that returns the path
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:1470:* Documentation improvements (using multiple extension modules, smart pointers,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:1475:* Fixed remaining issues when accessing types in another plugin module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/changelog.rst:1489:* Fixed type resolution issue for types defined in a separate plugin module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:48:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:97:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:710:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:758:Python's ``pickle`` module provides a powerful facility to serialize and
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:826:    Note that only the cPickle module is supported on Python 2.7.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:848:to prevent changing all copies. The ``copy`` module [#f5]_ provides these
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:910:.. _module_local:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:912:Module-local class bindings
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:916:"global" across modules.  What this means is that a type defined in one module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:917:can be returned from any module resulting in the same Python type.  For
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:922:    // In the module1.cpp binding code for module1:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:929:    // In the module2.cpp binding code for module2:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:934:    >>> from module1 import Pet
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:935:    >>> from module2 import create_pet
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:943:modules.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:946:unrelated modules make use of an external C++ library and each provide custom
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:948:a Python program attempts to import both modules (directly or indirectly)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:980:      File "<stdin>", line 1, in <module>
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:984:localized to the module by passing the ``py::module_local()`` attribute into
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:990:    py::class<pets::Pet>(m, "Pet", py::module_local())
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:996:    py::class<pets::Pet>(m, "Pet", py::module_local())
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1000:avoiding the conflict and allowing both modules to be loaded.  C++ code in the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1001:``dogs`` module that casts or returns a ``Pet`` instance will result in a
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1002:``dogs.Pet`` Python instance, while C++ code in the ``cats`` module will result
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1005:This does come with two caveats, however: First, external modules cannot return
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1010:passing such a ``py::module_local`` type into a C++ function, the module-local
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1012:added to any module (including but not limited to the ``cats`` and ``dogs``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1013:modules above) it will be callable with either a ``dogs.Pet`` or ``cats.Pet``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1021:``dogs.cpp`` and ``frogs.cpp`` (where ``frogs.cpp`` is some other module that
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1026:    >>> import cats, dogs, frogs  # No error because of the added py::module_local()
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1033:It is possible to use ``py::module_local()`` registrations in one module even
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1034:if another module registers the same type globally: within the module with the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1035:module-local definition, all C++ instances will be cast to the associated bound
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1036:Python type.  In other modules any such values are converted to the global
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1042:    header) apply ``py::module_local`` by default when the bound type might
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1043:    conflict with other modules; see :ref:`stl_bind` for details.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1048:    or binary generated by the compiler/linker.  For typical modules created
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1049:    with ``PYBIND11_MODULE()``, this distinction is not significant.  It is
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1050:    possible, however, when :ref:`embedding` to embed multiple modules in the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1051:    same binary (see :ref:`embedding_modules`).  In such a case, the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1052:    localization will apply across all embedded modules within the same binary.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/classes.rst:1057:    that demonstrate how ``py::module_local()`` works.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_methods_and_attributes.cpp:151:TEST_SUBMODULE(methods_and_attributes, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_methods_and_attributes.cpp:210:            auto emna = py::reinterpret_borrow<py::class_<ExampleMandA>>(py::module_::import("pybind11_tests.methods_and_attributes").attr("ExampleMandA"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_methods_and_attributes.cpp:215:            auto emna = py::reinterpret_borrow<py::class_<ExampleMandA>>(py::module_::import("pybind11_tests.methods_and_attributes").attr("ExampleMandA"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_methods_and_attributes.cpp:317:        auto m = py::module_::import("pybind11_tests");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_methods_and_attributes.cpp:321:        auto m = py::module_::import("pybind11_tests");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/functions.rst:20:annotations that can be passed to the :func:`module_::def` and
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/functions.rst:450:      File "<stdin>", line 1, in <module>
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/functions.rst:510:      File "<stdin>", line 1, in <module>
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/reference.rst:17:.. doxygendefine:: PYBIND11_MODULE
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/reference.rst:49:.. doxygenclass:: module_
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/reference.rst:66:.. doxygendefine:: PYBIND11_EMBEDDED_MODULE
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:11:#include <torch/torch.h>
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:12:#include <torch/script.h>
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:31:    void printSegments(const torch::Tensor& tensor, int segment_size, const std::vector<int>& sub_sizes);
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:32:    void printTensorHorizontal(const torch::Tensor& tensor, const std::string& name);
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:33:    torch::Tensor quat_rotate_inverse(const torch::Tensor& q, const torch::Tensor& v);
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:38:    torch::DeviceType device;
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:39:    torch::jit::script::Module model;
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:74:    // auto opts = torch::TensorOptions();
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:75:    torch::Tensor gravity_tensor = torch::tensor({0.0f, 0.0f, -1.0f});
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:76:    torch::Tensor base_ang_vel_tensor = torch::zeros({3});  // 角速度
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:77:    torch::Tensor projected_gravity_tensor = torch::zeros({3});  // 投影重力
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:78:    torch::Tensor commands_tensor = torch::zeros({3});  // 控制命令
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:79:    torch::Tensor dof_pos_tensor = torch::zeros({12});  // 自由度位置
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:80:    torch::Tensor default_dof_pos_tensor = torch::tensor({-0.15f, 0.55f, -1.5f,0.15f, 0.55f, -1.5f,-0.15f, 0.7f, -1.5f,0.15f, 0.7f, -1.5f});  // 默认自由度位置
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:81:    torch::Tensor dof_vel_tensor = torch::zeros({12});  // 自由度速度
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:82:    torch::Tensor actions_tensor = torch::zeros({12});  // 动作
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:83:    torch::Tensor actions_tensor_scaled = torch::zeros({12});  // 缩放后的动作
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:84:    torch::Tensor obs_scales_lin_vel = torch::tensor({2.0f, 2.0f, 2.0f});  // 线性速度缩放
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:85:    torch::Tensor obs_scales_ang_vel = torch::tensor({0.25f, 0.25f, 0.25f});  // 角速度缩放
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:86:    torch::Tensor obs_scales_dof_pos = torch::ones({12});  // 自由度位置缩放
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:87:    torch::Tensor obs_scales_dof_vel = torch::ones({12})* 0.05;  // 自由度速度缩放
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:88:    torch::Tensor commands_scale = torch::tensor({2.0f, 2.0f, 0.25f});  // 命令缩放
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:89:    torch::Tensor obs_tensor = torch::zeros({45});
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:90:    torch::Tensor obs_history_tensor = torch::zeros({HISTORY_LEN, 45});
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/functional.rst:59:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/smart_ptrs.rst:66:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_Trotting.h:10:#include <torch/torch.h>
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_Trotting.h:27:    torch::Tensor quat_rotate_inverse(const torch::Tensor& q, const torch::Tensor& v);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/custom.rst:90:    in every compilation unit of the Python extension module. Otherwise,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/CMakeLists.txt:1:# CMakeLists.txt -- Build system for the pybind11 modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/CMakeLists.txt:150:# Cache variables so pybind11_add_module can be used in parent projects
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/CMakeLists.txt:27:pybind11_add_module(robot_interface python_interface.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindCatch.cmake:3:# This is a quick module for internal use. It assumes that Catch is
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/FindCatch.cmake:15:  message(FATAL_ERROR "This module assumes Catch is not required.")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Common.cmake:6:    pybind11::module - Adds module links
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Common.cmake:18:    pybind11_find_import(module) - See if a module is installed.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Common.cmake:48:# Build a module target:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Common.cmake:49:add_library(pybind11::module IMPORTED INTERFACE ${optional_global})
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Common.cmake:51:  TARGET pybind11::module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Common.cmake:202:  # Check to see if modules are importable. Use REQUIRED to force an error if
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Common.cmake:203:  # one of the modules is not found. <package_name>_FOUND will be set if the
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:282:    auto opts = torch::TensorOptions().dtype(torch::kFloat32);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:333:    torch::Tensor orientation_tensor = torch::from_blob(base_w_orientation.data(), {int64_t(base_w_orientation.size())}, opts).unsqueeze(0).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:334:    torch::Tensor w_linear_vel_tensor = torch::from_blob(base_w_linear_vel.data(), {int64_t(base_w_linear_vel.size())}, opts).unsqueeze(0).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:335:    torch::Tensor result = quat_rotate_inverse(orientation_tensor, w_linear_vel_tensor).squeeze().clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:347:    torch::Tensor w_angular_vel_tensor = torch::from_blob(base_w_angular_vel.data(), {int64_t(base_w_angular_vel.size())}, opts).unsqueeze(0).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:348:    result = quat_rotate_inverse(orientation_tensor, w_angular_vel_tensor).squeeze().clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:443:torch::Tensor State_Trotting::quat_rotate_inverse(const torch::Tensor& q, const torch::Tensor& v) {
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:447:    auto q_w = q.index({torch::indexing::Slice(), 3});  // last column is the w component
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:449:    auto q_vec = q.index({torch::indexing::Slice(), torch::indexing::Slice(0, 3)});  // first three columns are the vector part
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:455:    auto b = torch::cross(q_vec, v, /*dim=*/-1) * q_w.unsqueeze(-1) * 2.0;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:457:    // c = q_vec * torch::bmm(q_vec.view(shape[0], 1, 3), v.view(shape[0], 3, 1)).squeeze(-1) * 2.0
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:462:    auto c = q_vec * torch::bmm(q_vec_reshaped, v_reshaped).squeeze(-1) * 2.0;
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:132:    PyObject* safe_import(PyObject* module, std::string fname) {
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:133:        PyObject* fn = PyObject_GetAttrString(module, fname.c_str());
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:198:            throw std::runtime_error("Error loading module matplotlib!");
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:209:        if (!pymod) { throw std::runtime_error("Error loading module matplotlib.pyplot!"); }
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:213:        if (!s_python_colormap) { throw std::runtime_error("Error loading module matplotlib.cm!"); }
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:217:        if (!pylabmod) { throw std::runtime_error("Error loading module pylab!"); }
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:475:  // We lazily load the modules here the first time this function is called
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:489:    if (!mpl_toolkitsmod) { throw std::runtime_error("Error loading module mpl_toolkits!"); }
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:493:    if (!axis3dmod) { throw std::runtime_error("Error loading module mpl_toolkits.mplot3d!"); }
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:570:  // Same as with plot_surface: We lazily load the modules here the first time 
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:584:    if (!mpl_toolkitsmod) { throw std::runtime_error("Error loading module mpl_toolkits!"); }
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:588:    if (!axis3dmod) { throw std::runtime_error("Error loading module mpl_toolkits.mplot3d!"); }
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:2075:    // Same as with plot_surface: We lazily load the modules here the first time 
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:2087:        if (!mpl_toolkitsmod) { throw std::runtime_error("Error loading module mpl_toolkits!"); }
+src/unitree_guide/unitree_guide/unitree_guide/include/thirdParty/matplotlibcpp.h:2091:        if (!axis3dmod) { throw std::runtime_error("Error loading module mpl_toolkits.mplot3d!"); }
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/README.rst:14:extension modules by inferring type information using compile-time
+src/unitree_guide/unitree_guide/unitree_actuator_sdk/unitree_motor_ctrl/CMakeLists.txt:19:## modules and global scripts declared therein get installed
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:9:This module sets the following variables in your project:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:34:If pybind11 is found, this module defines the following ``IMPORTED``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:37:``pybind11::module``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:38:  for extension modules.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:53:  Just the "linking" part of ``pybind11:module``, for CMake < 3.15.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:55:  Quiets the warning/error when mixing C++14+ and Python 2, also included in ``pybind11::module``.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:83:  pybind11_add_module(MyModule1 src1.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:86:  Python_add_library(MyModule2 src2.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:87:  target_link_libraries(MyModule2 pybind11::headers)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:88:  set_target_properties(MyModule2 PROPERTIES
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:106:  # Create an extension module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:107:  add_library(mylib MODULE main.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:108:  target_link_libraries(mylib PUBLIC pybind11::module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:133:pybind11_add_module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:136:This module defines the following commands to assist with creating Python modules:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:140:  pybind11_add_module(<target>
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:141:    [STATIC|SHARED|MODULE]
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:146:Add a module and setup all helpers. You can select the type of the library; the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:147:default is ``MODULE``. There are several options:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:157:  Disable all extras, exit immediately after making the module.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:166:Strip a target after building it (linux/macOS), called by ``pybind11_add_module``.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:176:``pybind11_add_module``.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:178:pybind11_find_import(module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:183:    pybind11_find_import(<module> [VERSION <number>] [REQUIRED] [QUIET])
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:185:See if a module is installed. Use the registered name (the one on PyPI). You
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tools/pybind11Config.cmake.in:187:``NOPYTHON`` mode is not active.  Sets ``module_VERSION`` and ``module_FOUND``. Caches the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/buffer_info.h:46:    std::vector<ssize_t> shape;   // Shape of the tensor (1 entry per dimension)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_async.py:5:m = pytest.importorskip("pybind11_tests.async_module")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:20:#  define PYBIND11_EMBEDDED_MODULE_IMPL(name)            \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:26:#  define PYBIND11_EMBEDDED_MODULE_IMPL(name)            \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:34:    Add a new module to the table of builtins for the interpreter. Must be
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:36:    module (without quotes). The second parameter is the variable which will
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:37:    be used as the interface to add functions and classes to the module.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:41:        PYBIND11_EMBEDDED_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:48:#define PYBIND11_EMBEDDED_MODULE(name, variable)                                \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:49:    static ::pybind11::module_::module_def                                      \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:50:        PYBIND11_CONCAT(pybind11_module_def_, name);                            \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:51:    static void PYBIND11_CONCAT(pybind11_init_, name)(::pybind11::module_ &);   \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:53:        auto m = ::pybind11::module_::create_extension_module(                  \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:55:            &PYBIND11_CONCAT(pybind11_module_def_, name));                      \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:67:    PYBIND11_EMBEDDED_MODULE_IMPL(name)                                         \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:68:    ::pybind11::detail::embedded_module PYBIND11_CONCAT(pybind11_module_, name) \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:71:    void PYBIND11_CONCAT(pybind11_init_, name)(::pybind11::module_ &variable)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:78:struct embedded_module {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:84:    embedded_module(const char *name, init_t init) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:86:            pybind11_fail("Can't add new modules after the interpreter has been initialized");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:90:            pybind11_fail("Insufficient memory to add a new module");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:98:    called before this is done; with the exception of `PYBIND11_EMBEDDED_MODULE`. The
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:116:    module_::import("sys").attr("path").cast<list>().append(".");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:147:        Modules created using pybind11 can be safely re-initialized. However, Python
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/embed.h:148:        itself cannot completely unload binary extension modules and there are several
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_pickling.cpp:12:TEST_SUBMODULE(pickling, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/eigen.h:552:        object sparse_module = module_::import("scipy.sparse");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/eigen.h:553:        object matrix_type = sparse_module.attr(
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/eigen.h:583:        object matrix_type = module_::import("scipy.sparse").attr(
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/attr.h:71:/// Annotation that marks a class as local to the module:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/attr.h:72:struct module_local { const bool value; constexpr module_local(bool v = true) : value(v) { } };
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/attr.h:210:    /// Python handle to the parent scope (a class or a module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/attr.h:224:          default_holder(true), module_local(false), is_final(false) { }
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/attr.h:274:    /// Is the class definition local to the module shared object?
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/attr.h:275:    bool module_local : 1;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/attr.h:482:struct process_attribute<module_local> : process_attribute_default<module_local> {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/attr.h:483:    static void init(const module_local &l, type_record *r) { r->module_local = l.value; }
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_numpy_dtypes.cpp:257:TEST_SUBMODULE(numpy_dtypes, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_numpy_dtypes.cpp:258:    try { py::module_::import("numpy"); }
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_constants_and_functions.cpp:80:TEST_SUBMODULE(constants_and_functions, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_exceptions.py:7:import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_exceptions.py:26:def test_cross_module_exceptions():
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_exceptions.py:83:    assert m.modulenotfound_exception_matches_base()
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_buffers.cpp:14:TEST_SUBMODULE(buffers, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/numpy.h:225:        module_ m = module_::import("numpy.core.multiarray");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/numpy.h:508:        static PyObject *obj = module_::import("numpy.core._internal")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_callbacks.cpp:18:TEST_SUBMODULE(callbacks, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.py:72:    assert UserType.__module__ == "pybind11_tests"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.py:74:    assert UserType.get_value.__module__ == "pybind11_tests"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.py:92:    backport the attribute) and that generated docstrings properly use it and the module name"""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.py:111:    assert m.NestBase.__module__ == "pybind11_tests.class_"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.py:112:    assert m.NestBase.Nested.__module__ == "pybind11_tests.class_"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.py:399:    module_scope = types.ModuleType("module_scope")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.py:401:        m.register_duplicate_class_name(module_scope)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.py:406:        m.register_duplicate_class_type(module_scope)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_builtin_casters.cpp:18:TEST_SUBMODULE(builtin_casters, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_iostream.cpp:28:TEST_SUBMODULE(iostream, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_iostream.cpp:40:        py::scoped_ostream_redirect redir(std::cout, py::module_::import("sys").attr("stdout"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_iostream.cpp:49:        py::scoped_ostream_redirect redir(std::cerr, py::module_::import("sys").attr("stderr"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_iostream.cpp:68:        py::scoped_ostream_redirect redirout(std::cout, py::module_::import("sys").attr("stdout"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_iostream.cpp:69:        py::scoped_ostream_redirect redirerr(std::cerr, py::module_::import("sys").attr("stderr"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_stl_binders.py:130:    import pybind11_cross_module_tests as cm
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.h:13:    using Initializer = void (*)(py::module_ &);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.h:17:    test_initializer(const char *submodule_name, Initializer init);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.h:20:#define TEST_SUBMODULE(name, variable)                   \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.h:21:    void test_submodule_##name(py::module_ &);            \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.h:22:    test_initializer name(#name, test_submodule_##name); \
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/pybind11_tests.h:23:    void test_submodule_##name(py::module_ &variable)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.cpp:28:TEST_SUBMODULE(class_, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.cpp:171:        auto mod = py::module_::import("__main__");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.cpp:176:        auto mod = py::module_::import("__main__");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.cpp:280:    // definition in a different compilation unit within the same module:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.cpp:281:    bind_local<LocalExternal, 17>(m, "LocalExternal", py::module_local());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.cpp:453:    m.def("register_duplicate_class_name", [](py::module_ m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_class.cpp:457:    m.def("register_duplicate_class_type", [](py::module_ m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_sequences_and_iterators.cpp:75:TEST_SUBMODULE(sequences_and_iterators, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_pytypes.cpp:13:TEST_SUBMODULE(pytypes, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_pytypes.cpp:316:        auto py_stderr = py::module_::import("sys").attr("stderr");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_virtual_functions.cpp:190:void initialize_inherited_virtuals(py::module_ &m);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_virtual_functions.cpp:192:TEST_SUBMODULE(virtual_functions, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_virtual_functions.cpp:462:void initialize_inherited_virtuals(py::module_ &m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/main.cpp:4:PYBIND11_MODULE(test_cmake_build, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/CMakeLists.txt:60:if("${PYTHON_MODULE_EXTENSION}" MATCHES "pypy" OR "${Python_INTERPRETER_ID}" STREQUAL "PyPy")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/CMakeLists.txt:73:  if(NOT ("${PYTHON_MODULE_EXTENSION}" MATCHES "pypy" OR "${Python_INTERPRETER_ID}" STREQUAL "PyPy"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:2:    tests/test_modules.cpp -- nested modules, importing modules, and
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:14:TEST_SUBMODULE(modules, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:15:    // test_nested_modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:16:    // This is intentionally "py::module" to verify it still can be used in place of "py::module_"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:17:    py::module m_sub = m.def_submodule("subsubmodule");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:18:    m_sub.def("submodule_func", []() { return "submodule_func()"; });
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:54:    // This is intentionally "py::module" to verify it still can be used in place of "py::module_"
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:55:    m.attr("OD") = py::module::import("collections").attr("OrderedDict");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:65:        // Go ahead and leak, until we have a non-leaking py::module_ constructor
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_modules.cpp:66:        auto dm = py::module_::create_extension_module("dummy", nullptr, new py::module_::module_def);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_eigen.cpp:78:TEST_SUBMODULE(eigen, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_eigen.cpp:320:        py::module_::import("numpy").attr("ones")(10);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_eigen.cpp:324:        py::module_::import("numpy").attr("ones")(10);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/conf.py:21:# If extensions (or modules to document with autodoc) are in another directory,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/conf.py:31:# Add any Sphinx extension module names here, as strings. They can be
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/conf.py:96:# If true, the current module name will be prepended to all description
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/conf.py:98:#add_module_names = True
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/conf.py:100:# If true, sectionauthor and moduleauthor directives will be shown in the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/conf.py:107:# A list of ignored prefixes for module index sorting.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/conf.py:192:# If false, no module index is generated.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/conf.py:279:# If false, no module index is generated.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/conf.py:310:# If false, no module index is generated.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/subdirectory_function/CMakeLists.txt:15:pybind11_add_module(test_subdirectory_function ../main.cpp)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/embed.cpp:4:PYBIND11_EMBEDDED_MODULE(test_cmake_build, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/embed.cpp:15:    auto m = py::module_::import("test_cmake_build");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/tests/test_cmake_build/embed.cpp:19:    py::module_::import("sys").attr("argv") = py::make_tuple("test.py", "embed.cpp");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/limitations.rst:35:  interpreter.  This was suspected to be related to the cross module GIL code,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:108:Importing modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:111:Python modules can be imported using `module_::import()`:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:115:    py::module_ sys = py::module_::import("sys");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:131:    py::module_ calc = py::module_::import("calc");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:136:Modules can be reloaded using `module_::reload()` if the source is modified e.g.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:139:changes by the user. Note that this function does not reload modules recursively.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:141:.. _embedding_modules:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:143:Adding embedded modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:146:Embedded binary modules can be added using the `PYBIND11_EMBEDDED_MODULE` macro.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:148:like any other module.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:155:    PYBIND11_EMBEDDED_MODULE(fast_calc, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:156:        // `m` is a `py::module_` which is used to bind functions and classes
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:165:        auto fast_calc = py::module_::import("fast_calc");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:170:Unlike extension modules where only a single binary module can be created, on
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:171:the embedded side an unlimited number of modules can be added using multiple
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:172:`PYBIND11_EMBEDDED_MODULE` definitions (as long as they have unique names).
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:174:These modules are added to Python's list of builtins, so they can also be
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:180:    """py_module.py located in the working directory"""
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:181:    import cpp_module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:183:    a = cpp_module.a
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:192:    PYBIND11_EMBEDDED_MODULE(cpp_module, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:199:        auto py_module = py::module_::import("py_module");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:201:        auto locals = py::dict("fmt"_a="{} + {} = {}", **py_module.attr("__dict__"));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:223:Modules created with pybind11 can be safely re-initialized after the interpreter
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:224:has been restarted. However, this may not apply to third-party extension modules.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:225:The issue is that Python itself cannot completely unload extension modules and
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/embedding.rst:253: 1. Sub-interpreters will not receive independent copies of embedded modules.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/installing.rst:8:developers recommend one of the first three ways listed here, submodule, PyPI,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/installing.rst:11:Include as a submodule
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/installing.rst:15:as a submodule. From your git repository, use:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/installing.rst:19:    git submodule add ../../pybind/pybind11 extern/pybind11 -b stable
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/installing.rst:20:    git submodule update --init
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:20:``py::module`` has been renamed ``py::module_``, but a backward compatible
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:22:that requires unqualified ``module`` not be placed at the start of a logical
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:26:The public constructors of ``py::module_`` have been deprecated. Use
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:27:``PYBIND11_MODULE`` or ``module_::create_extension_module`` instead.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:53:The ``tools/clang`` submodule and ``tools/mkdoc.py`` have been moved to a
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:82:* Direct ``pybind11::module`` usage should always be accompanied by at least
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:87:* ``pybind11_add_module``'s ``SYSTEM`` argument is deprecated and does nothing;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:89:  config and submodule mode, and behaves like a ``SYSTEM`` library by
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:99:  ``pybind11_add_module`` if set instead of linking to ``pybind11::lto`` or
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:127:``PYBIND11_MODULE`` is now the preferred way to create module entry points.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:134:        py::module m("example", "documentation string");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:142:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:205:For both the constructors and pickling, warnings are shown at module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:211:    pybind11-bound class 'mymodule.Foo' is using an old-style placement-new '__init__'
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:215:Stricter enforcement of hidden symbol visibility for pybind11 modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:218:pybind11 now tries to actively enforce hidden symbol visibility for modules.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:228:module binaries. `CPython's extension docs`_ also recommend hiding symbols
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:229:by default, with the goal of avoiding symbol name clashes between modules.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:233:modules, not for embedding the interpreter).
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:235:.. _CPython's extension docs: https://docs.python.org/3/extending/extending.html#providing-a-c-api-for-an-extension-module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:240:* Modules compiled with different pybind11 versions don't clash with each other.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:242:* Some new features, like ``py::module_local`` bindings, can work as intended.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:249:* Minimizes the chances of symbol conflicts between modules. E.g. if two
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:250:  unrelated modules were statically linked to different (ABI-incompatible)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:256:Within pybind11's CMake build system, ``pybind11_add_module`` has always been
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:259:out of with the ``NO_EXTRAS`` option. The ``pybind11::module`` target now also
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:262:The most significant change here is for the ``pybind11::module`` target. If you
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:263:were previously relying on default visibility, i.e. if your Python module was
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:266:shared library (and have the Python module link to it like the other
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:272:    target_link_libraries(mymodule PRIVATE pybind11::module)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:276:    target_link_libraries(mymodule PRIVATE restore_default_visibility)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:283:modules, even unrelated ones, would have access to the same exported types.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:284:However, this would also result in a conflict if two modules exported the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:286:``std::vector<int>``. :ref:`module_local` were added to resolve this (see
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:290:usually unique across modules), however in order to avoid clashes of opaque
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:292:as ``py::module_local`` if their elements are: builtins (``int``, ``float``,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:293:etc.), not bound using ``py::class_``, or bound as ``py::module_local``. For
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:294:example, this change allows multiple modules to bind ``std::vector<int>``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:297:When upgrading to this version, if you have multiple modules which depend on
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:298:a single global binding of an STL container, note that all modules can still
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:299:accept foreign  ``py::module_local`` types in the direction of Python-to-C++.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:301:multiple modules, you'll need to either:
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:303:* Add a copy of the same STL binding to all of the modules which need it.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:306:  ``py::module_local(false)``.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/upgrade.rst:310:third-party modules.
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:134:        torch::Tensor flattened_obs = obs_history_tensor.view({1, HISTORY_LEN * 45});
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:142:        std::vector<torch::jit::IValue> inputs;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:145:        actions_tensor = model.get_method("act_inference")(inputs).toTensor().to(torch::kCPU).squeeze();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:147:            torch::Tensor input_tensor = torch::arange(1, 226).view({1, 225}).to(torch::kFloat32).to(device); // 注意范围是 [start, end)
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:148:            std::vector<torch::jit::IValue> test;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:149:            test.push_back(input_tensor);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:150:            torch::Tensor output = model.get_method("act_inference")(test).toTensor().to(torch::kCPU).squeeze();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:151:            // printTensorHorizontal(output, "same_net_work_test");
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:153:        actions_tensor_scaled = actions_tensor.clone() * 0.25;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:154:        std::vector<float> actions(actions_tensor_scaled.data_ptr<float>(),
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:155:                           actions_tensor_scaled.data_ptr<float>() + actions_tensor_scaled.numel());
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:160:                _lowCmd->motorCmd[i].q = actions[reindex[i]]  + default_dof_pos_tensor[reindex[i]].item<float>();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:166:                // float t_joint = actions[reindex[i]]  + default_dof_pos_tensor[reindex[i]].item<float>();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:170:            if (debug == true) std::cout << actions[reindex[i]]  + default_dof_pos_tensor[reindex[i]].item<float>() << " ";
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:174:        // std::cout << "actions_tensor: " << actions_tensor << std::endl;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:224:    auto opts = torch::TensorOptions().dtype(torch::kFloat32);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:234:        torch::Tensor orientation_tensor = torch::from_blob(base_w_orientation.data(), {int64_t(base_w_orientation.size())}, opts).unsqueeze(0).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:235:        torch::Tensor w_angular_vel_tensor = torch::from_blob(base_w_angular_vel.data(), {int64_t(base_w_angular_vel.size())}, opts).unsqueeze(0).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:236:        base_ang_vel_tensor = quat_rotate_inverse(orientation_tensor, w_angular_vel_tensor).squeeze().clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:237:        projected_gravity_tensor = quat_rotate_inverse(orientation_tensor, gravity_tensor.unsqueeze(0)).squeeze().clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:242:        // commands_tensor[0] = _ctrlComp->ioInter->axes[1];
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:243:        // commands_tensor[1] = _ctrlComp->ioInter->axes[0];
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:244:        // commands_tensor[2] = _ctrlComp->ioInter->axes[3]*3.14;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:246:        commands_tensor[0] = this->current_cmd_vel_.linear_x;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:247:        commands_tensor[1] = this->current_cmd_vel_.linear_y;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:248:        commands_tensor[2] = this->current_cmd_vel_.angular_z;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:252:        // std::cout << "commands_tensor: " << commands_tensor << std::endl;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:256:        dof_pos_tensor = torch::from_blob(joint_pos.data(), {int64_t(joint_pos.size())}, opts).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:257:        // printTensorHorizontal(dof_pos_tensor,"dof_pos_tensor");
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:261:        dof_vel_tensor = torch::from_blob(joint_vel.data(), {int64_t(joint_vel.size())}, opts).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:262:        obs_tensor = torch::cat({
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:263:            base_ang_vel_tensor * obs_scales_ang_vel,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:264:            projected_gravity_tensor,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:265:            commands_tensor * commands_scale,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:266:            (dof_pos_tensor - default_dof_pos_tensor) * obs_scales_dof_pos,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:267:            dof_vel_tensor * obs_scales_dof_vel,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:268:            actions_tensor
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:270:        obs_history_tensor = torch::cat({
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:271:            obs_history_tensor.slice(0, 1, HISTORY_LEN).to(device),  // 删除最早的一步
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:272:            obs_tensor.unsqueeze(0)  // 将当前 obs_tensor 插入到历史中
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:280:        projected_gravity_tensor = torch::tensor({projected_gravity(0,0), projected_gravity(1,0), projected_gravity(2,0)});
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:282:            base_ang_vel_tensor[i] = _ctrlComp->ioInterFreeDog->low_state.imu_gyroscope[i];
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:284:        commands_tensor[0] = _ctrlComp->ioInter->axes[1];
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:285:        commands_tensor[1] = _ctrlComp->ioInter->axes[0];
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:286:        commands_tensor[2] = _ctrlComp->ioInter->axes[3]*3.14;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:290:        dof_pos_tensor = torch::from_blob(joint_pos.data(), {int64_t(joint_pos.size())}, opts).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:294:        dof_vel_tensor = torch::from_blob(joint_vel.data(), {int64_t(joint_vel.size())}, opts).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:295:        obs_tensor = torch::cat({
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:296:            base_ang_vel_tensor * obs_scales_ang_vel,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:297:            projected_gravity_tensor,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:298:            commands_tensor * commands_scale,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:299:            (dof_pos_tensor - default_dof_pos_tensor) * obs_scales_dof_pos,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:300:            dof_vel_tensor * obs_scales_dof_vel,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:301:            actions_tensor
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:303:        obs_history_tensor = torch::cat({
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:304:            obs_history_tensor.slice(0, 1, HISTORY_LEN).to(device),  // 删除最早的一步
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:305:            obs_tensor.unsqueeze(0)  // 将当前 obs_tensor 插入到历史中
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:316:    auto opts = torch::TensorOptions().dtype(torch::kFloat32);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:367:    torch::Tensor orientation_tensor = torch::from_blob(base_w_orientation.data(), {int64_t(base_w_orientation.size())}, opts).unsqueeze(0).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:368:    torch::Tensor w_linear_vel_tensor = torch::from_blob(base_w_linear_vel.data(), {int64_t(base_w_linear_vel.size())}, opts).unsqueeze(0).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:369:    torch::Tensor result = quat_rotate_inverse(orientation_tensor, w_linear_vel_tensor).squeeze().clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:381:    torch::Tensor w_angular_vel_tensor = torch::from_blob(base_w_angular_vel.data(), {int64_t(base_w_angular_vel.size())}, opts).unsqueeze(0).clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:382:    result = quat_rotate_inverse(orientation_tensor, w_angular_vel_tensor).squeeze().clone();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:434:torch::Tensor State_RL::quat_rotate_inverse(const torch::Tensor& q, const torch::Tensor& v) {
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:438:    auto q_w = q.index({torch::indexing::Slice(), 3});  // last column is the w component
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:440:    auto q_vec = q.index({torch::indexing::Slice(), torch::indexing::Slice(0, 3)});  // first three columns are the vector part
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:446:    auto b = torch::cross(q_vec, v, /*dim=*/-1) * q_w.unsqueeze(-1) * 2.0;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:448:    // c = q_vec * torch::bmm(q_vec.view(shape[0], 1, 3), v.view(shape[0], 3, 1)).squeeze(-1) * 2.0
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:453:    auto c = q_vec * torch::bmm(q_vec_reshaped, v_reshaped).squeeze(-1) * 2.0;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:465:    std::cout << "cuda::is_available():" << torch::cuda::is_available() << std::endl;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:466:    device= torch::kCPU;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:467:    if (torch::cuda::is_available()){
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:468:        device = torch::kCUDA;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:470:    model = torch::jit::load(model_path);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:477:void State_RL::printSegments(const torch::Tensor& tensor, int segment_size, const std::vector<int>& sub_sizes) {
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:478:    int num_segments = tensor.size(0) / segment_size;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:479:    std::cout << "num_segments" << num_segments << tensor.size(0) << segment_size << std::endl;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:481:        auto segment = tensor.slice(0, seg * segment_size, (seg + 1) * segment_size);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:490:            printTensorHorizontal(sub_segment, output_str);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:497:void State_RL::printTensorHorizontal(const torch::Tensor& tensor, const std::string& name) {
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:498:    std::cout << name << " (" << tensor.sizes() << "): [ ";
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:499:    auto tensor_cpu = tensor.to(torch::kCPU);  // 确保张量在 CPU 上
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:500:    auto accessor = tensor_cpu.accessor<float, 1>();  // 假设是一维张量
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:502:    for (int i = 0; i < tensor.size(0); ++i) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:71:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:108:Partitioning code over multiple extension modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:111:It's straightforward to split binding code over multiple extension modules,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:114:extending a type declared in another extension module. Recall the basic example
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:127:Suppose now that ``Pet`` bindings are defined in a module named ``basic``,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:135:    py::object pet = (py::object) py::module_::import("basic").attr("Pet");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:144:function once to ensure that the pybind11 binding code of the module ``basic``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:149:    py::module_::import("basic");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:160:access types defined in another extension module.  Working around this requires
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:161:manually exporting types that are accessed by multiple extension modules;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:171:C++ objects between extension modules at runtime. Internal library data is shared
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:172:between modules using capsule machinery [#f6]_ which can be also utilized for
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:173:storing, modifying and accessing user-defined data. Note that an extension module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:183:If the above snippet was used in several separately compiled extension modules,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:190:Module Destructors
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:194:module destruction time. In rare cases where such functionality is required, it
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:207:within the module may still be alive when the cleanup callback is invoked
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:241:    approach (which also works on CPython) is to use the :py:mod:`atexit` module [#f7]_,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:246:        auto atexit = py::module_::import("atexit");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:258:strings in pybind11-based extension modules to automatically generate beautiful
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:287:registered with ``module_::def()`` and ``class_::def()``. Sometimes this
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:294:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:302:lifetime of the ``options`` instance. When it goes out of scope at the end of the module's init function,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/misc.rst:330:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:211:elements to decide whether the container should be confined to the local module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:212:(via the :ref:`module_local` feature).  If the container element types are
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:214:``py::module_local()`` the container binding will have ``py::module_local()``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:217:binding.  This module-local binding is designed to avoid potential conflicts
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:218:between module bindings (for example, from two separate modules each attempting
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:222:module-local or global.  To do so, you can pass the attributes
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:223:``py::module_local()`` (to make the binding module-local) or
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:224:``py::module_local(false)`` (to make the binding global) into the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:229:    py::bind_vector<std::vector<int>>(m, "VectorInt", py::module_local(false));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:232:module at the same time as any other pybind module that also attempts to bind
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/cast/stl.rst:235:See :ref:`module_local` for more details on module-local bindings.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:109:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:110:        m.doc() = "pybind11 example plugin"; // optional module docstring
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:118:The :func:`PYBIND11_MODULE` macro creates a function that will be called when an
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:119:``import`` statement is issued from within Python. The module name (``example``)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:121:argument (``m``) defines a variable of type :class:`py::module_ <module>` which
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:122:is the main interface for creating bindings. The method :func:`module_::def`
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:148:Python's ``setuptools`` to build the module, while `cmake_example`_ uses CMake
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:154:Building the above C++ code will produce a binary module file that can be
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:155:imported to Python. Assuming that the compiled module is located in the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:184:metadata into :func:`module_::def`. With this modified binding code, we can now
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:272:module as shown below. Built-in types and general objects (more on that later)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/basics.rst:278:    PYBIND11_MODULE(example, m) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/utilities.rst:9:lead to output order issues. To resolve this, pybind11 modules can use the
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/utilities.rst:45:            py::module_::import("sys").attr("stdout") // Python output
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/utilities.rst:106:    // Evaluate in scope of main module
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/docs/advanced/pycpp/utilities.rst:107:    py::object scope = py::module_::import("__main__").attr("__dict__");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:297:                        th.attr("__module__").cast<std::string>() + "." +
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:303:                        rec->scope.attr("__module__").cast<std::string>() + "." +
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:362:            object scope_module;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:364:                if (hasattr(rec->scope, "__module__")) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:365:                    scope_module = rec->scope.attr("__module__");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:367:                    scope_module = rec->scope.attr("__name__");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:371:            m_ptr = PyCFunction_NewEx(rec->def, rec_capsule.ptr(), scope_module.ptr());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:781:                       "when compiling your pybind11 module.";
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:871:/// Wrapper for Python extension modules
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:872:class module_ : public object {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:874:    PYBIND11_OBJECT_DEFAULT(module_, object, PyModule_Check)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:876:    /// Create a new top-level Python module with the given name and docstring
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:877:    PYBIND11_DEPRECATED("Use PYBIND11_MODULE or module_::create_extension_module instead")
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:878:    explicit module_(const char *name, const char *doc = nullptr) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:880:        *this = create_extension_module(name, doc, new PyModuleDef());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:882:        *this = create_extension_module(name, doc, nullptr);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:887:        Create Python binding for a new function within the module scope. ``Func``
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:892:    module_ &def(const char *name_, Func &&f, const Extra& ... extra) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:902:        Create and return a new Python submodule with the given name and docstring.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:907:            py::module_ m("example", "pybind11 example plugin");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:908:            py::module_ m2 = m.def_submodule("sub", "A submodule of 'example'");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:909:            py::module_ m3 = m2.def_submodule("subsub", "A submodule of 'example.sub'");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:911:    module_ def_submodule(const char *name, const char *doc = nullptr) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:912:        std::string full_name = std::string(PyModule_GetName(m_ptr))
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:914:        auto result = reinterpret_borrow<module_>(PyImport_AddModule(full_name.c_str()));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:921:    /// Import and return a module or throws `error_already_set`.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:922:    static module_ import(const char *name) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:923:        PyObject *obj = PyImport_ImportModule(name);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:926:        return reinterpret_steal<module_>(obj);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:929:    /// Reload the module or throws `error_already_set`.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:931:        PyObject *obj = PyImport_ReloadModule(ptr());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:934:        *this = reinterpret_steal<module_>(obj);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:938:        Adds an object to the module using the given name.  Throws if an object with the given name
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:949:        PyModule_AddObject(ptr(), name, obj.inc_ref().ptr() /* steals a reference */);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:953:    using module_def = PyModuleDef;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:955:    struct module_def {};
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:959:        Create a new top-level module that can be used as the main module of a C extension.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:961:        For Python 3, ``def`` should point to a staticly allocated module_def.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:964:    static module_ create_extension_module(const char *name, const char *doc, module_def *def) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:966:        // module_def is PyModuleDef
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:967:        def = new (def) PyModuleDef {  // Placement new (not an allocation).
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:968:            /* m_base */     PyModuleDef_HEAD_INIT,
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:978:        auto m = PyModule_Create(def);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:980:        // Ignore module_def *def; only necessary for Python 3
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:982:        auto m = Py_InitModule3(name, nullptr, options::show_user_defined_docstrings() ? doc : nullptr);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:987:            pybind11_fail("Internal error in module_::create_extension_module()");
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:991:        return reinterpret_borrow<module_>(m);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:996:// C++20 allows "module" to be used. This is provided for backward compatibility, and for
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:997:// simplicity, if someone wants to use py::module for example, that is perfectly safe.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:998:using module = module_;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1005:    return reinterpret_borrow<dict>(p ? p : module_::import("__main__").attr("__dict__").ptr());
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1020:        if (rec.module_local ? get_local_type_info(*rec.type) : get_global_type_info(*rec.type))
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1039:        tinfo->module_local = rec.module_local;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1044:        if (rec.module_local)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1059:        if (rec.module_local) {
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1060:            // Stash the local typeinfo and loader so that external modules can access it.
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1061:            tinfo->module_local_load = &type_caster_generic::local_load;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1062:            setattr(m_ptr, PYBIND11_MODULE_LOCAL_ID, capsule(tinfo));
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1231:            auto &instances = record.module_local ? registered_local_types_cpp() : get_internals().registered_types_cpp;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1825:        class_<state>(handle(), "iterator", pybind11::module_local())
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1854:        class_<state>(handle(), "iterator", pybind11::module_local())
+src/unitree_guide/unitree_ros_to_real/unitree_legged_sdk/python_wrapper/third-party/pybind11/include/pybind11/pybind11.h:1992:            file = module_::import("sys").attr("stdout");
