@@ -4,11 +4,13 @@
 
 | 文档 | 说明 |
 |------|------|
-| [快速启动](quick-start.md) | 编译、启动、常用环境变量和单独生成场景 |
+| [快速启动](quick-start.md) | 编译、启动、常用环境变量、单独生成场景和 FAST-LIO2 建图 |
+| [命令速查](cli-reference.md) | 所有 CLI 命令、环境变量、诊断和调试命令的快速参考 |
 | [比赛场景规则](competition-rules.md) | 楼栋、危险源、干扰源和真值文件语义 |
 | [算法接入接口](algorithm-interfaces.md) | `/cmd_vel`、公开场景信息、点云、图像和控制器状态切换 |
 | [门与电梯控制](doors-and-elevator.md) | 开关门、上下电梯、服务接口和 60 s 电梯门动作 |
 | [结果格式与评估方法](evaluation.md) | `detected_danger.json`、一对一匹配、识别概率、虚警率和客观分 |
 | [传感器与 ROS 话题](sensors-and-topics.md) | 传感器位姿、话题、频率和坐标系 |
 | [常见问题](troubleshooting.md) | 控制周期 warning、服务异常、依赖缺失等问题 |
+| [FAST-LIO2 部署指南](slam/fast_lio2_deployment_guide.md) | FAST-LIO2 LiDAR-Inertial SLAM 部署流程、参数配置和排错 |
 | [完整参考文档](reference.md) | 旧版归档说明；以本索引中的专题文档为准 |

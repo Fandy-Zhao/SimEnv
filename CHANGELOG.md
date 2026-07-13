@@ -2,6 +2,11 @@
 
 ## 2026-07-13
 
+### Documentation
+- **New `docs/cli-reference.md`**: comprehensive CLI quick-reference covering all commands: build, auto.sh env vars (6 categories), FAST-LIO2 launch, scene generation, door/elevator control, controller, evaluation, diagnostics, file paths, rosbag.
+- **Updated `docs/README.md`**: added FAST-LIO2 deployment guide and CLI reference to the documentation index.
+- **Updated `docs/quick-start.md`**: added `ENABLE_FAST_LIO2=1` usage, FAST-LIO2 related env vars, fixed `ROBOT_Y` default from `-2.2` to `2.3`.
+
 ### FAST-LIO2 Deployment Test (Stage 0 & 1)
 - **Stage 0 (PASS)**: Verified Gazebo sensors, simulation time, and TF tree. All checks passed: `/use_sim_time=true`, `/clock`@500Hz, `/scan`@10Hz (`laser_livox` frame), `/livox/imu`@400Hz (`livox_imu_link` frame). TF tree correct: `base→laser_livox` (45° pitch) `→livox_imu_link` (extrinsic matches config).
 - **Stage 1 (PASS)**: FAST-LIO2 node launches without crash (L1), registers all output topics (L2). Discovered and fixed 3 launch bugs:

@@ -89,9 +89,15 @@ START_CONTROLLER=0 ./auto.sh
 | `UNITREE_CTRL_DT` | `0.004` | `junior_ctrl` 控制周期，单位 s |
 | `START_VIRTUAL_JOY` | `0` | 是否启动虚拟手柄，通常需要 `uinput` 权限 |
 | `ROBOT_X` | `0.0` | 机器人出生点 x |
-| `ROBOT_Y` | `-2.2` | 机器人出生点 y |
+| `ROBOT_Y` | `2.3` | 机器人出生点 y |
 | `ROBOT_Z` | `0.6` | 机器人出生点 z |
 | `ROBOT_YAW` | `1.5708` | 机器人出生点 yaw |
+| `ENABLE_FAST_LIO2` | `0` | 是否启动 FAST-LIO2 建图（需编译 FAST_LIO） |
+| `ENABLE_POINTCLOUD_CONVERTER` | `1` | 是否启动 odom 系点云转换（FAST-LIO2 建图时建议设为 `0`） |
+| `ENABLE_SENSORS` | `1` | 是否启用传感器数据（LiDAR、IMU、RealSense） |
+| `ENABLE_REFEREE_ODOM` | `1` | 是否发布裁判真值里程计 |
+| `ENABLE_GROUND_TRUTH` | `1` | 是否发布 ground truth 话题 |
+| `WRITE_GENERATED_TRUTH_COPY` | `1` | 是否写 `danger_truth.json` 到 `generated_building/` |
 
 性能较弱时建议优先使用：
 
@@ -104,6 +110,16 @@ GUI=false ./auto.sh
 ```bash
 START_CONTROLLER=0 ./auto.sh
 ```
+
+启动 FAST-LIO2 LiDAR-Inertial SLAM 建图（需要先编译 FAST_LIO）：
+
+```bash
+ENABLE_FAST_LIO2=1 GUI=false ./auto.sh
+```
+
+> FAST-LIO2 部署详情参见 [FAST-LIO2 部署指南](slam/fast_lio2_deployment_guide.md) 和 [集成包 README](../src/simenv_fast_lio2_integration/README.md)。
+>
+> `ENABLE_POINTCLOUD_CONVERTER=0` 可关闭 odom 系点云转换，使 FAST-LIO2 适配器获得 sensor-frame 原始点云。
 
 ## 单独生成场景
 

@@ -9,6 +9,7 @@
 ## Active Work
 - FAST-LIO2 Stage 0 & 1 部署测试: Stage 0 (传感器/TF/时间) 全部通过, Stage 1 L1+L2 通过
 - FAST-LIO2 launch 文件修复: 取消注释节点、修复 rosparam namespace (public NodeHandle vs private ns)、移除冗余 param 标签
+- 文档完善: 新增 `docs/cli-reference.md` 命令速查, 更新 `docs/README.md` 索引和 `docs/quick-start.md` (FAST-LIO2 用法 + 参数修正)
 - FAST-LIO2 集成骨架: `src/simenv_fast_lio2_integration/`
 - PointCloud→PointCloud2 适配器
 - FAST-LIO2 配置 (simenv_mid360.yaml) 和 launch
