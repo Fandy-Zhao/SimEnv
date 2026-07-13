@@ -12,6 +12,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 > **2026-07-04 update**: `tools/build_with_venv.sh` 现已强制 gcc-11/g++-11 构建; CUDA host compiler 错误已消除。
 > **2026-07-06 update**: Torch ABI 隔离修复: `unitree_guide/junior_ctrl` 现已默认不依赖 Torch 编译，`UNITREE_ENABLE_TORCH_POLICY=OFF` (fix/0704-unitree-torch-abi-isolation)。
 > **2026-07-06 update**: 新增 FAST-LIO2 部署指南 `docs/slam/fast_lio2_deployment_guide.md`，系统整理部署流程、传感器映射、参数说明与排错指南 (docs/0706-fast-lio2-deploy-guide)。
+> **2026-07-13 update**: FAST-LIO2 Stage 0 & 1 部署测试: Stage 0 全部通过 (传感器/TF/时间), Stage 1 L1+L2 通过; `simenv_fast_lio2_mapping.launch` 修复 3 个 bug: 取消注释节点、rosparam 命名空间修正 (public NodeHandle)、移除冗余 param 标签 (exp/0713-fast-lio2-stage01)。
 
 ## Modules
 

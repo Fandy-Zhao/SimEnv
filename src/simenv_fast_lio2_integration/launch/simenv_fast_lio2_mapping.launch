@@ -38,13 +38,9 @@
   </node>
 
   <!-- FAST-LIO2 node (from external FAST_LIO package) -->
-  <!-- Uncomment this block after FAST_LIO is cloned to SimEnv/src/FAST_LIO and built.
-  <node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen">
-    <param name="config_file" value="$(arg fast_lio_config)"/>
-    <param name="lid_topic" value="$(arg lidar_topic)"/>
-    <param name="imu_topic" value="$(arg imu_topic)"/>
-  </node>
-  -->
+  <!-- Load YAML config at root namespace (FAST-LIO2 uses public NodeHandle, not private) -->
+  <rosparam file="$(arg fast_lio_config)" command="load"/>
+  <node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen"/>
 
   <!-- RViz (optional) -->
   <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz"
