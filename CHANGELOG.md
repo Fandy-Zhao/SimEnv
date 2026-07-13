@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-13
+
+### FAST-LIO2 Deployment Test (Stage 0 & 1)
+- **Stage 0 (PASS)**: Verified Gazebo sensors, simulation time, and TF tree. All checks passed: `/use_sim_time=true`, `/clock`@500Hz, `/scan`@10Hz (`laser_livox` frame), `/livox/imu`@400Hz (`livox_imu_link` frame). TF tree correct: `base→laser_livox` (45° pitch) `→livox_imu_link` (extrinsic matches config).
+- **Stage 1 (PASS)**: FAST-LIO2 node launches without crash (L1), registers all output topics (L2). Discovered and fixed 3 launch bugs:
+  - FAST-LIO2 node was commented out in `simenv_fast_lio2_mapping.launch`
+  - YAML config loaded in wrong namespace (`ns="laserMapping"`) — FAST_LIO uses public `NodeHandle`, reads from `/common/lid_topic`; fixed to root-level `<rosparam>`
+  - Removed redundant `<param>` tags (superseded by YAML rosparam load)
+
 ## 2026-07-06
 
 ### Build Fix

@@ -1,16 +1,17 @@
 # Project State
 
 ## Snapshot
-- Date: 2026-07-06
-- Branch: fix/0704-unitree-torch-abi-isolation (from develop)
+- Date: 2026-07-13
+- Branch: exp/0713-fast-lio2-stage01 (from develop)
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: FAST-LIO2 SLAM 建图集成 (Phase 1 — mapping only), 编译修复, 部署文档完善
+- Current focus: FAST-LIO2 SLAM 建图集成 (Phase 1 — mapping only), 部署测试, 编译修复
 
 ## Active Work
+- FAST-LIO2 Stage 0 & 1 部署测试: Stage 0 (传感器/TF/时间) 全部通过, Stage 1 L1+L2 通过
+- FAST-LIO2 launch 文件修复: 取消注释节点、修复 rosparam namespace (public NodeHandle vs private ns)、移除冗余 param 标签
 - FAST-LIO2 集成骨架: `src/simenv_fast_lio2_integration/`
 - PointCloud→PointCloud2 适配器
 - FAST-LIO2 配置 (simenv_mid360.yaml) 和 launch
-- auto.sh 可选启动入口 (`ENABLE_FAST_LIO2`)
 - 连接 GitHub remote (`github` → `git@github.com:zzf/SimEnv.git`, 尚未 push)
 - venv 构建脚本: `tools/build_with_venv.sh` (zzf/0704-build-with-venv)
 - FAST-LIO2 workspace 文档修正: 明确 SimEnv 是 catkin workspace 根目录 (docs/0704-fast-lio2-workspace-docs)
