@@ -49,6 +49,7 @@ ENABLE_POINTCLOUD_CONVERTER="$(as_ros_bool "${ENABLE_POINTCLOUD_CONVERTER:-1}")"
 POINTCLOUD_USE_GROUND_TRUTH_ODOM="$(as_ros_bool "${POINTCLOUD_USE_GROUND_TRUTH_ODOM:-1}")"
 WRITE_GENERATED_TRUTH_COPY="$(as_ros_bool "${WRITE_GENERATED_TRUTH_COPY:-1}")"
 ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-0}")"
+FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-0}"
 UNITREE_CTRL_DT="${UNITREE_CTRL_DT:-0.004}"
 GAZEBO_PHYSICS_MAX_STEP_SIZE="${GAZEBO_PHYSICS_MAX_STEP_SIZE:-0.002}"
 GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE:-500}"
@@ -244,6 +245,11 @@ if [ "$START_BUILDING_CONTROL" = "1" ]; then
 fi
 
 if [ "$ENABLE_FAST_LIO2" = "true" ]; then
+  FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-0}"
+  if [ "$FAST_LIO2_DELAY" -gt 0 ]; then
+    echo "Waiting ${FAST_LIO2_DELAY}s before FAST-LIO2 (robot should be standing)..."
+    sleep "$FAST_LIO2_DELAY"
+  fi
   echo "Starting FAST-LIO2 mapping (scan adapter + fastlio_mapping)..."
   rosrun simenv_fast_lio2_integration scan_to_pointcloud2.py \
     > "$WORKSPACE_DIR/logs/scan_adapter.log" 2>&1 &
