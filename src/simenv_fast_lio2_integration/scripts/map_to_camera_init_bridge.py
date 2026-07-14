@@ -18,6 +18,31 @@ import geometry_msgs.msg as gm
 from nav_msgs.msg import Odometry
 
 
+def _flip_z(tf_in):
+    """Compose tf_in with R_x(180°) to flip the Z axis.
+
+    FAST-LIO2's camera_init Z points opposite to Gazebo's world Z.
+    R_x(180°) preserves X while negating Y and Z, aligning the frames.
+    """
+    from tf.transformations import quaternion_multiply, quaternion_about_axis
+    import math
+    flip_q = quaternion_about_axis(math.pi, (1, 0, 0))  # R_x(180°)
+    q_in = [
+        tf_in.rotation.x,
+        tf_in.rotation.y,
+        tf_in.rotation.z,
+        tf_in.rotation.w,
+    ]
+    q_out = quaternion_multiply(flip_q, q_in)
+    tf_out = gm.Transform()
+    tf_out.translation = tf_in.translation
+    tf_out.rotation.x = q_out[0]
+    tf_out.rotation.y = q_out[1]
+    tf_out.rotation.z = q_out[2]
+    tf_out.rotation.w = q_out[3]
+    return tf_out
+
+
 def main():
     rospy.init_node("map_to_camera_init_bridge")
 
@@ -60,12 +85,12 @@ def main():
             rospy.logerr("Fallback also failed: %s", e)
             return
 
-    # Publish the static TF
+    # Publish the static TF (with 180° Z flip to align FAST-LIO2 and Gazebo Z)
     t = gm.TransformStamped()
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "map"
     t.child_frame_id = "camera_init"
-    t.transform = body_in_map.transform
+    t.transform = _flip_z(body_in_map.transform)
 
     broadcaster.sendTransform(t)
     rospy.loginfo("Published static TF: map -> camera_init")
