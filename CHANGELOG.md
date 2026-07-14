@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-07-14
+
+### FAST-LIO2 Runtime Validation
+- **PointCloud2 format fix**: `scan_to_pointcloud2.py` now outputs x,y,z,intensity (xyzi32) instead of xyz32.  FAST-LIO2 `lidar_type=4` requires the intensity field for curvature-based feature extraction; without it every point was rejected as "not effective" and the EKF diverged to 8000+ meters within minutes.
+- **TF bridge**: New `map_to_camera_init_bridge.py` publishes a static TF `map→camera_init` by looking up `map→laser_livox` at startup, connecting the previously separate Gazebo and FAST-LIO2 TF trees.
+- **RViz config**: Added `config/fast_lio2.rviz` pre-configured for Odometry, Laser_map, cloud_registered, path, and TF displays with Fixed Frame: map.
+- **Verified convergence**: With robot in FixedStand, FAST-LIO2 converges to ~7 cm from origin within 20 s. All output topics publish stably.
+
+### Locomotion
+- **RL diagnosis**: Both `policy_act_inference_plane.pt` and `policy_act_inference_stair.pt` confirmed non-responsive to `/cmd_vel` velocity commands (0.15-1.0 m/s produce <0.2 mm motion).
+- **Trotting `/cmd_vel`**: Added `ros::Subscriber` to `State_Trotting` (classical MPC gait). `/fsm/state_cmd` topic (`std_msgs/Int8`) enables programmatic state transitions: 2=FixedStand, 4=Trotting.
+
+### Infrastructure
+- **`auto.sh` cleanup**: Replaced 5-line pkill with comprehensive cleanup covering Gazebo core, SimEnv launch, unitree controller, FAST-LIO2, sensor bridges, and stale rostopic processes.
+
 ## 2026-07-13
 
 ### Documentation

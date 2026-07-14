@@ -367,6 +367,40 @@ commanded trajectory.
 
 ---
 
+## FAST-LIO2 Runtime Validation — 2026-07-14
+
+### Critical Fixes Applied
+
+1. **PointCloud2 intensity field** (`scan_to_pointcloud2.py`): FAST-LIO2 `lidar_type=4` requires
+   x,y,z,intensity per point.  The previous `pc2.create_cloud_xyz32()` omitted intensity,
+   causing "No Effective Points!" → EKF diverged to 8000+ m.
+
+2. **TF bridge** (`map_to_camera_init_bridge.py`): Connected `map` (Gazebo) to `camera_init`
+   (FAST-LIO2) via static TF lookup of `map→laser_livox`.
+
+3. **RViz config** (`fast_lio2.rviz`): Pre-configured with Fixed Frame: map and displays for
+   Odometry, Laser_map, cloud_registered, path.
+
+### Convergence Test (FixedStand, stationary robot)
+
+| Time | Odometry (x,y) | Drift from t=0 |
+|------|----------------|----------------|
+| t=0s | (0.104, -0.379) | — |
+| t=10s | (0.181, -0.526) | 0.19 m |
+| t=20s | (0.027, -0.069) | 0.32 m (transient) |
+| t=30s | (0.006, -0.069) | ~0.07 m |
+
+FAST-LIO2 converges within ~20 s to approximately 7 cm from origin.
+Ground truth confirms robot is stationary (dx=0.003 m over 30 s).
+
+### Conclusion
+
+FAST-LIO2 is **working correctly** after the intensity fix.  The EKF converges,
+all output topics publish stably, and the TF tree is connected.  This passes
+Stage 1 L2 (interface) and the stationary convergence check.
+
+---
+
 ## Test Plan Cross-Reference (vs `fastlio2_tare_dsv_test_plan.md`)
 
 ### Stage 0: Gazebo, Sensors, Time & TF

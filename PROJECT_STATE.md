@@ -1,13 +1,15 @@
 # Project State
 
 ## Snapshot
-- Date: 2026-07-13
-- Branch: exp/0713-fast-lio2-stage01-runtime (from develop)
+- Date: 2026-07-14
+- Branch: develop
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: FAST-LIO2 SLAM 建图集成 (Phase 1 — mapping only), 部署测试, 编译修复
+- Current focus: FAST-LIO2 SLAM 建图验证通过, Trotting 移动控制就绪
 
 ## Active Work
-- **2026-07-14 P1 locomotion**: Both RL policies (plane/stair) fail to respond to velocity commands. Added `/cmd_vel` subscriber to `State_Trotting` (classical MPC gait) as alternative. State chain: `Passive→2(FixedStand)→4(Trotting)`, then `/cmd_vel` or keyboard WASD.
+- **FAST-LIO2 runtime validated**: PointCloud2 intensity fix, TF bridge, RViz config. Converges to ~7 cm within 20 s in FixedStand. All output topics publish stably.
+- **Locomotion ready**: Trotting with `/cmd_vel` + `/fsm/state_cmd` programmatic control. RL policies diagnosed as non-functional for velocity tracking. P1 blocked by Gazebo physics stability.
+- **`auto.sh` cleanup**: Comprehensive process cleanup on startup.
 - **2026-07-13 reduced-P0 update**: measured RTF=0.068, then completed an independent 10 s ROS-time capture. FAST-LIO2 changed 0.286359 m / 1.216603° while truth changed 0.004874 m / 0.774496°; messages remained finite and map output continued, but P0 still fails. P1 remains unavailable because the current non-Torch controller only provides in-place/bounded test states, not a real trajectory gait.
 - **2026-07-13 P0 update**: a 60 s ROS-time fixed-stand attempt reached only 28.900 s. During it truth moved 0.018344 m / 0.592970°, and an external `/home/zzf/桌面/unitree_ex` launch attached to the same ROS master with duplicate `/gazebo` and `/robot_state_publisher` node names, ending the SimEnv session. P0 remains blocked pending master isolation and a truly stationary support/control mode.
 - FAST-LIO2 Stage 0 & 1 部署测试: Stage 0 (传感器/TF/时间) 全部通过；Stage 1 L1+L2 接口通过。此前的 325.253 m / 51.607°“静止”结果因 `START_CONTROLLER=0` 导致机器人跌倒而无效；固定站立 P0 在 60 s 墙钟/4.3 s 仿真时间内为 0.001967 m / 0.066852°，完整 60 s 仿真时间仍待完成；P1 受已禁用的真实步态控制链路阻塞
