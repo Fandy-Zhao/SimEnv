@@ -4,14 +4,15 @@ Publish ``map → camera_init`` static TF to connect FAST-LIO2's global frame
 into the Gazebo world TF tree.
 
 FAST-LIO2 initialises ``camera_init`` at the LiDAR's world pose when the first
-scan arrives.  This node looks up ``map → laser_livox`` via TF at startup and
-broadcasts the same transform as a static TF ``map → camera_init``, thereby
-uniting the two previously disconnected TF sub-trees.
+scan arrives (t ≈ first Odometry stamp).  This node waits for the first
+``/Odometry`` message, looks up ``map → laser_livox`` at that exact timestamp,
+and broadcasts the resulting transform as a static TF ``map → camera_init``.
 """
 
 import rospy
 import tf2_ros
 import geometry_msgs.msg as gm
+from nav_msgs.msg import Odometry
 
 
 def main():
@@ -21,26 +22,42 @@ def main():
     tf_listener = tf2_ros.TransformListener(tf_buffer)
     broadcaster = tf2_ros.StaticTransformBroadcaster()
 
-    # Wait until the TF tree is populated (laser_livox is a static TF from URDF)
-    rospy.loginfo("Waiting for TF map → laser_livox ...")
-    rate = rospy.Rate(10)
+    # Wait for the first FAST-LIO2 Odometry to know *when* camera_init was fixed
+    rospy.loginfo("Waiting for first /Odometry from FAST-LIO2 ...")
+    try:
+        first_odom = rospy.wait_for_message("/Odometry", Odometry, timeout=30.0)
+    except rospy.ROSException:
+        rospy.logerr("Timed out waiting for /Odometry.  Is FAST-LIO2 running?")
+        return
+
+    init_stamp = first_odom.header.stamp
+    rospy.loginfo("First Odometry at sim time %.3f s", init_stamp.to_sec())
+
+    # Look up map -> laser_livox at that exact time (when camera_init was born)
     lidar_in_map = None
-    deadline = rospy.Time.now() + rospy.Duration(30)
+    deadline = rospy.Time.now() + rospy.Duration(15)
+    rate = rospy.Rate(10)
     while not rospy.is_shutdown() and rospy.Time.now() < deadline:
         try:
-            lidar_in_map = tf_buffer.lookup_transform("map", "laser_livox",
-                                                       rospy.Time(0), rospy.Duration(2))
+            lidar_in_map = tf_buffer.lookup_transform(
+                "map", "laser_livox", init_stamp, rospy.Duration(3))
             break
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException,
-                tf2_ros.ExtrapolationException):
+                tf2_ros.ExtrapolationException) as exc:
+            rospy.logdebug("TF lookup retry: %s", exc)
             rate.sleep()
 
     if lidar_in_map is None:
-        rospy.logerr("Could not look up map → laser_livox after 30 s. "
-                     "Is Gazebo running with the robot model?")
-        return
+        rospy.logerr("Could not look up map -> laser_livox at t=%.3f. "
+                     "Falling back to latest TF.", init_stamp.to_sec())
+        try:
+            lidar_in_map = tf_buffer.lookup_transform(
+                "map", "laser_livox", rospy.Time(0), rospy.Duration(5))
+        except Exception as e:
+            rospy.logerr("Fallback also failed: %s", e)
+            return
 
-    # camera_init ≡ LiDAR world pose at t=0 (first scan)
+    # Publish the static TF
     t = gm.TransformStamped()
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "map"
@@ -48,11 +65,12 @@ def main():
     t.transform = lidar_in_map.transform
 
     broadcaster.sendTransform(t)
-    rospy.loginfo("Published static TF: map → camera_init")
-    rospy.loginfo("  translation: (%.3f, %.3f, %.3f)",
+    rospy.loginfo("Published static TF: map -> camera_init")
+    rospy.loginfo("  translation: (%.3f, %.3f, %.3f)  at sim-time %.3f s",
                   t.transform.translation.x,
                   t.transform.translation.y,
-                  t.transform.translation.z)
+                  t.transform.translation.z,
+                  init_stamp.to_sec())
 
     rospy.spin()
 
