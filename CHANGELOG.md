@@ -6,7 +6,8 @@
 - **PointCloud2 format fix**: `scan_to_pointcloud2.py` now outputs x,y,z,intensity (xyzi32) instead of xyz32.  FAST-LIO2 `lidar_type=4` requires the intensity field for curvature-based feature extraction; without it every point was rejected as "not effective" and the EKF diverged to 8000+ meters within minutes.
 - **TF bridge**: New `map_to_camera_init_bridge.py` publishes a static TF `map→camera_init` by looking up `map→laser_livox` at startup, connecting the previously separate Gazebo and FAST-LIO2 TF trees.
 - **RViz config**: Added `config/fast_lio2.rviz` pre-configured for Odometry, Laser_map, cloud_registered, path, and TF displays with Fixed Frame: map.
-- **Verified convergence**: With robot in FixedStand, FAST-LIO2 converges to ~7 cm from origin within 20 s. All output topics publish stably.
+- **IMU topic fix**: Switched from `/livox/imu` (45° tilted, vibration-corrupted gravity) to `/trunk_imu` (body-aligned, z-up).  Updated LiDAR→IMU extrinsic to `Ry(-45°)`.  Eliminated pure-Z drift of 62 m/s; all axes now within 1 cm after 30 s.
+- **Verified convergence**: With robot in FixedStand, FAST-LIO2 converges to ~1 cm from origin within 20 s. All output topics publish stably.
 
 ### Locomotion
 - **RL diagnosis**: Both `policy_act_inference_plane.pt` and `policy_act_inference_stair.pt` confirmed non-responsive to `/cmd_vel` velocity commands (0.15-1.0 m/s produce <0.2 mm motion).
