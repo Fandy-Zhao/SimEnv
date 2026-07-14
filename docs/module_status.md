@@ -16,7 +16,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 > **2026-07-13 runtime update**: 修正 SimEnv PointCloud2 adapter 与 FAST-LIO2 `lidar_type` 的消息契约（设为 `4`/MARSIM），并修复该路径的未初始化结束时间。此前 325.253 m / 51.607° 数据来自未启控制器时 A1 跌倒，不能用于静止判定；固定站立下 60 s 墙钟结果为 0.001967 m / 0.066852°。完整 60 s 仿真时间及 P1 真实步态仍待完成（exp/0713-fast-lio2-stage01-runtime）。
 > **2026-07-13 extended-P0 update**: 60 s ROS-time 尝试在 28.900 s 中断；Gazebo 真值已移动 0.018344 m / 0.592970°。另一工作区 `/home/zzf/桌面/unitree_ex` 加入同一 ROS master 并抢占 `/gazebo`、`/robot_state_publisher` 名称，故重试前必须隔离 ROS master 并保证真实静止。
 > **2026-07-13 reduced-P0 update**: 实测 RTF=0.068，完成独立 10 s ROS-time 窗口。FAST-LIO2 为 0.286359 m / 1.216603°，真值为 0.004874 m / 0.774496°；数据有限值且注册点云仍发布，但 P0 未通过。当前非 Torch 控制器没有真实 5 m 轨迹步态。
-> **2026-07-14 cause update**: 同步诊断显示 FAST-LIO2 在受控 10 s 窗口内紧跟真值旋转；真值和 IMU 陀螺角速一致，而加速度峰值 87.112 m/s²。P0 主因是 fixed stand 残余接触/转动，非 FAST-LIO2 独立发散。
+> **2026-07-14 cause update**: 同步诊断显示 FAST-LIO2 P0 主因是 fixed stand 残余接触/转动。RL 两种策略均不响应速度指令。新增 `/cmd_vel`→Trotting 和 `/fsm/state_cmd` 程序化状态控制，Trotting 已验证产生 gait 命令。
 
 ## Modules
 
