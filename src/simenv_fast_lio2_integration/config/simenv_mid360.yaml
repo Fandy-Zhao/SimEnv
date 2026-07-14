@@ -47,9 +47,17 @@ mapping:
                 0,      1,  0,
                 0.7071, 0,  0.7071]
 
-  # LiDAR mounting: 45-degree pitch down on A1 base
+  # LiDAR mounting: 45-degree pitch down on A1 base (robot.xacro:146 rpy="0 0.785 0").
   # This is the transform from base->laser_livox, documented for reference.
   # FAST-LIO2 handles this via extrinsic_T/extrinsic_R + IMU gravity alignment.
+  #
+  # Rotation responsibility boundary:
+  #   URDF         — defines the 45° LiDAR tilt via laser_livox_joint
+  #   adapter      — NO rotation (message type conversion only)
+  #   FAST-LIO2    — extrinsic_R = Ry(-45°) handles LiDAR→IMU transform
+  #   bridge       — NO rotation (direct copy of map→imu_link as map→camera_init)
+  # The 45° tilt is applied exactly ONCE: by URDF (sensor pose), compensated by
+  # FAST-LIO2 extrinsic (LiDAR data→IMU frame). Do NOT add it again in the bridge.
 
   # Output
   publish:

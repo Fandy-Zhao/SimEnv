@@ -7,7 +7,7 @@
 - Current focus: FAST-LIO2 startup + TF bridge fixes integrated
 
 ## Active Work
-- **FAST-LIO2 startup + TF bridge** (merged to `develop`): Controller starts before FAST-LIO2, auto-commanded FixedStand, IMU upright check. Duplicate adapter eliminated. Controller foreground mode preserved via `fg`. Camera-init TF bridge iterated to `imu_link + Ry(-45°)` for correct point cloud and odometry orientation.
+- **FAST-LIO2 startup + TF bridge** (merged to `develop`): Controller starts before FAST-LIO2, auto-commanded FixedStand, IMU upright check. Duplicate adapter eliminated. Controller foreground mode preserved via `fg`. Camera-init TF bridge: `map→camera_init` is direct copy of `map→imu_link` (Ry(-45°) removed — was duplicate of FAST-LIO2 extrinsic_R). Rotation responsibility documented in YAML and ADR-0714.
 - **FAST-LIO2 runtime validated**: PointCloud2 intensity fix, TF bridge, RViz config. Converges to ~7 cm within 20 s in FixedStand. All output topics publish stably.
 - **Locomotion ready**: Trotting with `/cmd_vel` + `/fsm/state_cmd` programmatic control. RL policies diagnosed as non-functional for velocity tracking. P1 blocked by Gazebo physics stability.
 - **`auto.sh` cleanup**: Comprehensive process cleanup on startup.

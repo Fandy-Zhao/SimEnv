@@ -46,10 +46,12 @@
 
   <!-- Bridge: map → camera_init static TF.
        FAST-LIO2 creates its own ``camera_init`` frame, disconnected from the
-       Gazebo ``map → odom → base`` tree.  This node looks up ``map → laser_livox``
-       and publishes the same transform as a static TF ``map → camera_init``,
-       connecting the two trees so that /Odometry can be visualised in the
-       world frame. -->
+       Gazebo ``map → odom → base`` tree.  This node looks up ``map → imu_link``
+       (the trunk IMU frame) at the first Odometry timestamp and publishes the
+       same transform as a static TF ``map → camera_init``, connecting the two
+       trees so that /Odometry can be visualised in the world frame.
+       No extra rotation is applied — the LiDAR 45° tilt is handled by
+       FAST-LIO2's extrinsic_R / extrinsic_T. -->
   <node pkg="simenv_fast_lio2_integration"
         type="map_to_camera_init_bridge.py" name="map_to_camera_init_bridge"
         output="screen" respawn="false"/>

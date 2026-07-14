@@ -4,31 +4,10 @@ Publish ``map -> camera_init`` static TF to connect FAST-LIO2's global frame
 into the Gazebo world TF tree.
 """
 
-import math
 import rospy
 import tf2_ros
 import geometry_msgs.msg as gm
 from nav_msgs.msg import Odometry
-from tf.transformations import quaternion_multiply, quaternion_about_axis
-
-
-def _rotate_by(tf_in, axis, angle_rad):
-    """Right-multiply tf_in's rotation by angle_rad around axis."""
-    q_extra = quaternion_about_axis(angle_rad, axis)
-    q_in = [
-        tf_in.rotation.x,
-        tf_in.rotation.y,
-        tf_in.rotation.z,
-        tf_in.rotation.w,
-    ]
-    q_out = quaternion_multiply(q_in, q_extra)
-    tf_out = gm.Transform()
-    tf_out.translation = tf_in.translation
-    tf_out.rotation.x = q_out[0]
-    tf_out.rotation.y = q_out[1]
-    tf_out.rotation.z = q_out[2]
-    tf_out.rotation.w = q_out[3]
-    return tf_out
 
 
 def main():
@@ -71,18 +50,19 @@ def main():
             rospy.logerr("Fallback also failed: %s", e)
             return
 
-    # Apply Ry(-45 deg) -- tilt camera_init the same direction as the LiDAR
-    # mounting, to match the LiDAR scan-data output convention.
-    tf_aligned = _rotate_by(body_in_map.transform, (0, 1, 0), math.radians(-45.0))
-
+    # Publish map -> camera_init as a direct copy of map -> imu_link.
+    # No extra rotation is applied here — the LiDAR 45° tilt is already
+    # handled correctly by FAST-LIO2's extrinsic_R / extrinsic_T.
+    # Applying Ry(-45°) here would tilt the entire camera_init world frame,
+    # causing incorrect Odometry body axes (X pointing downward).
     t = gm.TransformStamped()
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "map"
     t.child_frame_id = "camera_init"
-    t.transform = tf_aligned
+    t.transform = body_in_map.transform
 
     broadcaster.sendTransform(t)
-    rospy.loginfo("Published static TF: map -> camera_init  (imu_link + Ry(-45 deg))")
+    rospy.loginfo("Published static TF: map -> camera_init  (direct copy of map -> imu_link)")
     rospy.loginfo("  translation: (%.3f, %.3f, %.3f)",
                   t.transform.translation.x,
                   t.transform.translation.y,
