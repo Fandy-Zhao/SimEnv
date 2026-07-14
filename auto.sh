@@ -37,7 +37,7 @@ AUTO_UNPAUSE="$(as_ros_bool "${AUTO_UNPAUSE:-1}")"
 AUTO_UNPAUSE_DELAY="${AUTO_UNPAUSE_DELAY:-6}"
 START_CONTROLLER="${START_CONTROLLER:-1}"
 START_VIRTUAL_JOY="${START_VIRTUAL_JOY:-0}"
-CONTROLLER_FOREGROUND="${CONTROLLER_FOREGROUND:-0}"
+CONTROLLER_FOREGROUND="${CONTROLLER_FOREGROUND:-1}"
 START_BUILDING_CONTROL="${START_BUILDING_CONTROL:-1}"
 ENABLE_SENSOR_DATA_DEFAULT="${ENABLE_SENSORS:-1}"
 ENABLE_SENSOR_DATA="$(as_ros_bool "${ENABLE_SENSOR_DATA:-$ENABLE_SENSOR_DATA_DEFAULT}")"
@@ -249,17 +249,21 @@ fi
 # ---------------------------------------------------------------------------
 CTRL_IS_BACKGROUND=0
 CTRL_PID=""
+CTRL_WANTS_FOREGROUND=0
 
 if [ "$START_CONTROLLER" = "1" ]; then
-  if [ "$CONTROLLER_FOREGROUND" = "1" ]; then
-    # Foreground (keyboard interactive): blocks here, no auto-stabilisation.
+  if [ "$CONTROLLER_FOREGROUND" = "1" ] && [ "$ENABLE_FAST_LIO2" != "true" ]; then
+    # No FAST-LIO2: simple foreground, blocks here.
     echo "Starting junior_ctrl controller in the foreground."
     echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
     echo "Use keyboard input: 2 = stand, 6 = RL mode."
     schedule_unpause_physics
     "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl"
   else
-    # Background: always used.  Script continues to auto-stabilise + FAST-LIO2.
+    # Background first: script continues to auto-stabilise + FAST-LIO2.
+    if [ "$CONTROLLER_FOREGROUND" = "1" ]; then
+      CTRL_WANTS_FOREGROUND=1
+    fi
     echo "Starting junior_ctrl controller in the background."
     echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
     "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
@@ -342,14 +346,16 @@ fi
 # ---------------------------------------------------------------------------
 # Post-startup summary
 # ---------------------------------------------------------------------------
-if [ "$CTRL_IS_BACKGROUND" = "1" ] && [ "$ENABLE_FAST_LIO2" = "true" ]; then
-  echo ""
-  echo "Controller running in background (required for FAST-LIO2 auto-init)."
-  echo "Use rostopic to switch FSM states:"
-  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 2\"  # FixedStand"
-  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\"  # Trotting"
-  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL"
-fi
-
 echo "Simulation startup command completed."
 echo "Publish geometry_msgs/Twist to /cmd_vel for velocity control (after Trotting/RL mode)."
+echo "Use rostopic to switch FSM states:"
+echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 2\"  # FixedStand"
+echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\"  # Trotting"
+echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL"
+
+# Bring controller to foreground if requested (after FAST-LIO2 is running).
+if [ "$CTRL_WANTS_FOREGROUND" = "1" ] && [ -n "$CTRL_PID" ]; then
+  echo ""
+  echo "Bringing junior_ctrl to foreground (keyboard: 2=stand 4=trot 6=RL)..."
+  fg %1 2>/dev/null || wait "$CTRL_PID"
+fi
