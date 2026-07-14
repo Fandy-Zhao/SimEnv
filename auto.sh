@@ -37,7 +37,7 @@ AUTO_UNPAUSE="$(as_ros_bool "${AUTO_UNPAUSE:-1}")"
 AUTO_UNPAUSE_DELAY="${AUTO_UNPAUSE_DELAY:-6}"
 START_CONTROLLER="${START_CONTROLLER:-1}"
 START_VIRTUAL_JOY="${START_VIRTUAL_JOY:-0}"
-CONTROLLER_FOREGROUND="${CONTROLLER_FOREGROUND:-1}"
+CONTROLLER_FOREGROUND="${CONTROLLER_FOREGROUND:-0}"
 START_BUILDING_CONTROL="${START_BUILDING_CONTROL:-1}"
 ENABLE_SENSOR_DATA_DEFAULT="${ENABLE_SENSORS:-1}"
 ENABLE_SENSOR_DATA="$(as_ros_bool "${ENABLE_SENSOR_DATA:-$ENABLE_SENSOR_DATA_DEFAULT}")"
@@ -49,7 +49,7 @@ ENABLE_POINTCLOUD_CONVERTER="$(as_ros_bool "${ENABLE_POINTCLOUD_CONVERTER:-1}")"
 POINTCLOUD_USE_GROUND_TRUTH_ODOM="$(as_ros_bool "${POINTCLOUD_USE_GROUND_TRUTH_ODOM:-1}")"
 WRITE_GENERATED_TRUTH_COPY="$(as_ros_bool "${WRITE_GENERATED_TRUTH_COPY:-1}")"
 ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-1}")"
-FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-10}"
+FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-5}"
 UNITREE_CTRL_DT="${UNITREE_CTRL_DT:-0.004}"
 GAZEBO_PHYSICS_MAX_STEP_SIZE="${GAZEBO_PHYSICS_MAX_STEP_SIZE:-0.002}"
 GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE:-500}"
@@ -251,65 +251,16 @@ CTRL_IS_BACKGROUND=0
 CTRL_PID=""
 
 if [ "$START_CONTROLLER" = "1" ]; then
-  if [ "$ENABLE_FAST_LIO2" = "true" ]; then
-    # FAST-LIO2 needs a stationary upright robot for correct gravity
-    # estimation during IMU initialisation.  Force background mode so we
-    # can auto-command FixedStand and wait for stabilisation.
-    echo "Starting junior_ctrl in background (FAST-LIO2 needs auto-stabilisation)..."
-    echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
-    "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
-      > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
-    CTRL_PID=$!
-    echo "$CTRL_PID" > "$WORKSPACE_DIR/logs/junior_ctrl.pid"
-    CTRL_IS_BACKGROUND=1
-    schedule_unpause_physics
-
-    # Wait for the controller node and its /fsm/state_cmd subscriber.
-    sleep 3
-
-    # Apply any user-requested extra delay before commanding FixedStand.
-    FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-0}"
-    if [ "$FAST_LIO2_DELAY" -gt 0 ]; then
-      echo "Waiting additional ${FAST_LIO2_DELAY}s (FAST_LIO2_DELAY)..."
-      sleep "$FAST_LIO2_DELAY"
-    fi
-
-    # Auto-command FixedStand: rostopic pub … std_msgs/Int8 "data: 2"
-    echo "Commanding FixedStand via /fsm/state_cmd..."
-    rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 2" -1 2>/dev/null || true
-
-    # Wait for the IMU to report gravity aligned with Z (≥ 9 m/s²).
-    # This confirms the robot is upright before FAST-LIO2 initialises.
-    echo "Waiting for IMU stabilisation (robot upright)..."
-    IMU_STABLE=0
-    for i in $(seq 1 40); do
-      sleep 0.5
-      IMU_Z=$(rostopic echo /trunk_imu/linear_acceleration -n 1 2>/dev/null \
-        | grep "z:" | head -1 | awk '{print $2}')
-      if [ -n "$IMU_Z" ]; then
-        IMU_Z_INT=$(echo "$IMU_Z" | cut -d. -f1)
-        if [ "$IMU_Z_INT" -ge 9 ] 2>/dev/null; then
-          echo "  IMU stabilised: linear_acceleration.z ≈ ${IMU_Z} m/s²"
-          IMU_STABLE=1
-          break
-        fi
-      fi
-      echo "  waiting for upright pose ... IMU z = ${IMU_Z:-N/A}"
-    done
-    if [ "$IMU_STABLE" != "1" ]; then
-      echo "WARNING: IMU did not stabilise within 20 s." >&2
-      echo "  FAST-LIO2 may initialise with incorrect gravity, causing Z drift." >&2
-    fi
-
-  elif [ "$CONTROLLER_FOREGROUND" = "1" ]; then
+  if [ "$CONTROLLER_FOREGROUND" = "1" ]; then
+    # Foreground (keyboard interactive): blocks here, no auto-stabilisation.
     echo "Starting junior_ctrl controller in the foreground."
     echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
-    echo "Use keyboard input in this terminal: 2 = stand, 6 = RL mode."
+    echo "Use keyboard input: 2 = stand, 6 = RL mode."
     schedule_unpause_physics
     "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl"
   else
+    # Background: always used.  Script continues to auto-stabilise + FAST-LIO2.
     echo "Starting junior_ctrl controller in the background."
-    echo "Keyboard state switching may not be available."
     echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
     "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
       > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
@@ -320,6 +271,46 @@ if [ "$START_CONTROLLER" = "1" ]; then
   fi
 else
   schedule_unpause_physics
+fi
+
+# ── FAST-LIO2 preflight: wait for upright robot ──
+if [ "$ENABLE_FAST_LIO2" = "true" ] && [ "$CTRL_IS_BACKGROUND" = "1" ]; then
+  # Wait for the controller node and its /fsm/state_cmd subscriber.
+  sleep 3
+
+  # Apply any user-requested extra delay before commanding FixedStand.
+  FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-0}"
+  if [ "$FAST_LIO2_DELAY" -gt 0 ]; then
+    echo "Waiting additional ${FAST_LIO2_DELAY}s (FAST_LIO2_DELAY)..."
+    sleep "$FAST_LIO2_DELAY"
+  fi
+
+  # Auto-command FixedStand: rostopic pub … std_msgs/Int8 "data: 2"
+  echo "Commanding FixedStand via /fsm/state_cmd..."
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 2" -1 2>/dev/null || true
+
+  # Wait for the IMU to report gravity aligned with Z (≥ 9 m/s²).
+  # This confirms the robot is upright before FAST-LIO2 initialises.
+  echo "Waiting for IMU stabilisation (robot upright)..."
+  IMU_STABLE=0
+  for i in $(seq 1 40); do
+    sleep 0.5
+    IMU_Z=$(rostopic echo /trunk_imu/linear_acceleration -n 1 2>/dev/null \
+      | grep "z:" | head -1 | awk '{print $2}')
+    if [ -n "$IMU_Z" ]; then
+      IMU_Z_INT=$(echo "$IMU_Z" | cut -d. -f1)
+      if [ "$IMU_Z_INT" -ge 9 ] 2>/dev/null; then
+        echo "  IMU stabilised: linear_acceleration.z ≈ ${IMU_Z} m/s²"
+        IMU_STABLE=1
+        break
+      fi
+    fi
+    echo "  waiting for upright pose ... IMU z = ${IMU_Z:-N/A}"
+  done
+  if [ "$IMU_STABLE" != "1" ]; then
+    echo "WARNING: IMU did not stabilise within 20 s." >&2
+    echo "  FAST-LIO2 may initialise with incorrect gravity, causing Z drift." >&2
+  fi
 fi
 
 # ---------------------------------------------------------------------------
