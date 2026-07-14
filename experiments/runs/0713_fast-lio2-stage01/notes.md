@@ -342,6 +342,29 @@ Ground-truth and FAST-LIO2 odometry recorded for both runs (`ground_truth_p1_str
 - Re-enabling `UNITREE_ENABLE_TORCH_POLICY=ON` with a validated LibTorch C++ SDK, or
 - An approved SLAM-only motion substitute (external `/cmd_vel` bridge to a separate control stack)
 
+### P1 Retest — 2026-07-14 (fresh session)
+
+New 1.0m straight test with re-confirmed RL state chain:
+
+| Metric | Value |
+|---|---|
+| Command | `vx=0.15 m/s` @ 20 Hz |
+| Sim duration | 13.75 s |
+| Planar displacement | 9.60 mm |
+| Forward displacement | -5.38 mm (backward) |
+| Actual speed | 0.70 mm/s (0.47% of command) |
+| Samples recorded | 276 |
+
+The RL policy loads successfully (CUDA available, model loaded), the state
+chain executes correctly, and `/cmd_vel` reaches the controller at 20 Hz.
+Despite this, the robot barely moves. The velocity-tracking path between
+`/cmd_vel → RL policy → joint commands → Gazebo physics` is effectively
+broken at 0.15 m/s.
+
+This is a **locomotion controller issue**, not a FAST-LIO2 SLAM issue.
+The SLAM pipeline is ready for motion; the robot cannot yet execute the
+commanded trajectory.
+
 ---
 
 ## Test Plan Cross-Reference (vs `fastlio2_tare_dsv_test_plan.md`)
@@ -365,7 +388,7 @@ Ground-truth and FAST-LIO2 odometry recorded for both runs (`ground_truth_p1_str
 | 4.3 L2 | `/Odometry`, `/cloud_registered` publish | ✅ PASS | §4.4 above; finite values, no NaN |
 | 4.4 | 60 s static drift ≤0.05 m / ≤0.5° | ❌ FAIL | Multiple captures: truth itself moves (fixed-stand contact) |
 | 4.4 cause | Diagnosed: residual contact/rotation, not FAST-LIO2 divergence | ✅ | P0 diagnostic: FAST-LIO2 tracks truth rotation closely |
-| 4.5 | 5 m straight line | ❌ BLOCKED | RL chain corrected but non-Torch build lacks trot gait |
+| 4.5 | 5 m straight line | ❌ **VELOCITY BROKEN** | RL engages; 0.15 m/s cmd → 0.70 mm/s actual (0.47%). Locomotion issue, not SLAM. |
 | 4.6 | Rectangle/loop 20-30 m | ❌ BLOCKED | Dependent on §4.5 |
 | 4.7 | Staircase/ramp | ❌ NOT STARTED | Requires §4.4 + §4.5 pass first |
 | 4.8 | ≥10 min continuous | ❌ NOT STARTED | Requires locomotion fix |
