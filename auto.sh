@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# ---------------------------------------------------------------------------
+# Prevent Conda / Python environments from contaminating ROS Noetic.
+# ---------------------------------------------------------------------------
+unset PYTHONHOME
+unset PYTHONPATH
+export PYTHONNOUSERSITE=1
+
+# Ensure system executables take precedence over Conda.
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
+
+hash -r
+
 WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$WORKSPACE_DIR"
 
@@ -64,12 +76,57 @@ schedule_unpause_physics() {
   ) &
 }
 
-echo "Terminating previous Gazebo, launch, controller, and optional joystick processes..."
-pkill -f "roslaunch unitree_guide multi_floor_gazeboSim.launch" 2>/dev/null || true
-pkill -f "building_generator_classic_control" 2>/dev/null || true
-pkill -f "gzserver|gzclient|gazebo" 2>/dev/null || true
-pkill -f "junior_ctrl" 2>/dev/null || true
-pkill -f "virtual_joy.py" 2>/dev/null || true
+echo "Cleaning up all leftover processes from previous runs..."
+
+# ---- Gazebo & ROS core ----
+pkill -9 -f "gzserver"     2>/dev/null || true
+pkill -9 -f "gzclient"     2>/dev/null || true
+pkill -9 -f "gazebo"       2>/dev/null || true
+pkill -9 -f "rosmaster"    2>/dev/null || true
+pkill -9 -f "rosout"       2>/dev/null || true
+
+# ---- SimEnv launch & control ----
+pkill -9 -f "roslaunch.*multi_floor_gazeboSim"       2>/dev/null || true
+pkill -9 -f "roslaunch.*simenv_fast_lio2_mapping"    2>/dev/null || true
+pkill -9 -f "building_generator_classic_control"      2>/dev/null || true
+pkill -9 -f "generate_competition_scene"              2>/dev/null || true
+
+# ---- Unitree controller ----
+pkill -9 -f "junior_ctrl"          2>/dev/null || true
+pkill -9 -f "unitree_gazebo_servo" 2>/dev/null || true
+pkill -9 -f "virtual_joy"          2>/dev/null || true
+
+# ---- FAST-LIO2 ----
+pkill -9 -f "fastlio_mapping"       2>/dev/null || true
+pkill -9 -f "scan_to_pointcloud2"   2>/dev/null || true
+pkill -9 -f "laserMapping"          2>/dev/null || true
+
+# ---- Sensor / state bridge nodes ----
+pkill -9 -f "pointcloud2livox"      2>/dev/null || true
+pkill -9 -f "state_from_gazebo"     2>/dev/null || true
+pkill -9 -f "robot_state_publisher" 2>/dev/null || true
+pkill -9 -f "controller_spawner"    2>/dev/null || true
+
+# ---- Stale rostopic processes ----
+pkill -9 -f "rostopic.*/cmd_vel"    2>/dev/null || true
+pkill -9 -f "rostopic.*echo"        2>/dev/null || true
+
+# Give the OS a moment to reclaim ports and shared memory
+sleep 2
+
+echo "Checking ROS Python environment for Conda contamination..."
+ROS_PYTHON_INFO="$(
+    /usr/bin/python3 -c \
+    'import sys, xml.dom.minidom; print(sys.executable); print(xml.dom.minidom.__file__)'
+)"
+
+echo "ROS Python environment:"
+echo "${ROS_PYTHON_INFO}"
+
+if echo "${ROS_PYTHON_INFO}" | grep -qiE 'miniconda|anaconda'; then
+    echo "ERROR: Conda Python is still contaminating the ROS environment." >&2
+    exit 1
+fi
 
 echo "Sourcing ROS environment..."
 source /opt/ros/noetic/setup.bash
