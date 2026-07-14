@@ -13,7 +13,10 @@
 
 common:
   lid_topic: "/scan_pointcloud2"
-  imu_topic: "/livox/imu"
+  # Use trunk IMU (body-aligned, z-up) instead of LiDAR IMU (45 deg tilted).
+  # The tilted IMU's initial gravity estimate is corrupted by body vibration,
+  # causing pure-Z drift at ~62 m/s.
+  imu_topic: "/trunk_imu"
 
 preprocess:
   # 4=MARSIM/standard PointCloud2 path.  SimEnv's adapter publishes
@@ -35,13 +38,14 @@ mapping:
   fov_degree: 180
   det_range: 40.0              # max detection range (matches sim LiDAR max_range)
 
-  # Extrinsic: LiDAR -> IMU (from SimEnv URDF: robot.xacro & gazebo.xacro)
-  # laser_livox (LiDAR) -> livox_imu_link (IMU)
-  # pos: (-0.011, -0.02329, 0.04412) relative to laser_livox
-  extrinsic_T: [-0.011, -0.02329, 0.04412]
-  extrinsic_R: [1, 0, 0,
-                0, 1, 0,
-                0, 0, 1]
+  # Extrinsic: LiDAR -> IMU
+  # laser_livox -> imu_link (trunk IMU, body-aligned).
+  # base->laser: [0.2,0,0.08], Ry(45°).  base->imu_link: identity.
+  # Therefore laser->imu = inverse(base->laser) = Ry(-45°) + [-0.085,0,-0.198].
+  extrinsic_T: [-0.085, 0.0, -0.198]
+  extrinsic_R: [0.7071, 0, -0.7071,
+                0,      1,  0,
+                0.7071, 0,  0.7071]
 
   # LiDAR mounting: 45-degree pitch down on A1 base
   # This is the transform from base->laser_livox, documented for reference.
