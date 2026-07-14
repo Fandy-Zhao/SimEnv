@@ -244,6 +244,87 @@ if [ "$START_BUILDING_CONTROL" = "1" ]; then
   echo $! > "$WORKSPACE_DIR/logs/building_control.pid"
 fi
 
+# ---------------------------------------------------------------------------
+# Controller startup (before FAST-LIO2 so the robot is standing for IMU init)
+# ---------------------------------------------------------------------------
+CTRL_IS_BACKGROUND=0
+CTRL_PID=""
+
+if [ "$START_CONTROLLER" = "1" ]; then
+  if [ "$ENABLE_FAST_LIO2" = "true" ]; then
+    # FAST-LIO2 needs a stationary upright robot for correct gravity
+    # estimation during IMU initialisation.  Force background mode so we
+    # can auto-command FixedStand and wait for stabilisation.
+    echo "Starting junior_ctrl in background (FAST-LIO2 needs auto-stabilisation)..."
+    echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
+    "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
+      > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
+    CTRL_PID=$!
+    echo "$CTRL_PID" > "$WORKSPACE_DIR/logs/junior_ctrl.pid"
+    CTRL_IS_BACKGROUND=1
+    schedule_unpause_physics
+
+    # Wait for the controller node and its /fsm/state_cmd subscriber.
+    sleep 3
+
+    # Apply any user-requested extra delay before commanding FixedStand.
+    FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-0}"
+    if [ "$FAST_LIO2_DELAY" -gt 0 ]; then
+      echo "Waiting additional ${FAST_LIO2_DELAY}s (FAST_LIO2_DELAY)..."
+      sleep "$FAST_LIO2_DELAY"
+    fi
+
+    # Auto-command FixedStand: rostopic pub … std_msgs/Int8 "data: 2"
+    echo "Commanding FixedStand via /fsm/state_cmd..."
+    rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 2" -1 2>/dev/null || true
+
+    # Wait for the IMU to report gravity aligned with Z (≥ 9 m/s²).
+    # This confirms the robot is upright before FAST-LIO2 initialises.
+    echo "Waiting for IMU stabilisation (robot upright)..."
+    IMU_STABLE=0
+    for i in $(seq 1 40); do
+      sleep 0.5
+      IMU_Z=$(rostopic echo /trunk_imu/linear_acceleration -n 1 2>/dev/null \
+        | grep "z:" | head -1 | awk '{print $2}')
+      if [ -n "$IMU_Z" ]; then
+        IMU_Z_INT=$(echo "$IMU_Z" | cut -d. -f1)
+        if [ "$IMU_Z_INT" -ge 9 ] 2>/dev/null; then
+          echo "  IMU stabilised: linear_acceleration.z ≈ ${IMU_Z} m/s²"
+          IMU_STABLE=1
+          break
+        fi
+      fi
+      echo "  waiting for upright pose ... IMU z = ${IMU_Z:-N/A}"
+    done
+    if [ "$IMU_STABLE" != "1" ]; then
+      echo "WARNING: IMU did not stabilise within 20 s." >&2
+      echo "  FAST-LIO2 may initialise with incorrect gravity, causing Z drift." >&2
+    fi
+
+  elif [ "$CONTROLLER_FOREGROUND" = "1" ]; then
+    echo "Starting junior_ctrl controller in the foreground."
+    echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
+    echo "Use keyboard input in this terminal: 2 = stand, 6 = RL mode."
+    schedule_unpause_physics
+    "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl"
+  else
+    echo "Starting junior_ctrl controller in the background."
+    echo "Keyboard state switching may not be available."
+    echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
+    "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
+      > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
+    CTRL_PID=$!
+    echo "$CTRL_PID" > "$WORKSPACE_DIR/logs/junior_ctrl.pid"
+    CTRL_IS_BACKGROUND=1
+    schedule_unpause_physics
+  fi
+else
+  schedule_unpause_physics
+fi
+
+# ---------------------------------------------------------------------------
+# FAST-LIO2 (after the robot is confirmed standing)
+# ---------------------------------------------------------------------------
 if [ "$ENABLE_FAST_LIO2" = "true" ]; then
   if [ "$START_CONTROLLER" != "1" ]; then
     echo "WARNING: ENABLE_FAST_LIO2=1 but START_CONTROLLER=$START_CONTROLLER" >&2
@@ -252,40 +333,32 @@ if [ "$ENABLE_FAST_LIO2" = "true" ]; then
     echo "  Either set START_CONTROLLER=1 or start the controller manually (FixedStand)." >&2
     echo "" >&2
   fi
-  FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-0}"
-  if [ "$FAST_LIO2_DELAY" -gt 0 ]; then
-    echo "Waiting ${FAST_LIO2_DELAY}s before FAST-LIO2 (robot should be standing)..."
-    sleep "$FAST_LIO2_DELAY"
-  fi
+
   echo "Starting FAST-LIO2 mapping (scan adapter + fastlio_mapping)..."
   rosrun simenv_fast_lio2_integration scan_to_pointcloud2.py \
     > "$WORKSPACE_DIR/logs/scan_adapter.log" 2>&1 &
   echo $! > "$WORKSPACE_DIR/logs/scan_adapter.pid"
   sleep 2
+  # enable_adapter:=false avoids a duplicate scan_to_pointcloud2 node
+  # (auto.sh already started one above).
   roslaunch simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch \
+    enable_adapter:=false \
     > "$WORKSPACE_DIR/logs/fast_lio2.log" 2>&1 &
   echo $! > "$WORKSPACE_DIR/logs/fast_lio2.pid"
   echo "FAST-LIO2 mapping launched in background (logs: logs/fast_lio2.log)"
 fi
 
-if [ "$START_CONTROLLER" = "1" ]; then
-  if [ "$CONTROLLER_FOREGROUND" = "1" ]; then
-    echo "Starting junior_ctrl controller in the foreground."
-    echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
-    echo "Use keyboard input in this terminal: 2 = stand, 6 = RL mode."
-    schedule_unpause_physics
-    "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl"
-  else
-    echo "Starting junior_ctrl controller in the background. Keyboard state switching may not be available."
-    echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
-    "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
-      > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
-    echo $! > "$WORKSPACE_DIR/logs/junior_ctrl.pid"
-    schedule_unpause_physics
-  fi
-else
-  schedule_unpause_physics
+# ---------------------------------------------------------------------------
+# Post-startup summary
+# ---------------------------------------------------------------------------
+if [ "$CTRL_IS_BACKGROUND" = "1" ] && [ "$ENABLE_FAST_LIO2" = "true" ]; then
+  echo ""
+  echo "Controller running in background (required for FAST-LIO2 auto-init)."
+  echo "Use rostopic to switch FSM states:"
+  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 2\"  # FixedStand"
+  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\"  # Trotting"
+  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL"
 fi
 
 echo "Simulation startup command completed."
-echo "Controller mode remains governed by unitree_guide keyboard/joy input; publish geometry_msgs/Twist to /cmd_vel after RL mode is enabled."
+echo "Publish geometry_msgs/Twist to /cmd_vel for velocity control (after Trotting/RL mode)."

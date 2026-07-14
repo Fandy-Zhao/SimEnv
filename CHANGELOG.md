@@ -2,6 +2,11 @@
 
 ## 2026-07-14
 
+### FAST-LIO2 Startup Order Fix
+- **Controller before FAST-LIO2**: `auto.sh` now starts `junior_ctrl` BEFORE FAST-LIO2 when `ENABLE_FAST_LIO2=1`. Controller is forced to background mode, FixedStand is auto-commanded via `/fsm/state_cmd` (`data: 2`), and the script waits for IMU confirmation (gravity aligned to Z, `linear_acceleration.z >= 9`) before launching FAST-LIO2. Prevents incorrect gravity initialization that caused continuous Z drift in `/cloud_registered`.
+- **Duplicate adapter fix**: `simenv_fast_lio2_mapping.launch` now defaults `enable_adapter:=false`. `auto.sh` starts `scan_to_pointcloud2.py` once; the launch file no longer starts a second instance. Pass `enable_adapter:=true` when launching standalone.
+- **FSM reference**: Use `rostopic pub /fsm/state_cmd std_msgs/Int8 "data: N"` for programmatic state control (2=FixedStand, 4=Trotting, 6=RL).
+
 ### FAST-LIO2 Runtime Validation
 - **PointCloud2 format fix**: `scan_to_pointcloud2.py` now outputs x,y,z,intensity (xyzi32) instead of xyz32.  FAST-LIO2 `lidar_type=4` requires the intensity field for curvature-based feature extraction; without it every point was rejected as "not effective" and the EKF diverged to 8000+ meters within minutes.
 - **TF bridge**: New `map_to_camera_init_bridge.py` publishes a static TF `map→camera_init` by looking up `map→laser_livox` at startup, connecting the previously separate Gazebo and FAST-LIO2 TF trees.
