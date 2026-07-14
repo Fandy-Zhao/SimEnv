@@ -88,14 +88,14 @@ FAST_LIO 依赖 `livox_ros_driver`（在其 CMakeLists.txt 中声明），因此
 |---------------|-------------|--------|---------|------|
 | `lid_topic` | `/scan_pointcloud2` | `"/scan_pointcloud2"` | `simenv_mid360.yaml` | adapter 必须运行 |
 | `imu_topic` | `/livox/imu` | `"/livox/imu"` | `simenv_mid360.yaml` | 需确认 IMU 坐标系方向 |
-| `lidar_type` | Livox Mid-360 仿真 | `1` (Livox serials) | `simenv_mid360.yaml` | 正确 |
+| `lidar_type` | SimEnv PointCloud2 适配器 | `4` (MARSIM/standard PointCloud2 path) | `simenv_mid360.yaml` | 必须与 adapter 消息类型一致 |
 | `scan_line` | Mid-360 = 4 线 | `4` | `simenv_mid360.yaml` | 仿真无 ring 信息，为近似值 |
 | `timestamp_unit` | 仿真无 per-point time | `0.0` (禁用) | `simenv_mid360.yaml` | **关键风险**：无运动补偿 |
 | `time_scale` | 同上 | `0.0` | `simenv_mid360.yaml` | 同上 |
 | `blind` | LiDAR 盲区 | `0.5` m | `simenv_mid360.yaml` | 匹配 Gazebo min_range=0.1 |
 | `extrinsic_T` | LiDAR → IMU 平移 | `[-0.011, -0.02329, 0.04412]` | `simenv_mid360.yaml`, `robot.xacro` | 需运行时验证 |
 | `extrinsic_R` | LiDAR → IMU 旋转 | `[1,0,0; 0,1,0; 0,0,1]` | `simenv_mid360.yaml`, `robot.xacro` | 单位矩阵，需确认方向 |
-| `extrinsic_est_en` | 在线外参估计 | `false` | 未显式设置（默认 false） | 保守策略 |
+| `extrinsic_est_en` | 在线外参估计 | `false` | `simenv_mid360.yaml` | 固定 URDF 外参，避免静止初始化时估计漂移 |
 | `acc_cov` | IMU 加速度噪声 | `0.1` | `simenv_mid360.yaml` | 仿真 IMU 噪声为 0，需调优 |
 | `gyr_cov` | IMU 陀螺仪噪声 | `0.1` | `simenv_mid360.yaml` | 同上 |
 | `det_range` | LiDAR 最大探测距离 | `40.0` m | `simenv_mid360.yaml` | 匹配 Gazebo max_range=40 |
@@ -364,7 +364,7 @@ ENABLE_FAST_LIO2=1 ./auto.sh
 
 此模式自动在后台启动 `scan_to_pointcloud2` adapter 和 FAST-LIO2 节点。
 
-> **注意**：当前 `simenv_fast_lio2_mapping.launch` 中的 FAST-LIO2 node 块为注释状态。需在 FAST_LIO 成功编译后取消注释，或确认集成启动逻辑已启用。
+> **注意**：当前集成 launch 已启用 FAST-LIO2 节点；需先保证 `FAST_LIO` 已成功编译并被当前 shell source。
 
 ## 11. Runtime Validation Checklist
 
@@ -382,6 +382,27 @@ ENABLE_FAST_LIO2=1 ./auto.sh
 - [ ] TF connected (`rosrun tf view_frames` 确认 `camera_init → body` 存在)
 - [ ] RViz map visible（可选，启动 `rviz:=true` 参数）
 - [ ] PCD saved（若启用，检查 `FAST_LIO/PCD/` 目录）
+
+静止漂移测试必须先让 `junior_ctrl` 进入 fixed-stand（或采用其他能保证
+机体不倒的支撑方式）。`START_CONTROLLER=0` 时 A1 会受重力跌倒，不能把
+该段 `/Odometry` 作为“静止”漂移结果。若使用 `lidar_type=4`，应使用已含
+`last_lidar_end_time_=-1` 初始化修复的 FAST_LIO 构建。
+
+还要保证没有其他 ROS 工作区连接到相同的 `ROS_MASTER_URI` 并注册根名称
+`/gazebo` 或 `/robot_state_publisher`。重复注册会使 SimEnv 节点退出，静止
+窗口立即无效；应停止另一套仿真，或为其中一套分配独立 ROS master 端口。
+
+如果实时因子过低，可运行较短的诊断窗口，但必须和正式 60 s 验收结果
+区分记录。例如：
+
+```bash
+FAST_LIO_P0_DURATION_SECONDS=10 \
+FAST_LIO_P0_RUN_TAG=p0_stand_sim10_rtf068 \
+python3 experiments/runs/0713_fast-lio2-stage01/capture_static_window.py
+```
+
+时长范围为 1--60 s；每个 tag 生成独立 CSV 和 metrics JSON，避免覆盖正式
+捕获。短窗口只能用于诊断，不能放宽正式静止门禁。
 
 ## 12. Common Failure Modes
 

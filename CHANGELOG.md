@@ -7,12 +7,63 @@
 - **Updated `docs/README.md`**: added FAST-LIO2 deployment guide and CLI reference to the documentation index.
 - **Updated `docs/quick-start.md`**: added `ENABLE_FAST_LIO2=1` usage, FAST-LIO2 related env vars, fixed `ROBOT_Y` default from `-2.2` to `2.3`.
 
-### FAST-LIO2 Deployment Test (Stage 0 & 1)
+### FAST-LIO2 Deployment Test (Stage 0 and initial Stage 1 L1/L2)
 - **Stage 0 (PASS)**: Verified Gazebo sensors, simulation time, and TF tree. All checks passed: `/use_sim_time=true`, `/clock`@500Hz, `/scan`@10Hz (`laser_livox` frame), `/livox/imu`@400Hz (`livox_imu_link` frame). TF tree correct: `base→laser_livox` (45° pitch) `→livox_imu_link` (extrinsic matches config).
-- **Stage 1 (PASS)**: FAST-LIO2 node launches without crash (L1), registers all output topics (L2). Discovered and fixed 3 launch bugs:
+- **Stage 1 initial L1/L2 check (superseded by runtime retest below)**: FAST-LIO2 node launched without crash and registered all output topics. Discovered and fixed 3 launch bugs:
   - FAST-LIO2 node was commented out in `simenv_fast_lio2_mapping.launch`
   - YAML config loaded in wrong namespace (`ns="laserMapping"`) — FAST_LIO uses public `NodeHandle`, reads from `/common/lid_topic`; fixed to root-level `<rosparam>`
   - Removed redundant `<param>` tags (superseded by YAML rosparam load)
+
+### FAST-LIO2 Runtime Retest
+- Corrected FAST-LIO2's input type contract: SimEnv's `/scan_pointcloud2`
+  adapter publishes `sensor_msgs/PointCloud2`, so `simenv_mid360.yaml` now
+  uses `preprocess.lidar_type: 4` (MARSIM/standard PointCloud2), rather than
+  Livox `CustomMsg` mode (`1`).
+- Verified the corrected launch publishes finite `/Odometry` and
+  `/cloud_registered` messages.
+- Marked Stage 1 static localization **failed**: 60 s wall-clock capture
+  (4.300 s ROS time) drifted 325.253 m and 51.607° while Gazebo truth moved
+  only 0.0476 m over 1.020 s. The 5 m and loop tests are deferred by the
+  stage gate.
+
+### FAST-LIO2 Controlled P0 Follow-up
+- **Superseded the static-failure interpretation**: the former capture ran
+  without `junior_ctrl`, and the A1 was falling/rolling rather than stationary.
+  In fixed-stand mode FAST-LIO2 moved 0.001967 m / 0.066852° over 60 s
+  wall-clock (4.300 s ROS time), with effectively static Gazebo truth.
+- **Fixed FAST-LIO2 MARSIM initialization**: initialized
+  `last_lidar_end_time_` in the external FAST_LIO `ImuProcess` constructor and
+  `Reset()` to avoid undefined startup/reset behavior in the PointCloud2 path;
+  the `fast_lio` package selectively rebuilt successfully.
+- **P1 explicitly blocked**: the ABI-isolated `junior_ctrl` build excludes the
+  Torch-dependent trot/RL states, so a real 5 m or loop locomotion test needs
+  an approved Torch-policy rebuild.  The strict 60 s ROS-time P0 capture also
+  remains pending because of low simulation RTF.
+
+### FAST-LIO2 Extended P0 Attempt
+- The latest ROS-time fixed-stand capture reached 28.900 s before a second
+  workspace (`/home/zzf/桌面/unitree_ex`) joined the same ROS master and
+  registered duplicate `/gazebo` and `/robot_state_publisher` names. Its
+  missing `hustw_description` package then ended the shared session; this is a
+  cross-workspace ROS-master collision, not a FAST-LIO2 crash.
+- In that interrupted window Gazebo truth changed 0.018344 m / 0.592970° and
+  FAST-LIO2 changed 0.074965 m / 0.788825°. P0 is not accepted: ROS-master
+  isolation and a more stationary support/control condition are required.
+
+### FAST-LIO2 Reduced-duration P0
+- Measured RTF=0.068 and completed a separate 10 s ROS-time diagnostic window
+  to avoid an excessive wall-clock test. FAST-LIO2 changed 0.286359 m /
+  1.216603°, versus Gazebo truth 0.004874 m / 0.774496°; all values were
+  finite and `/cloud_registered` remained available, but P0 still fails.
+- Added duration and output-tag environment options to the P0 capture helper,
+  so reduced-duration tests do not overwrite the 60 s evidence.
+
+### FAST-LIO2 P0 Cause Diagnostic
+- Added a synchronized truth/IMU/odometry diagnostic and ran it for 10 s.
+  FAST-LIO2 tracked the remaining physical truth rotation closely (0.364035°
+  versus 0.325467°); truth and IMU gyro rates agreed, while acceleration
+  reached 87.112 m/s². This identifies residual fixed-stand contact/rotational
+  motion as the primary P0 cause, rather than standalone FAST-LIO2 divergence.
 
 ## 2026-07-06
 
