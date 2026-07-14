@@ -10,18 +10,34 @@ option(UNITREE_ENABLE_TORCH_POLICY "Build unitree torch policy support" OFF)
 message(STATUS "UNITREE_ENABLE_TORCH_POLICY=${UNITREE_ENABLE_TORCH_POLICY}")
 
 if(UNITREE_ENABLE_TORCH_POLICY)
-    # 添加 torch 依赖，默认使用 /home/ros/Guoyulun/Download/libtorch（如不同，请提供正确路径）
-    # 确保 CMake 可以加载 libtorch 附带的 cmake 模块（例如 CheckLinkerFlag）
-    list(APPEND CMAKE_MODULE_PATH "/home/ros/Guoyulun/Download/libtorch/share/cmake/Caffe2/public")
-    list(APPEND CMAKE_MODULE_PATH "/home/ros/Guoyulun/Download/libtorch/share/cmake")
+    # Keep headers and libraries from one LibTorch distribution.  In particular,
+    # a Python virtual environment may also add a different TorchConfig to
+    # CMAKE_PREFIX_PATH, which otherwise causes an ABI-mismatched link.
+    set(UNITREE_TORCH_ROOT "/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi"
+        CACHE PATH "Root directory of the LibTorch distribution used by junior_ctrl")
+    if(NOT EXISTS "${UNITREE_TORCH_ROOT}/share/cmake/Torch/TorchConfig.cmake")
+        message(FATAL_ERROR
+            "UNITREE_TORCH_ROOT must contain share/cmake/Torch/TorchConfig.cmake; got: ${UNITREE_TORCH_ROOT}")
+    endif()
+    list(APPEND CMAKE_MODULE_PATH
+        "${UNITREE_TORCH_ROOT}/share/cmake/Caffe2/public"
+        "${UNITREE_TORCH_ROOT}/share/cmake")
+    # TorchConfig caches these lookups by generic variable names.  Reset an
+    # earlier Python-Torch discovery, then force Caffe2 to the same root.
+    unset(TORCH_LIBRARY CACHE)
+    unset(c10_LIBRARY CACHE)
+    unset(C10_CUDA_LIBRARY CACHE)
+    set(Caffe2_DIR "${UNITREE_TORCH_ROOT}/share/cmake/Caffe2"
+        CACHE PATH "Caffe2 configuration directory for UNITREE_TORCH_ROOT" FORCE)
     if(NOT DEFINED TORCH_CUDA_ARCH_LIST)
         set(TORCH_CUDA_ARCH_LIST "5.2" CACHE STRING "CUDA architectures for libtorch")
     endif()
     if(NOT CMAKE_CUDA_FLAGS MATCHES "-arch=sm_")
         set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -arch=sm_52" CACHE STRING "CUDA flags" FORCE)
     endif()
-    find_package(Torch REQUIRED PATHS "/home/ros/Guoyulun/Download/libtorch")
-    set(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)  # torch 编译加速
+    find_package(Torch REQUIRED CONFIG
+        PATHS "${UNITREE_TORCH_ROOT}/share/cmake/Torch"
+        NO_DEFAULT_PATH)
     set(CMAKE_CXX_STANDARD 17) # torch 编译加速需要 C++17
 endif()
 

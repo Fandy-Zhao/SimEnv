@@ -2,12 +2,15 @@
 
 ## Snapshot
 - Date: 2026-07-13
-- Branch: exp/0713-fast-lio2-stage01 (from develop)
+- Branch: exp/0713-fast-lio2-stage01-runtime (from develop)
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
 - Current focus: FAST-LIO2 SLAM 建图集成 (Phase 1 — mapping only), 部署测试, 编译修复
 
 ## Active Work
-- FAST-LIO2 Stage 0 & 1 部署测试: Stage 0 (传感器/TF/时间) 全部通过, Stage 1 L1+L2 通过
+- **2026-07-14 P0 cause diagnostic**: synchronized 10 s truth/IMU/FAST-LIO2 data shows FAST-LIO2 0.005980 m / 0.364035° versus truth 0.012825 m / 0.325467°. Truth and IMU gyro angular rates agree (mean about 0.05 rad/s; peak about 0.83 rad/s); acceleration peaks at 87.112 m/s². The principal cause is residual fixed-stand contact/rotational motion, with missing point timestamps a secondary risk during that motion.
+- **2026-07-13 reduced-P0 update**: measured RTF=0.068, then completed an independent 10 s ROS-time capture. FAST-LIO2 changed 0.286359 m / 1.216603° while truth changed 0.004874 m / 0.774496°; messages remained finite and map output continued, but P0 still fails. P1 remains unavailable because the current non-Torch controller only provides in-place/bounded test states, not a real trajectory gait.
+- **2026-07-13 P0 update**: a 60 s ROS-time fixed-stand attempt reached only 28.900 s. During it truth moved 0.018344 m / 0.592970°, and an external `/home/zzf/桌面/unitree_ex` launch attached to the same ROS master with duplicate `/gazebo` and `/robot_state_publisher` node names, ending the SimEnv session. P0 remains blocked pending master isolation and a truly stationary support/control mode.
+- FAST-LIO2 Stage 0 & 1 部署测试: Stage 0 (传感器/TF/时间) 全部通过；Stage 1 L1+L2 接口通过。此前的 325.253 m / 51.607°“静止”结果因 `START_CONTROLLER=0` 导致机器人跌倒而无效；固定站立 P0 在 60 s 墙钟/4.3 s 仿真时间内为 0.001967 m / 0.066852°，完整 60 s 仿真时间仍待完成；P1 受已禁用的真实步态控制链路阻塞
 - FAST-LIO2 launch 文件修复: 取消注释节点、修复 rosparam namespace (public NodeHandle vs private ns)、移除冗余 param 标签
 - 文档完善: 新增 `docs/cli-reference.md` 命令速查, 更新 `docs/README.md` 索引和 `docs/quick-start.md` (FAST-LIO2 用法 + 参数修正)
 - FAST-LIO2 集成骨架: `src/simenv_fast_lio2_integration/`
@@ -35,6 +38,9 @@
 - GitHub 远程仓库可能为空或已有历史，首次 push 前需确认目标分支
 - 随机生成的建筑布局可能在某些参数组合下产生不可达房间或源重叠
 - Gazebo Classic 已停止维护，长期可能需要迁移到 Ignition/Gazebo Fortress
+- FAST-LIO2: SimEnv adapter 输出 `PointCloud2`，必须使用 `preprocess.lidar_type=4`；其 MARSIM 分支的 `last_lidar_end_time_` 未初始化缺陷已在外部源码修复并选择性重编译，仍需完成完整 60 s 仿真时间 P0
+- 当前 3 层场景实时因子很低（60 s 墙钟仅 4.3 s ROS 时间），完整 P0 需要约 10--15 分钟墙钟；`junior_ctrl` 因 Torch ABI 隔离未编译 trot/RL 状态，P1 真实步态测试需重新启用其依赖
+- IDE 的 Miniconda Python 3.13 与 Noetic xacro 不兼容；ROS/Gazebo runtime 应使用系统 Python 3.10
 
 ## Validation Status
 - Build: catkin_make 编译通过（最近提交已验证）
@@ -46,3 +52,5 @@
 - 用户确认后执行首次 push: `git push -u github develop`
 - 补充 CI/自动化测试流程
 - 评估将 UAV simulator 子模块独立或移除
+- 完成固定站立的 60 s **ROS 仿真时间**静止测试
+- 用户授权后重新启用 `junior_ctrl` Torch 步态策略，或明确批准标记为 SLAM-only 的运动替代方案；随后依序执行 5 m 直线与矩形短闭环

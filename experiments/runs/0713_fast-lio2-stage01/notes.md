@@ -158,3 +158,170 @@ rostopic echo -n 1 /Odometry | grep -E "position|orientation"
 |-------|-------------|---------------|--------|-------|
 | Stage 0 | N/A | ✅ PASS | N/A | All sensors, TF, time verified |
 | Stage 1 | ✅ PASS | ✅ PASS | ⏳ Pending | Launch bugs fixed; needs restart to verify |
+
+---
+
+## Runtime Retest — 2026-07-13
+
+### Input-contract correction
+
+The fresh launch exposed a ROS type rejection:
+
+```text
+topic types do not match: [livox_ros_driver/CustomMsg] vs. [sensor_msgs/PointCloud2]
+```
+
+`preprocess.lidar_type: 1` selects FAST-LIO2's Livox `CustomMsg` subscriber,
+but `scan_to_pointcloud2.py` intentionally publishes standard `PointCloud2`.
+The configuration was changed to `lidar_type: 4` (the FAST-LIO2 MARSIM standard
+PointCloud2 path). A new launch reported `p_pre->lidar_type 4`; both
+`/Odometry` and `/cloud_registered` then published successfully.
+
+### P0 Runtime interface result — PASS
+
+| Check | Result |
+|---|---|
+| `/scan_pointcloud2` | `sensor_msgs/PointCloud2`, `laser_livox`, 24,000 points/frame |
+| FAST-LIO2 input mode | `lidar_type=4` (PointCloud2) |
+| `/Odometry` | publishes finite pose and normalized quaternion |
+| `/cloud_registered` | publishes registered PointCloud2 |
+| Launch static validation | `roslaunch --files simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch` passed |
+
+### Initial P0 static result — INVALID (superseded)
+
+Source data:
+
+- `odometry_static_wall60.csv`: 44 FAST-LIO2 samples.
+- `ground_truth_stillness_wall15.csv`: 511 Gazebo ground-truth samples.
+
+| Metric | Measured | Acceptance | Result |
+|---|---:|---:|---|
+| Wall-clock capture | 60 s | 60 s | completed |
+| ROS simulation time covered | 4.300 s | 60 s requested | insufficient RTF |
+| FAST-LIO2 position change | 325.253 m | ≤0.02–0.05 m | invalid: robot was falling |
+| FAST-LIO2 orientation change | 51.607° | ≤0.5° | invalid: robot was falling |
+| Gazebo truth motion (1.020 s) | 0.0476 m | stationary reference | low physical motion |
+| NaN/inf samples | 0 | 0 | pass, but non-actionable |
+
+The robot had no controller command and was not stationary. This capture is
+kept for traceability only; it is not a localization-quality result.
+
+### Deferred tests
+
+The Stage 1 plan requires static localization to pass before proceeding.
+Therefore P1 5 m straight-line and P1 rectangular/loop tests were not run.
+
+### Runtime risks observed
+
+- The 3-floor scene advanced only 4.300 s of ROS time during 60 s wall time.
+- A prior restart generated a `gzserver` SIGSEGV (Apport crash artifact left
+  untouched at `/var/crash/_usr_bin_gzserver-11.10.2.1000.crash`); the final
+  retest stayed alive through the reported capture.
+- Launching from the IDE's Miniconda Python 3.13 fails xacro. The successful
+  runtime used ROS Noetic with `/usr/bin/python3` (3.10.12) by unsetting
+  `PYTHONHOME`/`PYTHONPATH` and placing `/usr/bin` before Conda in `PATH`.
+
+---
+
+## P0 controlled stationary rerun and P1 feasibility — 2026-07-13
+
+### Invalid initial failure identified
+
+The earlier `START_CONTROLLER=0` capture was not a no-motion test.  During
+that run the unactuated A1 fell and rolled: `/livox/imu` angular velocity was
+about 4--5 rad/s and collision acceleration reached hundreds of m/s².  Its
+325.253 m / 51.607° FAST-LIO2 delta is therefore invalid for P0 acceptance.
+
+### Controlled P0 result
+
+With `junior_ctrl` in fixed-stand mode, Gazebo truth was effectively static.
+
+| Capture | FAST-LIO2 delta | Gazebo truth delta | ROS simulation span | Status |
+|---|---:|---:|---:|---|
+| `*_p0_stand_wall60.csv` | 0.001967 m / 0.066852° | `8.81e-08 m` / `4.94e-05°` | 4.300 s | Passes magnitude threshold; duration is wall-clock only |
+| `*_p0_stand_sim60.csv` (interrupted retry) | 0.008262 m / 0.324734° | 0.014836 m / 0.476989° | 20.700 s (truth: 23.536 s) | Began during stand settling; diagnostic only |
+
+The requested full 60 s ROS-simulation-time capture was interrupted at the
+20.7 s window when its runtime session ended. It had also started before the
+fixed stand fully settled, as shown by its Gazebo-truth delta. A future retry
+must wait for truth velocity/attitude to settle before starting. At an RTF of
+roughly 0.07--0.10 it requires about 10--15 minutes wall-clock and must finish
+before declaring the strict Stage 1 static gate passed.
+
+### FAST-LIO2 MARSIM startup defect
+
+`preprocess.lidar_type=4` uses FAST-LIO2's MARSIM/standard PointCloud2 path.
+That path reads `last_lidar_end_time_` before assigning it, but the member was
+not initialized by either the constructor or `Reset()`.  The external source
+was corrected to set it to `-1`; `catkin_make -DCATKIN_WHITELIST_PACKAGES=fast_lio --pkg fast_lio -j2` then passed.
+
+### P1 blocker
+
+The current `junior_ctrl` was intentionally built with
+`UNITREE_DISABLE_TORCH_POLICY`.  Its CMake configuration excludes
+`State_Trotting.cpp`, `State_RL_test.cpp`, and `State_move_base.cpp`; therefore
+the fixed-stand controller cannot transition to a real walking/trotting state.
+Do not send the START/trot command to this binary.  A real 5 m or rectangular
+path test needs the user to authorize re-enabling the Torch policy stack (with
+its ABI/CUDA dependency risk), or to explicitly approve a separately labelled
+kinematic SLAM-only trajectory test.
+
+### Latest 60 s ROS-time attempt: external-master interruption
+
+The capture was restarted after fixed stand had settled, but did not complete:
+
+| Capture | FAST-LIO2 delta | Gazebo truth delta | ROS simulation span | Result |
+|---|---:|---:|---:|---|
+| `*_p0_stand_sim60.csv` (latest) | 0.074965 m / 0.788825° | 0.018344 m / 0.592970° | 28.900 s | invalid for acceptance; interrupted |
+
+At `2026-07-13 22:47:51`, an independently launched workspace at
+`/home/zzf/桌面/unitree_ex` joined `ROS_MASTER_URI=http://localhost:11311`.
+Its launch registered duplicate root nodes `/gazebo` and
+`/robot_state_publisher`, displacing SimEnv's nodes. It then failed because
+`hustw_description` is not in SimEnv's package path, and the shared session
+ended. This is a cross-workspace ROS-master/name collision, not a FAST-LIO2
+crash. The longer window also shows fixed stand is not sufficiently motionless
+yet: ground truth moved 1.83 cm / 0.593°. Isolate the master and use a truly
+stationary support/control mode before retrying the 60 s gate.
+
+### P0 drift-cause diagnostic
+
+A controlled 10 s diagnostic window started after FAST-LIO2 initialization
+and recorded `/Odometry`, `/ground_truth/base_w`, and `/livox/imu` together.
+
+| Signal | Measurement | Interpretation |
+|---|---:|---|
+| FAST-LIO2 pose | 0.005980 m / 0.364035° | close to truth over this window |
+| Gazebo truth pose | 0.012825 m / 0.325467° | fixed stand is not perfectly static |
+| Truth angular speed | mean 0.050412, max 0.831500 rad/s | physical rotational motion remains |
+| IMU angular speed | mean 0.048114, max 0.831491 rad/s | matches truth, so IMU gyro sign/scale is consistent |
+| IMU acceleration norm | mean 12.530, max 87.112 m/s² | contact/stance vibration; expected static gravity is about 9.8 m/s² |
+
+The primary cause of P0 variability is therefore the test fixture: the A1 is
+not physically motionless in fixed stand. The prior extreme run was a falling
+robot; the longer fixed-stand run accumulated real yaw motion. In this
+controlled window FAST-LIO2 follows the physical rotation closely rather than
+showing an independent runaway. Missing per-point timestamps in the PointCloud2
+adapter remains a secondary risk during that motion, but this test does not
+implicate the configured LiDAR--IMU extrinsic as the primary cause.
+
+### Reduced-duration P0 after RTF measurement
+
+Measured real-time factor: `0.068` (0.758 s ROS time in 11.105 s wall time).
+Following the reduced-duration rule, ran an independent 10 s ROS-time window
+with `FAST_LIO_P0_DURATION_SECONDS=10` and tag `p0_stand_sim10_rtf068`; it
+does not overwrite the 60 s captures.
+
+| Metric | FAST-LIO2 | Gazebo truth | Result |
+|---|---:|---:|---|
+| ROS-time span | 10.000 s | 9.998 s | completed |
+| Position change | 0.286359 m | 0.004874 m | fail versus P0 drift threshold |
+| Orientation change | 1.216603° | 0.774496° | fail; truth itself is not static enough |
+| Finite values | yes | yes | pass |
+
+`/cloud_registered` still published after the capture. This confirms the P0
+block is reproducible in a tractable low-RTF window: FAST-LIO2 has substantial
+position change while fixed stand also has unacceptable yaw motion. `StepTest`
+is only an in-place wave gait and `BalanceTest` only commands bounded body
+offsets; neither is a valid 5 m/rectangle P1 substitute. The compiled binary
+still excludes Trotting and move_base because Torch policy is disabled.
