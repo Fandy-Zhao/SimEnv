@@ -459,7 +459,7 @@ torch::Tensor State_RL::quat_rotate_inverse(const torch::Tensor& q, const torch:
 
 void State_RL::load_policy()
 {
-    model_path = "src/unitree_guide/logs/policy_act_inference_stair.pt";
+    model_path = "src/unitree_guide/logs/policy_act_inference_plane.pt";
     std::cout << model_path << std::endl;
     // load model from check point
     std::cout << "cuda::is_available():" << torch::cuda::is_available() << std::endl;

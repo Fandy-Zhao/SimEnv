@@ -5,11 +5,13 @@
 #include <iomanip>
 
 State_Trotting::State_Trotting(CtrlComponents *ctrlComp)
-             :FSMState(ctrlComp, FSMStateName::TROTTING, "trotting"), 
-              _est(ctrlComp->estimator), _phase(ctrlComp->phase), 
-              _contact(ctrlComp->contact), _robModel(ctrlComp->robotModel), 
+             :FSMState(ctrlComp, FSMStateName::TROTTING, "trotting"),
+              _est(ctrlComp->estimator), _phase(ctrlComp->phase),
+              _contact(ctrlComp->contact), _robModel(ctrlComp->robotModel),
               _balCtrl(ctrlComp->balCtrl){
     _gait = new GaitGenerator(ctrlComp);
+    _cmdVelSub = _nh.subscribe<geometry_msgs::Twist>("/cmd_vel", 10,
+        &State_Trotting::cmdVelCallback, this);
 
     _gaitHeight = 0.08;
 
@@ -178,16 +180,33 @@ void State_Trotting::setHighCmd(double vx, double vy, double wz){
     _dYawCmd = wz;
 }
 
-void State_Trotting::getUserCmd(){
-    /* Movement */
-    _vCmdBody(0) =  invNormalize(_userValue.ly, _vxLim(0), _vxLim(1));
-    _vCmdBody(1) = -invNormalize(_userValue.lx, _vyLim(0), _vyLim(1));
-    _vCmdBody(2) = 0;
+void State_Trotting::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
+    _cmdVelActive = true;
+    _cmdVx = msg->linear.x;
+    _cmdVy = msg->linear.y;
+    _cmdWz = msg->angular.z;
+}
 
-    /* Turning */
-    _dYawCmd = -invNormalize(_userValue.rx, _wyawLim(0), _wyawLim(1));
-    _dYawCmd = 0.9*_dYawCmdPast + (1-0.9) * _dYawCmd;
-    _dYawCmdPast = _dYawCmd;
+void State_Trotting::getUserCmd(){
+    if (_cmdVelActive){
+        /* Use /cmd_vel when available */
+        _vCmdBody(0) = saturation(_cmdVx, _vxLim);
+        _vCmdBody(1) = saturation(_cmdVy, _vyLim);
+        _vCmdBody(2) = 0;
+        _dYawCmd = saturation(_cmdWz, _wyawLim);
+        _dYawCmd = 0.9*_dYawCmdPast + (1-0.9) * _dYawCmd;
+        _dYawCmdPast = _dYawCmd;
+    } else {
+        /* Movement */
+        _vCmdBody(0) =  invNormalize(_userValue.ly, _vxLim(0), _vxLim(1));
+        _vCmdBody(1) = -invNormalize(_userValue.lx, _vyLim(0), _vyLim(1));
+        _vCmdBody(2) = 0;
+
+        /* Turning */
+        _dYawCmd = -invNormalize(_userValue.rx, _wyawLim(0), _wyawLim(1));
+        _dYawCmd = 0.9*_dYawCmdPast + (1-0.9) * _dYawCmd;
+        _dYawCmdPast = _dYawCmd;
+    }
 }
 
 void State_Trotting::calcCmd(){
