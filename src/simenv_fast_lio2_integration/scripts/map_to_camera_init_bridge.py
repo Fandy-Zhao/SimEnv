@@ -3,10 +3,13 @@
 Publish ``map → camera_init`` static TF to connect FAST-LIO2's global frame
 into the Gazebo world TF tree.
 
-FAST-LIO2 initialises ``camera_init`` at the LiDAR's world pose when the first
-scan arrives (t ≈ first Odometry stamp).  This node waits for the first
-``/Odometry`` message, looks up ``map → laser_livox`` at that exact timestamp,
-and broadcasts the resulting transform as a static TF ``map → camera_init``.
+FAST-LIO2 initialises ``camera_init`` at the body/IMU pose (upright, horizontal).
+This node waits for the first ``/Odometry`` message, looks up ``map → imu_link``
+at that exact timestamp, and broadcasts the resulting transform as a static TF
+``map → camera_init``.
+
+We use ``imu_link`` (not ``laser_livox``) because ``camera_init`` is aligned with
+the body frame at init time, not the 45°-tilted LiDAR frame.
 """
 
 import rospy
@@ -33,26 +36,26 @@ def main():
     init_stamp = first_odom.header.stamp
     rospy.loginfo("First Odometry at sim time %.3f s", init_stamp.to_sec())
 
-    # Look up map -> laser_livox at that exact time (when camera_init was born)
-    lidar_in_map = None
+    # Look up map -> imu_link at that exact time (camera_init ≡ body at init)
+    body_in_map = None
     deadline = rospy.Time.now() + rospy.Duration(15)
     rate = rospy.Rate(10)
     while not rospy.is_shutdown() and rospy.Time.now() < deadline:
         try:
-            lidar_in_map = tf_buffer.lookup_transform(
-                "map", "laser_livox", init_stamp, rospy.Duration(3))
+            body_in_map = tf_buffer.lookup_transform(
+                "map", "imu_link", init_stamp, rospy.Duration(3))
             break
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException,
                 tf2_ros.ExtrapolationException) as exc:
             rospy.logdebug("TF lookup retry: %s", exc)
             rate.sleep()
 
-    if lidar_in_map is None:
-        rospy.logerr("Could not look up map -> laser_livox at t=%.3f. "
+    if body_in_map is None:
+        rospy.logerr("Could not look up map -> imu_link at t=%.3f. "
                      "Falling back to latest TF.", init_stamp.to_sec())
         try:
-            lidar_in_map = tf_buffer.lookup_transform(
-                "map", "laser_livox", rospy.Time(0), rospy.Duration(5))
+            body_in_map = tf_buffer.lookup_transform(
+                "map", "imu_link", rospy.Time(0), rospy.Duration(5))
         except Exception as e:
             rospy.logerr("Fallback also failed: %s", e)
             return
@@ -62,7 +65,7 @@ def main():
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "map"
     t.child_frame_id = "camera_init"
-    t.transform = lidar_in_map.transform
+    t.transform = body_in_map.transform
 
     broadcaster.sendTransform(t)
     rospy.loginfo("Published static TF: map -> camera_init")
