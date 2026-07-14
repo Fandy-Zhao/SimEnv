@@ -18,6 +18,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 > **2026-07-13 reduced-P0 update**: 实测 RTF=0.068，完成独立 10 s ROS-time 窗口。FAST-LIO2 为 0.286359 m / 1.216603°，真值为 0.004874 m / 0.774496°；数据有限值且注册点云仍发布，但 P0 未通过。当前非 Torch 控制器没有真实 5 m 轨迹步态。
 > **2026-07-14 FAST-LIO2 validation**: PointCloud2 格式修复 (xyzi32)、TF 桥接 (map→camera_init)、RViz 配置。FixedStand 静止 30s 收敛至 ~7cm。全部输出话题 (/Odometry, /Laser_map, /cloud_registered, /path) 发布稳定。Trotting `/cmd_vel`+`/fsm/state_cmd` 就绪，P1 受 Gazebo 物理稳定性阻塞。
 > **2026-07-14 startup-order fix**: `auto.sh` 重构执行顺序: 控制器在 FAST-LIO2 之前启动，自动发送 FixedStand 指令，等待 IMU 确认直立姿态后再初始化 SLAM。修复因机器人未站立导致的 IMU 重力方向估计错误和点云 Z 轴漂移 (`fix/0714-fastlio2-startup-order`)。
+> **2026-07-14 TF bridge + foreground**: camera_init 桥接方向迭代: `laser_livox`→`imu_link`→`imu_link+Ry(-45°)`，修复点云 45° 倾斜和 odometry X 轴方向错误。`CONTROLLER_FOREGROUND` 默认 1，FAST-LIO2 初始化后 `fg` 拉回前台。launch 文件 `enable_adapter:=false` 避免重复 scan_to_pointcloud2 节点。
 
 ## Modules
 

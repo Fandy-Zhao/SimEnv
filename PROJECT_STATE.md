@@ -2,12 +2,12 @@
 
 ## Snapshot
 - Date: 2026-07-14
-- Branch: fix/0714-fastlio2-startup-order
+- Branch: develop
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: FAST-LIO2 startup order fix — ensure robot is standing before IMU init
+- Current focus: FAST-LIO2 startup + TF bridge fixes integrated
 
 ## Active Work
-- **FAST-LIO2 startup order fix** (`fix/0714-fastlio2-startup-order`): Controller now starts before FAST-LIO2 in `auto.sh`. Auto-commanded FixedStand + IMU upright check before SLAM init. Fixes Z-axis point cloud drift in RViz.
+- **FAST-LIO2 startup + TF bridge** (merged to `develop`): Controller starts before FAST-LIO2, auto-commanded FixedStand, IMU upright check. Duplicate adapter eliminated. Controller foreground mode preserved via `fg`. Camera-init TF bridge iterated to `imu_link + Ry(-45°)` for correct point cloud and odometry orientation.
 - **FAST-LIO2 runtime validated**: PointCloud2 intensity fix, TF bridge, RViz config. Converges to ~7 cm within 20 s in FixedStand. All output topics publish stably.
 - **Locomotion ready**: Trotting with `/cmd_vel` + `/fsm/state_cmd` programmatic control. RL policies diagnosed as non-functional for velocity tracking. P1 blocked by Gazebo physics stability.
 - **`auto.sh` cleanup**: Comprehensive process cleanup on startup.
