@@ -3,7 +3,7 @@
 - **创建日期**: 2026-07-13
 - **分支**: exp/0713-fast-lio2-stage01-runtime (from develop)
 - **参考文档**: `prompts/fastlio2_tare_dsv_test_plan.md` §3-4, `docs/slam/fast_lio2_deployment_guide.md`
-- **状态**: Partially blocked — controlled P0 is stable; P1 lacks an enabled locomotion mode
+- **状态**: Stage 0 ✅ | Stage 1 L1+L2 ✅ | Stage 1 P0 ⚠️ (fixture-limited) | Stage 1 P1 ❌ (blocked by non-Torch controller) — merged to develop 2026-07-14
 
 ## Task Goal
 

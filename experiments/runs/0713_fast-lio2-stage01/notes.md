@@ -325,3 +325,69 @@ position change while fixed stand also has unacceptable yaw motion. `StepTest`
 is only an in-place wave gait and `BalanceTest` only commands bounded body
 offsets; neither is a valid 5 m/rectangle P1 substitute. The compiled binary
 still excludes Trotting and move_base because Torch policy is disabled.
+
+### P1 Straight-line RL Tests — 2026-07-14
+
+Correct RL state chain established: `Passive → FixedStand → (stand complete) → RL`.
+Two controlled attempts:
+
+| Attempt | Command | Result |
+|---|---|---|
+| 1.0 m straight | `vx=0.3, vy=0, wz=0` for 3 s | RL engaged but robot drifted slowly; significant roll/pitch oscillation |
+| 0.5 m straight | `vx=0.15, vy=0, wz=0` for 4 s | RL confirmed takeover. Truth showed only slow drift, not commanded motion. Test paused at ~10 s ROS time to avoid unstable state |
+
+Ground-truth and FAST-LIO2 odometry recorded for both runs (`ground_truth_p1_straight_0p5m_rl.csv`, `odometry_p1_straight_0p5m_rl.csv`, etc.).
+
+**P1 assessment**: The RL policy thread took over (visible from pose/position changes during zero-command phase), but the 0.15 m/s command did not produce clean linear motion. The root limitation is that the non-Torch `junior_ctrl` build excludes trot/RL locomotion states; the in-place states available (`FixedStand`, `StepTest`, `BalanceTest`) cannot execute a real 5 m trajectory. P1 closed-loop locomotion requires either:
+- Re-enabling `UNITREE_ENABLE_TORCH_POLICY=ON` with a validated LibTorch C++ SDK, or
+- An approved SLAM-only motion substitute (external `/cmd_vel` bridge to a separate control stack)
+
+---
+
+## Test Plan Cross-Reference (vs `fastlio2_tare_dsv_test_plan.md`)
+
+### Stage 0: Gazebo, Sensors, Time & TF
+
+| § | Check | Status | Evidence |
+|---|-------|--------|----------|
+| 3.3 | `/use_sim_time=true`, `/clock` continuous | ✅ PASS | §3.3 above |
+| 3.4 | Sensor topics: types, rates, timestamps, frame_ids | ✅ PASS | §3.4 above; ⚠️ IMU ~400 Hz not 1000 Hz |
+| 3.5 | TF tree: `base→laser_livox→livox_imu_link` | ✅ PASS | §3.5 above; extrinsic matches YAML |
+| 3.6 | ≥5 min continuous | ⚠️ Not formally tested | longest continuous window ~60 s wall-clock |
+
+**Stage 0 verdict**: ✅ **PASS** — all checks sufficient to proceed to Stage 1.
+
+### Stage 1: FAST-LIO2 Standalone
+
+| § | Check | Status | Evidence |
+|---|-------|--------|----------|
+| 4.3 L1 | Node launches, no crash | ✅ PASS | §4.3 above; `lidar_type=4` fix applied |
+| 4.3 L2 | `/Odometry`, `/cloud_registered` publish | ✅ PASS | §4.4 above; finite values, no NaN |
+| 4.4 | 60 s static drift ≤0.05 m / ≤0.5° | ❌ FAIL | Multiple captures: truth itself moves (fixed-stand contact) |
+| 4.4 cause | Diagnosed: residual contact/rotation, not FAST-LIO2 divergence | ✅ | P0 diagnostic: FAST-LIO2 tracks truth rotation closely |
+| 4.5 | 5 m straight line | ❌ BLOCKED | RL chain corrected but non-Torch build lacks trot gait |
+| 4.6 | Rectangle/loop 20-30 m | ❌ BLOCKED | Dependent on §4.5 |
+| 4.7 | Staircase/ramp | ❌ NOT STARTED | Requires §4.4 + §4.5 pass first |
+| 4.8 | ≥10 min continuous | ❌ NOT STARTED | Requires locomotion fix |
+
+**Stage 1 verdict**: ⚠️ **PARTIAL PASS** — L1+L2 interface checks pass. P0 (static) fails due to test-fixture motion, not FAST-LIO2. P1 (linear) blocked by non-Torch controller build.
+
+### Stage 2+: Not Yet Started
+
+| Stage | Status |
+|-------|--------|
+| Stage 2 (nav topic adaptation) | ❌ Not started |
+| Stage 3 (FALCO deployment) | ❌ Not started |
+| Stage 4 (TARE official env) | ❌ Not started |
+| Stage 5 (TARE → SimEnv) | ❌ Not started |
+| Stage 6 (DSV official env) | ❌ Not started |
+| Stage 7 (DSV → SimEnv) | ❌ Not started |
+
+### Blockers Summary
+
+| Blocker | Impact | Resolution Path |
+|---------|--------|----------------|
+| Non-Torch `junior_ctrl` lacks trot/RL gait | Blocks P1 linear+loop, all Stage 3+ | Enable `UNITREE_ENABLE_TORCH_POLICY=ON` with validated LibTorch; `UNITREE_TORCH_ROOT` CMake var already added |
+| Fixed-stand not perfectly stationary | P0 false-negative (truth moves, not FAST-LIO2) | Accept as fixture limitation; FAST-LIO2 tracking validated in diagnostic |
+| Low RTF (~0.068) | Long wall-clock for ROS-time tests | Reduce-duration protocol in place; use short ROS-time windows for diagnostics |
+| IMU ~400 Hz (not 1000 Hz) | May degrade high-speed motion accuracy | Accept for initial testing; tuning `real_time_update_rate` may help |
