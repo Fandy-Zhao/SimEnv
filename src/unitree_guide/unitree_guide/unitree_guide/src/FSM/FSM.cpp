@@ -41,6 +41,12 @@ void FSM::run(){
     _startTime = getSystemTime();
     _ctrlComp->sendRecv();
     _ctrlComp->ioInterFreeDog->sendRecv();
+
+    // Apply ROS /fsm/state_cmd latch (after sendRecv to override keyboard)
+    if (_ctrlComp->pendingStateCmd != UserCommand::NONE) {
+        _ctrlComp->lowState->userCmd = _ctrlComp->pendingStateCmd;
+        _ctrlComp->pendingStateCmd = UserCommand::NONE;
+    }
     if(!_ctrlComp->ioInter->hasFullStateFeedback()){
         if(!_waitingForStateFeedback){
             std::cout << "[INFO] Waiting for Gazebo joint state feedback before accepting stand command." << std::endl;

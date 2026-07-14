@@ -13,10 +13,12 @@
 #include <cstring>
 #include <string>
 
+#include <std_msgs/Int8.h>
 #include "control/ControlFrame.h"
 #include "control/CtrlComponents.h"
 #include "Gait/WaveGenerator.h"
 #include "control/BalanceCtrl.h"
+#include "interface/KeyBoard.h"
 
 #ifdef COMPILE_WITH_REAL_ROBOT
 #include "interface/IOSDK.h"
@@ -147,6 +149,23 @@ int main(int argc, char **argv)
     ctrlComp->geneObj();
 
     ControlFrame ctrlFrame(ctrlComp);
+
+    // ROS subscriber for programmatic state transitions (bypasses keyboard pty).
+    // Latch stored in ctrlComp->pendingStateCmd, applied in FSM::run() after sendRecv().
+    ros::NodeHandle fsm_nh;
+    auto stateCmdCb = [ctrlComp](const std_msgs::Int8::ConstPtr& msg) {
+        switch (msg->data) {
+            case 1: ctrlComp->pendingStateCmd = UserCommand::L2_B; break;
+            case 2: ctrlComp->pendingStateCmd = UserCommand::L2_A; break;
+            case 3: ctrlComp->pendingStateCmd = UserCommand::L2_X; break;
+            case 4: ctrlComp->pendingStateCmd = UserCommand::START; break;
+            case 6: ctrlComp->pendingStateCmd = UserCommand::RL; break;
+            case 8: ctrlComp->pendingStateCmd = UserCommand::L1_Y; break;
+            case 9: ctrlComp->pendingStateCmd = UserCommand::L1_A; break;
+            default: break;
+        }
+    };
+    ros::Subscriber stateCmdSub = fsm_nh.subscribe<std_msgs::Int8>("/fsm/state_cmd", 10, stateCmdCb);
 
     signal(SIGINT, ShutDown);
 

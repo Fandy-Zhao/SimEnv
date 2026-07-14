@@ -63,6 +63,10 @@ public:
     bool *running;
     CtrlPlatform ctrlPlatform;
 
+    // Latch for /fsm/state_cmd ROS topic. Set by ROS callback, applied by
+    // FSM::run() after sendRecv() to override keyboard userCmd.
+    UserCommand pendingStateCmd = UserCommand::NONE;
+
     void sendRecv(){
         ioInter->sendRecv(lowCmd, lowState);
     }

@@ -58,6 +58,11 @@
 - Added duration and output-tag environment options to the P0 capture helper,
   so reduced-duration tests do not overwrite the 60 s evidence.
 
+### P1 Locomotion Analysis & Trotting `/cmd_vel` Fix
+- **RL policy diagnosis**: Both `policy_act_inference_plane.pt` and `policy_act_inference_stair.pt` confirmed non-responsive to `/cmd_vel` velocity commands. At 0.3 m/s and 1.0 m/s, robot moves <0.2 mm. RL inference outputs constant standing actions regardless of command.
+- **Trotting `/cmd_vel` addition**: Added `ros::Subscriber` for `/cmd_vel` to `State_Trotting` (classical MPC gait controller, no RL dependency). When active, overrides keyboard WASD with `cmd_vel.linear.x/y` and `angular.z`, saturated to robot limits (vx[-0.8,0.8], vy[-0.6,0.6], wz[-1.0,1.0]). Keyboard fallback preserved when no `/cmd_vel` received.
+- **State chain**: `Passive → 2(FixedStand) → 4(Trotting)`. Trotting originally keyboard-only (WASD→vx, AD→vy, JL→wz, IK→height).
+
 ### FAST-LIO2 P0 Cause Diagnostic
 - Added a synchronized truth/IMU/odometry diagnostic and ran it for 10 s.
   FAST-LIO2 tracked the remaining physical truth rotation closely (0.364035°
