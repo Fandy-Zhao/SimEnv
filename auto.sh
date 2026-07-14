@@ -31,7 +31,7 @@ BUILDING_WIDTH="${BUILDING_WIDTH:-20.0}"
 BUILDING_LENGTH="${BUILDING_LENGTH:-36.0}"
 DANGER_COUNT="${DANGER_COUNT:-3:6}"
 DISTRACTOR_COUNT="${DISTRACTOR_COUNT:-4:8}"
-GUI="${GUI:-true}"
+GUI="${GUI:-false}"
 PAUSED="${PAUSED:-true}"
 AUTO_UNPAUSE="$(as_ros_bool "${AUTO_UNPAUSE:-1}")"
 AUTO_UNPAUSE_DELAY="${AUTO_UNPAUSE_DELAY:-6}"
@@ -48,8 +48,8 @@ ENABLE_JOY_NODE="$(as_ros_bool "${ENABLE_JOY_NODE:-0}")"
 ENABLE_POINTCLOUD_CONVERTER="$(as_ros_bool "${ENABLE_POINTCLOUD_CONVERTER:-1}")"
 POINTCLOUD_USE_GROUND_TRUTH_ODOM="$(as_ros_bool "${POINTCLOUD_USE_GROUND_TRUTH_ODOM:-1}")"
 WRITE_GENERATED_TRUTH_COPY="$(as_ros_bool "${WRITE_GENERATED_TRUTH_COPY:-1}")"
-ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-0}")"
-FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-0}"
+ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-1}")"
+FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-10}"
 UNITREE_CTRL_DT="${UNITREE_CTRL_DT:-0.004}"
 GAZEBO_PHYSICS_MAX_STEP_SIZE="${GAZEBO_PHYSICS_MAX_STEP_SIZE:-0.002}"
 GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE:-500}"
@@ -245,6 +245,13 @@ if [ "$START_BUILDING_CONTROL" = "1" ]; then
 fi
 
 if [ "$ENABLE_FAST_LIO2" = "true" ]; then
+  if [ "$START_CONTROLLER" != "1" ]; then
+    echo "WARNING: ENABLE_FAST_LIO2=1 but START_CONTROLLER=$START_CONTROLLER" >&2
+    echo "  The robot will NOT be standing when FAST-LIO2 initialises." >&2
+    echo "  FAST-LIO2 needs a stationary, upright robot for correct EKF convergence." >&2
+    echo "  Either set START_CONTROLLER=1 or start the controller manually (FixedStand)." >&2
+    echo "" >&2
+  fi
   FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-0}"
   if [ "$FAST_LIO2_DELAY" -gt 0 ]; then
     echo "Waiting ${FAST_LIO2_DELAY}s before FAST-LIO2 (robot should be standing)..."
