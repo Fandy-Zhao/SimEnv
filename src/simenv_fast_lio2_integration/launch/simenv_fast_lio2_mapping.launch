@@ -42,6 +42,16 @@
   <rosparam file="$(arg fast_lio_config)" command="load"/>
   <node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen"/>
 
+  <!-- Bridge: map → camera_init static TF.
+       FAST-LIO2 creates its own ``camera_init`` frame, disconnected from the
+       Gazebo ``map → odom → base`` tree.  This node looks up ``map → laser_livox``
+       and publishes the same transform as a static TF ``map → camera_init``,
+       connecting the two trees so that /Odometry can be visualised in the
+       world frame. -->
+  <node pkg="simenv_fast_lio2_integration"
+        type="map_to_camera_init_bridge.py" name="map_to_camera_init_bridge"
+        output="screen" respawn="false"/>
+
   <!-- RViz (optional) -->
   <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz"
         args="-d $(find simenv_fast_lio2_integration)/config/fast_lio2.rviz"/>
