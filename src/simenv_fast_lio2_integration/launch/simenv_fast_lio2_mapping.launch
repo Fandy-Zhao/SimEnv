@@ -17,8 +17,10 @@
       roslaunch simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch
   -->
 
-  <!-- PointCloud adapter: /scan (PointCloud) -> /scan_pointcloud2 (PointCloud2) -->
-  <arg name="enable_adapter" default="true"/>
+  <!-- PointCloud adapter: /scan (PointCloud) -> /scan_pointcloud2 (PointCloud2)
+       Default false: auto.sh starts the adapter directly so it can control
+       the startup order.  Set to true only when launching this file standalone. -->
+  <arg name="enable_adapter" default="false"/>
   <arg name="scan_topic" default="/scan"/>
   <arg name="pointcloud2_topic" default="/scan_pointcloud2"/>
 
