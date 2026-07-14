@@ -2,16 +2,33 @@
 """
 Publish ``map -> camera_init`` static TF to connect FAST-LIO2's global frame
 into the Gazebo world TF tree.
-
-FAST-LIO2 initialises ``camera_init`` at the body/IMU pose (horizontal, Z-up,
-aligned with gravity).  We look up ``map -> imu_link`` -- the trunk IMU frame
-which coincides with the EKF's initial body frame.
 """
 
+import math
 import rospy
 import tf2_ros
 import geometry_msgs.msg as gm
 from nav_msgs.msg import Odometry
+from tf.transformations import quaternion_multiply, quaternion_about_axis
+
+
+def _rotate_by(tf_in, axis, angle_rad):
+    """Right-multiply tf_in's rotation by angle_rad around axis."""
+    q_extra = quaternion_about_axis(angle_rad, axis)
+    q_in = [
+        tf_in.rotation.x,
+        tf_in.rotation.y,
+        tf_in.rotation.z,
+        tf_in.rotation.w,
+    ]
+    q_out = quaternion_multiply(q_in, q_extra)
+    tf_out = gm.Transform()
+    tf_out.translation = tf_in.translation
+    tf_out.rotation.x = q_out[0]
+    tf_out.rotation.y = q_out[1]
+    tf_out.rotation.z = q_out[2]
+    tf_out.rotation.w = q_out[3]
+    return tf_out
 
 
 def main():
@@ -54,14 +71,18 @@ def main():
             rospy.logerr("Fallback also failed: %s", e)
             return
 
+    # Apply Ry(-45 deg) -- tilt camera_init the same direction as the LiDAR
+    # mounting, to match the LiDAR scan-data output convention.
+    tf_aligned = _rotate_by(body_in_map.transform, (0, 1, 0), math.radians(-45.0))
+
     t = gm.TransformStamped()
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "map"
     t.child_frame_id = "camera_init"
-    t.transform = body_in_map.transform
+    t.transform = tf_aligned
 
     broadcaster.sendTransform(t)
-    rospy.loginfo("Published static TF: map -> camera_init  (via imu_link)")
+    rospy.loginfo("Published static TF: map -> camera_init  (imu_link + Ry(-45 deg))")
     rospy.loginfo("  translation: (%.3f, %.3f, %.3f)",
                   t.transform.translation.x,
                   t.transform.translation.y,
