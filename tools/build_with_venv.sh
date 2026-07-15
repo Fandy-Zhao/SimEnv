@@ -193,20 +193,18 @@ if [[ -d "$CUDA_HOME" ]]; then
   CATKIN_CMAKE_ARGS+=("-DCMAKE_CUDA_FLAGS=-ccbin=$SELECTED_CXX")
 fi
 
-# Accumulate CMake prefix entries (ROS, Torch, CUDA)
-CMAKE_PREFIX_ENTRIES=()
-
-if [[ -n "${CMAKE_PREFIX_PATH:-}" ]]; then
-  CMAKE_PREFIX_ENTRIES+=("$CMAKE_PREFIX_PATH")
-fi
+# Accumulate CMake prefix entries (ROS, Torch, CUDA) and export them as an
+# environment variable.  ROS setup.bash already seeded CMAKE_PREFIX_PATH with
+# /opt/ros/noetic.  Exporting additional prefixes via the environment (rather
+# than -DCMAKE_PREFIX_PATH) keeps ROS's own prefixes intact and avoids
+# overriding per-package find_package() paths (e.g. unitree_guide's
+# NO_DEFAULT_PATH for its own LibTorch distribution).
+CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH:-}"
 
 if [[ -n "${TORCH_CMAKE_PREFIX:-}" ]]; then
   if find "$TORCH_CMAKE_PREFIX" \( -name "TorchConfig.cmake" -o -name "torch-config.cmake" \) 2>/dev/null | grep -q .; then
-    CMAKE_PREFIX_ENTRIES+=("$TORCH_CMAKE_PREFIX")
-    # Do NOT set a global -DTorch_DIR.  unitree_guide links its own LibTorch
-    # distribution (UNITREE_TORCH_ROOT, NO_DEFAULT_PATH).  A global Torch_DIR
-    # overrides that path and mixes incompatible torch .so files at link time.
-    echo "[build_with_venv] Torch CMake prefix: $TORCH_CMAKE_PREFIX"
+    CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}:${TORCH_CMAKE_PREFIX}"
+    echo "[build_with_venv] Torch CMake prefix appended: $TORCH_CMAKE_PREFIX"
   else
     echo "WARN: torch import works but TorchConfig.cmake was not found under: $TORCH_CMAKE_PREFIX" >&2
   fi
@@ -218,14 +216,11 @@ else
 fi
 
 if [[ -d "${CUDA_HOME:-}" ]]; then
-  CMAKE_PREFIX_ENTRIES+=("$CUDA_HOME")
+  CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}:${CUDA_HOME}"
 fi
 
-if [[ ${#CMAKE_PREFIX_ENTRIES[@]} -gt 0 ]]; then
-  CMAKE_PREFIX_JOINED="$(IFS=';'; echo "${CMAKE_PREFIX_ENTRIES[*]}")"
-  CATKIN_CMAKE_ARGS+=("-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_JOINED")
-  echo "[build_with_venv] CMake prefix path: $CMAKE_PREFIX_JOINED"
-fi
+export CMAKE_PREFIX_PATH
+echo "[build_with_venv] CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH"
 
 # ---------------------------------------------------------------------------
 # Warn about CMake cache if compilers may have changed
