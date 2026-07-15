@@ -25,7 +25,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 > **2026-07-15 build/startup guard**: `build_with_venv.sh` 默认编译 `auto.sh` 的完整运行时包集，包含发布 `/scan` 所需的 `livox_laser_simulation`，并避开工作区内不属于仓库的可选包（如依赖 libusb-0.1 的 `ps3joy`）；`auto.sh` 在清理/生成场景前检查 `junior_ctrl` 是否已生成，避免控制器缺失导致启动后才退出 (`fix/0715-build-auto-startup`)。
 
 > **2026-07-15 FSM nullptr segfault fix**: 当 Torch 策略默认禁用时，键盘 `4`/`6` 键和 ROS callback `data:4`/`data:6` 不再触发 TROTTING/RL 状态转换（对应状态指针为 nullptr）。新增 FSM 级 nullptr 安全检查作为防御层。`auto.sh` 帮助文本已更新，标明 `4`/`6` 需要 Torch 构建 (`fix/0715-build-auto-startup`).
-> **2026-07-15 dedicated terminals**: `auto.sh` 改为在独立 `gnome-terminal.real` 窗口中启动 `junior_ctrl` 和 rviz（回退: `xterm` → 后台）。启动器会清除 Snap Code 注入的库路径，避免 GLIBC 符号错误，同时终端内仍重新加载 ROS 环境。控制器获得真实 TTY，键盘输入正常可用。移除 `CONTROLLER_FOREGROUND`，新增 `ENABLE_RVIZ`。`Ctrl-C` 通过 trap 清理所有 ROS 进程 (`fix/0715-build-auto-startup`).
+> **2026-07-15 dedicated terminals**: `auto.sh` 默认在独立 tmux 会话中启动 `junior_ctrl` 和 rviz（`simenv-junior_ctrl`、`simenv-rviz`）；即使 GNOME Terminal 闪退，会话可用 `tmux attach-session -t ...` 重连。GNOME Terminal 仅作为 attach 客户端，并会清除 Snap Code 注入的库路径以避免 GLIBC 符号错误。控制器获得真实 TTY，键盘输入正常可用。新增 `TERMINAL_BACKEND`（设为 `direct` 可回退旧行为）。`Ctrl-C` 通过 trap 清理 ROS 进程和 tmux 会话 (`fix/0715-build-auto-startup`).
 
 ## Modules
 

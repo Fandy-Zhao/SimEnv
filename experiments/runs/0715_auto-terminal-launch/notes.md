@@ -11,6 +11,9 @@
 | `rosrun` failure inside terminal child shell | PASS: outer diagnostic shell survives `rosrun`'s `exec` |
 | `GUI=false ENABLE_RVIZ=1 ./auto.sh` under a non-interactive `timeout` harness | Startup and `/Odometry` at 10 Hz PASS; its VTE children exited before the harness ended, so this is not accepted as proof of interactive-window survival |
 | Direct controller terminal with a live `junior_ctrl` child | PASS: the VTE terminal shell remained alive while the controller process ran |
+| tmux generated-runtime-script probe | PASS: named session stayed alive and sourced ROS Noetic |
+| `TERMINAL_BACKEND=tmux ./auto.sh` controlled startup | PASS: `simenv-junior_ctrl` and `simenv-rviz` both had a live Bash pane (`dead=0`); `/Odometry` averaged about 10 Hz |
+| `SIGINT` cleanup after tmux smoke test | PASS: trap removed both sessions and checked ROS/runtime processes |
 
 ## Implementation
 
@@ -23,10 +26,25 @@ the terminal and its error output until the user types `exit`.
 Terminal commands run in a child shell so `rosrun` cannot replace that outer
 shell with RViz and skip the preservation step.
 
+tmux 3.2a was installed as an authorised, isolated system package. `auto.sh`
+uses it by default to host `simenv-junior_ctrl` and `simenv-rviz`; GUI terminals
+only attach to those sessions.
+
+The first integration smoke test exposed a tmux `/bin/sh` incompatibility with
+the Bash-specific escaping produced by `printf %q` for multiline commands. The
+launcher now writes each command to `logs/<title>.tmux.sh` and starts that file
+directly; the file is retained as runtime diagnostics.
+
+The smoke test then exposed and corrected a second issue in the inherited
+session environment construction: `GAZEBO_MODEL_PATH` was split across two
+quoted fragments, yielding invalid Bash in the generated script. It is now
+exported as one quoted assignment.
+
 ## Residual interactive check
 
-The Codex command runner has no controlling terminal. Its full `auto.sh`
-timeout harness successfully reached FAST-LIO2 and 10 Hz odometry, but the VTE
-children exited before timeout. The direct controller-terminal test did retain
-its VTE child. A final manual run from the user's interactive VS Code terminal
-is required to confirm window persistence in that exact session type.
+The Codex command runner has no controlling terminal, so it cannot type a
+keyboard command into an attached controller pane. It has verified the durable
+tmux side: both named sessions remained alive through full startup, and cleanup
+removed them. A user-side manual interaction remains the final confirmation
+that the controller accepts `2`, `4`, or `6` in the particular desktop terminal
+used to attach to `simenv-junior_ctrl`.

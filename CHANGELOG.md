@@ -3,6 +3,14 @@
 ## 2026-07-15
 
 ### Dedicated Controller & RVIZ Terminals (fix/0715-build-auto-startup)
+- Added a tmux-backed terminal mode (default). `junior_ctrl` and RViz run in
+  named sessions that survive a GUI-terminal failure and can be reattached with
+  `tmux attach-session -t simenv-junior_ctrl` or `simenv-rviz`.
+- Run the tmux command from a generated runtime script rather than shell-quoted
+  multiline text, preventing `/bin/sh` from rejecting Bash-specific escaping
+  and immediately closing the session.
+- Corrected the per-session `GAZEBO_MODEL_PATH` export so the generated Bash
+  script remains syntactically valid and both named sessions stay alive.
 - Fixed terminal creation when `auto.sh` is launched from Snap Code: it now
   starts `gnome-terminal.real` with a clean desktop environment instead of the
   Snap-contaminated D-Bus wrapper, which failed with a GLIBC symbol error.

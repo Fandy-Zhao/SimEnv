@@ -50,6 +50,8 @@ WRITE_GENERATED_TRUTH_COPY="$(as_ros_bool "${WRITE_GENERATED_TRUTH_COPY:-1}")"
 ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-1}")"
 FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-5}"
 ENABLE_RVIZ="$(as_ros_bool "${ENABLE_RVIZ:-1}")"
+TERMINAL_BACKEND="${TERMINAL_BACKEND:-tmux}"
+TMUX_SESSION_PREFIX="${TMUX_SESSION_PREFIX:-simenv}"
 UNITREE_CTRL_DT="${UNITREE_CTRL_DT:-0.004}"
 GAZEBO_PHYSICS_MAX_STEP_SIZE="${GAZEBO_PHYSICS_MAX_STEP_SIZE:-0.002}"
 GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE:-500}"
@@ -90,7 +92,9 @@ schedule_unpause_physics() {
 
 # ---------------------------------------------------------------------------
 # Launch a command in a dedicated terminal window.  This gives the command a
-# real TTY so interactive keyboard input works (e.g. junior_ctrl).
+# real TTY so interactive keyboard input works (e.g. junior_ctrl). tmux is
+# the default backend: it preserves the command and its TTY even if a GUI
+# terminal launched from Snap Code flashes and closes.
 # Start gnome-terminal.real directly in a clean desktop environment: when
 # auto.sh is launched from Snap Code, the gnome-terminal D-Bus wrapper inherits
 # Snap libraries and fails before a window is created.  Do not alter the
@@ -100,11 +104,10 @@ schedule_unpause_physics() {
 launch_in_terminal() {
   local title="$1"
   local command="$2"
-  local env_block
+  local env_block tmux_session tmux_command tmux_script
   local -a terminal_env
   env_block="export UNITREE_CTRL_DT='${UNITREE_CTRL_DT}';"
-  env_block="${env_block} export GAZEBO_MODEL_PATH='${GAZEBO_MODEL_PATH:-}'"
-  env_block="${env_block}:${SCENE_OUTPUT_DIR}:${UNITREE_GAZEBO_MODELS}';"
+  env_block="${env_block} export GAZEBO_MODEL_PATH='${GAZEBO_MODEL_PATH:-}:${SCENE_OUTPUT_DIR}:${UNITREE_GAZEBO_MODELS}';"
   env_block="${env_block} export GAZEBO_PLUGIN_PATH='${GAZEBO_PLUGIN_PATH:-}';"
   env_block="${env_block} export ROS_PACKAGE_PATH='${ROS_PACKAGE_PATH:-}';"
   env_block="${env_block} export CMAKE_PREFIX_PATH='${CMAKE_PREFIX_PATH:-}';"
@@ -122,6 +125,46 @@ launch_in_terminal() {
     "DBUS_SESSION_BUS_ADDRESS=${DBUS_SESSION_BUS_ADDRESS:-}"
     "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   )
+
+  if [ "$TERMINAL_BACKEND" = "tmux" ] && command -v tmux >/dev/null 2>&1; then
+    tmux_session="${TMUX_SESSION_PREFIX}-${title}"
+    tmux kill-session -t "$tmux_session" 2>/dev/null || true
+    tmux_command="
+      source /opt/ros/noetic/setup.bash
+      source '${WORKSPACE_DIR}/devel/setup.bash'
+      ${env_block}
+      echo '=== ${title} (tmux session: ${tmux_session}) ==='
+      echo 'Command: ${command}'
+      echo ''
+      ( ${command} )
+      echo ''
+      echo '=== ${title} exited. This tmux session is kept open for diagnostics. Type exit to close. ==='
+      exec bash --noprofile --norc -i
+    "
+    # tmux executes its command through /bin/sh. Do not pass this multiline
+    # Bash script through printf %q: Bash's $'...' escaping is not portable to
+    # /bin/sh and would make the session exit immediately. Keep a runtime
+    # script under logs instead; it also preserves diagnostics for reattach.
+    tmux_script="${WORKSPACE_DIR}/logs/${title}.tmux.sh"
+    printf '%s\n%s\n' '#!/usr/bin/env bash' "$tmux_command" > "$tmux_script"
+    chmod 700 "$tmux_script"
+    if tmux new-session -d -s "$tmux_session" "bash '$tmux_script'"; then
+      printf '%s\n' "$tmux_session" > "${WORKSPACE_DIR}/logs/${title}.tmux_session"
+      echo "tmux session ready: $tmux_session"
+      echo "  Reattach from any terminal: tmux attach-session -t $tmux_session"
+      if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && [ -x /usr/bin/gnome-terminal.real ]; then
+        "${terminal_env[@]}" /usr/bin/gnome-terminal.real --title="$title" -- bash -c "
+          tmux attach-session -t '$tmux_session'
+          echo ''
+          echo 'Detached from $tmux_session. Type exit to close this terminal.'
+          exec bash --noprofile --norc -i
+        " &
+        echo $! > "${WORKSPACE_DIR}/logs/${title}.pid"
+      fi
+      return
+    fi
+    echo "WARNING: Failed to create tmux session '$tmux_session'; falling back to direct terminal launch." >&2
+  fi
 
   if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && [ -x /usr/bin/gnome-terminal.real ]; then
     "${terminal_env[@]}" /usr/bin/gnome-terminal.real --title="$title" -- bash -c "
@@ -163,7 +206,14 @@ launch_in_terminal() {
   echo $! > "${WORKSPACE_DIR}/logs/${title}.pid"
 }
 
+cleanup_tmux_sessions() {
+  command -v tmux >/dev/null 2>&1 || return
+  tmux kill-session -t "${TMUX_SESSION_PREFIX}-junior_ctrl" 2>/dev/null || true
+  tmux kill-session -t "${TMUX_SESSION_PREFIX}-rviz" 2>/dev/null || true
+}
+
 echo "Cleaning up all leftover processes from previous runs..."
+cleanup_tmux_sessions
 
 # ---- Gazebo & ROS core ----
 pkill -9 -f "gzserver"     2>/dev/null || true
@@ -435,7 +485,11 @@ echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL         (nee
 echo ""
 echo "=============================================="
 echo "  auto.sh startup complete."
-echo "  The controller and rviz are in separate terminals."
+echo "  The controller and rviz are in separate ${TERMINAL_BACKEND} sessions."
+if [ "$TERMINAL_BACKEND" = "tmux" ]; then
+  echo "  Reattach if a GUI terminal closes: tmux attach-session -t ${TMUX_SESSION_PREFIX}-junior_ctrl"
+  echo "                                 tmux attach-session -t ${TMUX_SESSION_PREFIX}-rviz"
+fi
 echo "  Press Ctrl-C in THIS terminal to stop all ROS processes."
 echo "=============================================="
 
@@ -453,6 +507,7 @@ cleanup() {
   pkill -9 -f "scan_to_pointcloud2" 2>/dev/null || true
   pkill -9 -f "building_generator_classic_control" 2>/dev/null || true
   pkill -9 -f "rviz"         2>/dev/null || true
+  cleanup_tmux_sessions
   echo "Cleanup complete."
   exit 0
 }

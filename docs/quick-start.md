@@ -132,6 +132,15 @@ GNOME Terminal，避免 Snap 动态库污染阻止控制器和 RViz 窗口创建
 如果控制器或 RViz 进程退出，对应终端会保留诊断信息；输入 `exit` 才会关闭。
 这也适用于 RViz 启动失败的情况。
 
+默认使用 tmux 托管两个会话，因此图形终端闪退不会停止控制器或 RViz：
+
+```bash
+tmux attach-session -t simenv-junior_ctrl
+tmux attach-session -t simenv-rviz
+```
+
+如需旧的直接终端方式，可设置 `TERMINAL_BACKEND=direct ./auto.sh`。
+
 若 `auto.sh` 在场景生成前报告 `junior_ctrl is not built`，请先完成
 Unitree 控制器构建。该预检会保护当前生成场景，避免控制器缺失时启动一半
 Gazebo 后终端因等待失败而返回。
