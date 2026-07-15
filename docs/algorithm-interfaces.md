@@ -10,7 +10,7 @@
 - 键盘输入 `6`：切换到 RL 模式。
 - RL 模式下订阅 `/cmd_vel`。
 
-如果 `CONTROLLER_FOREGROUND=0`，`junior_ctrl` 会在后台运行，键盘状态切换通常不可用，日志写入 `logs/junior_ctrl.log`。
+`junior_ctrl` 在独立终端中运行，支持键盘切换状态。日志写入 `logs/junior_ctrl.pid`（PID 文件）。
 
 ## 最小控制接口
 

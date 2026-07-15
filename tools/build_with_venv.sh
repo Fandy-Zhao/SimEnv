@@ -162,8 +162,11 @@ CATKIN_CMAKE_ARGS=(
 # ---------------------------------------------------------------------------
 # Catkin package selection
 # ---------------------------------------------------------------------------
-# Default: build only FAST-LIO2 mapping/localization related packages.
-# This skips unrelated SimEnv packages such as uav_simulator and unitree_guide.
+# Default: build the runtime profile used by auto.sh: FAST-LIO2, the Livox
+# Mid-360 Gazebo sensor plugin, the Unitree controller, and Gazebo control /
+# contact plugins. This avoids unrelated, locally added packages (for example
+# the legacy ps3joy sixpair utility, which requires libusb-0.1) from blocking
+# normal simulation builds.
 #
 # Override examples:
 #   SIMENV_CATKIN_WHITELIST="" ./tools/build_with_venv.sh
@@ -173,7 +176,7 @@ CATKIN_CMAKE_ARGS=(
 # - livox_ros_driver is kept for CustomMsg / CustomPoint message definitions.
 # - BUILD_LIVOX_DRIVER_NODE=OFF means the real Livox hardware driver node is skipped.
 if [[ -z "${SIMENV_CATKIN_WHITELIST+x}" ]]; then
-  SIMENV_CATKIN_WHITELIST="livox_ros_driver;fast_lio;simenv_fast_lio2_integration"
+  SIMENV_CATKIN_WHITELIST="livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo"
 fi
 
 if [[ -n "$SIMENV_CATKIN_WHITELIST" ]]; then
@@ -190,19 +193,18 @@ if [[ -d "$CUDA_HOME" ]]; then
   CATKIN_CMAKE_ARGS+=("-DCMAKE_CUDA_FLAGS=-ccbin=$SELECTED_CXX")
 fi
 
-# Accumulate CMake prefix entries (ROS, Torch, CUDA)
-CMAKE_PREFIX_ENTRIES=()
-
-if [[ -n "${CMAKE_PREFIX_PATH:-}" ]]; then
-  CMAKE_PREFIX_ENTRIES+=("$CMAKE_PREFIX_PATH")
-fi
+# Accumulate CMake prefix entries (ROS, Torch, CUDA) and export them as an
+# environment variable.  ROS setup.bash already seeded CMAKE_PREFIX_PATH with
+# /opt/ros/noetic.  Exporting additional prefixes via the environment (rather
+# than -DCMAKE_PREFIX_PATH) keeps ROS's own prefixes intact and avoids
+# overriding per-package find_package() paths (e.g. unitree_guide's
+# NO_DEFAULT_PATH for its own LibTorch distribution).
+CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH:-}"
 
 if [[ -n "${TORCH_CMAKE_PREFIX:-}" ]]; then
   if find "$TORCH_CMAKE_PREFIX" \( -name "TorchConfig.cmake" -o -name "torch-config.cmake" \) 2>/dev/null | grep -q .; then
-    CMAKE_PREFIX_ENTRIES+=("$TORCH_CMAKE_PREFIX")
-    CATKIN_CMAKE_ARGS+=("-DTorch_DIR=$TORCH_CMAKE_PREFIX/Torch")
-    echo "[build_with_venv] Torch CMake prefix: $TORCH_CMAKE_PREFIX"
-    echo "[build_with_venv] Torch_DIR: $TORCH_CMAKE_PREFIX/Torch"
+    CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}:${TORCH_CMAKE_PREFIX}"
+    echo "[build_with_venv] Torch CMake prefix appended: $TORCH_CMAKE_PREFIX"
   else
     echo "WARN: torch import works but TorchConfig.cmake was not found under: $TORCH_CMAKE_PREFIX" >&2
   fi
@@ -214,14 +216,11 @@ else
 fi
 
 if [[ -d "${CUDA_HOME:-}" ]]; then
-  CMAKE_PREFIX_ENTRIES+=("$CUDA_HOME")
+  CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}:${CUDA_HOME}"
 fi
 
-if [[ ${#CMAKE_PREFIX_ENTRIES[@]} -gt 0 ]]; then
-  CMAKE_PREFIX_JOINED="$(IFS=';'; echo "${CMAKE_PREFIX_ENTRIES[*]}")"
-  CATKIN_CMAKE_ARGS+=("-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_JOINED")
-  echo "[build_with_venv] CMake prefix path: $CMAKE_PREFIX_JOINED"
-fi
+export CMAKE_PREFIX_PATH
+echo "[build_with_venv] CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH"
 
 # ---------------------------------------------------------------------------
 # Warn about CMake cache if compilers may have changed

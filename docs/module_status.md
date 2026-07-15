@@ -22,6 +22,10 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 > **2026-07-14 frame correction**: 诊断并修复 Odometry 机体坐标轴异常。根因: `map_to_camera_init_bridge.py` 中 Ry(-45°) 为重复旋转（LiDAR 45°倾斜已由 FAST-LIO2 extrinsic_R 正确处理）。修复: 移除重复旋转，`map→camera_init` 直接复制 `map→imu_link`。新增 ADR-0714 (坐标系约定与旋转责任边界)。静态检查/编译/旋转矩阵验证通过，运行时测试因 ROS master 未运行标记为 NOT RUN (`zzf/0714-fast-lio2-frame-fix`)。
 > **2026-07-15 FAST-LIO2 axis correction**: 依据运行时 `imu_link→laser_livox` TF 和 FAST-LIO2 的 `p_imu=R*p_lidar+T` 源码路径，外参改为直接变换 `Ry(+45°), [0.2,0,0.08]`，替换错误逆变换。新增 xacro/YAML 校验脚本；bridge 继续不旋转。运行中的 mapper 尚未重启，运动建图回归待执行 (`fix/0715-fast-lio2-axis`)。
 > **2026-07-15 controller keyboard fix**: `auto.sh` 的 FAST-LIO2 启动路径改为显式把 `junior_ctrl` stdin 绑定至 `/dev/tty`，并以 `wait` 取代非交互 shell 不可靠的 `fg`。交互终端可继续使用键盘；无 TTY 时提示改用 ROS 控制话题 (`fix/0715-auto-keyboard`)。
+> **2026-07-15 build/startup guard**: `build_with_venv.sh` 默认编译 `auto.sh` 的完整运行时包集，包含发布 `/scan` 所需的 `livox_laser_simulation`，并避开工作区内不属于仓库的可选包（如依赖 libusb-0.1 的 `ps3joy`）；`auto.sh` 在清理/生成场景前检查 `junior_ctrl` 是否已生成，避免控制器缺失导致启动后才退出 (`fix/0715-build-auto-startup`)。
+
+> **2026-07-15 FSM nullptr segfault fix**: 当 Torch 策略默认禁用时，键盘 `4`/`6` 键和 ROS callback `data:4`/`data:6` 不再触发 TROTTING/RL 状态转换（对应状态指针为 nullptr）。新增 FSM 级 nullptr 安全检查作为防御层。`auto.sh` 帮助文本已更新，标明 `4`/`6` 需要 Torch 构建 (`fix/0715-build-auto-startup`).
+> **2026-07-15 dedicated terminals**: `auto.sh` 默认在独立 tmux 会话中启动 `junior_ctrl` 和 rviz（`simenv-junior_ctrl`、`simenv-rviz`）；即使 GNOME Terminal 闪退，会话可用 `tmux attach-session -t ...` 重连。每次新启动会先停止旧的两个会话并删除其运行记录；attach 客户端随会话结束而退出，不再遗留交互 shell。受控完整启动已验证两个会话存活、`/Odometry` 约 10 Hz，且 `Ctrl-C` 会清理 ROS 进程和 tmux 会话。GNOME Terminal 仅作为 attach 客户端，并会清除 Snap Code 注入的库路径以避免 GLIBC 符号错误。用户桌面终端的实际 `2`/`4`/`6` 键盘交互仍待手工确认。新增 `TERMINAL_BACKEND`（设为 `direct` 可回退旧行为）(`fix/0715-build-auto-startup`).
 
 ## Modules
 

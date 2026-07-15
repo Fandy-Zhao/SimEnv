@@ -161,6 +161,7 @@ FSMStateName State_FixedStand::checkChange(){
     else if(_lowState->userCmd == UserCommand::L1_Y){
         return FSMStateName::STEPTEST;
     }
+#ifndef UNITREE_DISABLE_TORCH_POLICY
     else if(_lowState->userCmd == UserCommand::START){
         return FSMStateName::TROTTING;
     }
@@ -172,6 +173,7 @@ FSMStateName State_FixedStand::checkChange(){
     else if(_lowState->userCmd == UserCommand::RL){
         return FSMStateName::RL;
     }
+#endif  // UNITREE_DISABLE_TORCH_POLICY
     else{
         return FSMStateName::FIXEDSTAND;
     }

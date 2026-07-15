@@ -32,7 +32,7 @@
 ```bash
 cd /home/ros/Guoyulun/Competition/SimEnv
 source /opt/ros/noetic/setup.bash
-catkin_make -j
+./tools/build_with_venv.sh
 source ./devel/setup.bash
 ./auto.sh
 ```

@@ -75,8 +75,8 @@ SEED=20260507 FLOOR_COUNT=4 ROOMS_PER_FLOOR=5 \
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| `START_CONTROLLER` | `1` | 是否启动 `junior_ctrl` |
-| `CONTROLLER_FOREGROUND` | `1` | 前台（1）或后台（0）运行控制器 |
+| `START_CONTROLLER` | `1` | 是否启动 `junior_ctrl`（独立终端） |
+| `ENABLE_RVIZ` | `1` | 是否在独立终端启动 rviz（需要 FAST-LIO2 rviz 配置文件） |
 | `UNITREE_CTRL_DT` | `0.004` | 控制周期（秒） |
 | `START_VIRTUAL_JOY` | `0` | 是否启动虚拟手柄 |
 
@@ -254,7 +254,7 @@ rosservice call /set_door_state "{door_id: 'main_entrance', open: true}"
 
 ## 6. 控制器操作
 
-前台模式（`CONTROLLER_FOREGROUND=1`）下，在 `junior_ctrl` 运行的终端输入：
+在 `junior_ctrl` 的独立终端中输入（`auto.sh` 自动打开）：
 
 | 按键 | 功能 |
 |------|------|

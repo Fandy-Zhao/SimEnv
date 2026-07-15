@@ -1,0 +1,3 @@
+ERROR: junior_ctrl is not built: /home/zzf/search_ws/SimEnv/devel/lib/unitree_guide/junior_ctrl
+  Rebuild the Unitree controller, then source devel/setup.bash before running auto.sh.
+  The simulation was not started and the current generated scene was left unchanged.

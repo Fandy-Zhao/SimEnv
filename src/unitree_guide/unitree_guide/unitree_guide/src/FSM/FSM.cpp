@@ -74,18 +74,28 @@ void FSM::run(){
         _currentState->run();
         _nextStateName = _currentState->checkChange();
         if(_nextStateName != _currentState->_stateName){
-            _mode = FSMMode::CHANGE;
             _nextState = getNextState(_nextStateName);
-            std::cout << "Switched from " << _currentState->_stateNameString
-                      << " to " << _nextState->_stateNameString << std::endl;
+            if(_nextState != nullptr){
+                _mode = FSMMode::CHANGE;
+                std::cout << "Switched from " << _currentState->_stateNameString
+                          << " to " << _nextState->_stateNameString << std::endl;
+            } else {
+                std::cerr << "[WARNING] FSM: requested state (enum "
+                          << static_cast<int>(_nextStateName)
+                          << ") is not available (disabled at build time). Ignoring." << std::endl;
+            }
         }
     }
     else if(_mode == FSMMode::CHANGE){
-        _currentState->exit();
-        _currentState = _nextState;
-        _currentState->enter();
-        _mode = FSMMode::NORMAL;
-        _currentState->run();
+        if(_nextState == nullptr){
+            _mode = FSMMode::NORMAL;
+        } else {
+            _currentState->exit();
+            _currentState = _nextState;
+            _currentState->enter();
+            _mode = FSMMode::NORMAL;
+            _currentState->run();
+        }
     }
 
     absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
