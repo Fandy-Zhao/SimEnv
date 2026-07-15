@@ -18,7 +18,7 @@ State_RL::State_RL(CtrlComponents *ctrlComp)
 
 
 void State_RL::enter(){
-     // if (real == false){
+    // Gazebo low-level command initialization.
         for(int i=0; i<12; i++){
             _lowCmd->motorCmd[i].q = _lowState->motorState[i].q;
             _startPos[i] = _lowState->motorState[i].q;
@@ -38,15 +38,16 @@ void State_RL::enter(){
              _lowCmd->setZeroDq(i);
              _lowCmd->setZeroTau(i);
         }
-    // }
-    // else if(real == true)
-    // {
-        for(int i=0; i<12; i++){
-            float c_joint = _ctrlComp->ioInterFreeDog->low_state.motorState_free_dog[i].q;
-            std::vector<double> joint{c_joint, 0, 0, 80, 1};
-            _ctrlComp->ioInterFreeDog->setCmd(i,joint);
-        }
-    // }
+    // Real-robot FreeDog initialization is intentionally disabled here.
+    // The old commented-out condition left this block unconditional, causing
+    // Gazebo RL entry to call ioInterFreeDog->setCmd() as well.
+    /*
+    for(int i=0; i<12; i++){
+        float c_joint = _ctrlComp->ioInterFreeDog->low_state.motorState_free_dog[i].q;
+        std::vector<double> joint{c_joint, 0, 0, 80, 1};
+        _ctrlComp->ioInterFreeDog->setCmd(i,joint);
+    }
+    */
     for (int i = 0; i < HISTORY_LEN; i++)
     {
         refresh_rl_obs();

@@ -2,6 +2,11 @@
 
 ## 2026-07-15
 
+### RL Entry Real-Command Guard
+- Disabled the FreeDog real-robot command initialization in `State_RL::enter()`.
+  Its surrounding `real` condition had been commented out, so it previously
+  executed even when entering RL in Gazebo simulation.
+
 ### Dedicated Controller & RVIZ Terminals (fix/0715-build-auto-startup)
 - Added a tmux-backed terminal mode (default). `junior_ctrl` and RViz run in
   named sessions that survive a GUI-terminal failure and can be reattached with
