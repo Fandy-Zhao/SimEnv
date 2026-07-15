@@ -86,11 +86,20 @@ void State_FixedStand::enter(){
         _startPos[i] = _lowState->motorState[i].q;
         _startPos_real[i] = _ctrlComp->ioInterFreeDog->low_state.motorState_free_dog[i].q;
     }
+    _targetPos = _ctrlComp->robotModel->getQ(
+        _ctrlComp->robotModel->getFeetPosIdeal(), FrameType::BODY);
+    if(!_targetPos.allFinite()){
+        std::cout << "[ERROR] FixedStand nominal-stance IK is non-finite; holding the measured pose."
+                  << std::endl;
+        for(int i=0; i<12; ++i){
+            _targetPos(i) = _startPos[i];
+        }
+    }
     _ctrlComp->setAllStance();
 }
 
 void State_FixedStand::run(){
-    _elapsed += static_cast<float>(_ctrlComp->dt);
+    _elapsed += static_cast<float>(_ctrlComp->getControlDt());
     if(_elapsed < _settleDuration){
         if(_ctrlComp->ctrlPlatform == CtrlPlatform::GAZEBO){
             setRampSimStanceGain(0.0f);
@@ -108,13 +117,13 @@ void State_FixedStand::run(){
         setRampSimStanceGain(smoothPercent);
     }
     for(int j=0; j<12; j++){
-        _lowCmd->motorCmd[j].q = (1 - smoothPercent)*_startPos[j] + smoothPercent*_targetPos[j];
+        _lowCmd->motorCmd[j].q = (1 - smoothPercent)*_startPos[j] + smoothPercent*_targetPos(j);
     }
 
     if (real == true){
         for(int j=0; j<12; j++){
             std::vector<double> joint{(1 - smoothPercent)*_startPos_real[j] + \
-                smoothPercent*_targetPos[j], 0, 0, real_stand_p[j], real_stand_d[j]};
+                smoothPercent*_targetPos(j), 0, 0, real_stand_p[j], real_stand_d[j]};
             _ctrlComp->ioInterFreeDog->setCmd(j,joint);
         }
     }

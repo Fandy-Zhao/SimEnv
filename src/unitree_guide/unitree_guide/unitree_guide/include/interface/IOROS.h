@@ -17,8 +17,10 @@
 #include "nav_msgs/Odometry.h"
 #include "rosgraph_msgs/Clock.h"
 #include <sensor_msgs/Joy.h>
+#include <geometry_msgs/WrenchStamped.h>
 #include <array>
 #include <atomic>
+#include <cstdint>
 
 class IOROS : public IOInterface{
 public:
@@ -32,13 +34,16 @@ void sendCmd(const LowlevelCmd *cmd);
 void recvState(LowlevelState *state);
 void updateMotorState(int index, const unitree_legged_msgs::MotorState& msg);
 ros::NodeHandle _nm;
-ros::Subscriber _servo_sub[12], _imu_sub, _foot_states_sub[4], _base_w_sub,_base_t_sub, _time_sub,joy_sub;;
+ros::Subscriber _servo_sub[12], _imu_sub, _foot_states_sub[4], _foot_force_sub[4],
+                _base_w_sub, _base_t_sub, _time_sub, joy_sub;
 ros::Publisher _servo_pub[12];
 unitree_legged_msgs::LowCmd _lowCmd;
 unitree_legged_msgs::LowState _lowState;
 std::string _robot_name;
 std::array<std::atomic_bool, 12> _joint_state_received;
 std::atomic_bool _imu_received;
+std::array<std::atomic<float>, 4> _foot_force;
+std::array<std::atomic<std::uint64_t>, 4> _foot_force_wall_stamp_ns;
 
 //repeated functions for multi-thread
 void initRecv();
@@ -46,6 +51,11 @@ void initSend();
 
 //Callback functions for ROS
 void imuCallback(const sensor_msgs::Imu & msg);
+void updateFootForce(int index, const geometry_msgs::WrenchStamped& msg);
+void FRfootForceCallback(const geometry_msgs::WrenchStamped& msg);
+void FLfootForceCallback(const geometry_msgs::WrenchStamped& msg);
+void RRfootForceCallback(const geometry_msgs::WrenchStamped& msg);
+void RLfootForceCallback(const geometry_msgs::WrenchStamped& msg);
 
 void FRhipCallback(const unitree_legged_msgs::MotorState& msg);
 void FRthighCallback(const unitree_legged_msgs::MotorState& msg);

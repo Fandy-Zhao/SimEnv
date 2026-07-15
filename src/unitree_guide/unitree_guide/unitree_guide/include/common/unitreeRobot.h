@@ -30,7 +30,7 @@ public:
     Vec2 getRobVelLimitX(){return _robVelLimitX;}
     Vec2 getRobVelLimitY(){return _robVelLimitY;}
     Vec2 getRobVelLimitYaw(){return _robVelLimitYaw;}
-    Vec34 getFeetPosIdeal(){return _feetPosNormalStand;}
+    const Vec34 &getFeetPosIdeal() const{return _feetPosNominalStance;}
     double getRobMass(){return _mass;}
     Vec3 getPcb(){return _pcb;}
     Mat3 getRobInertial(){return _Ib;}
@@ -40,7 +40,7 @@ protected:
     Vec2 _robVelLimitX;
     Vec2 _robVelLimitY;
     Vec2 _robVelLimitYaw;
-    Vec34 _feetPosNormalStand;
+    Vec34 _feetPosNominalStance;
     double _mass;
     Vec3 _pcb;
     Mat3 _Ib;

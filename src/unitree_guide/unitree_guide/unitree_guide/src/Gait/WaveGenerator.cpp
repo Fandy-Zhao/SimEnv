@@ -2,9 +2,8 @@
  Copyright (c) 2020-2023, Unitree Robotics.Co.Ltd. All rights reserved.
 ***********************************************************************/
 #include "Gait/WaveGenerator.h"
+#include <cmath>
 #include <iostream>
-#include <sys/time.h>
-#include <math.h>
 
 WaveGenerator::WaveGenerator(double period, double stancePhaseRatio, Vec4 bias)
     : _period(period), _stRatio(stancePhaseRatio), _bias(bias)
@@ -25,7 +24,7 @@ WaveGenerator::WaveGenerator(double period, double stancePhaseRatio, Vec4 bias)
         }
     }
 
-    _startT = getSystemTime();
+    _switchStatus.setZero();
     _contactPast.setZero();
     _phasePast << 0.5, 0.5, 0.5, 0.5;
     _statusPast = WaveStatus::SWING_ALL;
@@ -35,10 +34,32 @@ WaveGenerator::~WaveGenerator()
 {
 }
 
-void WaveGenerator::calcContactPhase(Vec4 &phaseResult, VecInt4 &contactResult, WaveStatus status)
+void WaveGenerator::resetTime(const ros::Time &controlTime, WaveStatus status)
 {
+    _startT = controlTime;
+    _lastT = controlTime;
+    _timeInitialized = !controlTime.isZero();
+    _switchStatus.setZero();
+    _phase.setConstant(0.5);
+    _phasePast.setConstant(0.5);
+    if(status == WaveStatus::SWING_ALL){
+        _contact.setZero();
+    }else{
+        _contact.setOnes();
+    }
+    _contactPast = _contact;
+    _statusPast = status;
+}
 
-    calcWave(_phase, _contact, status);
+void WaveGenerator::calcContactPhase(Vec4 &phaseResult, VecInt4 &contactResult,
+                                     WaveStatus status, const ros::Time &controlTime)
+{
+    if(!_timeInitialized || controlTime.isZero() || controlTime < _lastT){
+        resetTime(controlTime, status);
+    }
+    _lastT = controlTime;
+
+    calcWave(_phase, _contact, status, controlTime);
 
     if (status != _statusPast)
     {
@@ -46,7 +67,7 @@ void WaveGenerator::calcContactPhase(Vec4 &phaseResult, VecInt4 &contactResult, 
         {
             _switchStatus.setOnes();
         }
-        calcWave(_phasePast, _contactPast, _statusPast);
+        calcWave(_phasePast, _contactPast, _statusPast, controlTime);
         // two special case
         if ((status == WaveStatus::STANCE_ALL) && (_statusPast == WaveStatus::SWING_ALL))
         {
@@ -97,14 +118,18 @@ float WaveGenerator::getT()
     return _period;
 }
 
-void WaveGenerator::calcWave(Vec4 &phase, VecInt4 &contact, WaveStatus status)
+void WaveGenerator::calcWave(Vec4 &phase, VecInt4 &contact, WaveStatus status,
+                             const ros::Time &controlTime)
 {
     if (status == WaveStatus::WAVE_ALL)
     {
-        _passT = (double)(getSystemTime() - _startT) * 1e-6;
+        _passT = (controlTime - _startT).toSec();
+        if(!std::isfinite(_passT) || _passT < 0.0){
+            _passT = 0.0;
+        }
         for (int i(0); i < 4; ++i)
         {
-            _normalT(i) = fmod(_passT + _period - _period * _bias(i), _period) / _period;
+            _normalT(i) = std::fmod(_passT + _period - _period * _bias(i), _period) / _period;
             if (_normalT(i) < _stRatio)
             {
                 contact(i) = 1;

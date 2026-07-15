@@ -17,6 +17,7 @@
 #include "FSM/State_StepTest.h"
 #include "common/enumClass.h"
 #include "control/CtrlComponents.h"
+#include <ros/ros.h>
 #ifdef COMPILE_WITH_MOVE_BASE
     #include "FSM/State_move_base.h"
 #endif  // COMPILE_WITH_MOVE_BASE
@@ -71,6 +72,8 @@ public:
 private:
     FSMState* getNextState(FSMStateName stateName);
     bool checkSafty();
+    bool updateControlTime();
+    void resetForTimeDiscontinuity(const char *reason, const ros::Time &now);
     CtrlComponents *_ctrlComp;
     FSMState *_currentState;
     FSMState *_nextState;
@@ -80,6 +83,13 @@ private:
     long long _startTime;
     int count;
     bool _waitingForStateFeedback = false;
+    ros::NodeHandle _nh;
+    ros::Time _lastSimTime;
+    ros::WallTime _lastSimAdvanceWallTime;
+    double _maxSimTimeStep = 0.05;
+    double _simPauseResetTimeout = 0.5;
+    bool _simClockInitialized = false;
+    bool _simPauseHandled = false;
 };
 
 

@@ -1,13 +1,27 @@
 # Project State
 
 ## Snapshot
-- Date: 2026-07-15
-- Branch: fix/0715-build-auto-startup
+- Date: 2026-07-16
+- Branch: fix/0715-trotting-safety
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: validate user-terminal keyboard interaction through the
-  tmux-backed controller session
+- Current focus: simulation-time-synchronized, contact-gated A1 Trotting
+  `/cmd_vel` locomotion
 
 ## Active Work
+- **Trotting simulation-time synchronization validated**: Gazebo locomotion
+  updates now run only when `/clock` advances. Wave phase, estimator `dt`,
+  height/readiness timing, and desired body/yaw integration use measured
+  simulation deltas. At RTF ~0.10, the 0.75 s transition plus 0.20 s readiness
+  required 0.946 simulated seconds rather than 0.10 s. Pause/backward/jump
+  paths reset all stance; running Wave now latches off on tilt, scheduled
+  contact loss, or non-finite output.
+- **Trotting nominal entry validated**: A1 has one foot-space nominal stance;
+  FixedStand derives its target by IK. An invalid duplicate parent joint on
+  each foot was removed, making nominal FixedStand stationary and restoring
+  real contact feedback. Trotting inherits current height/feet, transitions
+  height over 0.75 s, and gates wave on velocity, attitude and four fresh foot
+  forces. Final `0.3 m/s` forward test averaged `0.273 m/s` in the correct
+  direction.
 - **FAST-LIO2 startup + TF bridge** (merged to `develop`): Controller starts before FAST-LIO2, auto-commanded FixedStand, IMU upright check. Duplicate adapter eliminated. Controller foreground mode preserved via `fg`. Camera-init TF bridge: `map→camera_init` is direct copy of `map→imu_link` (Ry(-45°) removed — was duplicate of FAST-LIO2 extrinsic_R). Rotation responsibility documented in YAML and ADR-0714.
 - **FAST-LIO2 LiDAR–IMU axes corrected**: Source audit established that FAST-LIO2 applies `p_imu = R * p_lidar + T`. The SimEnv point source is local `laser_livox`, so the mapping config now uses the direct runtime TF `imu_link→laser_livox`: `Ry(+45°)`, `[0.2,0,0.08]`. `map→camera_init` remains a no-rotation copy of `map→imu_link`; restart FAST-LIO2 to load the new YAML.
 - **Controller terminal keyboard**: `auto.sh` explicitly binds background `junior_ctrl` stdin to `/dev/tty` and then waits for it in foreground mode. This avoids non-interactive Bash replacing stdin with `/dev/null` during FAST-LIO2 startup.
@@ -44,6 +58,16 @@
 - 不再使用 `chore/MMDD-short-name`
 
 ## Known Risks
+- The simulation discontinuity defaults (`0.05 s` maximum forward step and
+  `0.5 s` wall pause detector) passed the current 2 ms physics configuration
+  but may require tuning when controller scheduling is heavily starved.
+- Trotting readiness thresholds are validated only on flat Gazebo terrain;
+  slope/stair contact thresholds and lateral/yaw tracking remain to be tuned.
+  RL remains unvalidated and unchanged.
+- The stable single-parent A1 foot model uses Gazebo fixed-joint lumping. Legacy
+  `/ground_truth/*_foot` P3D plugins refer to the child body and may not publish;
+  restore those pose topics with a kinematic publisher rather than reintroducing
+  the unstable duplicate or independently preserved foot body.
 - GitHub 远程仓库可能为空或已有历史，首次 push 前需确认目标分支
 - 随机生成的建筑布局可能在某些参数组合下产生不可达房间或源重叠
 - Gazebo Classic 已停止维护，长期可能需要迁移到 Ignition/Gazebo Fortress
@@ -53,7 +77,10 @@
 - IDE 的 Miniconda Python 3.13 与 Noetic xacro 不兼容；ROS/Gazebo runtime 应使用系统 Python 3.10
 
 ## Validation Status
-- Build: catkin_make 编译通过（最近提交已验证）
+- Build: Torch-enabled `catkin_make -j` passes after Trotting timing/safety
+  changes
+- Locomotion: nominal FixedStand, gated zero Trotting, forward pair, forced
+  RTF ~0.10 timing, pause/reset, tilt abort, and contact-loss abort pass
 - Unit tests: `building_generator_core/test/` (3 tests), `building_generator_classic/test/` (2 tests)
 - Remote config: `origin` 保持 Gitee, `github` 新增成功
 - Governance: 骨架完整, 分支规则已更新

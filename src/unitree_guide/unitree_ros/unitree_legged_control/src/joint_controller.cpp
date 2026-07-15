@@ -5,12 +5,23 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 
 // #include "unitree_legged_control/joint_controller.h"
 #include "joint_controller.h"
+#include <cmath>
 #include <pluginlib/class_list_macros.h>
 
 // #define rqtTune // use rqt or not
 
 namespace unitree_legged_control 
 {
+    namespace
+    {
+        double normalizedJointPosition(double position, const urdf::JointConstSharedPtr& jointUrdf)
+        {
+            if(jointUrdf && jointUrdf->type == urdf::Joint::REVOLUTE){
+                return std::atan2(std::sin(position), std::cos(position));
+            }
+            return position;
+        }
+    }
 
     UnitreeJointController::UnitreeJointController(){
         memset(&lastCmd, 0, sizeof(unitree_legged_msgs::MotorCmd));
@@ -118,7 +129,7 @@ namespace unitree_legged_control
     {
         // lastCmd.Kp = 0;
         // lastCmd.Kd = 0;
-        double init_pos = joint.getPosition();
+        double init_pos = normalizedJointPosition(joint.getPosition(), joint_urdf);
         lastCmd.q = init_pos;
         lastState.q = init_pos;
         lastCmd.dq = 0;
@@ -175,7 +186,10 @@ namespace unitree_legged_control
 #endif
         // } 
 
-        currentPos = joint.getPosition();
+        // Gazebo 11 may report a bounded revolute joint using an equivalent
+        // positive angle (for example +3.59 rad instead of -2.69 rad).  The
+        // A1 command and kinematics contracts use the signed URDF interval.
+        currentPos = normalizedJointPosition(joint.getPosition(), joint_urdf);
         currentVel = computeVel(currentPos, (double)lastState.q, (double)lastState.dq, period.toSec());
         calcTorque = computeTorque(currentPos, currentVel, servoCmd);      
         effortLimits(calcTorque);

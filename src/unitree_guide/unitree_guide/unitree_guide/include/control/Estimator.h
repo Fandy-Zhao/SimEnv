@@ -36,6 +36,7 @@ public:
     Vec34 getFeetPos();
     Vec34 getFeetVel();
     Vec34 getPosFeet2BGlobal();
+    void setDt(double dt);
     void run();
 
 #ifdef COMPILE_DEBUG

@@ -70,6 +70,10 @@ void IOSDK::sendRecv(const LowlevelCmd *cmd, LowlevelState *state){
         state->imu.accelerometer[i] = _lowState.imu.accelerometer[i];
     }
     state->imu.quaternion[3] = _lowState.imu.quaternion[3];
+    for(int i=0; i<4; ++i){
+        state->footForce[i] = std::abs(static_cast<float>(_lowState.footForce[i]));
+        state->footForceValid[i] = true;
+    }
 
     cmdPanel->receiveHandle(&_lowState);
     state->userCmd = cmdPanel->getUserCmd();

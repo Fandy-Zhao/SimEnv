@@ -15,6 +15,8 @@
 #include "interface/IOFREEDOGSDK.h"
 #include <string>
 #include <iostream>
+#include <cmath>
+#include <ros/time.h>
 
 #ifdef COMPILE_DEBUG
 #include "common/PyPlot.h"
@@ -60,6 +62,8 @@ public:
     Vec4 *phase;
 
     double dt;
+    double controlDt = 0.0;
+    ros::Time controlTime;
     bool *running;
     CtrlPlatform ctrlPlatform;
 
@@ -72,11 +76,26 @@ public:
     }
 
     void runWaveGen(){
-        waveGen->calcContactPhase(*phase, *contact, _waveStatus);
+        waveGen->calcContactPhase(*phase, *contact, _waveStatus, controlTime);
+    }
+
+    double getControlDt() const{
+        return std::isfinite(controlDt) && controlDt > 0.0 ? controlDt : dt;
+    }
+
+    void resetWaveTime(const ros::Time &time){
+        waveGen->resetTime(time, _waveStatus);
     }
 
     void setAllStance(){
         _waveStatus = WaveStatus::STANCE_ALL;
+    }
+
+    void setAllStanceNow(){
+        _waveStatus = WaveStatus::STANCE_ALL;
+        contact->setOnes();
+        phase->setConstant(0.5);
+        waveGen->resetTime(controlTime, _waveStatus);
     }
 
     void setAllSwing(){

@@ -2,10 +2,24 @@
  Copyright (c) 2020-2023, Unitree Robotics.Co.Ltd. All rights reserved.
 ***********************************************************************/
 #include "FSM/FSM.h"
+#include <cmath>
 #include <iostream>
 
 FSM::FSM(CtrlComponents *ctrlComp)
     :_ctrlComp(ctrlComp){
+
+    _nh.param("fsm_max_sim_time_step", _maxSimTimeStep, 0.05);
+    _nh.param("fsm_sim_pause_reset_timeout", _simPauseResetTimeout, 0.5);
+    if(!std::isfinite(_maxSimTimeStep) || _maxSimTimeStep < 0.002 ||
+       _maxSimTimeStep > 1.0){
+        ROS_WARN("Invalid fsm_max_sim_time_step; using 0.05 seconds.");
+        _maxSimTimeStep = 0.05;
+    }
+    if(!std::isfinite(_simPauseResetTimeout) || _simPauseResetTimeout < 0.1 ||
+       _simPauseResetTimeout > 10.0){
+        ROS_WARN("Invalid fsm_sim_pause_reset_timeout; using 0.5 wall seconds.");
+        _simPauseResetTimeout = 0.5;
+    }
 
     _stateList.invalid = nullptr;
     _stateList.passive = new State_Passive(_ctrlComp);
@@ -42,11 +56,6 @@ void FSM::run(){
     _ctrlComp->sendRecv();
     _ctrlComp->ioInterFreeDog->sendRecv();
 
-    // Apply ROS /fsm/state_cmd latch (after sendRecv to override keyboard)
-    if (_ctrlComp->pendingStateCmd != UserCommand::NONE) {
-        _ctrlComp->lowState->userCmd = _ctrlComp->pendingStateCmd;
-        _ctrlComp->pendingStateCmd = UserCommand::NONE;
-    }
     if(!_ctrlComp->ioInter->hasFullStateFeedback()){
         if(!_waitingForStateFeedback){
             std::cout << "[INFO] Waiting for Gazebo joint state feedback before accepting stand command." << std::endl;
@@ -64,7 +73,19 @@ void FSM::run(){
         absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
         return;
     }
+    if(!updateControlTime()){
+        absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
+        return;
+    }
+
+    // Apply ROS /fsm/state_cmd only on an advancing simulation step so a
+    // command received while Gazebo is paused remains latched until it can run.
+    if (_ctrlComp->pendingStateCmd != UserCommand::NONE) {
+        _ctrlComp->lowState->userCmd = _ctrlComp->pendingStateCmd;
+        _ctrlComp->pendingStateCmd = UserCommand::NONE;
+    }
     _ctrlComp->runWaveGen();
+    _ctrlComp->estimator->setDt(_ctrlComp->getControlDt());
     _ctrlComp->estimator->run();
     if(!checkSafty()){
         // _ctrlComp->ioInter->setPassive();
@@ -99,6 +120,71 @@ void FSM::run(){
     }
 
     absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
+}
+
+bool FSM::updateControlTime(){
+    if(_ctrlComp->ctrlPlatform != CtrlPlatform::GAZEBO){
+        _ctrlComp->controlDt = _ctrlComp->dt;
+        _ctrlComp->controlTime = ros::Time::now();
+        return true;
+    }
+
+    const ros::Time now = ros::Time::now();
+    const ros::WallTime wallNow = ros::WallTime::now();
+    if(now.isZero()){
+        ROS_WARN_THROTTLE(1.0, "Waiting for non-zero Gazebo /clock before running control updates.");
+        return false;
+    }
+
+    if(!_simClockInitialized){
+        _lastSimTime = now;
+        _lastSimAdvanceWallTime = wallNow;
+        _ctrlComp->controlTime = now;
+        _ctrlComp->controlDt = 0.0;
+        _ctrlComp->setAllStance();
+        _ctrlComp->resetWaveTime(now);
+        _simClockInitialized = true;
+        return false;
+    }
+
+    if(now == _lastSimTime){
+        const double stoppedWallTime = (wallNow - _lastSimAdvanceWallTime).toSec();
+        if(!_simPauseHandled && stoppedWallTime >= _simPauseResetTimeout){
+            resetForTimeDiscontinuity("Gazebo simulation time paused", now);
+            _simPauseHandled = true;
+        }
+        return false;
+    }
+
+    const double simDt = (now - _lastSimTime).toSec();
+    _lastSimTime = now;
+    _lastSimAdvanceWallTime = wallNow;
+    _simPauseHandled = false;
+
+    if(!std::isfinite(simDt) || simDt <= 0.0){
+        resetForTimeDiscontinuity("Gazebo simulation time moved backward", now);
+        return false;
+    }
+    if(simDt > _maxSimTimeStep){
+        resetForTimeDiscontinuity("Gazebo simulation time jumped forward", now);
+        return false;
+    }
+
+    _ctrlComp->controlTime = now;
+    _ctrlComp->controlDt = simDt;
+    return true;
+}
+
+void FSM::resetForTimeDiscontinuity(const char *reason, const ros::Time &now){
+    ROS_WARN("%s at %.6f s; resetting gait time and holding all stance.",
+             reason, now.toSec());
+    _ctrlComp->controlTime = now;
+    _ctrlComp->controlDt = 0.0;
+    _ctrlComp->setAllStance();
+    _ctrlComp->resetWaveTime(now);
+    if(_currentState != nullptr){
+        _currentState->onControlTimeReset();
+    }
 }
 
 FSMState* FSM::getNextState(FSMStateName stateName){

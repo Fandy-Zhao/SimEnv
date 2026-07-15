@@ -2,6 +2,7 @@
  Copyright (c) 2020-2023, Unitree Robotics.Co.Ltd. All rights reserved.
 ***********************************************************************/
 #include "control/Estimator.h"
+#include <cmath>
 #include "common/mathTools.h"
 #include "common/enumClass.h"
 
@@ -38,6 +39,17 @@ Estimator::Estimator(QuadrupedRobot *robotModel, LowlevelState* lowState,
 }
 
 Estimator::~Estimator(){
+}
+
+void Estimator::setDt(double dt){
+    if(!std::isfinite(dt) || dt <= 0.0){
+        return;
+    }
+    _dt = dt;
+    _A.block(0, 3, 3, 3) = I3 * _dt;
+    _B.block(3, 0, 3, 3) = I3 * _dt;
+    _QInit = _Qdig.asDiagonal();
+    _QInit += _B * _Cu * _B.transpose();
 }
 
 void Estimator::_initSystem(){
@@ -253,4 +265,3 @@ Vec34 Estimator::getPosFeet2BGlobal(){
     }
     return feet2BPos;
 }
-

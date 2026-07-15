@@ -48,6 +48,10 @@ IOROS::IOROS():IOInterface(){
     for(auto &received : _joint_state_received){
         received.store(false);
     }
+    for(std::size_t i=0; i<_foot_force.size(); ++i){
+        _foot_force[i].store(0.0f);
+        _foot_force_wall_stamp_ns[i].store(0);
+    }
     _imu_received.store(false);
 
     // start subscriber
@@ -115,6 +119,14 @@ void IOROS::recvState(LowlevelState *state){
         state->imu.gyroscope[i] = _lowState.imu.gyroscope[i];
     }
     state->imu.quaternion[3] = _lowState.imu.quaternion[3];
+    const std::uint64_t nowNs = ros::WallTime::now().toNSec();
+    constexpr std::uint64_t maxContactAgeNs = 1000000000ULL;
+    for(int i=0; i<4; ++i){
+        const std::uint64_t stampNs = _foot_force_wall_stamp_ns[i].load();
+        state->footForce[i] = _foot_force[i].load();
+        state->footForceValid[i] = stampNs != 0 && nowNs >= stampNs &&
+            (nowNs - stampNs) <= maxContactAgeNs;
+    }
 }
 
 void IOROS::updateMotorState(int index, const unitree_legged_msgs::MotorState& msg){
@@ -163,10 +175,42 @@ void IOROS::initRecv(){
     _foot_states_sub[1] = _nm.subscribe("/ground_truth/FR_foot", 1, &IOROS::FR_footCallback, this);
     _foot_states_sub[2] = _nm.subscribe("/ground_truth/RL_foot", 1, &IOROS::RL_footCallback, this);
     _foot_states_sub[3] = _nm.subscribe("/ground_truth/RR_foot", 1, &IOROS::RR_footCallback, this);
+    _foot_force_sub[0] = _nm.subscribe("/visual/FR_foot_contact/the_force", 1, &IOROS::FRfootForceCallback, this);
+    _foot_force_sub[1] = _nm.subscribe("/visual/FL_foot_contact/the_force", 1, &IOROS::FLfootForceCallback, this);
+    _foot_force_sub[2] = _nm.subscribe("/visual/RR_foot_contact/the_force", 1, &IOROS::RRfootForceCallback, this);
+    _foot_force_sub[3] = _nm.subscribe("/visual/RL_foot_contact/the_force", 1, &IOROS::RLfootForceCallback, this);
     _base_w_sub = _nm.subscribe("/ground_truth/base_w", 1, &IOROS::baseWorldCallback, this);
     _base_t_sub = _nm.subscribe("/ground_truth/base_trunk", 1, &IOROS::baseTrunkCallback, this);
     _time_sub = _nm.subscribe("/clock", 1, &IOROS::timeCallback, this);
     joy_sub = _nm.subscribe("/joy", 1, &IOROS::joyCallback, this);
+}
+
+void IOROS::updateFootForce(int index, const geometry_msgs::WrenchStamped& msg){
+    const double x = msg.wrench.force.x;
+    const double y = msg.wrench.force.y;
+    const double z = msg.wrench.force.z;
+    if(index < 0 || index >= 4 || !std::isfinite(x) || !std::isfinite(y) ||
+       !std::isfinite(z)){
+        return;
+    }
+    _foot_force[index].store(static_cast<float>(std::sqrt(x*x + y*y + z*z)));
+    _foot_force_wall_stamp_ns[index].store(ros::WallTime::now().toNSec());
+}
+
+void IOROS::FRfootForceCallback(const geometry_msgs::WrenchStamped& msg){
+    updateFootForce(0, msg);
+}
+
+void IOROS::FLfootForceCallback(const geometry_msgs::WrenchStamped& msg){
+    updateFootForce(1, msg);
+}
+
+void IOROS::RRfootForceCallback(const geometry_msgs::WrenchStamped& msg){
+    updateFootForce(2, msg);
+}
+
+void IOROS::RLfootForceCallback(const geometry_msgs::WrenchStamped& msg){
+    updateFootForce(3, msg);
 }
 
 void IOROS::joyCallback(const sensor_msgs::Joy::ConstPtr& msg) {

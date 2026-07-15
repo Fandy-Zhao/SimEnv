@@ -1,6 +1,51 @@
 # Changelog
 
+## 2026-07-16
+
+### Gazebo Simulation-Time Locomotion Control
+
+- Changed WaveGenerator, estimator propagation, Trotting height/readiness, and
+  desired body/yaw integration to use advancing Gazebo `/clock` time instead
+  of wall/system time or a fixed controller-loop increment.
+- The Gazebo FSM now skips gait, estimator, and control-target updates while
+  simulation time is unchanged, and resets to all stance on a sustained pause,
+  backward clock, or excessive forward jump.
+- Added latched Wave cancellation for excessive roll/pitch, scheduled
+  stance-foot contact loss, and non-finite output. The abort path stops further
+  gait/IK calculation until Trotting is re-entered.
+- Forced-RTF test at about `0.10` measured `0.946 s` of simulation time for the
+  configured `0.75 + 0.20 s` entry gates, while `9.459 s` elapsed on the wall.
+  Pause/resume, tilt abort, and `0.080 s` four-foot contact-loss abort passed.
+
+### A1 Nominal Stance and Trotting Readiness Gate
+
+- Consolidated A1 nominal stance in foot space and changed FixedStand to derive
+  joint targets through inverse kinematics instead of a duplicated
+  `[0, 0.9, -1.8]` array.
+- Trotting now inherits current body height and global foot positions, uses a
+  0.75 s smoothstep to nominal height, and suppresses wave until velocity,
+  attitude, desired all-stance, and four measured contacts are stable.
+- Added fresh foot-force feedback to the ROS simulation and real SDK state
+  paths; the prior gait contact vector remains only a desired schedule.
+- Removed an invalid second parent joint from every A1 foot in xacro. This
+  eliminated duplicate Gazebo foot collisions and made the IK-derived nominal
+  FixedStand settle instead of oscillating/falling.
+- Final headless test held zero Trotting upright and moved 1.891 m in 6.920 s
+  (`0.273 m/s`) in the correct body-forward direction for `linear.x=0.3`.
+
 ## 2026-07-15
+
+### A1 Trotting Safety and Gazebo Joint-Angle Repair
+- Reset Trotting command/yaw-filter state on entry, reject non-finite Twist,
+  clamp commands, expire stale `/cmd_vel` after 0.5 s, and block non-finite
+  gait/IK/motor output with a measured-position hold.
+- Normalize Gazebo bounded revolute feedback to the signed angle branch used by
+  A1 URDF commands and kinematics; this fixes calf feedback such as `+3.5866`
+  representing about `-2.6966` and corrupting PD/IK.
+- Start the A1 simulation at the local FixedStand joint target rather than the
+  folded-knee limit. Headless Trotting stayed finite under zero/forward Twist
+  and moved in the commanded direction; exact velocity tracking remains slow
+  (`~0.121 m/s` average for `0.3 m/s` requested).
 
 ### RL Entry Real-Command Guard
 - Disabled the FreeDog real-robot command initialization in `State_RL::enter()`.
