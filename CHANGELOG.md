@@ -11,6 +11,8 @@
   and immediately closing the session.
 - Corrected the per-session `GAZEBO_MODEL_PATH` export so the generated Bash
   script remains syntactically valid and both named sessions stay alive.
+- Validated full startup: both sessions remained live, `/Odometry` published at
+  about 10 Hz, and `SIGINT` removed sessions and runtime processes cleanly.
 - Fixed terminal creation when `auto.sh` is launched from Snap Code: it now
   starts `gnome-terminal.real` with a clean desktop environment instead of the
   Snap-contaminated D-Bus wrapper, which failed with a GLIBC symbol error.

@@ -33,3 +33,27 @@ Snap installation, or ROS Noetic.
   at about 10 Hz.
 - Sending `SIGINT` to the launcher completed the normal trap cleanup and
   removed both tmux sessions and all checked runtime processes.
+
+# Task Report
+
+## Branch
+
+`fix/0715-build-auto-startup`
+
+## Files Changed
+
+- `auto.sh`: tmux-backed terminal sessions and cleanup.
+- `CHANGELOG.md`, `PROJECT_STATE.md`, `docs/module_status.md`, and
+  `docs/quick-start.md`: operational status and reattach instructions.
+- This report and `experiments/runs/0715_auto-terminal-launch/notes.md`:
+  diagnostic evidence and smoke-test results.
+
+## Git
+
+Implementation commit: `61d2d03f fix(auto): retain terminal sessions with tmux`.
+
+## Risk and Next Step
+
+The automated runner cannot send keyboard input through a desktop-attached tmux
+client. Start `./auto.sh`, attach with `tmux attach-session -t
+simenv-junior_ctrl`, and verify `2` (stand) from the intended user terminal.
