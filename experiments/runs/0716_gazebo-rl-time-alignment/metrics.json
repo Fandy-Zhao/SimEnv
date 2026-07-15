@@ -75,5 +75,13 @@
     "policy_sequence_after": 616,
     "action_sequence_before": 472,
     "action_sequence_after": 472
+  },
+  "unit_regression": {
+    "timing_alignment_test_count": 4,
+    "timing_alignment_failure_count": 0,
+    "workspace_test_count": 8,
+    "workspace_error_count": 0,
+    "workspace_failure_count": 0,
+    "concurrent_action_generations": 10000
   }
 }

@@ -114,3 +114,16 @@
   0.5 s wall pause detector emitted false pause warnings between `/clock`
   bursts. The RL pause hook is non-mutating, but pause detection based only on
   wall silence remains a documented tuning risk.
+
+## Regression Tests
+
+- Extracted the production wait-result classifier, history gate, and complete
+  policy-output buffer into small testable components; State_RL/FSMState use
+  those same components rather than parallel test-only implementations.
+- `catkin_make -j` passed after integration.
+- `catkin_make run_tests_unitree_guide_gtest_timing_alignment_test` passed all
+  4 timing-alignment tests: normal advance, no-advance wall overtime, shutdown,
+  time rollback, former uint32 boundary crossing, repeated/early state
+  rejection, reset acceptance, and 10,000-generation concurrent action reads.
+- `catkin_test_results build/test_results` reported 8 tests total, 0 errors,
+  0 failures, and 0 skipped (including existing workspace results).

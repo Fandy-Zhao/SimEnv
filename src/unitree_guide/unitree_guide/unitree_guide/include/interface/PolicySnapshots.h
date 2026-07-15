@@ -3,6 +3,7 @@
 
 #include <array>
 #include <cstdint>
+#include <mutex>
 
 #include <ros/time.h>
 
@@ -33,6 +34,27 @@ struct PolicyOutputSnapshot {
     std::uint64_t source_state_sequence = 0;
     std::uint64_t source_sim_time_us = 0;
     bool valid = false;
+};
+
+class PolicyOutputBuffer {
+public:
+    void publish(const PolicyOutputSnapshot &snapshot){
+        std::lock_guard<std::mutex> lock(mutex_);
+        snapshot_ = snapshot;
+    }
+
+    PolicyOutputSnapshot read() const{
+        std::lock_guard<std::mutex> lock(mutex_);
+        return snapshot_;
+    }
+
+    void invalidate(){
+        publish(PolicyOutputSnapshot{});
+    }
+
+private:
+    mutable std::mutex mutex_;
+    PolicyOutputSnapshot snapshot_;
 };
 
 #endif  // POLICY_SNAPSHOTS_H

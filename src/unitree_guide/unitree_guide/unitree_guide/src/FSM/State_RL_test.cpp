@@ -55,17 +55,12 @@ void State_RL::enter(){
     last_actions.fill(0.0f);
     history_stamps_us_.fill(0);
     history_duplicate_count_ = 0;
-    last_history_state_sequence_ = 0;
-    last_history_sim_time_us_ = 0;
-    last_policy_sim_time_us_ = 0;
+    history_gate_.reset();
     policy_sequence_ = 0;
     action_sequence_ = 0;
     last_applied_action_sequence_ = 0;
     handled_reset_generation_ = reset_generation_.load(std::memory_order_acquire);
-    {
-        std::lock_guard<std::mutex> lock(action_mutex_);
-        action_snapshot_ = PolicyOutputSnapshot{};
-    }
+    action_buffer_.invalidate();
     for (int i = 0; i < HISTORY_LEN; i++)
     {
         PolicyInputSnapshot stateSnapshot;
@@ -89,10 +84,7 @@ void State_RL::onControlTimeReset(ControlTimeResetReason resetReason){
     if(resetReason == ControlTimeResetReason::Paused){
         return;
     }
-    {
-        std::lock_guard<std::mutex> lock(action_mutex_);
-        action_snapshot_ = PolicyOutputSnapshot{};
-    }
+    action_buffer_.invalidate();
     {
         std::lock_guard<std::mutex> lock(command_mutex_);
         command_snapshot_ = PolicyCommandSnapshot{};
@@ -117,9 +109,7 @@ void State_RL::resetPolicyStateForTimeDiscontinuity(){
     last_actions.fill(0.0f);
     history_stamps_us_.fill(0);
     history_duplicate_count_ = 0;
-    last_history_state_sequence_ = 0;
-    last_history_sim_time_us_ = 0;
-    last_policy_sim_time_us_ = 0;
+    history_gate_.reset();
     policy_sequence_ = 0;
     action_sequence_ = 0;
 
@@ -138,11 +128,7 @@ void State_RL::resetPolicyStateForTimeDiscontinuity(){
 }
 
 void State_RL::run(){
-    PolicyOutputSnapshot snapshot;
-    {
-        std::lock_guard<std::mutex> lock(action_mutex_);
-        snapshot = action_snapshot_;
-    }
+    const PolicyOutputSnapshot snapshot = action_buffer_.read();
     if(!snapshot.valid || snapshot.action_sequence == last_applied_action_sequence_){
         return;
     }
@@ -296,10 +282,7 @@ void State_RL::infer_thread_callback()
             }
             if (debug == true) std::cout << actions[reindex[i]]  + default_dof_pos_tensor[reindex[i]].item<float>() << " ";
         }
-        {
-            std::lock_guard<std::mutex> lock(action_mutex_);
-            action_snapshot_ = outputSnapshot;
-        }
+        action_buffer_.publish(outputSnapshot);
         const std::uint64_t actionSequence = outputSnapshot.action_sequence;
         TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
         TimingRecord actionTiming;
@@ -411,15 +394,12 @@ bool State_RL::refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot,
     //gazebo simulation mode
     if (real == false)
     {
-        constexpr std::uint64_t policyPeriodUs = 20000;
         if(stateSnapshot == nullptr || commandSnapshot == nullptr ||
            !stateSnapshot->valid){
             return false;
         }
-        if(!initializeHistory &&
-           (stateSnapshot->state_sequence == last_history_state_sequence_ ||
-            stateSnapshot->sim_time_us <= last_history_sim_time_us_ ||
-            stateSnapshot->sim_time_us - last_policy_sim_time_us_ < policyPeriodUs)){
+        if(!initializeHistory && !history_gate_.shouldAppend(
+               stateSnapshot->state_sequence, stateSnapshot->sim_time_us)){
             return false;
         }
         for (int i=0; i<4; i++) {
@@ -476,9 +456,7 @@ bool State_RL::refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot,
             history_stamps_us_[i - 1] = history_stamps_us_[i];
         }
         history_stamps_us_.back() = stampUs;
-        last_history_state_sequence_ = stateSnapshot->state_sequence;
-        last_history_sim_time_us_ = stampUs;
-        last_policy_sim_time_us_ = stampUs;
+        history_gate_.commit(stateSnapshot->state_sequence, stampUs);
     }
     else if (real == true)
     {

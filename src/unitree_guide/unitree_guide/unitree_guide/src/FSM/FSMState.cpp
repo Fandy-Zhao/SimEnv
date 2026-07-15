@@ -2,6 +2,7 @@
  Copyright (c) 2020-2023, Unitree Robotics.Co.Ltd. All rights reserved.
 ***********************************************************************/
 #include "FSM/FSMState.h"
+#include "common/TimingAlignment.h"
 
 FSMState::FSMState(CtrlComponents *ctrlComp, FSMStateName stateName, std::string stateNameString)
             :_ctrlComp(ctrlComp), _stateName(stateName), _stateNameString(stateNameString){
@@ -50,7 +51,11 @@ PolicyWaitExitReason FSMState::rosAbsoluteWait(long long startTime, long long wa
     }
     while((getRosTime() - startTime < waitTime) && (overtime < OVERTIME)){
 
-        if(getRosTime() < startTime){
+        if(classifyPolicyWaitExit(
+               static_cast<std::uint64_t>(getRosTime()),
+               static_cast<std::uint64_t>(startTime),
+               static_cast<std::uint64_t>(waitTime), false) ==
+           PolicyWaitExitReason::SimTimeReset){
             return PolicyWaitExitReason::SimTimeReset;
         }
 
@@ -61,16 +66,10 @@ PolicyWaitExitReason FSMState::rosAbsoluteWait(long long startTime, long long wa
         usleep(50);
         overtime += 50;
     }
-    if(!ros::ok()){
-        return PolicyWaitExitReason::Shutdown;
-    }
-    if(getRosTime() < startTime){
-        return PolicyWaitExitReason::SimTimeReset;
-    }
-    if(getRosTime() - startTime >= waitTime){
-        return PolicyWaitExitReason::SimPeriodReached;
-    }
-    return PolicyWaitExitReason::WallOvertime;
+    return classifyPolicyWaitExit(
+        static_cast<std::uint64_t>(getRosTime()),
+        static_cast<std::uint64_t>(startTime),
+        static_cast<std::uint64_t>(waitTime), !ros::ok());
 }
 
 //设置cmd_vel的回调函数，将move_base转化为

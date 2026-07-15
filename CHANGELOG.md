@@ -24,6 +24,9 @@
   history timestamps, command/action snapshots, and transition state when
   simulation time moves backward or jumps forward. A pause does not advance or
   invalidate the last complete action.
+- Added production-backed regression tests for simulation wait outcomes,
+  history deduplication/reset across the former 32-bit boundary, and concurrent
+  complete-generation action publication.
 
 ### Gazebo Simulation-Time Locomotion Control
 

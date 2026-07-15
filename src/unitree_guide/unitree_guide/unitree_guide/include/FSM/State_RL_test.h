@@ -5,6 +5,7 @@
 #define STATE_RL_TEST_H
 
 #include "FSM/FSMState.h"
+#include "common/TimingAlignment.h"
 #include <fstream>  // 包含文件流的头文件
 #include <thread>
 #include <array>
@@ -109,13 +110,10 @@ private:
     std::array<std::uint64_t, HISTORY_LEN> history_stamps_us_{};
     std::mutex command_mutex_;
     PolicyCommandSnapshot command_snapshot_;
-    std::mutex action_mutex_;
-    PolicyOutputSnapshot action_snapshot_;
+    PolicyOutputBuffer action_buffer_;
     std::uint64_t action_sequence_ = 0;
     std::uint64_t last_applied_action_sequence_ = 0;
-    std::uint64_t last_history_state_sequence_ = 0;
-    std::uint64_t last_history_sim_time_us_ = 0;
-    std::uint64_t last_policy_sim_time_us_ = 0;
+    PolicyHistoryGate history_gate_{20000};
     std::atomic<std::uint64_t> reset_generation_{0};
     std::uint64_t handled_reset_generation_ = 0;
     void resetPolicyStateForTimeDiscontinuity();

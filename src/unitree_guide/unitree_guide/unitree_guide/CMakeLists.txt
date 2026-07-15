@@ -237,6 +237,13 @@ if(NOT CATKIN_MAKE)
     set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 endif()
 
+if(CATKIN_ENABLE_TESTING)
+    catkin_add_gtest(timing_alignment_test test/timing_alignment_test.cpp)
+    if(TARGET timing_alignment_test)
+        target_link_libraries(timing_alignment_test ${catkin_LIBRARIES} -pthread)
+    endif()
+endif()
+
 
 catkin_install_python(PROGRAMS
   scripts/virtual_joy.py
