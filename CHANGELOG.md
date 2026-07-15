@@ -2,6 +2,21 @@
 
 ## 2026-07-16
 
+### Gazebo Simulation-Time Locomotion Control
+
+- Changed WaveGenerator, estimator propagation, Trotting height/readiness, and
+  desired body/yaw integration to use advancing Gazebo `/clock` time instead
+  of wall/system time or a fixed controller-loop increment.
+- The Gazebo FSM now skips gait, estimator, and control-target updates while
+  simulation time is unchanged, and resets to all stance on a sustained pause,
+  backward clock, or excessive forward jump.
+- Added latched Wave cancellation for excessive roll/pitch, scheduled
+  stance-foot contact loss, and non-finite output. The abort path stops further
+  gait/IK calculation until Trotting is re-entered.
+- Forced-RTF test at about `0.10` measured `0.946 s` of simulation time for the
+  configured `0.75 + 0.20 s` entry gates, while `9.459 s` elapsed on the wall.
+  Pause/resume, tilt abort, and `0.080 s` four-foot contact-loss abort passed.
+
 ### A1 Nominal Stance and Trotting Readiness Gate
 
 - Consolidated A1 nominal stance in foot space and changed FixedStand to derive

@@ -35,3 +35,25 @@ rosservice call /gazebo/get_model_state \
 rostopic echo -n 1 /trunk_imu
 rostopic echo -n 1 /clock
 tmux capture-pane -pt simenv-trotting-final-junior_ctrl -S -300
+
+# 2026-07-16 simulation-time extension (the existing generated world was
+# reused through a direct headless roslaunch; no scene regeneration).
+gz physics -s 0.002 -u 50
+rosservice call /gazebo/unpause_physics
+
+# After FixedStand and Trotting entry, publish forward motion continuously.
+rostopic pub -r 20 /cmd_vel geometry_msgs/Twist \
+  '{linear: {x: 0.3, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}'
+
+# Pause/resume reset validation.
+rosservice call /gazebo/pause_physics
+rosservice call /gazebo/unpause_physics
+
+# Contact-loss destructive validation in a fresh run.
+rosservice call /gazebo/apply_body_wrench \
+  '{body_name: a1_gazebo::base, reference_frame: world,
+    reference_point: {x: 0.0, y: 0.0, z: 0.0},
+    wrench: {force: {x: 0.0, y: 0.0, z: 500.0},
+             torque: {x: 0.0, y: 0.0, z: 0.0}},
+    start_time: {secs: 0, nsecs: 0},
+    duration: {secs: 0, nsecs: 300000000}}'

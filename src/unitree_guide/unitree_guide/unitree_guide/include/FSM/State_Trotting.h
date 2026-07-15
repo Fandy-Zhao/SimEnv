@@ -19,6 +19,7 @@ public:
     void enter();
     void run();
     void exit();
+    void onControlTimeReset() override;
     virtual FSMStateName checkChange();
     void setHighCmd(double vx, double vy, double wz);
     void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg);
@@ -43,9 +44,12 @@ private:
     void resetCommandState();
     void updateHeightTransition();
     void updateWaveReadiness();
+    void updateRunningWaveSafety();
     bool readinessConditionsMet() const;
     bool expectedAllStance() const;
+    bool expectedStanceFeetHaveContact() const;
     void suppressMotionCommand();
+    void abortWave(const char *reason, bool latchAbort);
 
     GaitGenerator *_gait;
     Estimator *_est;
@@ -121,7 +125,7 @@ private:
     ros::Subscriber _cmdVelSub;
     bool _cmdVelActive = false;
     double _cmdVx = 0.0, _cmdVy = 0.0, _cmdWz = 0.0;
-    ros::WallTime _lastCmdVelWallTime;
+    ros::Time _lastCmdVelTime;
     double _cmdVelTimeout = 0.5;
 
     // FixedStand -> Trotting transition and wave-start readiness gate.
@@ -135,9 +139,13 @@ private:
     double _readyAngularVelocity = 0.35;
     double _readyTilt = 0.17453292519943295;
     double _minimumContactForce = 1.0;
+    double _waveAbortTilt = 0.3490658503988659;
+    double _waveContactLossDuration = 0.08;
+    double _waveContactLossElapsed = 0.0;
     bool _heightTransitionComplete = false;
     bool _waveReady = false;
     bool _waveStarted = false;
+    bool _waveAbortLatched = false;
 };
 
 #endif  // TROTTING_H

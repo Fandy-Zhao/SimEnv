@@ -5,8 +5,8 @@
 #define WAVEGENERATOR_H
 
 #include "common/mathTypes.h"
-#include "common/timeMarker.h"
 #include "common/enumClass.h"
+#include <ros/time.h>
 #include <unistd.h>
 
 #ifdef COMPILE_DEBUG
@@ -18,12 +18,15 @@ class WaveGenerator{
 public:
     WaveGenerator(double period, double stancePhaseRatio, Vec4 bias);
     ~WaveGenerator();
-    void calcContactPhase(Vec4 &phaseResult, VecInt4 &contactResult, WaveStatus status);
+    void calcContactPhase(Vec4 &phaseResult, VecInt4 &contactResult,
+                          WaveStatus status, const ros::Time &controlTime);
+    void resetTime(const ros::Time &controlTime, WaveStatus status);
     float getTstance();
     float getTswing();
     float getT();
 private:
-    void calcWave(Vec4 &phase, VecInt4 &contact, WaveStatus status);
+    void calcWave(Vec4 &phase, VecInt4 &contact, WaveStatus status,
+                  const ros::Time &controlTime);
 
     double _period;
     double _stRatio;
@@ -36,7 +39,9 @@ private:
     WaveStatus _statusPast;
 
     double _passT;                   // unit: second
-    long long _startT;    // unit: us
+    ros::Time _startT;
+    ros::Time _lastT;
+    bool _timeInitialized = false;
 #ifdef COMPILE_DEBUG
     PyPlot _testPlot;
 #endif  // COMPILE_DEBUG

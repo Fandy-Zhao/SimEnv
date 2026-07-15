@@ -167,3 +167,64 @@ joint with Gazebo lumping. The four force topics remain valid because their
 sensors bind the lump collisions. Legacy `/ground_truth/*_foot` pose-topic
 compatibility is a residual issue; Trotting estimation uses kinematics and is
 unaffected.
+
+## Simulation-time synchronization extension (2026-07-16)
+
+### Root cause and implementation
+
+The failing field log had entry at simulation `6.210 s`, readiness at
+`6.310 s`, and about `0.955 s` of wall time between them. The fixed controller
+increment therefore completed `0.95 s` of configured gates while physics moved
+only `0.10 s`. `WaveGenerator` independently used `getSystemTime()`, shrinking
+its `0.45 s` period to roughly `0.045 s` in Gazebo at the same RTF.
+
+The FSM now treats advancing ROS/Gazebo time as the transaction boundary for
+WaveGenerator, Estimator, and state control. It passes the measured simulation
+delta through `CtrlComponents`, skips updates when `/clock` is unchanged, and
+resets all stance on pause, backward time, or an excessive forward delta.
+Trotting uses that delta for height/readiness/body/yaw integration. A running
+Wave cancels and latches on 20-degree roll/pitch, 0.080 simulated seconds of
+scheduled stance-contact loss, or non-finite output.
+
+### Forced low-RTF run
+
+Gazebo used a `0.002 s` step and update rate `50 Hz`, giving RTF approximately
+0.10. Nonessential sensors, GUI, RViz, and FAST-LIO2 were disabled; the existing
+generated world was reused so repository scene artifacts were not regenerated.
+
+- Trotting entry: wall `1784137247.135`, simulation `5.788 s`.
+- Readiness: wall `1784137256.594`, simulation `6.734 s`.
+- Difference: `9.459` wall seconds and `0.946` simulation seconds, matching
+  the configured `0.75 s` height transition plus `0.20 s` stable hold within
+  the 2 ms control quantization and condition alignment.
+- Forward pair: around simulation `10.81--17.21 s`, position changed from
+  `(-0.000101, 2.262991, 0.348901)` to
+  `(0.000631, 4.342488, 0.348964) m`. The robot remained upright and no
+  non-finite guard fired.
+- Pause at `18.032 s`: after 0.5 wall seconds the FSM logged a time reset and
+  cancelled Wave. No estimator/gait/target update ran while time was stopped.
+- Resume: waiting began at `18.034 s`; readiness and Wave restart occurred at
+  `18.980 s`, again a `0.946 s` simulated gate.
+- Tilt injection: at `21.926 s`, roll `36.2 deg` exceeded the 20-degree limit
+  and produced a latched all-stance Wave cancellation.
+
+### Contact-loss destructive test and refinement
+
+A separate fresh run applied an upward `500 N` wrench to `a1_gazebo::base` for
+`0.3 s`. Scheduled stance contacts read `[0,0,0,0] N`; after exactly `0.080`
+simulated seconds the controller cancelled Wave. The first implementation then
+continued into gait/IK during the fall and repeated non-finite warnings. The
+abort-latched branch was corrected to issue measured-position all-stance hold
+and return before command, gait, balance, or IK calculation. The final rerun
+showed only the contact-loss error and one cancellation message during the
+subsequent observation window.
+
+### Checks
+
+- `catkin_make -j`: pass before and after the final abort-return refinement.
+- Changed-file `git diff --check`: pass.
+- Forced low-RTF forward locomotion: pass.
+- Pause/reset and re-gating: pass.
+- Running-Wave tilt cancellation: pass.
+- Running-Wave 0.080 s contact-loss cancellation: pass; no repeated IK/NaN
+  output after the final refinement.

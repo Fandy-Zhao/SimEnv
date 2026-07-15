@@ -53,9 +53,41 @@ zeros `_dYawCmdPast` and its policy path clips observations/actions.
 7. Trotting entry does not immediately overwrite the measured height or foot
    goals, and wave generation cannot start before the readiness gate passes.
 
+## Sim-time synchronization extension (2026-07-16)
+
+Field reproduction at roughly `0.10` Gazebo real-time factor showed that the
+controller completed a nominal `0.75 s` height transition plus `0.20 s`
+readiness hold in only `0.10 s` of simulation time. `WaveGenerator` also used
+wall/system time, making its `0.45 s` trot period approximately `0.045 s` from
+Gazebo's point of view. This extension therefore requires:
+
+- one estimator, wave, and FSM update per advancing `/clock` sample;
+- actual simulation-time delta for estimator propagation and Trotting target
+  integration;
+- no control-state update while simulation time is unchanged;
+- safe all-stance reset on a sustained pause, backward clock, or excessive
+  forward jump;
+- ROS simulation time for wave phase, height transition, and readiness hold;
+- a latched all-stance abort if a running wave exceeds the attitude limit or
+  loses expected stance-foot contact for longer than the configured grace
+  period;
+- non-finite Trotting output must cancel the wave instead of allowing the same
+  invalid gait target to repeat.
+
+Out of scope remains RL policy repair, global navigation tuning, and changing
+Gazebo scene-generation physics.
+
 ## Resolution
 
 All seven criteria pass. The final headless run used real Gazebo foot-contact
 forces, held zero-command Trotting upright, and started wave only after the
 logged readiness event. A 6.920 s paired forward window moved 1.891 m in the
 body-forward/world-+Y direction (0.273 m/s average for 0.3 m/s requested).
+
+The simulation-time extension also passes. At forced RTF ~0.10, entry at
+`5.788 s` became ready at `6.734 s`, so the configured entry gates consumed
+`0.946 s` of simulation time despite `9.459 s` of wall time. Pausing at
+`18.032 s` cancelled Wave and reset gait time; resume required the same gate
+again. Tilt injection cancelled Wave, and a separate symmetric lift produced
+four zero contact forces and a latched cancellation after `0.080` simulated
+seconds. The final abort path returns before gait/IK computation.

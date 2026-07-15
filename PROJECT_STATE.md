@@ -4,9 +4,17 @@
 - Date: 2026-07-16
 - Branch: fix/0715-trotting-safety
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: stable, contact-gated A1 Trotting `/cmd_vel` locomotion
+- Current focus: simulation-time-synchronized, contact-gated A1 Trotting
+  `/cmd_vel` locomotion
 
 ## Active Work
+- **Trotting simulation-time synchronization validated**: Gazebo locomotion
+  updates now run only when `/clock` advances. Wave phase, estimator `dt`,
+  height/readiness timing, and desired body/yaw integration use measured
+  simulation deltas. At RTF ~0.10, the 0.75 s transition plus 0.20 s readiness
+  required 0.946 simulated seconds rather than 0.10 s. Pause/backward/jump
+  paths reset all stance; running Wave now latches off on tilt, scheduled
+  contact loss, or non-finite output.
 - **Trotting nominal entry validated**: A1 has one foot-space nominal stance;
   FixedStand derives its target by IK. An invalid duplicate parent joint on
   each foot was removed, making nominal FixedStand stationary and restoring
@@ -50,6 +58,9 @@
 - 不再使用 `chore/MMDD-short-name`
 
 ## Known Risks
+- The simulation discontinuity defaults (`0.05 s` maximum forward step and
+  `0.5 s` wall pause detector) passed the current 2 ms physics configuration
+  but may require tuning when controller scheduling is heavily starved.
 - Trotting readiness thresholds are validated only on flat Gazebo terrain;
   slope/stair contact thresholds and lateral/yaw tracking remain to be tuned.
   RL remains unvalidated and unchanged.
@@ -66,9 +77,10 @@
 - IDE 的 Miniconda Python 3.13 与 Noetic xacro 不兼容；ROS/Gazebo runtime 应使用系统 Python 3.10
 
 ## Validation Status
-- Build: Torch-enabled `catkin_make -j` passes after Trotting/joint changes
-- Locomotion: nominal FixedStand, gated zero Trotting, and forward pair pass;
-  `0.3 m/s` request averaged `0.273 m/s`
+- Build: Torch-enabled `catkin_make -j` passes after Trotting timing/safety
+  changes
+- Locomotion: nominal FixedStand, gated zero Trotting, forward pair, forced
+  RTF ~0.10 timing, pause/reset, tilt abort, and contact-loss abort pass
 - Unit tests: `building_generator_core/test/` (3 tests), `building_generator_classic/test/` (2 tests)
 - Remote config: `origin` 保持 Gitee, `github` 新增成功
 - Governance: 骨架完整, 分支规则已更新

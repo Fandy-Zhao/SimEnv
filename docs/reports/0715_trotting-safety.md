@@ -9,6 +9,14 @@ contacts are valid. The final headless pair moved `1.891 m` in `6.920 s`
 (`0.273 m/s` average) for a `0.3 m/s` body-forward request while remaining
 upright and finite.
 
+The timing path is now also independent of Gazebo real-time factor. Wave phase,
+estimator propagation, height/readiness timing, and desired body/yaw
+integration use advancing `/clock` time. A forced RTF ~0.10 test consumed
+`0.946 s` of simulation time for the configured `0.75 + 0.20 s` entry gates,
+even though `9.459 s` passed on the wall. Pauses and clock discontinuities reset
+all stance; tilt, contact loss, and non-finite output latch Wave off and stop
+subsequent gait/IK calculation.
+
 The prior immediate NaN was not caused by one fault alone. The uninitialized
 yaw filter was real, but instrumentation identified the first runtime
 non-finite output as inverse-kinematics joint position. Gazebo 11 reported the
@@ -81,7 +89,7 @@ path:
 
 - rejects non-finite Twist values;
 - clamps x/y/yaw commands before and after yaw filtering;
-- expires programmatic commands after `0.5 s` wall time (configurable with
+- expires programmatic commands after `0.5 s` simulation time (configurable with
   `trotting_cmd_vel_timeout`, valid range `0.1--5.0 s`);
 - verifies estimator, command, foot, force, IK, and torque values;
 - holds current measured joint positions with zero velocity/torque if a finite
@@ -109,6 +117,33 @@ nominal target. It now preserves current body and foot state, applies a 0.75 s
 smoothstep height transition, holds all stance, and suppresses motion commands
 until a continuous 0.20 s readiness window passes. A stopped wave must
 re-establish readiness before restarting.
+
+### 6. Wall-time gait and fixed-dt control at low real-time factor
+
+The original controller mixed three clocks: `getSystemTime()` for Wave phase,
+fixed `_ctrlComp->dt` increments for estimator and Trotting integration, and
+Gazebo `/clock` for physics. At RTF approximately 0.10, the reported 0.75 s
+height transition plus 0.20 s readiness window completed in only 0.10 s of
+simulation time, while the 0.45 s gait period became about 0.045 physics
+seconds. Waiting longer before pressing `w` could not repair this ratio.
+
+The Gazebo FSM now accepts a control update only after `/clock` advances and
+publishes the measured delta through `CtrlComponents`. Estimator matrices are
+updated for that delta; WaveGenerator receives the absolute simulation
+timestamp; FixedStand/Trotting integrations use the delta. An unchanged clock
+skips Wave, estimator, and state execution. A sustained pause, backward time,
+or a forward step above the configured threshold resets gait time and all
+stance. State commands remain latched during a pause rather than being lost.
+
+### 7. Wave cancellation was incomplete
+
+The former NaN guard blocked one motor output but did not change Wave state.
+Trotting now monitors roll/pitch and the force validity of legs scheduled for
+stance. Unsafe attitude aborts immediately; contact loss must persist for the
+configured simulated-time grace period. Either condition, or a non-finite
+control path, sets all stance, restarts gait state, clears motion commands, and
+latches a measured-position hold until the state is re-entered. The latched
+branch returns before command, balance, gait, or IK calculation.
 
 ## Runtime evidence
 
@@ -162,6 +197,25 @@ over `6.920 s` is `0.273256 m/s`; world +Y is correct because body yaw was near
   commanded a stop`.
 - The model state after both checks remained finite.
 
+### Low-RTF timing and runtime Wave protection
+
+With Gazebo forced to a 2 ms step and 50 Hz update rate (RTF approximately
+0.10), Trotting entered at simulation `5.788 s` / wall `1784137247.135` and
+became ready at simulation `6.734 s` / wall `1784137256.594`. The measured
+differences were `0.946 s` simulation and `9.459 s` wall. A `linear.x=0.3`
+window then moved from about `(-0.000101, 2.262991, 0.348901)` at `10.81 s` to
+`(0.000631, 4.342488, 0.348964) m` at `17.21 s`, upright and finite.
+
+Pausing at `18.032 s` produced one gait reset and Wave cancellation. After
+resume, the readiness restart from `18.034 s` to `18.980 s` again consumed
+`0.946 s` of simulation time. A tilt injection cancelled Wave at roll
+`36.2 deg` against the 20-degree limit.
+
+In a fresh destructive test, a symmetric upward body wrench made all four foot
+forces zero. Contact loss persisted for `0.080` simulated seconds and cancelled
+Wave. The final abort-return implementation emitted no subsequent gait/IK
+non-finite error during the observation window.
+
 ## Files changed
 
 - `unitreeRobot.h/.cpp`: one explicitly named foot-space nominal stance per
@@ -169,7 +223,14 @@ over `6.920 s` is `0.273256 m/s`; world +Y is correct because body yaw was near
 - `State_FixedStand.h/.cpp`: derive the joint target from nominal foot geometry
   through IK; remove the duplicated joint-angle target.
 - `State_Trotting.h/.cpp`: existing command/finite safety plus inherited entry
-  state, 0.75 s smooth height transition, and configurable wave-readiness gate.
+  state, simulation-time height/readiness integration, configurable readiness,
+  and latched tilt/contact/non-finite Wave cancellation.
+- `FSM.h/.cpp`, `FSMState.h`: advancing-`/clock` control boundary and state
+  reset hook for pause/backward/forward time discontinuities.
+- `WaveGenerator.h/.cpp`, `CtrlComponents.h`: ROS simulation timestamps,
+  measured control delta, and immediate all-stance reset support.
+- `Estimator.h/.cpp`: update propagation matrices and process covariance from
+  the measured simulation delta.
 - `LowlevelState.h`, `IOROS.h/.cpp`, `IOSDK.cpp`: measured foot-force magnitude
   and freshness feedback for simulation and real A1.
 - `a1_description/xacro/leg.xacro`: remove the invalid second parent joint from
@@ -203,6 +264,13 @@ over `6.920 s` is `0.273256 m/s`; world +Y is correct because body yaw was near
 - Final zero-command readiness/finite check: pass.
 - Final `linear.x=0.3` paired window: pass, `0.273 m/s` average in the correct
   body-forward direction.
+- Forced RTF ~0.10 timing: pass; entry gates used `0.946 s` simulation while
+  `9.459 s` elapsed on the wall.
+- Pause/reset/resume: pass; Wave cancelled on pause and re-established the
+  complete readiness gate after resume.
+- Running-Wave tilt abort: pass.
+- Running-Wave four-foot contact-loss abort: pass at `0.080` simulated seconds;
+  final latched path did not continue gait/IK.
 
 ## Risks
 
@@ -210,7 +278,11 @@ over `6.920 s` is `0.273256 m/s`; world +Y is correct because body yaw was near
   are validated on the current flat Gazebo scene but need terrain-specific
   calibration.
 - Contact freshness uses one second of wall time to tolerate low real-time
-  factor; extreme simulator stalls intentionally block wave start.
+  factor; the FSM performs no readiness or Wave update while simulation time
+  is stopped. Extreme callback stalls intentionally block wave start.
+- The default `0.05 s` maximum simulation step distinguishes normal controller
+  progress from a forward clock jump. Scheduling starvation or a different
+  physics step may require parameter tuning.
 - The short forward result is close to the command, but lateral/yaw tracking
   and collision-heavy indoor paths remain uncalibrated.
 - Removing the invalid second foot parent lets Gazebo lump each fixed foot into
@@ -234,3 +306,6 @@ over `6.920 s` is `0.273256 m/s`; world +Y is correct because body yaw was near
    and discontinuous indoor contacts.
 3. Keep RL repair as a separate task until policy joint ordering,
    normalization, and export metadata are recovered.
+4. Add automated `/clock` backward/forward-jump injection coverage; runtime
+   pause behavior is validated, while jump paths currently have code/build
+   coverage and share the same reset function.

@@ -24,6 +24,8 @@ State_Trotting::State_Trotting(CtrlComponents *ctrlComp)
     _nh.param("trotting_ready_angular_velocity", _readyAngularVelocity, 0.35);
     _nh.param("trotting_ready_tilt", _readyTilt, 0.17453292519943295);
     _nh.param("trotting_minimum_contact_force", _minimumContactForce, 1.0);
+    _nh.param("trotting_wave_abort_tilt", _waveAbortTilt, 0.3490658503988659);
+    _nh.param("trotting_wave_contact_loss_duration", _waveContactLossDuration, 0.08);
     if(!std::isfinite(_heightTransitionDuration) || _heightTransitionDuration < 0.5 ||
        _heightTransitionDuration > 1.0){
         ROS_WARN("Invalid trotting_height_transition_duration; using 0.75 seconds.");
@@ -52,6 +54,16 @@ State_Trotting::State_Trotting(CtrlComponents *ctrlComp)
        _minimumContactForce > 1000.0){
         ROS_WARN("Invalid trotting_minimum_contact_force; using 1 N.");
         _minimumContactForce = 1.0;
+    }
+    if(!std::isfinite(_waveAbortTilt) || _waveAbortTilt <= _readyTilt ||
+       _waveAbortTilt > 1.0472){
+        ROS_WARN("Invalid trotting_wave_abort_tilt; using 20 degrees.");
+        _waveAbortTilt = 0.3490658503988659;
+    }
+    if(!std::isfinite(_waveContactLossDuration) ||
+       _waveContactLossDuration < 0.02 || _waveContactLossDuration > 1.0){
+        ROS_WARN("Invalid trotting_wave_contact_loss_duration; using 0.08 seconds.");
+        _waveContactLossDuration = 0.08;
     }
 
     _gaitHeight = 0.08;
@@ -104,15 +116,17 @@ void State_Trotting::enter(){
     _heightTransitionTarget = -_robModel->getFeetPosIdeal()(2, 0);
     _heightTransitionElapsed = 0.0;
     _readinessStableElapsed = 0.0;
+    _waveContactLossElapsed = 0.0;
     _heightTransitionComplete = false;
     _waveReady = false;
     _waveStarted = false;
+    _waveAbortLatched = false;
     resetCommandState();
     _yawCmd = _lowState->getYaw();
     _Rd = rotz(_yawCmd);
 
     _ctrlComp->ioInter->zeroCmdPanel();
-    _ctrlComp->setAllStance();
+    _ctrlComp->setAllStanceNow();
     _gait->restart();
     ROS_INFO("Trotting entry: inherited body height %.3f m and foot positions; transitioning to %.3f m over %.2f s.",
              _heightTransitionStart, _heightTransitionTarget, _heightTransitionDuration);
@@ -144,6 +158,24 @@ void State_Trotting::exit(){
         outfile.close();
         std::cout << "文件关闭成功!" << std::endl;
     }
+}
+
+void State_Trotting::onControlTimeReset(){
+    _posBody = _est->getPosition();
+    _velBody = _est->getVelocity();
+    _posFeetGlobal = _est->getFeetPos();
+    _velFeetGlobal = _est->getFeetVel();
+    _B2G_RotMat = _lowState->getRotMat();
+    _G2B_RotMat = _B2G_RotMat.transpose();
+    _pcd = _posBody;
+    _heightTransitionStart = _pcd(2);
+    _heightTransitionTarget = -_robModel->getFeetPosIdeal()(2, 0);
+    _heightTransitionElapsed = 0.0;
+    _heightTransitionComplete = false;
+    _yawCmd = _lowState->getYaw();
+    _Rd = rotz(_yawCmd);
+    abortWave("control-time reset", false);
+    holdCurrentPose();
 }
 
 FSMStateName State_Trotting::checkChange(){
@@ -181,6 +213,7 @@ void State_Trotting::run(){
 
     if(!stateEstimateFinite()){
         ROS_ERROR_THROTTLE(1.0, "Trotting received a non-finite state estimate; holding current joint positions.");
+        abortWave("non-finite state estimate", true);
         holdCurrentPose();
         return;
     }
@@ -190,6 +223,12 @@ void State_Trotting::run(){
     getUserCmd();
     updateHeightTransition();
     updateWaveReadiness();
+    updateRunningWaveSafety();
+    if(_waveAbortLatched){
+        suppressMotionCommand();
+        holdCurrentPose();
+        return;
+    }
     if(!_waveReady){
         suppressMotionCommand();
     }
@@ -197,7 +236,7 @@ void State_Trotting::run(){
 
     if(!commandStateFinite()){
         ROS_ERROR_THROTTLE(1.0, "Trotting command calculation became non-finite; holding current joint positions.");
-        resetCommandState();
+        abortWave("non-finite command state", true);
         holdCurrentPose();
         return;
     }
@@ -215,13 +254,13 @@ void State_Trotting::run(){
             _posFeetGlobalGoal.allFinite(), _velFeetGlobalGoal.allFinite(),
             _forceFeetGlobal.allFinite(), _forceFeetBody.allFinite(),
             _qGoal.allFinite(), _qdGoal.allFinite(), _tau.allFinite());
-        resetCommandState();
+        abortWave("non-finite control output", true);
         holdCurrentPose();
         return;
     }
 
     const bool stepRequested = checkStepOrNot();
-    if(stepRequested && _waveReady){
+    if(stepRequested && _waveReady && !_waveAbortLatched){
         if(!_waveStarted){
             ROS_INFO("Trotting wave started after height, velocity, attitude, and four-foot contact checks passed.");
         }
@@ -284,7 +323,7 @@ void State_Trotting::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
         _cmdVx = 0.0;
         _cmdVy = 0.0;
         _cmdWz = 0.0;
-        _lastCmdVelWallTime = ros::WallTime::now();
+        _lastCmdVelTime = ros::Time::now();
         ROS_WARN_THROTTLE(1.0, "Trotting rejected a non-finite /cmd_vel and commanded a stop.");
         return;
     }
@@ -292,12 +331,16 @@ void State_Trotting::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
     _cmdVx = msg->linear.x;
     _cmdVy = msg->linear.y;
     _cmdWz = msg->angular.z;
-    _lastCmdVelWallTime = ros::WallTime::now();
+    _lastCmdVelTime = ros::Time::now();
 }
 
 void State_Trotting::getUserCmd(){
-    const bool cmdVelFresh = _cmdVelActive && !_lastCmdVelWallTime.isZero() &&
-        (ros::WallTime::now() - _lastCmdVelWallTime).toSec() <= _cmdVelTimeout;
+    const ros::Time now = _ctrlComp->controlTime.isZero() ? ros::Time::now() :
+        _ctrlComp->controlTime;
+    const double cmdAge = _lastCmdVelTime.isZero() ? -1.0 :
+        (now - _lastCmdVelTime).toSec();
+    const bool cmdVelFresh = _cmdVelActive && cmdAge >= 0.0 &&
+        cmdAge <= _cmdVelTimeout;
 
     if(_cmdVelActive && !cmdVelFresh){
         _cmdVelActive = false;
@@ -352,7 +395,7 @@ bool State_Trotting::controlOutputFinite() const{
 }
 
 void State_Trotting::holdCurrentPose(){
-    _ctrlComp->setAllStance();
+    _ctrlComp->setAllStanceNow();
     for(int i=0; i<12; ++i){
         const double measuredQ = _lowState->motorState[i].q;
         _lowCmd->motorCmd[i].q = std::isfinite(measuredQ) ? measuredQ : 0.0;
@@ -378,7 +421,7 @@ void State_Trotting::resetCommandState(){
     _cmdVx = 0.0;
     _cmdVy = 0.0;
     _cmdWz = 0.0;
-    _lastCmdVelWallTime = ros::WallTime();
+    _lastCmdVelTime = ros::Time();
 }
 
 void State_Trotting::updateHeightTransition(){
@@ -387,7 +430,7 @@ void State_Trotting::updateHeightTransition(){
         return;
     }
 
-    _heightTransitionElapsed += _ctrlComp->dt;
+    _heightTransitionElapsed += _ctrlComp->getControlDt();
     double ratio = _heightTransitionElapsed / _heightTransitionDuration;
     if(ratio >= 1.0){
         ratio = 1.0;
@@ -421,7 +464,7 @@ bool State_Trotting::readinessConditionsMet() const{
 }
 
 void State_Trotting::updateWaveReadiness(){
-    if(_waveStarted){
+    if(_waveStarted || _waveAbortLatched){
         return;
     }
 
@@ -435,7 +478,7 @@ void State_Trotting::updateWaveReadiness(){
     }
 
     if(readinessConditionsMet()){
-        _readinessStableElapsed += _ctrlComp->dt;
+        _readinessStableElapsed += _ctrlComp->getControlDt();
     }else{
         _readinessStableElapsed = 0.0;
     }
@@ -461,6 +504,83 @@ void State_Trotting::updateWaveReadiness(){
         _lowState->footForce[2], _lowState->footForce[3]);
 }
 
+bool State_Trotting::expectedStanceFeetHaveContact() const{
+    int expectedStanceFeet = 0;
+    for(int i=0; i<4; ++i){
+        if((*_contact)(i) != 1){
+            continue;
+        }
+        ++expectedStanceFeet;
+        if(!_lowState->footForceValid[i] ||
+           !std::isfinite(_lowState->footForce[i]) ||
+           _lowState->footForce[i] < _minimumContactForce){
+            return false;
+        }
+    }
+    return expectedStanceFeet >= 2;
+}
+
+void State_Trotting::updateRunningWaveSafety(){
+    if(!_waveStarted || _waveAbortLatched){
+        _waveContactLossElapsed = 0.0;
+        return;
+    }
+
+    const Vec3 rpy = rotMatToRPY(_B2G_RotMat);
+    if(std::abs(rpy(0)) >= _waveAbortTilt ||
+       std::abs(rpy(1)) >= _waveAbortTilt){
+        ROS_ERROR("Trotting wave abort: attitude exceeded limit (roll=%.1fdeg pitch=%.1fdeg limit=%.1fdeg).",
+                  rpy(0) * 180.0 / M_PI, rpy(1) * 180.0 / M_PI,
+                  _waveAbortTilt * 180.0 / M_PI);
+        abortWave("unsafe body attitude", true);
+        return;
+    }
+
+    if(expectedStanceFeetHaveContact()){
+        _waveContactLossElapsed = 0.0;
+        return;
+    }
+
+    _waveContactLossElapsed += _ctrlComp->getControlDt();
+    if(_waveContactLossElapsed >= _waveContactLossDuration){
+        ROS_ERROR("Trotting wave abort: expected stance-foot contact was invalid for %.3f simulated seconds; force=[%.1f %.1f %.1f %.1f] N.",
+                  _waveContactLossElapsed,
+                  _lowState->footForce[0], _lowState->footForce[1],
+                  _lowState->footForce[2], _lowState->footForce[3]);
+        abortWave("stance-foot contact loss", true);
+    }
+}
+
+void State_Trotting::abortWave(const char *reason, bool latchAbort){
+    const bool wasActive = _waveStarted || _waveReady;
+    _ctrlComp->setAllStanceNow();
+    _gait->restart();
+    _waveStarted = false;
+    _waveReady = false;
+    _readinessStableElapsed = 0.0;
+    _waveContactLossElapsed = 0.0;
+    _waveAbortLatched = latchAbort;
+    resetCommandState();
+    _ctrlComp->ioInter->zeroCmdPanel();
+
+    if(_posBody.allFinite()){
+        _pcd = _posBody;
+    }
+    if(_posFeetGlobal.allFinite()){
+        _posFeetGlobalGoal = _posFeetGlobal;
+        _velFeetGlobalGoal.setZero();
+    }
+    if(_B2G_RotMat.allFinite()){
+        _yawCmd = _lowState->getYaw();
+        _Rd = rotz(_yawCmd);
+    }
+
+    if(wasActive || latchAbort){
+        ROS_WARN("Trotting wave cancelled (%s); holding all stance%s.",
+                 reason, latchAbort ? " until the state is re-entered" : "");
+    }
+}
+
 void State_Trotting::suppressMotionCommand(){
     _vCmdBody.setZero();
     _dYawCmd = 0.0;
@@ -474,13 +594,14 @@ void State_Trotting::calcCmd(){
     _vCmdGlobal(0) = saturation(_vCmdGlobal(0), Vec2(_velBody(0)-0.2, _velBody(0)+0.2));
     _vCmdGlobal(1) = saturation(_vCmdGlobal(1), Vec2(_velBody(1)-0.2, _velBody(1)+0.2));
 
-    _pcd(0) = saturation(_pcd(0) + _vCmdGlobal(0) * _ctrlComp->dt, Vec2(_posBody(0) - 0.05, _posBody(0) + 0.05));
-    _pcd(1) = saturation(_pcd(1) + _vCmdGlobal(1) * _ctrlComp->dt, Vec2(_posBody(1) - 0.05, _posBody(1) + 0.05));
+    const double simDt = _ctrlComp->getControlDt();
+    _pcd(0) = saturation(_pcd(0) + _vCmdGlobal(0) * simDt, Vec2(_posBody(0) - 0.05, _posBody(0) + 0.05));
+    _pcd(1) = saturation(_pcd(1) + _vCmdGlobal(1) * simDt, Vec2(_posBody(1) - 0.05, _posBody(1) + 0.05));
 
     _vCmdGlobal(2) = 0;
 
     /* Turning */
-    _yawCmd = _yawCmd + _dYawCmd * _ctrlComp->dt;
+    _yawCmd = _yawCmd + _dYawCmd * simDt;
 
     _Rd = rotz(_yawCmd);
     _wCmdGlobal(2) = _dYawCmd;

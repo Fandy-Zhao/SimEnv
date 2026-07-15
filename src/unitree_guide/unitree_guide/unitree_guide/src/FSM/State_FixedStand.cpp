@@ -99,7 +99,7 @@ void State_FixedStand::enter(){
 }
 
 void State_FixedStand::run(){
-    _elapsed += static_cast<float>(_ctrlComp->dt);
+    _elapsed += static_cast<float>(_ctrlComp->getControlDt());
     if(_elapsed < _settleDuration){
         if(_ctrlComp->ctrlPlatform == CtrlPlatform::GAZEBO){
             setRampSimStanceGain(0.0f);

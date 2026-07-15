@@ -37,6 +37,7 @@ public:
     virtual void enter() = 0;
     virtual void run() = 0;
     virtual void exit() = 0;
+    virtual void onControlTimeReset() {}
     virtual FSMStateName checkChange() {return FSMStateName::INVALID;}
 
     FSMStateName _stateName;
