@@ -24,6 +24,9 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 > **2026-07-15 controller keyboard fix**: `auto.sh` 的 FAST-LIO2 启动路径改为显式把 `junior_ctrl` stdin 绑定至 `/dev/tty`，并以 `wait` 取代非交互 shell 不可靠的 `fg`。交互终端可继续使用键盘；无 TTY 时提示改用 ROS 控制话题 (`fix/0715-auto-keyboard`)。
 > **2026-07-15 build/startup guard**: `build_with_venv.sh` 默认编译 `auto.sh` 的完整运行时包集，包含发布 `/scan` 所需的 `livox_laser_simulation`，并避开工作区内不属于仓库的可选包（如依赖 libusb-0.1 的 `ps3joy`）；`auto.sh` 在清理/生成场景前检查 `junior_ctrl` 是否已生成，避免控制器缺失导致启动后才退出 (`fix/0715-build-auto-startup`)。
 
+> **2026-07-15 FSM nullptr segfault fix**: 当 Torch 策略默认禁用时，键盘 `4`/`6` 键和 ROS callback `data:4`/`data:6` 不再触发 TROTTING/RL 状态转换（对应状态指针为 nullptr）。新增 FSM 级 nullptr 安全检查作为防御层。`auto.sh` 帮助文本已更新，标明 `4`/`6` 需要 Torch 构建 (`fix/0715-build-auto-startup`).
+> **2026-07-15 dedicated terminals**: `auto.sh` 改为在独立 `gnome-terminal` 窗口中启动 `junior_ctrl` 和 rviz（回退: `xterm` → 后台）。控制器获得真实 TTY，键盘输入正常可用。移除 `CONTROLLER_FOREGROUND`，新增 `ENABLE_RVIZ`。`Ctrl-C` 通过 trap 清理所有 ROS 进程 (`fix/0715-build-auto-startup`).
+
 ## Modules
 
 | Module | Purpose | Status | Tests / Checks | Notes |

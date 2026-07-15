@@ -98,8 +98,8 @@ SEED=77 FLOOR_COUNT=3 ROOMS_PER_FLOOR=4 ./auto.sh
 | `DISTRACTOR_COUNT` | `4:8` | 干扰源数量，支持 `min:max` |
 | `GUI` | `true` | 是否启动 Gazebo GUI |
 | `PAUSED` | `true` | Gazebo 启动后是否暂停 |
-| `START_CONTROLLER` | `1` | 是否启动 `junior_ctrl` |
-| `CONTROLLER_FOREGROUND` | `1` | 是否在前台运行控制器。前台运行时可以在当前终端输入 `1`、`2`、`6` 切换状态 |
+| `START_CONTROLLER` | `1` | 是否在独立终端启动 `junior_ctrl` |
+| `ENABLE_RVIZ` | `1` | 是否在独立终端启动 rviz |
 | `START_BUILDING_CONTROL` | `1` | 是否启动楼栋门/电梯控制服务 |
 | `UNITREE_CTRL_DT` | `0.002` | `junior_ctrl` 控制周期，单位 s。默认 500 Hz |
 | `UNITREE_STAND_DURATION` | `3.0` | 按 `2` 后从当前姿态平滑站立的时长，单位 s |

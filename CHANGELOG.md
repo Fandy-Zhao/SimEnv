@@ -2,6 +2,28 @@
 
 ## 2026-07-15
 
+### Dedicated Controller & RVIZ Terminals (fix/0715-build-auto-startup)
+- `auto.sh` now launches `junior_ctrl` and rviz in dedicated `gnome-terminal`
+  windows (fallback: `xterm` → background).  This guarantees a real TTY for
+  keyboard state switching (`2`=stand, `4`=trot, `6`=RL), eliminating the
+  unreliable `/dev/tty`-redirection approach that caused segfaults and missing
+  keyboard input.
+- Removed `CONTROLLER_FOREGROUND` variable; the controller always runs in its
+  own terminal.  Added `ENABLE_RVIZ` (default: 1).
+- Replaced the end-of-script `wait` with a `trap cleanup INT TERM` + infinite
+  sleep loop — Ctrl‑C in the main terminal now cleanly stops all ROS processes.
+
+### FSM Nullptr Segfault Fix (fix/0715-build-auto-startup)
+- Guarded keyboard `4`/`6` mappings, ROS `/fsm/state_cmd` cases `4`/`6`, and
+  `State_FixedStand::checkChange()` TROTTING/RL returns behind `#ifndef
+  UNITREE_DISABLE_TORCH_POLICY`.  When Torch is OFF (default), pressing these
+  keys or publishing the matching rostopic no longer triggers a transition to a
+  nullptr state object → segfault.
+- Added a nullptr safety check in `FSM::run()` so that any future unguarded
+  path produces a warning instead of a crash.
+- Updated `auto.sh` help text to indicate that 4=Trotting and 6=RL require a
+  Torch-enabled build.
+
 ### Controller Terminal Keyboard Fix (fix/0715-auto-keyboard)
 - `auto.sh` now explicitly assigns `/dev/tty` to background `junior_ctrl`.
   This preserves keyboard input when FAST-LIO2 startup requires the controller

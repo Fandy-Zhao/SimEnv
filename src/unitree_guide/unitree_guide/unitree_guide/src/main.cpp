@@ -158,8 +158,10 @@ int main(int argc, char **argv)
             case 1: ctrlComp->pendingStateCmd = UserCommand::L2_B; break;
             case 2: ctrlComp->pendingStateCmd = UserCommand::L2_A; break;
             case 3: ctrlComp->pendingStateCmd = UserCommand::L2_X; break;
+#ifndef UNITREE_DISABLE_TORCH_POLICY
             case 4: ctrlComp->pendingStateCmd = UserCommand::START; break;
             case 6: ctrlComp->pendingStateCmd = UserCommand::RL; break;
+#endif  // UNITREE_DISABLE_TORCH_POLICY
             case 8: ctrlComp->pendingStateCmd = UserCommand::L1_Y; break;
             case 9: ctrlComp->pendingStateCmd = UserCommand::L1_A; break;
             default: break;

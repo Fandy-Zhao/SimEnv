@@ -2,14 +2,16 @@
 
 ## Snapshot
 - Date: 2026-07-15
-- Branch: fix/0715-fast-lio2-axis
+- Branch: fix/0715-build-auto-startup
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: FAST-LIO2 startup + TF bridge fixes integrated
+- Current focus: FSM nullptr segfault fix on Torch-disabled builds
 
 ## Active Work
 - **FAST-LIO2 startup + TF bridge** (merged to `develop`): Controller starts before FAST-LIO2, auto-commanded FixedStand, IMU upright check. Duplicate adapter eliminated. Controller foreground mode preserved via `fg`. Camera-init TF bridge: `map→camera_init` is direct copy of `map→imu_link` (Ry(-45°) removed — was duplicate of FAST-LIO2 extrinsic_R). Rotation responsibility documented in YAML and ADR-0714.
 - **FAST-LIO2 LiDAR–IMU axes corrected**: Source audit established that FAST-LIO2 applies `p_imu = R * p_lidar + T`. The SimEnv point source is local `laser_livox`, so the mapping config now uses the direct runtime TF `imu_link→laser_livox`: `Ry(+45°)`, `[0.2,0,0.08]`. `map→camera_init` remains a no-rotation copy of `map→imu_link`; restart FAST-LIO2 to load the new YAML.
 - **Controller terminal keyboard**: `auto.sh` explicitly binds background `junior_ctrl` stdin to `/dev/tty` and then waits for it in foreground mode. This avoids non-interactive Bash replacing stdin with `/dev/null` during FAST-LIO2 startup.
+- **FSM nullptr segfault fix**: Guarded keyboard/RPC/checkChange paths against TROTTING/RL states when Torch is disabled. Default build (Torch OFF) no longer crashes on `4`/`6` key press or rostopic. Added FSM-level nullptr safety net.
+- **Dedicated controller + rviz terminals**: `auto.sh` now launches `junior_ctrl` and rviz in dedicated terminal windows (`gnome-terminal`/`xterm`/background fallback). This guarantees a real TTY for keyboard input, removing the unreliable `/dev/tty` background-redirect approach. Removed `CONTROLLER_FOREGROUND`; added `ENABLE_RVIZ`.
 - **Build/startup recovery**: the supported build script now compiles the complete `auto.sh` runtime profile, including `livox_laser_simulation` (required to publish `/scan`), while excluding unrelated locally added packages (including legacy PS3 utilities requiring libusb-0.1); `auto.sh` checks for `junior_ctrl` before it mutates the running simulation state.
 - **FAST-LIO2 runtime validated**: PointCloud2 intensity fix, TF bridge, RViz config. Converges to ~7 cm within 20 s in FixedStand. All output topics publish stably.
 - **Locomotion ready**: Trotting with `/cmd_vel` + `/fsm/state_cmd` programmatic control. RL policies diagnosed as non-functional for velocity tracking. P1 blocked by Gazebo physics stability.

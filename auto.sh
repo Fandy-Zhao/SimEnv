@@ -37,7 +37,6 @@ AUTO_UNPAUSE="$(as_ros_bool "${AUTO_UNPAUSE:-1}")"
 AUTO_UNPAUSE_DELAY="${AUTO_UNPAUSE_DELAY:-6}"
 START_CONTROLLER="${START_CONTROLLER:-1}"
 START_VIRTUAL_JOY="${START_VIRTUAL_JOY:-0}"
-CONTROLLER_FOREGROUND="${CONTROLLER_FOREGROUND:-1}"
 START_BUILDING_CONTROL="${START_BUILDING_CONTROL:-1}"
 ENABLE_SENSOR_DATA_DEFAULT="${ENABLE_SENSORS:-1}"
 ENABLE_SENSOR_DATA="$(as_ros_bool "${ENABLE_SENSOR_DATA:-$ENABLE_SENSOR_DATA_DEFAULT}")"
@@ -50,6 +49,7 @@ POINTCLOUD_USE_GROUND_TRUTH_ODOM="$(as_ros_bool "${POINTCLOUD_USE_GROUND_TRUTH_O
 WRITE_GENERATED_TRUTH_COPY="$(as_ros_bool "${WRITE_GENERATED_TRUTH_COPY:-1}")"
 ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-1}")"
 FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-5}"
+ENABLE_RVIZ="$(as_ros_bool "${ENABLE_RVIZ:-1}")"
 UNITREE_CTRL_DT="${UNITREE_CTRL_DT:-0.004}"
 GAZEBO_PHYSICS_MAX_STEP_SIZE="${GAZEBO_PHYSICS_MAX_STEP_SIZE:-0.002}"
 GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE:-500}"
@@ -86,6 +86,60 @@ schedule_unpause_physics() {
       sleep 0.25
     done
   ) &
+}
+
+# ---------------------------------------------------------------------------
+# Launch a command in a dedicated terminal window.  This gives the command a
+# real TTY so interactive keyboard input works (e.g. junior_ctrl).
+# Falls back to background execution when no graphical terminal is available.
+# ---------------------------------------------------------------------------
+launch_in_terminal() {
+  local title="$1"
+  local command="$2"
+  local env_block
+  env_block="export UNITREE_CTRL_DT='${UNITREE_CTRL_DT}';"
+  env_block="${env_block} export GAZEBO_MODEL_PATH='${GAZEBO_MODEL_PATH:-}'"
+  env_block="${env_block}:${SCENE_OUTPUT_DIR}:${UNITREE_GAZEBO_MODELS}';"
+  env_block="${env_block} export GAZEBO_PLUGIN_PATH='${GAZEBO_PLUGIN_PATH:-}';"
+  env_block="${env_block} export ROS_PACKAGE_PATH='${ROS_PACKAGE_PATH:-}';"
+  env_block="${env_block} export CMAKE_PREFIX_PATH='${CMAKE_PREFIX_PATH:-}';"
+  env_block="${env_block} export PYTHONPATH='${PYTHONPATH:-}';"
+
+  if command -v gnome-terminal >/dev/null 2>&1; then
+    gnome-terminal --title="$title" -- bash -c "
+      source /opt/ros/noetic/setup.bash
+      source '${WORKSPACE_DIR}/devel/setup.bash'
+      ${env_block}
+      echo '=== ${title} ==='
+      echo 'Command: ${command}'
+      echo ''
+      ${command}
+      echo ''
+      echo '=== ${title} exited. Press Enter to close this terminal. ==='
+      read
+    " &
+  elif command -v xterm >/dev/null 2>&1; then
+    xterm -title "$title" -e "bash -c '
+      source /opt/ros/noetic/setup.bash
+      source '${WORKSPACE_DIR}/devel/setup.bash'
+      ${env_block}
+      echo === ${title} ===
+      ${command}
+      echo ''
+      echo === ${title} exited. Press Enter to close. ===
+      read
+    '" &
+  else
+    echo "WARNING: No graphical terminal found; launching '$title' in background." >&2
+    bash -c "
+      source /opt/ros/noetic/setup.bash
+      source '${WORKSPACE_DIR}/devel/setup.bash'
+      ${env_block}
+      ${command}
+    " > "${WORKSPACE_DIR}/logs/${title}.log" 2>&1 &
+  fi
+  # Record the PID of the terminal wrapper / background process.
+  echo $! > "${WORKSPACE_DIR}/logs/${title}.pid"
 }
 
 echo "Cleaning up all leftover processes from previous runs..."
@@ -256,61 +310,21 @@ if [ "$START_BUILDING_CONTROL" = "1" ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Controller startup (before FAST-LIO2 so the robot is standing for IMU init)
+# Controller startup — always in a dedicated terminal so keyboard input works.
 # ---------------------------------------------------------------------------
-CTRL_IS_BACKGROUND=0
-CTRL_PID=""
-CTRL_WANTS_FOREGROUND=0
-CTRL_TTY=""
-
-# A background process started by a non-interactive shell receives /dev/null
-# as stdin.  junior_ctrl's KeyBoard reads stdin directly, so explicitly bind
-# it to the terminal that launched auto.sh instead of relying on Bash job
-# control (fg is unavailable in a non-interactive script).
-if [ -r /dev/tty ] && [ -w /dev/tty ]; then
-  CTRL_TTY="/dev/tty"
-elif [ "$START_CONTROLLER" = "1" ] && [ "$CONTROLLER_FOREGROUND" = "1" ]; then
-  echo "WARNING: No controlling terminal is available; junior_ctrl keyboard input is disabled." >&2
-  echo "  Run ./auto.sh from an interactive terminal, or use /fsm/state_cmd and /cmd_vel." >&2
-fi
-
 if [ "$START_CONTROLLER" = "1" ]; then
-  if [ "$CONTROLLER_FOREGROUND" = "1" ] && [ "$ENABLE_FAST_LIO2" != "true" ]; then
-    # No FAST-LIO2: simple foreground, blocks here.
-    echo "Starting junior_ctrl controller in the foreground."
-    echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
-    echo "Use keyboard input: 2 = stand, 6 = RL mode."
-    schedule_unpause_physics
-    if [ -n "$CTRL_TTY" ]; then
-      "$CONTROLLER_BIN" < "$CTRL_TTY"
-    else
-      "$CONTROLLER_BIN"
-    fi
-  else
-    # Background first: script continues to auto-stabilise + FAST-LIO2.
-    if [ "$CONTROLLER_FOREGROUND" = "1" ]; then
-      CTRL_WANTS_FOREGROUND=1
-    fi
-    echo "Starting junior_ctrl controller in the background."
-    echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
-    if [ -n "$CTRL_TTY" ]; then
-      "$CONTROLLER_BIN" \
-        < "$CTRL_TTY" > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
-    else
-      "$CONTROLLER_BIN" \
-        > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
-    fi
-    CTRL_PID=$!
-    echo "$CTRL_PID" > "$WORKSPACE_DIR/logs/junior_ctrl.pid"
-    CTRL_IS_BACKGROUND=1
-    schedule_unpause_physics
-  fi
+  echo "Starting junior_ctrl in a dedicated terminal..."
+  echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
+  echo "Keyboard input in the controller terminal: 2=stand (4=trot, 6=RL need Torch build)."
+  launch_in_terminal "junior_ctrl" "$CONTROLLER_BIN"
+  sleep 2
+  schedule_unpause_physics
 else
   schedule_unpause_physics
 fi
 
 # ── FAST-LIO2 preflight: wait for upright robot ──
-if [ "$ENABLE_FAST_LIO2" = "true" ] && [ "$CTRL_IS_BACKGROUND" = "1" ]; then
+if [ "$ENABLE_FAST_LIO2" = "true" ] && [ "$START_CONTROLLER" = "1" ]; then
   # Wait for the controller node and its /fsm/state_cmd subscriber.
   sleep 3
 
@@ -373,24 +387,57 @@ if [ "$ENABLE_FAST_LIO2" = "true" ]; then
     > "$WORKSPACE_DIR/logs/fast_lio2.log" 2>&1 &
   echo $! > "$WORKSPACE_DIR/logs/fast_lio2.pid"
   echo "FAST-LIO2 mapping launched in background (logs: logs/fast_lio2.log)"
+
+  # ── RVIZ ──
+  RVIZ_CONFIG="$WORKSPACE_DIR/src/simenv_fast_lio2_integration/config/fast_lio2.rviz"
+  if [ "$ENABLE_RVIZ" = "true" ] && [ -f "$RVIZ_CONFIG" ]; then
+    echo "Starting rviz in a dedicated terminal..."
+    launch_in_terminal "rviz" "rosrun rviz rviz -d ${RVIZ_CONFIG}"
+  elif [ "$ENABLE_RVIZ" = "true" ]; then
+    echo "WARNING: rviz config not found at $RVIZ_CONFIG" >&2
+  fi
 fi
 
 # ---------------------------------------------------------------------------
 # Post-startup summary
 # ---------------------------------------------------------------------------
 echo "Simulation startup command completed."
-echo "Publish geometry_msgs/Twist to /cmd_vel for velocity control (after Trotting/RL mode)."
+echo "Publish geometry_msgs/Twist to /cmd_vel for velocity control (Trotting/RL mode only;"
+echo "  Trotting and RL require a Torch-enabled build: set UNITREE_ENABLE_TORCH_POLICY=ON)."
 echo "Use rostopic to switch FSM states:"
 echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 2\"  # FixedStand"
-echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\"  # Trotting"
-echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL"
+echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\"  # Trotting   (needs Torch)"
+echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL         (needs Torch)"
 
-# Keep the invoking terminal attached when foreground mode is requested.  The
-# controller may be a background child during FAST-LIO2 startup, but it reads
-# /dev/tty explicitly; waiting avoids unreliable `fg %1` job-control calls.
-if [ "$CTRL_WANTS_FOREGROUND" = "1" ] && [ -n "$CTRL_PID" ]; then
+# Keep the script alive so the user can read the summary and press Ctrl-C to
+# stop all processes.  The controller and rviz run in their own terminals.
+echo ""
+echo "=============================================="
+echo "  auto.sh startup complete."
+echo "  The controller and rviz are in separate terminals."
+echo "  Press Ctrl-C in THIS terminal to stop all ROS processes."
+echo "=============================================="
+
+# Cleanup trap: kill ROS processes when the user presses Ctrl-C.
+cleanup() {
   echo ""
-  echo "Controller is reading this terminal (keyboard: 2=stand 4=trot 6=RL)."
-  echo "Press Ctrl-C to stop auto.sh and junior_ctrl."
-  wait "$CTRL_PID"
-fi
+  echo "Shutting down..."
+  pkill -9 -f "gzserver"     2>/dev/null || true
+  pkill -9 -f "gzclient"     2>/dev/null || true
+  pkill -9 -f "gazebo"       2>/dev/null || true
+  pkill -9 -f "rosmaster"    2>/dev/null || true
+  pkill -9 -f "rosout"       2>/dev/null || true
+  pkill -9 -f "junior_ctrl"  2>/dev/null || true
+  pkill -9 -f "fastlio_mapping" 2>/dev/null || true
+  pkill -9 -f "scan_to_pointcloud2" 2>/dev/null || true
+  pkill -9 -f "building_generator_classic_control" 2>/dev/null || true
+  pkill -9 -f "rviz"         2>/dev/null || true
+  echo "Cleanup complete."
+  exit 0
+}
+trap cleanup INT TERM
+
+# Wait indefinitely — the user stops the simulation with Ctrl-C.
+while true; do
+  sleep 1
+done

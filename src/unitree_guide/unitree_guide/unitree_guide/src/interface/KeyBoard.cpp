@@ -30,6 +30,7 @@ UserCommand KeyBoard::checkCmd(){
         return UserCommand::L2_A;
     case '3':
         return UserCommand::L2_X;
+#ifndef UNITREE_DISABLE_TORCH_POLICY
     case '4':
         return UserCommand::START;
 #ifdef COMPILE_WITH_MOVE_BASE
@@ -38,6 +39,7 @@ UserCommand KeyBoard::checkCmd(){
 #endif  // COMPILE_WITH_MOVE_BASE
     case '6':
         return UserCommand::RL;
+#endif  // UNITREE_DISABLE_TORCH_POLICY
     case '0':
         return UserCommand::L1_X;
     case '9':
