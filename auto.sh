@@ -133,8 +133,8 @@ launch_in_terminal() {
       echo ''
       ${command}
       echo ''
-      echo '=== ${title} exited. Press Enter to close this terminal. ==='
-      read
+      echo '=== ${title} exited. This terminal is kept open for diagnostics. Type exit to close. ==='
+      exec bash --noprofile --norc -i
     " &
   elif command -v xterm >/dev/null 2>&1; then
     xterm -title "$title" -e "bash -c '
@@ -144,8 +144,8 @@ launch_in_terminal() {
       echo === ${title} ===
       ${command}
       echo ''
-      echo === ${title} exited. Press Enter to close. ===
-      read
+      echo === ${title} exited. This terminal is kept open for diagnostics. Type exit to close. ===
+      exec bash --noprofile --norc -i
     '" &
   else
     echo "WARNING: No graphical terminal found; launching '$title' in background." >&2

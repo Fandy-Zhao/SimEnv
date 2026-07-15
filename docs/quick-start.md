@@ -129,6 +129,7 @@ ENABLE_FAST_LIO2=1 GUI=false ./auto.sh
 
 从 Snap 版 VS Code 的集成终端启动时，脚本会使用干净的桌面环境直接打开
 GNOME Terminal，避免 Snap 动态库污染阻止控制器和 RViz 窗口创建。
+如果控制器或 RViz 进程退出，对应终端会保留诊断信息；输入 `exit` 才会关闭。
 
 若 `auto.sh` 在场景生成前报告 `junior_ctrl is not built`，请先完成
 Unitree 控制器构建。该预检会保护当前生成场景，避免控制器缺失时启动一半

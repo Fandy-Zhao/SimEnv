@@ -6,7 +6,9 @@
 `gnome-terminal` wrapper inherited Snap Code's library environment and failed
 before creating either window. The launcher now invokes `gnome-terminal.real`
 with a minimal desktop-session environment, then the terminal command sources
-ROS and the workspace normally.
+ROS and the workspace normally. If the controller or RViz command exits, the
+terminal remains open in an interactive diagnostic shell instead of flashing
+closed.
 
 ## Scope
 
