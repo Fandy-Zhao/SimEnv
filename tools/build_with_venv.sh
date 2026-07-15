@@ -203,9 +203,10 @@ fi
 if [[ -n "${TORCH_CMAKE_PREFIX:-}" ]]; then
   if find "$TORCH_CMAKE_PREFIX" \( -name "TorchConfig.cmake" -o -name "torch-config.cmake" \) 2>/dev/null | grep -q .; then
     CMAKE_PREFIX_ENTRIES+=("$TORCH_CMAKE_PREFIX")
-    CATKIN_CMAKE_ARGS+=("-DTorch_DIR=$TORCH_CMAKE_PREFIX/Torch")
+    # Do NOT set a global -DTorch_DIR.  unitree_guide links its own LibTorch
+    # distribution (UNITREE_TORCH_ROOT, NO_DEFAULT_PATH).  A global Torch_DIR
+    # overrides that path and mixes incompatible torch .so files at link time.
     echo "[build_with_venv] Torch CMake prefix: $TORCH_CMAKE_PREFIX"
-    echo "[build_with_venv] Torch_DIR: $TORCH_CMAKE_PREFIX/Torch"
   else
     echo "WARN: torch import works but TorchConfig.cmake was not found under: $TORCH_CMAKE_PREFIX" >&2
   fi

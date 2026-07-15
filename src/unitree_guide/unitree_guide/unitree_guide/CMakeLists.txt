@@ -6,7 +6,7 @@ project(unitree_guide)
 # trotting quaternion helpers are excluded. This avoids _GLIBCXX_USE_CXX11_ABI=0
 # pollution of ROS controller code.
 # Set ON to re-enable Torch RL policy (requires libtorch + CUDA + ABI management).
-option(UNITREE_ENABLE_TORCH_POLICY "Build unitree torch policy support" OFF)
+option(UNITREE_ENABLE_TORCH_POLICY "Build unitree torch policy support" ON)
 message(STATUS "UNITREE_ENABLE_TORCH_POLICY=${UNITREE_ENABLE_TORCH_POLICY}")
 
 if(UNITREE_ENABLE_TORCH_POLICY)
