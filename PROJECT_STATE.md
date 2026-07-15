@@ -2,7 +2,7 @@
 
 ## Snapshot
 - Date: 2026-07-16
-- Branch: fix/0715-trotting-safety
+- Branch: master (merged `fix/0715-trotting-safety` at `9ded5269`)
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
 - Current focus: simulation-time-synchronized, contact-gated A1 Trotting
   `/cmd_vel` locomotion
