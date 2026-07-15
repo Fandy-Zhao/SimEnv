@@ -153,12 +153,11 @@ launch_in_terminal() {
       echo "tmux session ready: $tmux_session"
       echo "  Reattach from any terminal: tmux attach-session -t $tmux_session"
       if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && [ -x /usr/bin/gnome-terminal.real ]; then
-        "${terminal_env[@]}" /usr/bin/gnome-terminal.real --title="$title" -- bash -c "
-          tmux attach-session -t '$tmux_session'
-          echo ''
-          echo 'Detached from $tmux_session. Type exit to close this terminal.'
-          exec bash --noprofile --norc -i
-        " &
+        # Use tmux as the terminal's top-level process. When a later auto.sh
+        # startup removes this session, the attach client and its window exit
+        # instead of falling through to a leftover interactive Bash shell.
+        "${terminal_env[@]}" /usr/bin/gnome-terminal.real --title="$title" -- \
+          tmux attach-session -t "$tmux_session" &
         echo $! > "${WORKSPACE_DIR}/logs/${title}.pid"
       fi
       return
@@ -207,9 +206,18 @@ launch_in_terminal() {
 }
 
 cleanup_tmux_sessions() {
-  command -v tmux >/dev/null 2>&1 || return
-  tmux kill-session -t "${TMUX_SESSION_PREFIX}-junior_ctrl" 2>/dev/null || true
-  tmux kill-session -t "${TMUX_SESSION_PREFIX}-rviz" 2>/dev/null || true
+  local title session
+  for title in junior_ctrl rviz; do
+    session="${TMUX_SESSION_PREFIX}-${title}"
+    if command -v tmux >/dev/null 2>&1 && tmux has-session -t "$session" 2>/dev/null; then
+      echo "Stopping previous tmux session: $session"
+      tmux kill-session -t "$session" 2>/dev/null || true
+    fi
+    # These are runtime records, not user configuration. Remove stale records
+    # after the associated session is gone so a new startup cannot mistake
+    # them for its freshly launched terminal.
+    rm -f "${WORKSPACE_DIR}/logs/${title}.tmux_session" "${WORKSPACE_DIR}/logs/${title}.pid"
+  done
 }
 
 echo "Cleaning up all leftover processes from previous runs..."

@@ -13,6 +13,9 @@
   script remains syntactically valid and both named sessions stay alive.
 - Validated full startup: both sessions remained live, `/Odometry` published at
   about 10 Hz, and `SIGINT` removed sessions and runtime processes cleanly.
+- At each new startup, explicitly stop the prior controller and RViz sessions
+  and remove their runtime records; attached GUI clients now exit with the
+  session instead of remaining as orphaned shells.
 - Fixed terminal creation when `auto.sh` is launched from Snap Code: it now
   starts `gnome-terminal.real` with a clean desktop environment instead of the
   Snap-contaminated D-Bus wrapper, which failed with a GLIBC symbol error.

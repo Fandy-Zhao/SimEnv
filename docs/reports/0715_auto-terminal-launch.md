@@ -33,6 +33,8 @@ Snap installation, or ROS Noetic.
   at about 10 Hz.
 - Sending `SIGINT` to the launcher completed the normal trap cleanup and
   removed both tmux sessions and all checked runtime processes.
+- A subsequent startup now explicitly removes the prior named sessions and
+  their runtime records before launching replacements.
 
 # Task Report
 
@@ -57,3 +59,5 @@ Implementation commit: `61d2d03f fix(auto): retain terminal sessions with tmux`.
 The automated runner cannot send keyboard input through a desktop-attached tmux
 client. Start `./auto.sh`, attach with `tmux attach-session -t
 simenv-junior_ctrl`, and verify `2` (stand) from the intended user terminal.
+Existing windows created by older versions can still need to be closed once;
+new tmux attach windows exit automatically when their session is cleaned up.
