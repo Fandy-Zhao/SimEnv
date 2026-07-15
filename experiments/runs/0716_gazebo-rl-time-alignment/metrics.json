@@ -20,6 +20,13 @@
     "action_sequence_delta": 45,
     "history_duplicate_delta": 44
   },
+  "patch2_pause_regression": {
+    "sim_time_us": 13277000,
+    "wall_overtime_count": 14,
+    "policy_sequence_delta": 0,
+    "action_sequence_delta": 0,
+    "history_duplicate_delta": 0
+  },
   "reset_simulation": {
     "before_sim_time_s": 78.315,
     "after_sim_time_s": 1.048,

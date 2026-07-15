@@ -194,32 +194,44 @@ void State_RL::infer_thread_callback()
         if (debug == true)
             std::cout << std::endl;
         // std::cout << "actions_tensor: " << actions_tensor << std::endl;
-        const std::uint64_t waitWallStartNs = ros::WallTime::now().toNSec();
-        const PolicyWaitExitReason waitResult =
-            wait(_start_time, (long long)(infer_duration * 1000000));
-        const std::int64_t simElapsed = getTime() - _start_time;
-        TimingRecord waitTiming;
-        waitTiming.event = "POLICY_WAIT";
-        waitTiming.wall_time_ns = ros::WallTime::now().toNSec();
-        waitTiming.sim_time_us = _ctrlComp->ioInter->stateStampUs();
-        waitTiming.state_sequence = _ctrlComp->ioInter->stateSequence();
-        waitTiming.state_stamp_us = _ctrlComp->ioInter->stateStampUs();
-        waitTiming.policy_sequence = policySequence;
-        waitTiming.policy_source_state_sequence = sourceStateSequence;
-        waitTiming.policy_sim_time_us = sourceSimTimeUs;
-        waitTiming.policy_wall_time_ns = wallStartNs;
-        waitTiming.policy_wait_exit_reason = policyWaitExitReasonName(waitResult);
-        waitTiming.policy_wait_sim_elapsed_us = simElapsed;
-        waitTiming.policy_wait_wall_elapsed_us =
-            (waitTiming.wall_time_ns - waitWallStartNs) / 1000U;
-        waitTiming.history_oldest_stamp_us = history_stamps_us_.front();
-        waitTiming.history_newest_stamp_us = history_stamps_us_.back();
-        waitTiming.history_span_us = history_stamps_us_.back() >= history_stamps_us_.front() ?
-            history_stamps_us_.back() - history_stamps_us_.front() : 0;
-        waitTiming.history_duplicate_count = history_duplicate_count_;
-        waitTiming.action_sequence = actionSequence;
-        waitTiming.action_source_state_sequence = sourceStateSequence;
-        diagnostics.record(waitTiming);
+        PolicyWaitExitReason waitResult = PolicyWaitExitReason::WallOvertime;
+        do {
+            const std::uint64_t waitWallStartNs = ros::WallTime::now().toNSec();
+            waitResult = wait(_start_time, (long long)(infer_duration * 1000000));
+            const std::int64_t simElapsed = getTime() - _start_time;
+            TimingRecord waitTiming;
+            waitTiming.event = "POLICY_WAIT";
+            waitTiming.wall_time_ns = ros::WallTime::now().toNSec();
+            waitTiming.sim_time_us = _ctrlComp->ioInter->stateStampUs();
+            waitTiming.state_sequence = _ctrlComp->ioInter->stateSequence();
+            waitTiming.state_stamp_us = _ctrlComp->ioInter->stateStampUs();
+            waitTiming.policy_sequence = policySequence;
+            waitTiming.policy_source_state_sequence = sourceStateSequence;
+            waitTiming.policy_sim_time_us = sourceSimTimeUs;
+            waitTiming.policy_wall_time_ns = wallStartNs;
+            waitTiming.policy_wait_exit_reason = policyWaitExitReasonName(waitResult);
+            waitTiming.policy_wait_sim_elapsed_us = simElapsed;
+            waitTiming.policy_wait_wall_elapsed_us =
+                (waitTiming.wall_time_ns - waitWallStartNs) / 1000U;
+            waitTiming.history_oldest_stamp_us = history_stamps_us_.front();
+            waitTiming.history_newest_stamp_us = history_stamps_us_.back();
+            waitTiming.history_span_us = history_stamps_us_.back() >= history_stamps_us_.front() ?
+                history_stamps_us_.back() - history_stamps_us_.front() : 0;
+            waitTiming.history_duplicate_count = history_duplicate_count_;
+            waitTiming.action_sequence = actionSequence;
+            waitTiming.action_source_state_sequence = sourceStateSequence;
+            diagnostics.record(waitTiming);
+
+            if(waitResult == PolicyWaitExitReason::SimTimeReset){
+                _start_time = getTime();
+            }
+        } while(infer_thread_runnning == State_RL::RUNNING &&
+                waitResult != PolicyWaitExitReason::SimPeriodReached &&
+                waitResult != PolicyWaitExitReason::Shutdown);
+
+        if(waitResult == PolicyWaitExitReason::Shutdown){
+            break;
+        }
     }
     infer_thread_runnning = State_RL::OVER;
 }

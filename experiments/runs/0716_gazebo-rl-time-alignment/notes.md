@@ -50,3 +50,14 @@
 - P3 coherent policy input snapshot: static race confirmed; generation trace required in the fix.
 - P4 history time alignment: pause duplicates confirmed; `enter()` semantics intentionally unchanged pending training evidence.
 - P5 reset/time type: reset carry-over and 32-bit declaration confirmed.
+
+## Patch 2
+
+- `WALL_OVERTIME` now returns control for diagnostics/shutdown checks but the
+  policy thread continues waiting from the same simulation-time origin.
+- `SIM_TIME_RESET` establishes a new wait origin and does not execute policy.
+- Only `SIM_PERIOD_REACHED` permits the next observation/history/action cycle.
+- Real-robot `absoluteWait()` behavior is unchanged.
+- Headless pause regression: 14 `WALL_OVERTIME` events at constant simulation
+  time 13.277 s reused policy/action sequence 87; policy delta, action delta,
+  and history duplicate delta were all zero. `catkin_make -j` passed.

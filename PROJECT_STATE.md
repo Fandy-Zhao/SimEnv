@@ -12,8 +12,9 @@
   opt-in buffered CSV tracing now correlates FSM, state, policy, history,
   action, and LowCmd generations. At RTF 0.276 the current policy ran at
   49.25 Hz simulation time with no overtime, while pause advanced policy and
-  action on wall overtime; 28 LowCmd copies overlapped action writes. Behavior
-  fixes remain staged behind this recorded evidence.
+  action on wall overtime; 28 LowCmd copies overlapped action writes. The first
+  behavior fix now prevents overtime from being treated as a completed policy
+  period; action and state snapshot fixes remain staged behind this evidence.
 - **Trotting simulation-time synchronization validated**: Gazebo locomotion
   updates now run only when `/clock` advances. Wave phase, estimator `dt`,
   height/readiness timing, and desired body/yaw integration use measured

@@ -10,6 +10,9 @@
 - Recorded an RTF 0.276 baseline: policy remained 49.25 Hz in simulation time
   with no normal-run wall overtime, while pause advanced policy/history/action
   and 28 LowCmd copies overlapped an action write.
+- Changed the simulation policy wait caller so wall overtime is diagnostic only:
+  it keeps waiting from the same simulation-time origin and does not advance
+  observation, history, inference, or action until the full simulation period.
 
 ### Gazebo Simulation-Time Locomotion Control
 
