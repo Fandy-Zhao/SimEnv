@@ -132,6 +132,7 @@ launch_in_terminal() {
     tmux_command="
       source /opt/ros/noetic/setup.bash
       source '${WORKSPACE_DIR}/devel/setup.bash'
+      cd '${WORKSPACE_DIR}'
       ${env_block}
       echo '=== ${title} (tmux session: ${tmux_session}) ==='
       echo 'Command: ${command}'
@@ -169,6 +170,7 @@ launch_in_terminal() {
     "${terminal_env[@]}" /usr/bin/gnome-terminal.real --title="$title" -- bash -c "
       source /opt/ros/noetic/setup.bash
       source '${WORKSPACE_DIR}/devel/setup.bash'
+      cd '${WORKSPACE_DIR}'
       ${env_block}
       echo '=== ${title} ==='
       echo 'Command: ${command}'
@@ -184,6 +186,7 @@ launch_in_terminal() {
     xterm -title "$title" -e "bash -c '
       source /opt/ros/noetic/setup.bash
       source '${WORKSPACE_DIR}/devel/setup.bash'
+      cd '${WORKSPACE_DIR}'
       ${env_block}
       echo === ${title} ===
       # Keep rosrun's exec confined to a child shell.
@@ -197,6 +200,7 @@ launch_in_terminal() {
     bash -c "
       source /opt/ros/noetic/setup.bash
       source '${WORKSPACE_DIR}/devel/setup.bash'
+      cd '${WORKSPACE_DIR}'
       ${env_block}
       ${command}
     " > "${WORKSPACE_DIR}/logs/${title}.log" 2>&1 &
