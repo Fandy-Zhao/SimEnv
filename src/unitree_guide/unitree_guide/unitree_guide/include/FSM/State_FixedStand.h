@@ -16,8 +16,7 @@ public:
     FSMStateName checkChange();
 
 private:
-    float _targetPos[12] = {0.0, 0.9, -1.8, 0.0, 0.9, -1.8,
-                            0.0, 0.9, -1.8, 0.0, 0.9, -1.8};
+    Vec12 _targetPos = Vec12::Zero();
     float _startPos[12];
     float _startPos_real[12];
     float real_stand_p[12] = {80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80};

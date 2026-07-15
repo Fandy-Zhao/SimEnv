@@ -18,6 +18,41 @@ State_Trotting::State_Trotting(CtrlComponents *ctrlComp)
         ROS_WARN("Invalid trotting_cmd_vel_timeout; using 0.5 seconds.");
         _cmdVelTimeout = 0.5;
     }
+    _nh.param("trotting_height_transition_duration", _heightTransitionDuration, 0.75);
+    _nh.param("trotting_ready_hold_duration", _readinessHoldDuration, 0.2);
+    _nh.param("trotting_ready_linear_velocity", _readyLinearVelocity, 0.12);
+    _nh.param("trotting_ready_angular_velocity", _readyAngularVelocity, 0.35);
+    _nh.param("trotting_ready_tilt", _readyTilt, 0.17453292519943295);
+    _nh.param("trotting_minimum_contact_force", _minimumContactForce, 1.0);
+    if(!std::isfinite(_heightTransitionDuration) || _heightTransitionDuration < 0.5 ||
+       _heightTransitionDuration > 1.0){
+        ROS_WARN("Invalid trotting_height_transition_duration; using 0.75 seconds.");
+        _heightTransitionDuration = 0.75;
+    }
+    if(!std::isfinite(_readinessHoldDuration) || _readinessHoldDuration < 0.05 ||
+       _readinessHoldDuration > 2.0){
+        ROS_WARN("Invalid trotting_ready_hold_duration; using 0.2 seconds.");
+        _readinessHoldDuration = 0.2;
+    }
+    if(!std::isfinite(_readyLinearVelocity) || _readyLinearVelocity <= 0.0 ||
+       _readyLinearVelocity > 1.0){
+        ROS_WARN("Invalid trotting_ready_linear_velocity; using 0.12 m/s.");
+        _readyLinearVelocity = 0.12;
+    }
+    if(!std::isfinite(_readyAngularVelocity) || _readyAngularVelocity <= 0.0 ||
+       _readyAngularVelocity > 2.0){
+        ROS_WARN("Invalid trotting_ready_angular_velocity; using 0.35 rad/s.");
+        _readyAngularVelocity = 0.35;
+    }
+    if(!std::isfinite(_readyTilt) || _readyTilt <= 0.0 || _readyTilt > 0.7854){
+        ROS_WARN("Invalid trotting_ready_tilt; using 10 degrees.");
+        _readyTilt = 0.17453292519943295;
+    }
+    if(!std::isfinite(_minimumContactForce) || _minimumContactForce < 0.0 ||
+       _minimumContactForce > 1000.0){
+        ROS_WARN("Invalid trotting_minimum_contact_force; using 1 N.");
+        _minimumContactForce = 1.0;
+    }
 
     _gaitHeight = 0.08;
 
@@ -63,13 +98,24 @@ State_Trotting::~State_Trotting(){
 
 void State_Trotting::enter(){
     _pcd = _est->getPosition();
-    _pcd(2) = -_robModel->getFeetPosIdeal()(2, 0);
+    _posFeetGlobalGoal = _est->getFeetPos();
+    _velFeetGlobalGoal.setZero();
+    _heightTransitionStart = _pcd(2);
+    _heightTransitionTarget = -_robModel->getFeetPosIdeal()(2, 0);
+    _heightTransitionElapsed = 0.0;
+    _readinessStableElapsed = 0.0;
+    _heightTransitionComplete = false;
+    _waveReady = false;
+    _waveStarted = false;
     resetCommandState();
     _yawCmd = _lowState->getYaw();
     _Rd = rotz(_yawCmd);
 
     _ctrlComp->ioInter->zeroCmdPanel();
+    _ctrlComp->setAllStance();
     _gait->restart();
+    ROS_INFO("Trotting entry: inherited body height %.3f m and foot positions; transitioning to %.3f m over %.2f s.",
+             _heightTransitionStart, _heightTransitionTarget, _heightTransitionDuration);
 
     if(amp_obs_thread != nullptr){
         if(amp_obs_thread->joinable()){
@@ -142,6 +188,11 @@ void State_Trotting::run(){
     _userValue = _lowState->userValue;
 
     getUserCmd();
+    updateHeightTransition();
+    updateWaveReadiness();
+    if(!_waveReady){
+        suppressMotionCommand();
+    }
     calcCmd();
 
     if(!commandStateFinite()){
@@ -169,10 +220,21 @@ void State_Trotting::run(){
         return;
     }
 
-    if(checkStepOrNot()){
+    const bool stepRequested = checkStepOrNot();
+    if(stepRequested && _waveReady){
+        if(!_waveStarted){
+            ROS_INFO("Trotting wave started after height, velocity, attitude, and four-foot contact checks passed.");
+        }
         _ctrlComp->setStartWave();
+        _waveStarted = true;
     }else{
         _ctrlComp->setAllStance();
+        if(_waveStarted && !stepRequested){
+            _waveStarted = false;
+            _waveReady = false;
+            _readinessStableElapsed = 0.0;
+            ROS_INFO("Trotting wave stopped; readiness must be re-established before restart.");
+        }
     }
 
     _lowCmd->setTau(_tau);
@@ -317,6 +379,92 @@ void State_Trotting::resetCommandState(){
     _cmdVy = 0.0;
     _cmdWz = 0.0;
     _lastCmdVelWallTime = ros::WallTime();
+}
+
+void State_Trotting::updateHeightTransition(){
+    if(_heightTransitionComplete){
+        _pcd(2) = _heightTransitionTarget;
+        return;
+    }
+
+    _heightTransitionElapsed += _ctrlComp->dt;
+    double ratio = _heightTransitionElapsed / _heightTransitionDuration;
+    if(ratio >= 1.0){
+        ratio = 1.0;
+        _heightTransitionComplete = true;
+    }else if(ratio < 0.0){
+        ratio = 0.0;
+    }
+    const double smoothRatio = ratio * ratio * (3.0 - 2.0 * ratio);
+    _pcd(2) = _heightTransitionStart +
+        (_heightTransitionTarget - _heightTransitionStart) * smoothRatio;
+}
+
+bool State_Trotting::expectedAllStance() const{
+    for(int i=0; i<4; ++i){
+        if((*_contact)(i) != 1){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool State_Trotting::readinessConditionsMet() const{
+    const Vec3 rpy = rotMatToRPY(_B2G_RotMat);
+    const double linearSpeed = _velBody.norm();
+    const double angularSpeed = _lowState->getGyroGlobal().norm();
+    return _heightTransitionComplete && expectedAllStance() &&
+           _lowState->hasAllFeetContact(static_cast<float>(_minimumContactForce)) &&
+           linearSpeed < _readyLinearVelocity &&
+           angularSpeed < _readyAngularVelocity &&
+           std::abs(rpy(0)) < _readyTilt && std::abs(rpy(1)) < _readyTilt;
+}
+
+void State_Trotting::updateWaveReadiness(){
+    if(_waveStarted){
+        return;
+    }
+
+    if(_waveReady){
+        if(readinessConditionsMet()){
+            return;
+        }
+        _waveReady = false;
+        _readinessStableElapsed = 0.0;
+        ROS_WARN("Trotting readiness was lost before wave start; returning to all-stance hold.");
+    }
+
+    if(readinessConditionsMet()){
+        _readinessStableElapsed += _ctrlComp->dt;
+    }else{
+        _readinessStableElapsed = 0.0;
+    }
+
+    if(_readinessStableElapsed >= _readinessHoldDuration){
+        _waveReady = true;
+        ROS_INFO("Trotting wave ready after %.2f s stable: |v|=%.3f m/s, |w|=%.3f rad/s, force=[%.1f %.1f %.1f %.1f] N.",
+                 _readinessStableElapsed, _velBody.norm(),
+                 _lowState->getGyroGlobal().norm(),
+                 _lowState->footForce[0], _lowState->footForce[1],
+                 _lowState->footForce[2], _lowState->footForce[3]);
+        return;
+    }
+
+    const Vec3 rpy = rotMatToRPY(_B2G_RotMat);
+    ROS_INFO_THROTTLE(1.0,
+        "Trotting waiting for wave readiness: height=%d stance=%d contact=%d |v|=%.3f |w|=%.3f roll=%.1fdeg pitch=%.1fdeg force=[%.1f %.1f %.1f %.1f]N.",
+        _heightTransitionComplete, expectedAllStance(),
+        _lowState->hasAllFeetContact(static_cast<float>(_minimumContactForce)),
+        _velBody.norm(), _lowState->getGyroGlobal().norm(),
+        rpy(0) * 180.0 / M_PI, rpy(1) * 180.0 / M_PI,
+        _lowState->footForce[0], _lowState->footForce[1],
+        _lowState->footForce[2], _lowState->footForce[3]);
+}
+
+void State_Trotting::suppressMotionCommand(){
+    _vCmdBody.setZero();
+    _dYawCmd = 0.0;
+    _dYawCmdPast = 0.0;
 }
 
 void State_Trotting::calcCmd(){

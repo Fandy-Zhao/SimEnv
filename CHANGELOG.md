@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-07-16
+
+### A1 Nominal Stance and Trotting Readiness Gate
+
+- Consolidated A1 nominal stance in foot space and changed FixedStand to derive
+  joint targets through inverse kinematics instead of a duplicated
+  `[0, 0.9, -1.8]` array.
+- Trotting now inherits current body height and global foot positions, uses a
+  0.75 s smoothstep to nominal height, and suppresses wave until velocity,
+  attitude, desired all-stance, and four measured contacts are stable.
+- Added fresh foot-force feedback to the ROS simulation and real SDK state
+  paths; the prior gait contact vector remains only a desired schedule.
+- Removed an invalid second parent joint from every A1 foot in xacro. This
+  eliminated duplicate Gazebo foot collisions and made the IK-derived nominal
+  FixedStand settle instead of oscillating/falling.
+- Final headless test held zero Trotting upright and moved 1.891 m in 6.920 s
+  (`0.273 m/s`) in the correct body-forward direction for `linear.x=0.3`.
+
 ## 2026-07-15
 
 ### A1 Trotting Safety and Gazebo Joint-Angle Repair

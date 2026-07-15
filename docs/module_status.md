@@ -28,6 +28,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 > **2026-07-15 locomotion runtime validation**: Torch-enabled headless tests confirmed both FSM transitions and `/cmd_vel` subscription, but neither gait passes. Trotting produces Gazebo/IMU NaN under zero Twist; uninitialized `_dYawCmdPast` is the leading propagation source. RL stays finite but failed a paired `linear.x=0.3` test (`4.686 s`, `dx=-0.000315 m`, `dy=-0.036406 m`, yaw about `-9.6 deg`). The likely RL contract mismatch is inconsistent joint reindexing versus default-pose ordering; policy training metadata is absent. See `docs/reports/0715_trotting-rl-cmd-test.md` (`exp/0715-trotting-rl-cmd-validation`).
 > **2026-07-15 Trotting repair**: field-level guards showed IK position was the first non-finite output. Gazebo 11 returned the folded calf through an equivalent positive angle, corrupting PD/kinematics, while the spawn pose sat near the folded-knee singularity. Revolute feedback normalization, a non-singular local FixedStand spawn pose, initialized yaw filtering, command timeout/clamping, and finite motor guards now keep zero/forward Trotting finite. Forward direction passes; `0.3 m/s` averaged about `0.121 m/s`, so calibration remains pending (`fix/0715-trotting-safety`).
 > **2026-07-15 dedicated terminals**: `auto.sh` 默认在独立 tmux 会话中启动 `junior_ctrl` 和 rviz（`simenv-junior_ctrl`、`simenv-rviz`）；即使 GNOME Terminal 闪退，会话可用 `tmux attach-session -t ...` 重连。每次新启动会先停止旧的两个会话并删除其运行记录；attach 客户端随会话结束而退出，不再遗留交互 shell。受控完整启动已验证两个会话存活、`/Odometry` 约 10 Hz，且 `Ctrl-C` 会清理 ROS 进程和 tmux 会话。GNOME Terminal 仅作为 attach 客户端，并会清除 Snap Code 注入的库路径以避免 GLIBC 符号错误。用户桌面终端的实际 `2`/`4`/`6` 键盘交互仍待手工确认。新增 `TERMINAL_BACKEND`（设为 `direct` 可回退旧行为）(`fix/0715-build-auto-startup`).
+> **2026-07-16 A1 nominal stance gate**: FixedStand 改为从 A1 单一足端名义站姿做 IK；删除 xacro 中每只 foot 的第二个非法父关节，消除 Gazebo 重复 foot/collision 和直腿站姿振荡。Trotting 继承当前高度/足端，0.75 s 平滑过渡，并在低线/角速度、直立、四足真实力反馈连续满足 0.20 s 后才允许 wave。最终零速稳定，`linear.x=0.3` 的 6.920 s 配对测试移动 1.891 m（0.273 m/s，方向正确）(`fix/0715-trotting-safety`).
 
 ## Modules
 
@@ -37,7 +38,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 | `building_generator_core` | Python core: layout, constraints, generation | stable | `nosetests` via catkin (3 tests) | 纯 Python 库，被 building_obstacles 依赖 |
 | `building_generator_classic` | Gazebo export + door/elevator control runtime | stable | `nosetests` via catkin (2 tests) | 门/电梯控制的主要入口 |
 | `building_generator_interfaces` | ROS message/service definitions | stable | 编译时类型检查 | `.msg` / `.srv` 定义，无运行时逻辑 |
-| `unitree_guide` | A1 robot controller + RL locomotion | partial validation | Torch build + headless FixedStand/Trotting + zero/forward/invalid Twist | Trotting directionally functional but under-speed; RL policy contract unresolved |
+| `unitree_guide` | A1 robot controller + RL locomotion | Trotting validated; RL partial | Torch build + headless nominal FixedStand + contact-gated zero/forward/invalid Twist | Trotting forward pair reached 0.273 m/s for 0.3 m/s; lateral/yaw/terrain calibration and RL policy contract remain |
 | `Mid360_imu_sim` | Livox Mid-360 LiDAR plugin | stable | 编译检查 + 话题发布检查 | Gazebo plugin，依赖 Gazebo 开发头文件 |
 | `simenv_fast_lio2_integration` | FAST-LIO2 bridge: adapter, config, launch, TF bridge | partial validation | extrinsic checker, `roslaunch --files`, runtime `/Odometry` + `/cloud_registered`, controlled P0 | 2026-07-15: LiDAR→IMU external parameter corrected to direct `Ry(+45°), [0.2,0,0.08]`; bridge does not rotate world frames. Restart and moving regression still required |
 | `docs/slam/` | FAST-LIO2 deployment guide & SLAM docs | new | markdown lint (manual) | 部署指南覆盖 15 个章节，含参数映射、编译环境、排错流程 |
@@ -50,3 +51,4 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 - `uav_simulator` 子模块与比赛目标解耦，维护成本高且无明确 owner；建议移出到独立仓库或归档
 - `Mid360_imu_sim` 仅提供编译检查，无运行时自动化验证；依赖硬件特定的点云格式
 - 所有 Python 包的测试覆盖率偏低（仅 core 和 classic 有少量单元测试）
+- A1 为保持稳定接触动力学已删除 foot 的第二父关节并使用 fixed-joint lump；旧 `/ground_truth/*_foot` P3D body 名可能失效，需另行用运动学发布器恢复，不能重新引入双父关节

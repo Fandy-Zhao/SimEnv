@@ -1,17 +1,19 @@
 # Project State
 
 ## Snapshot
-- Date: 2026-07-15
+- Date: 2026-07-16
 - Branch: fix/0715-trotting-safety
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: validate and calibrate safe A1 Trotting `/cmd_vel` locomotion
+- Current focus: stable, contact-gated A1 Trotting `/cmd_vel` locomotion
 
 ## Active Work
-- **Trotting finite and directionally functional**: Gazebo revolute feedback is
-  normalized to the signed URDF angle, the spawn pose avoids folded-knee IK
-  singularity, and Trotting resets/limits/expires commands and guards every
-  motor-output stage. Zero and forward headless tests remain finite; forward
-  direction passes, but `0.3 m/s` averaged only about `0.121 m/s`.
+- **Trotting nominal entry validated**: A1 has one foot-space nominal stance;
+  FixedStand derives its target by IK. An invalid duplicate parent joint on
+  each foot was removed, making nominal FixedStand stationary and restoring
+  real contact feedback. Trotting inherits current height/feet, transitions
+  height over 0.75 s, and gates wave on velocity, attitude and four fresh foot
+  forces. Final `0.3 m/s` forward test averaged `0.273 m/s` in the correct
+  direction.
 - **FAST-LIO2 startup + TF bridge** (merged to `develop`): Controller starts before FAST-LIO2, auto-commanded FixedStand, IMU upright check. Duplicate adapter eliminated. Controller foreground mode preserved via `fg`. Camera-init TF bridge: `map→camera_init` is direct copy of `map→imu_link` (Ry(-45°) removed — was duplicate of FAST-LIO2 extrinsic_R). Rotation responsibility documented in YAML and ADR-0714.
 - **FAST-LIO2 LiDAR–IMU axes corrected**: Source audit established that FAST-LIO2 applies `p_imu = R * p_lidar + T`. The SimEnv point source is local `laser_livox`, so the mapping config now uses the direct runtime TF `imu_link→laser_livox`: `Ry(+45°)`, `[0.2,0,0.08]`. `map→camera_init` remains a no-rotation copy of `map→imu_link`; restart FAST-LIO2 to load the new YAML.
 - **Controller terminal keyboard**: `auto.sh` explicitly binds background `junior_ctrl` stdin to `/dev/tty` and then waits for it in foreground mode. This avoids non-interactive Bash replacing stdin with `/dev/null` during FAST-LIO2 startup.
@@ -48,9 +50,13 @@
 - 不再使用 `chore/MMDD-short-name`
 
 ## Known Risks
-- Trotting has appreciable FixedStand/entry transient and under-tracks requested
-  speed; navigation requires an upright/low-velocity entry gate and short-window
-  command calibration. RL remains unvalidated and unchanged.
+- Trotting readiness thresholds are validated only on flat Gazebo terrain;
+  slope/stair contact thresholds and lateral/yaw tracking remain to be tuned.
+  RL remains unvalidated and unchanged.
+- The stable single-parent A1 foot model uses Gazebo fixed-joint lumping. Legacy
+  `/ground_truth/*_foot` P3D plugins refer to the child body and may not publish;
+  restore those pose topics with a kinematic publisher rather than reintroducing
+  the unstable duplicate or independently preserved foot body.
 - GitHub 远程仓库可能为空或已有历史，首次 push 前需确认目标分支
 - 随机生成的建筑布局可能在某些参数组合下产生不可达房间或源重叠
 - Gazebo Classic 已停止维护，长期可能需要迁移到 Ignition/Gazebo Fortress
@@ -61,7 +67,8 @@
 
 ## Validation Status
 - Build: Torch-enabled `catkin_make -j` passes after Trotting/joint changes
-- Locomotion: Trotting zero/forward finite; direction pass, speed calibration pending
+- Locomotion: nominal FixedStand, gated zero Trotting, and forward pair pass;
+  `0.3 m/s` request averaged `0.273 m/s`
 - Unit tests: `building_generator_core/test/` (3 tests), `building_generator_classic/test/` (2 tests)
 - Remote config: `origin` 保持 Gitee, `github` 新增成功
 - Governance: 骨架完整, 分支规则已更新

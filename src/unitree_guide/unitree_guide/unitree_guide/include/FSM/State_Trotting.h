@@ -41,6 +41,11 @@ private:
     bool controlOutputFinite() const;
     void holdCurrentPose();
     void resetCommandState();
+    void updateHeightTransition();
+    void updateWaveReadiness();
+    bool readinessConditionsMet() const;
+    bool expectedAllStance() const;
+    void suppressMotionCommand();
 
     GaitGenerator *_gait;
     Estimator *_est;
@@ -118,6 +123,21 @@ private:
     double _cmdVx = 0.0, _cmdVy = 0.0, _cmdWz = 0.0;
     ros::WallTime _lastCmdVelWallTime;
     double _cmdVelTimeout = 0.5;
+
+    // FixedStand -> Trotting transition and wave-start readiness gate.
+    double _heightTransitionDuration = 0.75;
+    double _heightTransitionElapsed = 0.0;
+    double _heightTransitionStart = 0.0;
+    double _heightTransitionTarget = 0.0;
+    double _readinessHoldDuration = 0.2;
+    double _readinessStableElapsed = 0.0;
+    double _readyLinearVelocity = 0.12;
+    double _readyAngularVelocity = 0.35;
+    double _readyTilt = 0.17453292519943295;
+    double _minimumContactForce = 1.0;
+    bool _heightTransitionComplete = false;
+    bool _waveReady = false;
+    bool _waveStarted = false;
 };
 
 #endif  // TROTTING_H

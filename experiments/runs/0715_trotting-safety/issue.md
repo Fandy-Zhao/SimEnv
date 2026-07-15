@@ -24,6 +24,12 @@ zeros `_dYawCmdPast` and its policy path clips observations/actions.
 - Preserve keyboard/joystick fallback and the classical A1 gait algorithm.
 - Validate FixedStand -> Trotting under headless `auto.sh`, then exercise zero
   and forward `/cmd_vel` at a continuous publish rate.
+- Consolidate the A1 nominal stance in foot space, and derive FixedStand joint
+  targets from that stance through inverse kinematics.
+- Preserve the measured body height and foot positions on Trotting entry, then
+  transition the height target to nominal over 0.5--1.0 seconds.
+- Keep all legs in stance until low body velocity, upright attitude, and fresh
+  four-foot Gazebo contact-force feedback remain valid for a hold interval.
 
 ## Out of scope
 
@@ -42,3 +48,14 @@ zeros `_dYawCmdPast` and its policy path clips observations/actions.
 4. A non-finite or stale Twist cannot be propagated as a motor command.
 5. Project status and the task report record source provenance, tests, risks,
    and follow-up work.
+6. A1Robot contains one foot-space nominal stance; FixedStand has no duplicated
+   hard-coded nominal joint array.
+7. Trotting entry does not immediately overwrite the measured height or foot
+   goals, and wave generation cannot start before the readiness gate passes.
+
+## Resolution
+
+All seven criteria pass. The final headless run used real Gazebo foot-contact
+forces, held zero-command Trotting upright, and started wave only after the
+logged readiness event. A 6.920 s paired forward window moved 1.891 m in the
+body-forward/world-+Y direction (0.273 m/s average for 0.3 m/s requested).

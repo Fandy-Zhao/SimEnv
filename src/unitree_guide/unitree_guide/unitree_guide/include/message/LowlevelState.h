@@ -72,6 +72,8 @@ struct LowlevelState
 {
     IMU imu;
     MotorState motorState[12];
+    float footForce[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    bool footForceValid[4] = {false, false, false, false};
     UserCommand userCmd;
     UserValue userValue;
 
@@ -123,6 +125,19 @@ struct LowlevelState
         return getGyroGlobal()(2);
     }
 
+    bool hasAllFeetContact(float minimumForce) const{
+        if(!std::isfinite(minimumForce) || minimumForce < 0.0f){
+            return false;
+        }
+        for(int i=0; i<4; ++i){
+            if(!footForceValid[i] || !std::isfinite(footForce[i]) ||
+               footForce[i] < minimumForce){
+                return false;
+            }
+        }
+        return true;
+    }
+
     void setQ(Vec12 q){
         for(int i(0); i<12; ++i){
             motorState[i].q = q(i);
@@ -145,6 +160,11 @@ struct LowlevelState
                !std::isfinite(motorState[i].dq) ||
                !std::isfinite(motorState[i].ddq) ||
                !std::isfinite(motorState[i].tauEst)){
+                return false;
+            }
+        }
+        for(int i(0); i<4; ++i){
+            if(footForceValid[i] && !std::isfinite(footForce[i])){
                 return false;
             }
         }
