@@ -1,0 +1,37 @@
+# Build (Torch-enabled cache already configured)
+catkin_make -j
+
+# Accepted headless profile
+GUI=false ENABLE_RVIZ=0 ENABLE_FAST_LIO2=0 ENABLE_SENSORS=0 \
+ENABLE_POINTCLOUD_CONVERTER=0 START_BUILDING_CONTROL=0 FLOOR_COUNT=1 \
+ROOMS_PER_FLOOR=2 DANGER_COUNT=1:1 DISTRACTOR_COUNT=1:1 SEED=71501 \
+PAUSED=true AUTO_UNPAUSE=0 TERMINAL_BACKEND=tmux \
+TMUX_SESSION_PREFIX=simenv-trotting-final UNITREE_CTRL_DT=0.002 \
+GAZEBO_PHYSICS_MAX_STEP_SIZE=0.002 \
+GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE=500 \
+GAZEBO_PHYSICS_ODE_ITERS=40 ./auto.sh
+
+# Start this continuous FixedStand publisher while Gazebo is still paused,
+# then unpause from another terminal. This prevents loss of the first command.
+source devel/setup.bash
+rostopic pub -r 50 /fsm/state_cmd std_msgs/Int8 'data: 2'
+rosservice call /gazebo/unpause_physics
+
+# Stop the FixedStand publisher after feedback is ready. Start zero Twist, then
+# enter Trotting.
+rostopic pub -r 20 /cmd_vel geometry_msgs/Twist \
+  '{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}'
+rostopic pub -r 10 /fsm/state_cmd std_msgs/Int8 'data: 4'
+
+# Forward command (continuous publication is required by the 0.5 s watchdog).
+rostopic pub -r 20 /cmd_vel geometry_msgs/Twist \
+  '{linear: {x: 0.3, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}'
+
+# Safety checks
+rostopic pub -1 /cmd_vel geometry_msgs/Twist \
+  '{linear: {x: .nan, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}'
+rosservice call /gazebo/get_model_state \
+  '{model_name: a1_gazebo, relative_entity_name: world}'
+rostopic echo -n 1 /trunk_imu
+rostopic echo -n 1 /clock
+tmux capture-pane -pt simenv-trotting-final-junior_ctrl -S -300

@@ -2,6 +2,7 @@
  Copyright (c) 2020-2023, Unitree Robotics.Co.Ltd. All rights reserved.
 ***********************************************************************/
 #include "FSM/State_Trotting.h"
+#include <cmath>
 #include <iomanip>
 
 State_Trotting::State_Trotting(CtrlComponents *ctrlComp)
@@ -12,6 +13,11 @@ State_Trotting::State_Trotting(CtrlComponents *ctrlComp)
     _gait = new GaitGenerator(ctrlComp);
     _cmdVelSub = _nh.subscribe<geometry_msgs::Twist>("/cmd_vel", 10,
         &State_Trotting::cmdVelCallback, this);
+    _nh.param("trotting_cmd_vel_timeout", _cmdVelTimeout, 0.5);
+    if(!std::isfinite(_cmdVelTimeout) || _cmdVelTimeout < 0.1 || _cmdVelTimeout > 5.0){
+        ROS_WARN("Invalid trotting_cmd_vel_timeout; using 0.5 seconds.");
+        _cmdVelTimeout = 0.5;
+    }
 
     _gaitHeight = 0.08;
 
@@ -40,7 +46,7 @@ State_Trotting::State_Trotting(CtrlComponents *ctrlComp)
     _vxLim << -0.8, 0.8;
     _vyLim << -0.6, 0.6;
     _wyawLim << -1.0, 1.0;
-
+    resetCommandState();
 }
 
 State_Trotting::~State_Trotting(){
@@ -58,10 +64,9 @@ State_Trotting::~State_Trotting(){
 void State_Trotting::enter(){
     _pcd = _est->getPosition();
     _pcd(2) = -_robModel->getFeetPosIdeal()(2, 0);
-    _vCmdBody.setZero();
+    resetCommandState();
     _yawCmd = _lowState->getYaw();
     _Rd = rotz(_yawCmd);
-    _wCmdGlobal.setZero();
 
     _ctrlComp->ioInter->zeroCmdPanel();
     _gait->restart();
@@ -128,16 +133,41 @@ void State_Trotting::run(){
     _yaw = _lowState->getYaw();
     _dYaw = _lowState->getDYaw();
 
+    if(!stateEstimateFinite()){
+        ROS_ERROR_THROTTLE(1.0, "Trotting received a non-finite state estimate; holding current joint positions.");
+        holdCurrentPose();
+        return;
+    }
+
     _userValue = _lowState->userValue;
 
     getUserCmd();
     calcCmd();
+
+    if(!commandStateFinite()){
+        ROS_ERROR_THROTTLE(1.0, "Trotting command calculation became non-finite; holding current joint positions.");
+        resetCommandState();
+        holdCurrentPose();
+        return;
+    }
 
     _gait->setGait(_vCmdGlobal.segment(0,2), _wCmdGlobal(2), _gaitHeight);
     _gait->run(_posFeetGlobalGoal, _velFeetGlobalGoal);
 
     calcTau();
     calcQQd();
+
+    if(!controlOutputFinite()){
+        ROS_ERROR_THROTTLE(
+            1.0,
+            "Trotting output non-finite (foot_p=%d foot_v=%d force_g=%d force_b=%d q=%d qd=%d tau=%d); blocking motor command.",
+            _posFeetGlobalGoal.allFinite(), _velFeetGlobalGoal.allFinite(),
+            _forceFeetGlobal.allFinite(), _forceFeetBody.allFinite(),
+            _qGoal.allFinite(), _qdGoal.allFinite(), _tau.allFinite());
+        resetCommandState();
+        holdCurrentPose();
+        return;
+    }
 
     if(checkStepOrNot()){
         _ctrlComp->setStartWave();
@@ -174,27 +204,55 @@ bool State_Trotting::checkStepOrNot(){
 }
 
 void State_Trotting::setHighCmd(double vx, double vy, double wz){
-    _vCmdBody(0) = vx;
-    _vCmdBody(1) = vy;
+    if(!std::isfinite(vx) || !std::isfinite(vy) || !std::isfinite(wz)){
+        resetCommandState();
+        return;
+    }
+    _vCmdBody(0) = saturation(vx, _vxLim);
+    _vCmdBody(1) = saturation(vy, _vyLim);
     _vCmdBody(2) = 0; 
-    _dYawCmd = wz;
+    _dYawCmd = saturation(wz, _wyawLim);
+    _dYawCmdPast = _dYawCmd;
 }
 
 void State_Trotting::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
+    if(!msg || !std::isfinite(msg->linear.x) || !std::isfinite(msg->linear.y) ||
+       !std::isfinite(msg->angular.z)){
+        _cmdVelActive = true;
+        _cmdVx = 0.0;
+        _cmdVy = 0.0;
+        _cmdWz = 0.0;
+        _lastCmdVelWallTime = ros::WallTime::now();
+        ROS_WARN_THROTTLE(1.0, "Trotting rejected a non-finite /cmd_vel and commanded a stop.");
+        return;
+    }
     _cmdVelActive = true;
     _cmdVx = msg->linear.x;
     _cmdVy = msg->linear.y;
     _cmdWz = msg->angular.z;
+    _lastCmdVelWallTime = ros::WallTime::now();
 }
 
 void State_Trotting::getUserCmd(){
-    if (_cmdVelActive){
+    const bool cmdVelFresh = _cmdVelActive && !_lastCmdVelWallTime.isZero() &&
+        (ros::WallTime::now() - _lastCmdVelWallTime).toSec() <= _cmdVelTimeout;
+
+    if(_cmdVelActive && !cmdVelFresh){
+        _cmdVelActive = false;
+        _cmdVx = 0.0;
+        _cmdVy = 0.0;
+        _cmdWz = 0.0;
+        ROS_WARN_THROTTLE(1.0, "Trotting /cmd_vel timed out; commanding zero velocity.");
+    }
+
+    if (cmdVelFresh){
         /* Use /cmd_vel when available */
         _vCmdBody(0) = saturation(_cmdVx, _vxLim);
         _vCmdBody(1) = saturation(_cmdVy, _vyLim);
         _vCmdBody(2) = 0;
         _dYawCmd = saturation(_cmdWz, _wyawLim);
         _dYawCmd = 0.9*_dYawCmdPast + (1-0.9) * _dYawCmd;
+        _dYawCmd = saturation(_dYawCmd, _wyawLim);
         _dYawCmdPast = _dYawCmd;
     } else {
         /* Movement */
@@ -205,8 +263,60 @@ void State_Trotting::getUserCmd(){
         /* Turning */
         _dYawCmd = -invNormalize(_userValue.rx, _wyawLim(0), _wyawLim(1));
         _dYawCmd = 0.9*_dYawCmdPast + (1-0.9) * _dYawCmd;
+        _dYawCmd = saturation(_dYawCmd, _wyawLim);
         _dYawCmdPast = _dYawCmd;
     }
+}
+
+bool State_Trotting::stateEstimateFinite() const{
+    return _posBody.allFinite() && _velBody.allFinite() &&
+           _posFeet2BGlobal.allFinite() && _posFeetGlobal.allFinite() &&
+           _velFeetGlobal.allFinite() && _B2G_RotMat.allFinite() &&
+           _G2B_RotMat.allFinite() && std::isfinite(_yaw) &&
+           std::isfinite(_dYaw);
+}
+
+bool State_Trotting::commandStateFinite() const{
+    return _pcd.allFinite() && _vCmdBody.allFinite() &&
+           _vCmdGlobal.allFinite() && _wCmdGlobal.allFinite() &&
+           _Rd.allFinite() && std::isfinite(_yawCmd) &&
+           std::isfinite(_dYawCmd) && std::isfinite(_dYawCmdPast);
+}
+
+bool State_Trotting::controlOutputFinite() const{
+    return _posFeetGlobalGoal.allFinite() && _velFeetGlobalGoal.allFinite() &&
+           _forceFeetGlobal.allFinite() && _forceFeetBody.allFinite() &&
+           _qGoal.allFinite() && _qdGoal.allFinite() && _tau.allFinite();
+}
+
+void State_Trotting::holdCurrentPose(){
+    _ctrlComp->setAllStance();
+    for(int i=0; i<12; ++i){
+        const double measuredQ = _lowState->motorState[i].q;
+        _lowCmd->motorCmd[i].q = std::isfinite(measuredQ) ? measuredQ : 0.0;
+        _lowCmd->motorCmd[i].dq = 0.0;
+        _lowCmd->motorCmd[i].tau = 0.0;
+    }
+    for(int leg=0; leg<4; ++leg){
+        if(_ctrlComp->ctrlPlatform == CtrlPlatform::GAZEBO){
+            _lowCmd->setSimStanceGain(leg);
+        }else{
+            _lowCmd->setRealStanceGain(leg);
+        }
+    }
+}
+
+void State_Trotting::resetCommandState(){
+    _vCmdGlobal.setZero();
+    _vCmdBody.setZero();
+    _wCmdGlobal.setZero();
+    _dYawCmd = 0.0;
+    _dYawCmdPast = 0.0;
+    _cmdVelActive = false;
+    _cmdVx = 0.0;
+    _cmdVy = 0.0;
+    _cmdWz = 0.0;
+    _lastCmdVelWallTime = ros::WallTime();
 }
 
 void State_Trotting::calcCmd(){

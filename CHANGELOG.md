@@ -2,6 +2,18 @@
 
 ## 2026-07-15
 
+### A1 Trotting Safety and Gazebo Joint-Angle Repair
+- Reset Trotting command/yaw-filter state on entry, reject non-finite Twist,
+  clamp commands, expire stale `/cmd_vel` after 0.5 s, and block non-finite
+  gait/IK/motor output with a measured-position hold.
+- Normalize Gazebo bounded revolute feedback to the signed angle branch used by
+  A1 URDF commands and kinematics; this fixes calf feedback such as `+3.5866`
+  representing about `-2.6966` and corrupting PD/IK.
+- Start the A1 simulation at the local FixedStand joint target rather than the
+  folded-knee limit. Headless Trotting stayed finite under zero/forward Twist
+  and moved in the commanded direction; exact velocity tracking remains slow
+  (`~0.121 m/s` average for `0.3 m/s` requested).
+
 ### RL Entry Real-Command Guard
 - Disabled the FreeDog real-robot command initialization in `State_RL::enter()`.
   Its surrounding `real` condition had been commented out, so it previously

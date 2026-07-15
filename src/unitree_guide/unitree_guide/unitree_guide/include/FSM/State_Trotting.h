@@ -36,6 +36,11 @@ private:
     virtual void getUserCmd();
     void calcBalanceKp();
     bool checkStepOrNot();
+    bool stateEstimateFinite() const;
+    bool commandStateFinite() const;
+    bool controlOutputFinite() const;
+    void holdCurrentPose();
+    void resetCommandState();
 
     GaitGenerator *_gait;
     Estimator *_est;
@@ -53,8 +58,8 @@ private:
     // Robot command
     Vec3 _pcd;
     Vec3 _vCmdGlobal, _vCmdBody;
-    double _yawCmd, _dYawCmd;
-    double _dYawCmdPast;
+    double _yawCmd = 0.0, _dYawCmd = 0.0;
+    double _dYawCmdPast = 0.0;
     Vec3 _wCmdGlobal;
     Vec34 _posFeetGlobalGoal, _velFeetGlobalGoal;
     Vec34 _posFeet2BGoal, _velFeet2BGoal;
@@ -111,6 +116,8 @@ private:
     ros::Subscriber _cmdVelSub;
     bool _cmdVelActive = false;
     double _cmdVx = 0.0, _cmdVy = 0.0, _cmdWz = 0.0;
+    ros::WallTime _lastCmdVelWallTime;
+    double _cmdVelTimeout = 0.5;
 };
 
 #endif  // TROTTING_H
