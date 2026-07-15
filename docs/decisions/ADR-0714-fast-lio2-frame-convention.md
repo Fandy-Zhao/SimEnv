@@ -1,7 +1,8 @@
 # ADR-0714: FAST-LIO2 Frame Convention & Rotation Responsibility
 
 ## Status
-Accepted (2026-07-14)
+Superseded in part by ADR-0715 (2026-07-15). The bridge's no-extra-rotation
+decision remains valid; its stated FAST-LIO2 `extrinsic_R` direction does not.
 
 ## Context
 

@@ -87,7 +87,7 @@ FAST_LIO 依赖 `livox_ros_driver`（在其 CMakeLists.txt 中声明），因此
 | FAST-LIO2 参数 | SimEnv 对应项 | 当前值 | 来源文件 | 风险 |
 |---------------|-------------|--------|---------|------|
 | `lid_topic` | `/scan_pointcloud2` | `"/scan_pointcloud2"` | `simenv_mid360.yaml` | adapter 必须运行 |
-| `imu_topic` | `/livox/imu` | `"/livox/imu"` | `simenv_mid360.yaml` | 需确认 IMU 坐标系方向 |
+| `imu_topic` | `/trunk_imu` | `"/trunk_imu"` | `simenv_mid360.yaml` | 机体同向，避免倾斜 Livox IMU 的重力初始化误差 |
 | `lidar_type` | SimEnv PointCloud2 适配器 | `4` (MARSIM/standard PointCloud2 path) | `simenv_mid360.yaml` | 必须与 adapter 消息类型一致 |
 | `scan_line` | Mid-360 = 4 线 | `4` | `simenv_mid360.yaml` | 仿真无 ring 信息，为近似值 |
 | `timestamp_unit` | 仿真无 per-point time | `0.0` (禁用) | `simenv_mid360.yaml` | **关键风险**：无运动补偿 |
@@ -120,7 +120,7 @@ FAST_LIO 依赖 `livox_ros_driver`（在其 CMakeLists.txt 中声明），因此
 | Topic | Type | Frame | Frequency | Used by FAST-LIO2 | Notes |
 |-------|------|-------|-----------|-------------------|-------|
 | `/scan` | `sensor_msgs/PointCloud` | 10 Hz | `laser_livox` | 间接（经 adapter） | Gazebo 插件直接发布，~24000 点/帧 |
-| `/scan_pointcloud2` | `sensor_msgs/PointCloud2` | 10 Hz | `laser_livox` | **是** (lid_topic) | adapter 输出，仅 x, y, z |
+| `/scan_pointcloud2` | `sensor_msgs/PointCloud2` | 10 Hz | `laser_livox` | **是** (lid_topic) | adapter 输出 x, y, z, intensity |
 | `/livox/Pointcloud2` | `sensor_msgs/PointCloud2` | ~10 Hz | odom 帧 | 否（odom 帧不适合 SLAM） | 由 `pointcloud2livox` 节点发布 |
 
 **LiDAR 规格**（来自 `gazebo.xacro`）：
@@ -135,8 +135,8 @@ FAST_LIO 依赖 `livox_ros_driver`（在其 CMakeLists.txt 中声明），因此
 
 | Topic | Type | Frame | Frequency | Used by FAST-LIO2 | Notes |
 |-------|------|-------|-----------|-------------------|-------|
-| `/livox/imu` | `sensor_msgs/Imu` | 1000 Hz | `livox_imu_link` | **是** (默认 imu_topic) | Livox 内置 IMU，与 LiDAR 共位 |
-| `/trunk_imu` | `sensor_msgs/Imu` | 1000 Hz | `imu_link` | 备选 | 躯干 IMU，位于质心 |
+| `/livox/imu` | `sensor_msgs/Imu` | 1000 Hz | `livox_imu_link` | 否 | 倾斜 45°，不用于当前 FAST-LIO2 配置 |
+| `/trunk_imu` | `sensor_msgs/Imu` | 1000 Hz | `imu_link` | **是** | 躯干 IMU，机体同向、z-up |
 
 ### 5.3 FAST-LIO2 输出话题（预期，需运行时验证）
 
@@ -231,14 +231,16 @@ world
 
 ### 8.2 FAST-LIO2 外参配置
 
-FAST-LIO2 中 `extrinsic_T` 和 `extrinsic_R` 表示 **LiDAR → IMU** 的变换（IMU 在 LiDAR 坐标系中的位置）：
+FAST-LIO2 对每个点执行 `p_imu = extrinsic_R * p_lidar + extrinsic_T`。
+当前使用 `imu_link`（不是 `livox_imu_link`），所以参数必须是 TF
+`imu_link → laser_livox` 的直接点坐标变换：
 
-- `extrinsic_T: [-0.011, -0.02329, 0.04412]` — 来自 URDF `laser_livox → livox_imu_link`
-- `extrinsic_R: [1, 0, 0; 0, 1, 0; 0, 0, 1]` — URDF 中该 joint 无旋转，两坐标系对齐
+- `extrinsic_T: [0.2, 0.0, 0.08]`
+- `extrinsic_R: Ry(+45°)`，即 `[0.7071, 0, 0.7071; 0, 1, 0; -0.7071, 0, 0.7071]`
 
 ### 8.3 LiDAR 45° Pitch 安装风险
 
-`laser_livox` 相对于 `base` 有 `rpy=(0, 0.785, 0)`（即绕 Y 轴旋转 45° / 0.785 rad）。这意味着 LiDAR 坐标系本身已经倾斜。FAST-LIO2 通过 `extrinsic_T` + `extrinsic_R` + IMU 重力方向对齐来处理这一问题。然而：
+`laser_livox` 相对于 `imu_link` 有 `rpy=(0, 0.785, 0)`（即绕 Y 轴旋转 45° / 0.785 rad）。这意味着 LiDAR 坐标系本身已经倾斜。FAST-LIO2 通过上述**正向** `extrinsic_T` + `extrinsic_R` 将点变换到机体 IMU 坐标系；不得写入逆变换，也不得在 `map_to_camera_init_bridge.py` 中重复旋转。
 
 - 如果 IMU 噪声模型不准确，重力方向估计可能偏移。
 - `fov_degree=180`（仅使用前向 180°）可能是为了减少后向地面点云的干扰。
@@ -473,8 +475,8 @@ experiments/runs/MMDD_fast-lio2-param-test/
 | 1 | `/scan_pointcloud2` 是否有 per-point time？ | 已知无（xyz32 adapter） | `pointcloud_fields_check.py` |
 | 2 | adapter 是否应该补 intensity？ | 当前不补 | 评估是否需要修改 adapter |
 | 3 | `scan_line=4` 是否合理？ | 当前为近似值 | 对比 scan_line=1 和 scan_line=4 的建图效果 |
-| 4 | LiDAR 45° pitch 外参方向是否已验证？ | 外参从 URDF 提取，未运行时验证 | `tf_echo` + FAST-LIO2 运行测试 |
-| 5 | `/livox/imu` vs `/trunk_imu` 哪个建图效果更稳定？ | 未对比 | A/B 对照实验 |
+| 4 | LiDAR 45° pitch 外参方向是否已验证？ | 已验证为 `Ry(+45°), [0.2,0,0.08]` | `check_fast_lio2_extrinsics.py` + `tf_echo` |
+| 5 | `/livox/imu` vs `/trunk_imu` 哪个建图效果更稳定？ | `/trunk_imu` 已选用 | 如需重新选择，做 A/B 对照实验 |
 | 6 | FAST-LIO2 输出 frame `camera_init` 是否适合后续导航？ | 待确认 | 检查 nav stack 兼容性 |
 | 7 | 仿真 IMU 噪声为 0，`acc_cov=0.1` 是否合适？ | 当前为保守占位值 | 参数扫描实验 |
 | 8 | 是否需要 TF 重映射 `camera_init → map`？ | 待确认 | 检查导航包 frame 要求 |

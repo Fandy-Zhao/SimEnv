@@ -1,13 +1,14 @@
 # Project State
 
 ## Snapshot
-- Date: 2026-07-14
-- Branch: develop
+- Date: 2026-07-15
+- Branch: fix/0715-fast-lio2-axis
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
 - Current focus: FAST-LIO2 startup + TF bridge fixes integrated
 
 ## Active Work
 - **FAST-LIO2 startup + TF bridge** (merged to `develop`): Controller starts before FAST-LIO2, auto-commanded FixedStand, IMU upright check. Duplicate adapter eliminated. Controller foreground mode preserved via `fg`. Camera-init TF bridge: `map→camera_init` is direct copy of `map→imu_link` (Ry(-45°) removed — was duplicate of FAST-LIO2 extrinsic_R). Rotation responsibility documented in YAML and ADR-0714.
+- **FAST-LIO2 LiDAR–IMU axes corrected**: Source audit established that FAST-LIO2 applies `p_imu = R * p_lidar + T`. The SimEnv point source is local `laser_livox`, so the mapping config now uses the direct runtime TF `imu_link→laser_livox`: `Ry(+45°)`, `[0.2,0,0.08]`. `map→camera_init` remains a no-rotation copy of `map→imu_link`; restart FAST-LIO2 to load the new YAML.
 - **FAST-LIO2 runtime validated**: PointCloud2 intensity fix, TF bridge, RViz config. Converges to ~7 cm within 20 s in FixedStand. All output topics publish stably.
 - **Locomotion ready**: Trotting with `/cmd_vel` + `/fsm/state_cmd` programmatic control. RL policies diagnosed as non-functional for velocity tracking. P1 blocked by Gazebo physics stability.
 - **`auto.sh` cleanup**: Comprehensive process cleanup on startup.
@@ -42,6 +43,7 @@
 - 随机生成的建筑布局可能在某些参数组合下产生不可达房间或源重叠
 - Gazebo Classic 已停止维护，长期可能需要迁移到 Ignition/Gazebo Fortress
 - FAST-LIO2: SimEnv adapter 输出 `PointCloud2`，必须使用 `preprocess.lidar_type=4`；其 MARSIM 分支的 `last_lidar_end_time_` 未初始化缺陷已在外部源码修复并选择性重编译，仍需完成完整 60 s 仿真时间 P0
+- FAST-LIO2 axis correction has offline and live-TF evidence, but its moving mapping regression remains pending a clean mapper restart.
 - 当前 3 层场景实时因子很低（60 s 墙钟仅 4.3 s ROS 时间），完整 P0 需要约 10--15 分钟墙钟；`junior_ctrl` 因 Torch ABI 隔离未编译 trot/RL 状态，P1 真实步态测试需重新启用其依赖
 - IDE 的 Miniconda Python 3.13 与 Noetic xacro 不兼容；ROS/Gazebo runtime 应使用系统 Python 3.10
 

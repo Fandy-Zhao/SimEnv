@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-15
+
+### FAST-LIO2 LiDAR–IMU Axis Correction (fix/0715-fast-lio2-axis)
+- Corrected `simenv_mid360.yaml` to the direct FAST-LIO2 point transform
+  `p_imu = R_L_I * p_lidar + T_L_I`: `Ry(+45°)` and `[0.2, 0, 0.08]`.
+  The prior inverse (`Ry(-45°)`, `[-0.085, 0, -0.198]`) conflicted with the
+  `laser_livox`-frame points produced by the simulator.
+- Added `check_fast_lio2_extrinsics.py`, which derives the expected transform
+  from `robot.xacro`, and installed both it and the TF bridge with catkin.
+- Updated the deployment guide and ADRs.  A mapper restart is required before
+  the corrected parameters affect a running session.
+
 ## 2026-07-14
 
 ### FAST-LIO2 Frame Correction (zzf/0714-fast-lio2-frame-fix)
