@@ -37,6 +37,17 @@
     "source_trace_mismatch_count": 0,
     "lowcmd_action_sequence_regression_count": 0
   },
+  "history_regression": {
+    "simulation_start_s": 10.222,
+    "simulation_end_s": 14.464,
+    "policy_wait_count": 209,
+    "runtime_duplicate_count": 0,
+    "entry_duplicate_count": 4,
+    "history_span_average_us": 81325.4,
+    "history_span_min_us": 80000,
+    "history_span_max_us": 84000,
+    "nonmonotonic_oldest_timestamp_count": 0
+  },
   "reset_simulation": {
     "before_sim_time_s": 78.315,
     "after_sim_time_s": 1.048,

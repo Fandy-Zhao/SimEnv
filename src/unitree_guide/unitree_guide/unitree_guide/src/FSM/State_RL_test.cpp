@@ -58,7 +58,7 @@ void State_RL::enter(){
             std::lock_guard<std::mutex> lock(command_mutex_);
             commandSnapshot = command_snapshot_;
         }
-        refresh_rl_obs(&stateSnapshot, &commandSnapshot);
+        refresh_rl_obs(&stateSnapshot, &commandSnapshot, true);
     }
     infer_thread_runnning.store(State_RL::RUNNING, std::memory_order_release);
     infer_thread = new std::thread(&State_RL::infer_thread_callback,this);
@@ -174,7 +174,10 @@ void State_RL::infer_thread_callback()
         const std::uint64_t sourceSimTimeUs = stateSnapshot.sim_time_us;
         const std::uint64_t policySequence = ++policy_sequence_;
         // std::cout << "_start_time" << _start_time << std::endl;
-        refresh_rl_obs(&stateSnapshot, &commandSnapshot);
+        if(!refresh_rl_obs(&stateSnapshot, &commandSnapshot)){
+            usleep(50);
+            continue;
+        }
         torch::Tensor flattened_obs = obs_history_tensor.view({1, HISTORY_LEN * 45});
         if (debug == true)
         {
@@ -325,12 +328,24 @@ void State_RL::save_amp_obs_thread()
 
 
 
-void State_RL::refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot,
-                              const PolicyCommandSnapshot *commandSnapshot){
+bool State_RL::refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot,
+                              const PolicyCommandSnapshot *commandSnapshot,
+                              bool initializeHistory){
     auto opts = torch::TensorOptions().dtype(torch::kFloat32);
     //gazebo simulation mode
     if (real == false)
     {
+        constexpr std::uint64_t policyPeriodUs = 20000;
+        if(stateSnapshot == nullptr || commandSnapshot == nullptr ||
+           !stateSnapshot->valid){
+            return false;
+        }
+        if(!initializeHistory &&
+           (stateSnapshot->state_sequence == last_history_state_sequence_ ||
+            stateSnapshot->sim_time_us <= last_history_sim_time_us_ ||
+            stateSnapshot->sim_time_us - last_policy_sim_time_us_ < policyPeriodUs)){
+            return false;
+        }
         for (int i=0; i<4; i++) {
             base_w_orientation[i] = stateSnapshot->base_w_orientation[i];
         }
@@ -385,6 +400,9 @@ void State_RL::refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot,
             history_stamps_us_[i - 1] = history_stamps_us_[i];
         }
         history_stamps_us_.back() = stampUs;
+        last_history_state_sequence_ = stateSnapshot->state_sequence;
+        last_history_sim_time_us_ = stampUs;
+        last_policy_sim_time_us_ = stampUs;
     }
     else if (real == true)
     {
@@ -419,6 +437,7 @@ void State_RL::refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot,
             obs_tensor.unsqueeze(0)  // 将当前 obs_tensor 插入到历史中
         }, 0);  // 按行（第0维）拼接
     }
+    return true;
 }
 
 void State_RL::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){

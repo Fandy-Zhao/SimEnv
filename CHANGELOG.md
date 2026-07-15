@@ -16,6 +16,9 @@
 - Replaced inference-thread writes to shared LowCmd with a complete policy
   output snapshot applied by the FSM thread, and build observations from a
   locked LowState/base snapshot plus an independently sequenced command.
+- Runtime history updates now require a new state generation, increasing
+  simulation timestamp, and a full 20 ms policy interval; the existing
+  repeated-current-observation entry initialization is preserved.
 
 ### Gazebo Simulation-Time Locomotion Control
 

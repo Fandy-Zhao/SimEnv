@@ -24,8 +24,9 @@ public:
     void run();
     void exit();
     FSMStateName checkChange();
-    void refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot = nullptr,
-                        const PolicyCommandSnapshot *commandSnapshot = nullptr);
+    bool refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot = nullptr,
+                        const PolicyCommandSnapshot *commandSnapshot = nullptr,
+                        bool initializeHistory = false);
     void refresh_rl_obs_real_robot();
     void refresh_amp_obs();
     void infer_thread_callback();
@@ -111,6 +112,9 @@ private:
     PolicyOutputSnapshot action_snapshot_;
     std::uint64_t action_sequence_ = 0;
     std::uint64_t last_applied_action_sequence_ = 0;
+    std::uint64_t last_history_state_sequence_ = 0;
+    std::uint64_t last_history_sim_time_us_ = 0;
+    std::uint64_t last_policy_sim_time_us_ = 0;
 };
 
 #endif

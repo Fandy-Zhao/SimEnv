@@ -74,3 +74,16 @@
 - Headless interval 9.220--14.622 s: 265 policy/action generations, 7,241
   LowCmd sends, zero torn actions, zero source-trace mismatches, and zero
   LowCmd action-sequence regressions. `catkin_make --force-cmake -j` passed.
+
+## Patch 5: History Alignment
+
+- Normal history append now requires a different state sequence, a strictly
+  increasing simulation timestamp, and at least 20,000 us since the previous
+  policy/history update.
+- The five repeated-current-observation rows in `enter()` are preserved because
+  no training reset/history implementation is available in this repository or
+  the exported TorchScript actor archive.
+- Headless steady-state interval 10.222--14.464 s: 209 policy waits, history
+  duplicate counter remained at the four entry-initialization duplicates,
+  timestamp span averaged 81,325 us (80,000--84,000 us), and oldest history
+  timestamps were strictly increasing. `catkin_make -j` passed.
