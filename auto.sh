@@ -91,12 +91,17 @@ schedule_unpause_physics() {
 # ---------------------------------------------------------------------------
 # Launch a command in a dedicated terminal window.  This gives the command a
 # real TTY so interactive keyboard input works (e.g. junior_ctrl).
+# Start gnome-terminal.real directly in a clean desktop environment: when
+# auto.sh is launched from Snap Code, the gnome-terminal D-Bus wrapper inherits
+# Snap libraries and fails before a window is created.  Do not alter the
+# system terminal or ROS environment; only sanitise the terminal launcher.
 # Falls back to background execution when no graphical terminal is available.
 # ---------------------------------------------------------------------------
 launch_in_terminal() {
   local title="$1"
   local command="$2"
   local env_block
+  local -a terminal_env
   env_block="export UNITREE_CTRL_DT='${UNITREE_CTRL_DT}';"
   env_block="${env_block} export GAZEBO_MODEL_PATH='${GAZEBO_MODEL_PATH:-}'"
   env_block="${env_block}:${SCENE_OUTPUT_DIR}:${UNITREE_GAZEBO_MODELS}';"
@@ -105,8 +110,21 @@ launch_in_terminal() {
   env_block="${env_block} export CMAKE_PREFIX_PATH='${CMAKE_PREFIX_PATH:-}';"
   env_block="${env_block} export PYTHONPATH='${PYTHONPATH:-}';"
 
-  if command -v gnome-terminal >/dev/null 2>&1; then
-    gnome-terminal --title="$title" -- bash -c "
+  terminal_env=(
+    env -i
+    "HOME=${HOME:-$WORKSPACE_DIR}"
+    "USER=${USER:-$(id -un)}"
+    "LOGNAME=${LOGNAME:-${USER:-$(id -un)}}"
+    "DISPLAY=${DISPLAY:-}"
+    "WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-}"
+    "XAUTHORITY=${XAUTHORITY:-}"
+    "XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-}"
+    "DBUS_SESSION_BUS_ADDRESS=${DBUS_SESSION_BUS_ADDRESS:-}"
+    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  )
+
+  if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && [ -x /usr/bin/gnome-terminal.real ]; then
+    "${terminal_env[@]}" /usr/bin/gnome-terminal.real --title="$title" -- bash -c "
       source /opt/ros/noetic/setup.bash
       source '${WORKSPACE_DIR}/devel/setup.bash'
       ${env_block}

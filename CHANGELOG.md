@@ -3,6 +3,9 @@
 ## 2026-07-15
 
 ### Dedicated Controller & RVIZ Terminals (fix/0715-build-auto-startup)
+- Fixed terminal creation when `auto.sh` is launched from Snap Code: it now
+  starts `gnome-terminal.real` with a clean desktop environment instead of the
+  Snap-contaminated D-Bus wrapper, which failed with a GLIBC symbol error.
 - `auto.sh` now launches `junior_ctrl` and rviz in dedicated `gnome-terminal`
   windows (fallback: `xterm` → background).  This guarantees a real TTY for
   keyboard state switching (`2`=stand, `4`=trot, `6`=RL), eliminating the
