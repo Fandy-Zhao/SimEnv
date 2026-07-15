@@ -14,6 +14,7 @@
 #include "common/mathTools.h"
 #include "common/mathTypes.h"
 #include "common/timeMarker.h"
+#include "common/TimingDiagnostics.h"
 #include "interface/CmdPanel.h"
 
 //添加ros节点，读取move_base
@@ -45,8 +46,8 @@ public:
     int real = false;
     long long getRosTime();
     long long getTime();
-    void rosAbsoluteWait(long long startTime, long long waitTime);
-    void wait(long long startTime, long long waitTime);
+    PolicyWaitExitReason rosAbsoluteWait(long long startTime, long long waitTime);
+    PolicyWaitExitReason wait(long long startTime, long long waitTime);
 
 
 protected:

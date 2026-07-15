@@ -2,11 +2,14 @@
  Copyright (c) 2020-2023, Unitree Robotics.Co.Ltd. All rights reserved.
 ***********************************************************************/
 #include "FSM/FSM.h"
+#include "common/TimingDiagnostics.h"
 #include <cmath>
 #include <iostream>
 
 FSM::FSM(CtrlComponents *ctrlComp)
     :_ctrlComp(ctrlComp){
+
+    TimingDiagnostics::instance().configure(_nh);
 
     _nh.param("fsm_max_sim_time_step", _maxSimTimeStep, 0.05);
     _nh.param("fsm_sim_pause_reset_timeout", _simPauseResetTimeout, 0.5);
@@ -53,6 +56,7 @@ void FSM::initialize(){
 
 void FSM::run(){
     _startTime = getSystemTime();
+    ++_fsmIteration;
     _ctrlComp->sendRecv();
     _ctrlComp->ioInterFreeDog->sendRecv();
 
@@ -62,6 +66,7 @@ void FSM::run(){
             _waitingForStateFeedback = true;
         }
         absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
+        recordTiming(false);
         return;
     }
     if(_waitingForStateFeedback){
@@ -71,10 +76,12 @@ void FSM::run(){
     if(!_ctrlComp->lowState->isFinite()){
         std::cout << "[WARNING] Gazebo state feedback is not finite; skipping control update." << std::endl;
         absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
+        recordTiming(false);
         return;
     }
     if(!updateControlTime()){
         absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
+        recordTiming(false);
         return;
     }
 
@@ -119,7 +126,38 @@ void FSM::run(){
         }
     }
 
+    recordTiming(true);
     absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
+}
+
+void FSM::recordTiming(bool accepted){
+    TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
+    if(!diagnostics.enabled()){
+        return;
+    }
+    const ros::Time simNow = ros::Time::now();
+    const ros::WallTime wallNow = ros::WallTime::now();
+    double estimatedRtf = 0.0;
+    if(!_diagnosticLastSimTime.isZero() && !_diagnosticLastWallTime.isZero() &&
+       simNow > _diagnosticLastSimTime && wallNow > _diagnosticLastWallTime){
+        estimatedRtf = (simNow - _diagnosticLastSimTime).toSec() /
+                       (wallNow - _diagnosticLastWallTime).toSec();
+    }
+    if(simNow != _diagnosticLastSimTime){
+        _diagnosticLastSimTime = simNow;
+        _diagnosticLastWallTime = wallNow;
+    }
+    TimingRecord timing;
+    timing.event = "FSM";
+    timing.wall_time_ns = wallNow.toNSec();
+    timing.sim_time_us = simNow.toNSec() / 1000U;
+    timing.sim_dt_us = accepted ? static_cast<std::int64_t>(_ctrlComp->controlDt * 1e6) : 0;
+    timing.estimated_rtf = estimatedRtf;
+    timing.state_sequence = _ctrlComp->ioInter->stateSequence();
+    timing.state_stamp_us = _ctrlComp->ioInter->stateStampUs();
+    timing.fsm_iteration = _fsmIteration;
+    timing.control_update_accepted = accepted;
+    diagnostics.record(timing);
 }
 
 bool FSM::updateControlTime(){

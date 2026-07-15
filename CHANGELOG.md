@@ -2,6 +2,15 @@
 
 ## 2026-07-16
 
+### Gazebo RL Timing Diagnostics
+
+- Added opt-in buffered CSV diagnostics for FSM iterations, simulation/state
+  generations, policy wait exit reasons, history timestamps, action
+  generations, LowCmd sends, and torn-action detection.
+- Recorded an RTF 0.276 baseline: policy remained 49.25 Hz in simulation time
+  with no normal-run wall overtime, while pause advanced policy/history/action
+  and 28 LowCmd copies overlapped an action write.
+
 ### Gazebo Simulation-Time Locomotion Control
 
 - Changed WaveGenerator, estimator propagation, Trotting height/readiness, and

@@ -130,6 +130,10 @@ void State_RL::infer_thread_callback()
     while(infer_thread_runnning == State_RL::RUNNING)
     {
         long long _start_time = getTime();
+        const std::uint64_t wallStartNs = ros::WallTime::now().toNSec();
+        const std::uint64_t sourceStateSequence = _ctrlComp->ioInter->stateSequence();
+        const std::uint64_t sourceSimTimeUs = _ctrlComp->ioInter->stateStampUs();
+        const std::uint64_t policySequence = ++policy_sequence_;
         // std::cout << "_start_time" << _start_time << std::endl;
         refresh_rl_obs();
         torch::Tensor flattened_obs = obs_history_tensor.view({1, HISTORY_LEN * 45});
@@ -155,6 +159,8 @@ void State_RL::infer_thread_callback()
         std::vector<float> actions(actions_tensor_scaled.data_ptr<float>(),
                            actions_tensor_scaled.data_ptr<float>() + actions_tensor_scaled.numel());
         if (debug == true) std::cout << "actions[reindex[j]]  + default_dof_pos" << std::endl;
+        TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
+        diagnostics.beginActionWrite();
         for(int i=0; i<12; i++){
             if (real == false)
             {
@@ -170,10 +176,50 @@ void State_RL::infer_thread_callback()
             }
             if (debug == true) std::cout << actions[reindex[i]]  + default_dof_pos_tensor[reindex[i]].item<float>() << " ";
         }
+        const std::uint64_t actionSequence =
+            diagnostics.endActionWrite(sourceStateSequence, sourceSimTimeUs);
+        TimingRecord actionTiming;
+        actionTiming.event = "ACTION";
+        actionTiming.wall_time_ns = ros::WallTime::now().toNSec();
+        actionTiming.sim_time_us = _ctrlComp->ioInter->stateStampUs();
+        actionTiming.state_sequence = _ctrlComp->ioInter->stateSequence();
+        actionTiming.state_stamp_us = _ctrlComp->ioInter->stateStampUs();
+        actionTiming.policy_sequence = policySequence;
+        actionTiming.policy_source_state_sequence = sourceStateSequence;
+        actionTiming.policy_sim_time_us = sourceSimTimeUs;
+        actionTiming.policy_wall_time_ns = wallStartNs;
+        actionTiming.action_sequence = actionSequence;
+        actionTiming.action_source_state_sequence = sourceStateSequence;
+        diagnostics.record(actionTiming);
         if (debug == true)
             std::cout << std::endl;
         // std::cout << "actions_tensor: " << actions_tensor << std::endl;
-        wait(_start_time, (long long)(infer_duration * 1000000));
+        const std::uint64_t waitWallStartNs = ros::WallTime::now().toNSec();
+        const PolicyWaitExitReason waitResult =
+            wait(_start_time, (long long)(infer_duration * 1000000));
+        const std::int64_t simElapsed = getTime() - _start_time;
+        TimingRecord waitTiming;
+        waitTiming.event = "POLICY_WAIT";
+        waitTiming.wall_time_ns = ros::WallTime::now().toNSec();
+        waitTiming.sim_time_us = _ctrlComp->ioInter->stateStampUs();
+        waitTiming.state_sequence = _ctrlComp->ioInter->stateSequence();
+        waitTiming.state_stamp_us = _ctrlComp->ioInter->stateStampUs();
+        waitTiming.policy_sequence = policySequence;
+        waitTiming.policy_source_state_sequence = sourceStateSequence;
+        waitTiming.policy_sim_time_us = sourceSimTimeUs;
+        waitTiming.policy_wall_time_ns = wallStartNs;
+        waitTiming.policy_wait_exit_reason = policyWaitExitReasonName(waitResult);
+        waitTiming.policy_wait_sim_elapsed_us = simElapsed;
+        waitTiming.policy_wait_wall_elapsed_us =
+            (waitTiming.wall_time_ns - waitWallStartNs) / 1000U;
+        waitTiming.history_oldest_stamp_us = history_stamps_us_.front();
+        waitTiming.history_newest_stamp_us = history_stamps_us_.back();
+        waitTiming.history_span_us = history_stamps_us_.back() >= history_stamps_us_.front() ?
+            history_stamps_us_.back() - history_stamps_us_.front() : 0;
+        waitTiming.history_duplicate_count = history_duplicate_count_;
+        waitTiming.action_sequence = actionSequence;
+        waitTiming.action_source_state_sequence = sourceStateSequence;
+        diagnostics.record(waitTiming);
     }
     infer_thread_runnning = State_RL::OVER;
 }
@@ -272,6 +318,14 @@ void State_RL::refresh_rl_obs(){
             obs_history_tensor.slice(0, 1, HISTORY_LEN).to(device),  // 删除最早的一步
             obs_tensor.unsqueeze(0)  // 将当前 obs_tensor 插入到历史中
         }, 0);  // 按行（第0维）拼接
+        const std::uint64_t stampUs = _ctrlComp->ioInter->stateStampUs();
+        if(history_stamps_us_.back() == stampUs){
+            ++history_duplicate_count_;
+        }
+        for(std::size_t i=1; i<history_stamps_us_.size(); ++i){
+            history_stamps_us_[i - 1] = history_stamps_us_[i];
+        }
+        history_stamps_us_.back() = stampUs;
     }
     else if (real == true)
     {

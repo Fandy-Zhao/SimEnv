@@ -8,6 +8,7 @@
 #include "message/LowlevelState.h"
 #include "interface/CmdPanel.h"
 #include <array>
+#include <cstdint>
 #include <string>
 #include "ros/ros.h"
 #include <vector>
@@ -18,6 +19,8 @@ IOInterface(): cmdPanel(nullptr){}
 virtual ~IOInterface(){delete cmdPanel;}
 virtual void sendRecv(const LowlevelCmd *cmd, LowlevelState *state) = 0;
 virtual bool hasFullStateFeedback() const { return true; }
+virtual std::uint64_t stateSequence() const { return 0; }
+virtual std::uint64_t stateStampUs() const { return current_time; }
 void zeroCmdPanel(){cmdPanel->setZero();}
 void setPassive(){cmdPanel->setPassive();}
 std::array<double, 3> _base_w_pos = {0.0, 0.0, 0.0};

@@ -5,6 +5,7 @@
 
 #include "interface/IOROS.h"
 #include "interface/KeyBoard.h"
+#include "common/TimingDiagnostics.h"
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -91,7 +92,17 @@ bool IOROS::hasFullStateFeedback() const{
     return true;
 }
 
+std::uint64_t IOROS::stateSequence() const{
+    return _state_sequence.load(std::memory_order_acquire);
+}
+
+std::uint64_t IOROS::stateStampUs() const{
+    return _state_stamp_us.load(std::memory_order_acquire);
+}
+
 void IOROS::sendCmd(const LowlevelCmd *lowCmd){
+    TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
+    const std::uint64_t actionGenerationBefore = diagnostics.actionWriteGeneration();
     for(int i(0); i < 12; ++i){
         _lowCmd.motorCmd[i].mode = lowCmd->motorCmd[i].mode;
         _lowCmd.motorCmd[i].q = lowCmd->motorCmd[i].q;
@@ -103,6 +114,21 @@ void IOROS::sendCmd(const LowlevelCmd *lowCmd){
     for(int m(0); m < 12; ++m){
         _servo_pub[m].publish(_lowCmd.motorCmd[m]);
     }
+    const std::uint64_t actionGenerationAfter = diagnostics.actionWriteGeneration();
+    TimingRecord timing;
+    timing.event = "LOWCMD";
+    timing.wall_time_ns = ros::WallTime::now().toNSec();
+    timing.sim_time_us = stateStampUs();
+    timing.state_sequence = stateSequence();
+    timing.state_stamp_us = stateStampUs();
+    timing.lowcmd_sequence = ++_lowcmd_sequence;
+    timing.lowcmd_action_sequence = diagnostics.latestActionSequence();
+    timing.lowcmd_sim_time_us = stateStampUs();
+    timing.action_sequence = diagnostics.latestActionSequence();
+    timing.action_source_state_sequence = diagnostics.latestActionSourceStateSequence();
+    timing.torn_action = actionGenerationBefore != actionGenerationAfter ||
+        (actionGenerationBefore & 1U) != 0U || (actionGenerationAfter & 1U) != 0U;
+    diagnostics.record(timing);
     ros::spinOnce();
 }
 
@@ -126,6 +152,11 @@ void IOROS::recvState(LowlevelState *state){
         state->footForce[i] = _foot_force[i].load();
         state->footForceValid[i] = stampNs != 0 && nowNs >= stampNs &&
             (nowNs - stampNs) <= maxContactAgeNs;
+    }
+    const std::uint64_t stampUs = static_cast<std::uint64_t>(current_time);
+    const std::uint64_t previousStamp = _state_stamp_us.exchange(stampUs, std::memory_order_acq_rel);
+    if(stampUs != previousStamp){
+        _state_sequence.fetch_add(1, std::memory_order_acq_rel);
     }
 }
 

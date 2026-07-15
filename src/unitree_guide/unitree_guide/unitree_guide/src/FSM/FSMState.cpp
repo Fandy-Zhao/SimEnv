@@ -26,18 +26,20 @@ long long  FSMState::getTime()
     }
 }
 
-void FSMState::wait(long long startTime, long long waitTime){
+PolicyWaitExitReason FSMState::wait(long long startTime, long long waitTime){
     if (real == false)
     {
-        rosAbsoluteWait(startTime,waitTime);
+        return rosAbsoluteWait(startTime,waitTime);
     }
     else
     {
         absoluteWait(startTime,waitTime);
+        return ros::ok() ? PolicyWaitExitReason::SimPeriodReached :
+                           PolicyWaitExitReason::Shutdown;
     }
 }
 
-void FSMState::rosAbsoluteWait(long long startTime, long long waitTime){
+PolicyWaitExitReason FSMState::rosAbsoluteWait(long long startTime, long long waitTime){
     overtime = 0;
     long long elapsed = getRosTime() - startTime;
     long long now = getSystemTime();
@@ -54,7 +56,16 @@ void FSMState::rosAbsoluteWait(long long startTime, long long waitTime){
         usleep(50);
         overtime += 50;
     }
-
+    if(!ros::ok()){
+        return PolicyWaitExitReason::Shutdown;
+    }
+    if(getRosTime() < startTime){
+        return PolicyWaitExitReason::SimTimeReset;
+    }
+    if(getRosTime() - startTime >= waitTime){
+        return PolicyWaitExitReason::SimPeriodReached;
+    }
+    return PolicyWaitExitReason::WallOvertime;
 }
 
 //设置cmd_vel的回调函数，将move_base转化为
@@ -70,4 +81,3 @@ void FSMState::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
     // std::cout << "cmd_vel_linear_y"<< this->current_cmd_vel_.linear_y<< std::endl;
     // std::cout << "cmd_vel_angular_z"<< this->current_cmd_vel_.angular_z<< std::endl;
 }
-

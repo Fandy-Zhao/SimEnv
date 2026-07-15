@@ -1,0 +1,31 @@
+{
+  "normal_low_rtf": {
+    "simulation_seconds": 10.355,
+    "wall_seconds": 37.567094,
+    "rtf": 0.27564,
+    "policy_count": 510,
+    "policy_sim_hz": 49.2516,
+    "wall_overtime_count": 0,
+    "lowcmd_count": 17641,
+    "torn_action_count": 28,
+    "history_span_average_us": 81286.3,
+    "history_span_min_us": 80000,
+    "history_span_max_us": 84000,
+    "history_enter_duplicate_count": 4
+  },
+  "pause": {
+    "sim_time_us": 70993000,
+    "wall_overtime_count": 46,
+    "policy_sequence_delta": 46,
+    "action_sequence_delta": 45,
+    "history_duplicate_delta": 44
+  },
+  "reset_simulation": {
+    "before_sim_time_s": 78.315,
+    "after_sim_time_s": 1.048,
+    "sim_time_reset_wait_count": 1,
+    "first_reset_wait_sim_elapsed_us": -78501000,
+    "pre_reset_history_retained": true,
+    "pre_reset_action_generated_before_detection": true
+  }
+}

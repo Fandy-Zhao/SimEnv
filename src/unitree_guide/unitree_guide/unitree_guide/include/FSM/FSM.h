@@ -74,6 +74,7 @@ private:
     bool checkSafty();
     bool updateControlTime();
     void resetForTimeDiscontinuity(const char *reason, const ros::Time &now);
+    void recordTiming(bool accepted);
     CtrlComponents *_ctrlComp;
     FSMState *_currentState;
     FSMState *_nextState;
@@ -90,6 +91,9 @@ private:
     double _simPauseResetTimeout = 0.5;
     bool _simClockInitialized = false;
     bool _simPauseHandled = false;
+    std::uint64_t _fsmIteration = 0;
+    ros::Time _diagnosticLastSimTime;
+    ros::WallTime _diagnosticLastWallTime;
 };
 
 
