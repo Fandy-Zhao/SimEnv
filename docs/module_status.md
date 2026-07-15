@@ -21,6 +21,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 > **2026-07-14 TF bridge + foreground**: camera_init 桥接方向迭代: `laser_livox`→`imu_link`→`imu_link+Ry(-45°)`，修复点云 45° 倾斜和 odometry X 轴方向错误。`CONTROLLER_FOREGROUND` 默认 1，FAST-LIO2 初始化后 `fg` 拉回前台。launch 文件 `enable_adapter:=false` 避免重复 scan_to_pointcloud2 节点。
 > **2026-07-14 frame correction**: 诊断并修复 Odometry 机体坐标轴异常。根因: `map_to_camera_init_bridge.py` 中 Ry(-45°) 为重复旋转（LiDAR 45°倾斜已由 FAST-LIO2 extrinsic_R 正确处理）。修复: 移除重复旋转，`map→camera_init` 直接复制 `map→imu_link`。新增 ADR-0714 (坐标系约定与旋转责任边界)。静态检查/编译/旋转矩阵验证通过，运行时测试因 ROS master 未运行标记为 NOT RUN (`zzf/0714-fast-lio2-frame-fix`)。
 > **2026-07-15 FAST-LIO2 axis correction**: 依据运行时 `imu_link→laser_livox` TF 和 FAST-LIO2 的 `p_imu=R*p_lidar+T` 源码路径，外参改为直接变换 `Ry(+45°), [0.2,0,0.08]`，替换错误逆变换。新增 xacro/YAML 校验脚本；bridge 继续不旋转。运行中的 mapper 尚未重启，运动建图回归待执行 (`fix/0715-fast-lio2-axis`)。
+> **2026-07-15 controller keyboard fix**: `auto.sh` 的 FAST-LIO2 启动路径改为显式把 `junior_ctrl` stdin 绑定至 `/dev/tty`，并以 `wait` 取代非交互 shell 不可靠的 `fg`。交互终端可继续使用键盘；无 TTY 时提示改用 ROS 控制话题 (`fix/0715-auto-keyboard`)。
 
 ## Modules
 

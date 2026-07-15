@@ -84,7 +84,7 @@ START_CONTROLLER=0 ./auto.sh
 | `GUI` | `true` | 是否启动 Gazebo GUI |
 | `PAUSED` | `false` | Gazebo 启动后是否暂停 |
 | `START_CONTROLLER` | `1` | 是否启动 `junior_ctrl` |
-| `CONTROLLER_FOREGROUND` | `1` | 是否在前台运行控制器 |
+| `CONTROLLER_FOREGROUND` | `1` | 启动完成后等待控制器；即使 FAST-LIO2 先后台启动，键盘仍从本终端读取 |
 | `START_BUILDING_CONTROL` | `1` | 是否启动楼栋门/电梯控制服务 |
 | `UNITREE_CTRL_DT` | `0.004` | `junior_ctrl` 控制周期，单位 s |
 | `START_VIRTUAL_JOY` | `0` | 是否启动虚拟手柄，通常需要 `uinput` 权限 |
@@ -116,6 +116,10 @@ START_CONTROLLER=0 ./auto.sh
 ```bash
 ENABLE_FAST_LIO2=1 GUI=false ./auto.sh
 ```
+
+当 `CONTROLLER_FOREGROUND=1`（默认）时，启动完成后该终端会保持连接到
+`junior_ctrl`：输入 `2` 站立、`4` 小跑、`6` RL。请从交互式终端启动；在
+CI、重定向或无 TTY 环境中，键盘不可用，应改用 `/fsm/state_cmd` 与 `/cmd_vel`。
 
 > FAST-LIO2 部署详情参见 [FAST-LIO2 部署指南](slam/fast_lio2_deployment_guide.md) 和 [集成包 README](../src/simenv_fast_lio2_integration/README.md)。
 >
