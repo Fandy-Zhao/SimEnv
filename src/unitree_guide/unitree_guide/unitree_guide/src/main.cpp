@@ -6,13 +6,19 @@
 #include <csignal>
 #include <sched.h>
 #include <cerrno>
+#include <algorithm>
+#include <cctype>
 #include <cmath>
 #include <cstdlib>
+#include <cstring>
+#include <string>
 
+#include <std_msgs/Int8.h>
 #include "control/ControlFrame.h"
 #include "control/CtrlComponents.h"
 #include "Gait/WaveGenerator.h"
 #include "control/BalanceCtrl.h"
+#include "interface/KeyBoard.h"
 
 #ifdef COMPILE_WITH_REAL_ROBOT
 #include "interface/IOSDK.h"
@@ -35,12 +41,42 @@ void ShutDown(int sig)
 
 void setProcessScheduler()
 {
+    const char *envValue = std::getenv("UNITREE_ENABLE_REALTIME");
+    std::string realtimeMode = envValue == nullptr ? "auto" : envValue;
+    std::transform(
+        realtimeMode.begin(), realtimeMode.end(), realtimeMode.begin(),
+        [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+
+    bool enableRealtime = false;
+    if(realtimeMode == "auto" || realtimeMode.empty()){
+        enableRealtime = geteuid() == 0;
+    }else if(realtimeMode == "1" || realtimeMode == "true" || realtimeMode == "yes" || realtimeMode == "on"){
+        enableRealtime = true;
+    }else if(realtimeMode == "0" || realtimeMode == "false" || realtimeMode == "no" || realtimeMode == "off"){
+        enableRealtime = false;
+    }else{
+        std::cout << "[WARNING] Invalid UNITREE_ENABLE_REALTIME='" << envValue
+                  << "', using auto mode." << std::endl;
+        enableRealtime = geteuid() == 0;
+    }
+
+    if(!enableRealtime){
+        std::cout << "[INFO] Realtime scheduler disabled. Set UNITREE_ENABLE_REALTIME=1 to request SCHED_FIFO." << std::endl;
+        return;
+    }
+
     pid_t pid = getpid();
     sched_param param;
     param.sched_priority = sched_get_priority_max(SCHED_FIFO);
     if (sched_setscheduler(pid, SCHED_FIFO, &param) == -1)
     {
-        std::cout << "[ERROR] Function setProcessScheduler failed." << std::endl;
+        std::cout << "[WARNING] Could not enable SCHED_FIFO scheduler: "
+                  << std::strerror(errno)
+                  << ". Controller will continue with the normal scheduler." << std::endl;
+    }
+    else
+    {
+        std::cout << "[INFO] SCHED_FIFO realtime scheduler enabled." << std::endl;
     }
 }
 
@@ -113,6 +149,23 @@ int main(int argc, char **argv)
     ctrlComp->geneObj();
 
     ControlFrame ctrlFrame(ctrlComp);
+
+    // ROS subscriber for programmatic state transitions (bypasses keyboard pty).
+    // Latch stored in ctrlComp->pendingStateCmd, applied in FSM::run() after sendRecv().
+    ros::NodeHandle fsm_nh;
+    auto stateCmdCb = [ctrlComp](const std_msgs::Int8::ConstPtr& msg) {
+        switch (msg->data) {
+            case 1: ctrlComp->pendingStateCmd = UserCommand::L2_B; break;
+            case 2: ctrlComp->pendingStateCmd = UserCommand::L2_A; break;
+            case 3: ctrlComp->pendingStateCmd = UserCommand::L2_X; break;
+            case 4: ctrlComp->pendingStateCmd = UserCommand::START; break;
+            case 6: ctrlComp->pendingStateCmd = UserCommand::RL; break;
+            case 8: ctrlComp->pendingStateCmd = UserCommand::L1_Y; break;
+            case 9: ctrlComp->pendingStateCmd = UserCommand::L1_A; break;
+            default: break;
+        }
+    };
+    ros::Subscriber stateCmdSub = fsm_nh.subscribe<std_msgs::Int8>("/fsm/state_cmd", 10, stateCmdCb);
 
     signal(SIGINT, ShutDown);
 

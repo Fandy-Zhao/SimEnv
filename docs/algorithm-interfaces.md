@@ -1,6 +1,6 @@
 # 算法接入接口
 
-本文说明参赛算法常用的控制输入、状态输出和传感器接口。
+本文说明参赛算法允许使用的控制输入、公开场景信息和传感器接口。
 
 ## 控制器状态切换
 
@@ -20,18 +20,43 @@
 
 `/cmd_vel` 在 RL 模式下生效。
 
-## 常用状态与传感器接口
+## 公开场景信息
+
+参赛算法可以读取：
+
+```text
+generated_building/team_scene_info.json
+```
+
+该文件只包含机器人起点、公开门/电梯 ID、允许话题、允许服务和结果文件路径。`generated_building/layout_metadata.json`、`generated_building/building_config.json`、`generated_building/scene_manifest.json`、`generated_building/danger_truth.json` 和 `results/danger_truth.json` 属于裁判/调试信息，不作为正式算法输入。
+
+## 允许状态与传感器接口
 
 | 接口 | 类型 | 说明 |
 |------|------|------|
-| `/Odometry_gazebo` | `nav_msgs/Odometry` | 仿真里程计输出 |
-| `/scan` | `sensor_msgs/PointCloud2` | Livox Mid-360 点云数据 |
+| `/scan` | `sensor_msgs/PointCloud` | Livox Mid-360 原始点云 |
+| `/livox/Pointcloud2` | `sensor_msgs/PointCloud2` | 点云转换节点输出，开启时可用 |
+| `/livox/lidar2` | `unitree_guide/CustomMsg` | Livox 风格点云消息，开启时可用 |
 | `/livox/imu` | `sensor_msgs/Imu` | Livox 内置 IMU |
 | `/trunk_imu` | `sensor_msgs/Imu` | 机体 IMU |
-| `/camera/image_raw` | `sensor_msgs/Image` | 前视 RGB 图像 |
+| `/real_sense/rgb/image_raw` | `sensor_msgs/Image` | RealSense RGB 图像 |
+| `/real_sense/rgb/camera_info` | `sensor_msgs/CameraInfo` | RealSense RGB 相机标定 |
+| `/real_sense/depth/image_raw` | `sensor_msgs/Image` | RealSense 深度图像 |
+| `/real_sense/depth/camera_info` | `sensor_msgs/CameraInfo` | RealSense 深度相机标定 |
 | `/real_sense/depth/points` | `sensor_msgs/PointCloud2` | 深度相机点云 |
 
 传感器安装位姿、完整话题和坐标系见 [传感器与 ROS 话题](sensors-and-topics.md)。
+
+## 门与电梯交互
+
+| 接口 | 类型 | 说明 |
+|------|------|------|
+| `/set_door_state` | `building_generator_interfaces/SetDoorState` | 设置动态门开关状态 |
+| `/call_elevator` | `building_generator_interfaces/CallElevator` | 呼叫电梯到目标楼层 |
+
+## 裁判与调试专用接口
+
+`/Odometry_gazebo`、`/ground_truth/base_w`、`/ground_truth/base_trunk` 和 `/ground_truth/*_foot` 是 Gazebo 真值通道，不作为正式比赛算法输入。即使本地调试时能够看到这些话题，参赛算法也不得订阅或读取。
 
 ## 结果输出约束
 
@@ -39,14 +64,16 @@
 
 ## 控制周期
 
-`junior_ctrl` 原始控制周期为 `0.002 s`，即 500 Hz。当前 `auto.sh` 默认设置：
+当前启动脚本默认控制周期为 `0.004 s`：
 
 ```bash
 UNITREE_CTRL_DT=0.004
 ```
 
-默认值即 250 Hz，通常更适合 Gazebo GUI、随机楼栋、传感器和 RL 推理同时运行的比赛场景。如机器性能充足，可显式恢复 500 Hz：
+键盘 `2` 为站立，`6` 为 RL 模式。进入 RL 模式后，参赛算法可发布 `/cmd_vel` 控制机器人移动。
+
+如机器性能较弱、GUI 下动作明显卡顿，可优先使用无 GUI 启动：
 
 ```bash
-UNITREE_CTRL_DT=0.002 ./auto.sh
+GUI=false ./auto.sh
 ```

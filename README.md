@@ -23,8 +23,9 @@
 - 危险源为红色球体。
 - 干扰源为红色方块和绿色球体。
 - 源只生成在房间内部，并避开墙体、家具、其他源和房间门口保留区。
-- 真值写入 `results/danger_truth.json`。
 - 参赛算法应输出 `results/detected_danger.json`。
+- 公开场景信息写入 `generated_building/team_scene_info.json`。
+- 真值文件仅供裁判评估使用，不作为参赛算法输入。
 
 ## 启动流程
 
@@ -38,15 +39,48 @@ source ./devel/setup.bash
 
 `auto.sh` 会自动完成随机场景生成、Gazebo 启动、A1 模型与传感器启动、门/电梯控制服务启动和 `junior_ctrl` 控制器启动。更多启动方式见 [快速启动](docs/quick-start.md)。
 
+## 使用 venv 构建（推荐）
+
+项目根目录提供了 `tools/build_with_venv.sh`，自动使用项目 `.venv` 构建 catkin workspace，确保 CMake 使用一致的 Python 解释器：
+
+```bash
+# 1. 创建项目 venv（首次）
+python3 -m venv --system-site-packages .venv
+source .venv/bin/activate
+python -m pip install -U pip setuptools wheel
+python -m pip install numpy pyyaml rospkg catkin_pkg empy
+
+# 如果项目需要 torch（如 FAST-LIO2 集成）：
+python -m pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+
+# 2. 使用 venv 构建脚本
+./tools/build_with_venv.sh
+
+# 3. 加载工作空间（必须手动执行，脚本内的 source 不影响当前 shell）
+source devel/setup.bash
+
+# 4. 启动仿真
+./auto.sh
+```
+
+> **注意**：
+> - torch 版本固定为 2.0.1，适用于 Python 3.8 / ROS Noetic 环境。不要安装最新版 torch，除非确认 Python 版本兼容。
+> - 不要使用 `sudo pip` 污染系统 Python。
+> - `./tools/build_with_venv.sh` 内部的 `source devel/setup.bash` 只影响脚本子进程。构建完成后必须在你的终端中手动 `source devel/setup.bash`。
+
 ## 算法接口
 
 | 接口 | 类型 | 用途 |
 |------|------|------|
 | `/cmd_vel` | `geometry_msgs/Twist` | 机器人速度指令输入 |
-| `/Odometry_gazebo` | `nav_msgs/Odometry` | 仿真里程计 |
-| `/scan` | `sensor_msgs/PointCloud2` | Livox Mid-360 点云 |
-| `/camera/image_raw` | `sensor_msgs/Image` | 前视 RGB 图像 |
+| `/scan` | `sensor_msgs/PointCloud` | Livox Mid-360 原始点云 |
+| `/livox/Pointcloud2` | `sensor_msgs/PointCloud2` | 转换后的 Livox 点云 |
+| `/trunk_imu` | `sensor_msgs/Imu` | 机体 IMU |
+| `/livox/imu` | `sensor_msgs/Imu` | Livox 内置 IMU |
+| `/real_sense/rgb/image_raw` | `sensor_msgs/Image` | RealSense RGB 图像 |
 | `/real_sense/depth/points` | `sensor_msgs/PointCloud2` | 深度相机点云 |
+| `/set_door_state` | service | 门控制 |
+| `/call_elevator` | service | 电梯控制 |
 
 `junior_ctrl` 默认以前台方式启动。终端输入 `2` 进入站立状态，输入 `6` 切换到 RL 模式，随后控制器接收 `/cmd_vel`。完整接口见 [算法接入接口](docs/algorithm-interfaces.md)。
 
@@ -82,19 +116,22 @@ python3 ./src/building_obstacles/scripts/evaluate_danger.py \
 
 ## 关键文件
 
-| 文件 | 说明 |
-|------|------|
-| `generated_building/competition_scene.world` | Gazebo 使用的完整比赛世界 |
-| `generated_building/layout_metadata.json` | 楼栋布局、房间、门、电梯和目标点元数据 |
-| `generated_building/door_config.yaml` | 动态门控制配置 |
-| `generated_building/elevator_config.yaml` | 电梯控制配置 |
-| `generated_building/scene_manifest.json` | 本次随机场景 manifest |
-| `results/danger_truth.json` | 裁判真值文件 |
-| `results/detected_danger.json` | 参赛算法输出文件 |
-| `logs/competition_gazebo.log` | Gazebo/launch 日志 |
-| `logs/building_control.log` | 门/电梯控制服务日志 |
-| `logs/junior_ctrl.log` | 控制器日志 |
+| 文件 | 说明 | 是否可作为算法输入 |
+|------|------|--------------------|
+| `generated_building/team_scene_info.json` | 机器人起点、公开门/电梯 ID、允许接口和结果文件路径 | 是 |
+| `results/detected_danger.json` | 参赛算法输出文件 | 输出文件 |
+| `generated_building/competition_scene.world` | Gazebo 使用的完整比赛世界 | 否 |
+| `generated_building/layout_metadata.json` | 楼栋布局、房间、门、电梯和目标点元数据 | 否 |
+| `generated_building/door_config.yaml` | 动态门控制配置，由环境服务读取 | 否 |
+| `generated_building/elevator_config.yaml` | 电梯控制配置，由环境服务读取 | 否 |
+| `generated_building/building_config.json` | 兼容脚本使用的建筑配置 | 否 |
+| `generated_building/scene_manifest.json` | 本次随机场景 manifest | 否 |
+| `generated_building/danger_truth.json` | 裁判真值副本，本地调试时可能存在 | 否 |
+| `results/danger_truth.json` | 裁判真值文件 | 否 |
+| `logs/competition_gazebo.log` | Gazebo/launch 日志 | 否 |
+| `logs/building_control.log` | 门/电梯控制服务日志 | 否 |
+| `logs/junior_ctrl.log` | 控制器日志 | 否 |
 
-## 文档维护说明
+## 参赛注意事项
 
-此文档用于西南技术物理研究所揭榜挂帅赛题，仅用作比赛用途。
+正式算法应只使用公开接口、传感器话题和 `generated_building/team_scene_info.json`。不要读取真值文件、完整 world 文件或布局元数据作为算法输入。

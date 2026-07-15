@@ -13,7 +13,7 @@ cd /home/ros/Guoyulun/Competition/SimEnv
 - Gazebo Classic
 - Python >= 3.8
 - `python3-yaml`
-- `numpy` 和 `scipy`，用于评估脚本
+- `numpy`，用于评估脚本
 - CUDA >= 11.7
 - libtorch C++ 版本，用于 Unitree A1 控制器
 
@@ -41,6 +41,8 @@ source ./devel/setup.bash
 4. 启动 Gazebo、Unitree A1 模型、传感器、状态话题和控制器接口。
 5. 启动 `building_generator_classic` 门/电梯控制服务。
 6. 启动 `devel/lib/unitree_guide/junior_ctrl`。
+
+Livox 点云插件启动时会读取扫描模式 CSV 文件，启动后前十几秒可能出现 `rostopic hz /scan` 暂时显示 `no new messages`。请等待 `auto.sh` 完成并再等待数秒后检查传感器话题。
 
 ## 常用启动方式
 
@@ -80,16 +82,44 @@ START_CONTROLLER=0 ./auto.sh
 | `DANGER_COUNT` | `3:6` | 危险源数量，支持 `min:max` |
 | `DISTRACTOR_COUNT` | `4:8` | 干扰源数量，支持 `min:max` |
 | `GUI` | `true` | 是否启动 Gazebo GUI |
-| `PAUSED` | `true` | Gazebo 启动后是否暂停 |
+| `PAUSED` | `false` | Gazebo 启动后是否暂停 |
 | `START_CONTROLLER` | `1` | 是否启动 `junior_ctrl` |
 | `CONTROLLER_FOREGROUND` | `1` | 是否在前台运行控制器 |
 | `START_BUILDING_CONTROL` | `1` | 是否启动楼栋门/电梯控制服务 |
-| `UNITREE_CTRL_DT` | `0.004` | `junior_ctrl` 控制周期，单位 s。默认 250 Hz |
+| `UNITREE_CTRL_DT` | `0.004` | `junior_ctrl` 控制周期，单位 s |
 | `START_VIRTUAL_JOY` | `0` | 是否启动虚拟手柄，通常需要 `uinput` 权限 |
 | `ROBOT_X` | `0.0` | 机器人出生点 x |
-| `ROBOT_Y` | `-2.2` | 机器人出生点 y |
+| `ROBOT_Y` | `2.3` | 机器人出生点 y |
 | `ROBOT_Z` | `0.6` | 机器人出生点 z |
 | `ROBOT_YAW` | `1.5708` | 机器人出生点 yaw |
+| `ENABLE_FAST_LIO2` | `0` | 是否启动 FAST-LIO2 建图（需编译 FAST_LIO） |
+| `ENABLE_POINTCLOUD_CONVERTER` | `1` | 是否启动 odom 系点云转换（FAST-LIO2 建图时建议设为 `0`） |
+| `ENABLE_SENSORS` | `1` | 是否启用传感器数据（LiDAR、IMU、RealSense） |
+| `ENABLE_REFEREE_ODOM` | `1` | 是否发布裁判真值里程计 |
+| `ENABLE_GROUND_TRUTH` | `1` | 是否发布 ground truth 话题 |
+| `WRITE_GENERATED_TRUTH_COPY` | `1` | 是否写 `danger_truth.json` 到 `generated_building/` |
+
+性能较弱时建议优先使用：
+
+```bash
+GUI=false ./auto.sh
+```
+
+如只需要测试感知链路，可暂时不启动控制器：
+
+```bash
+START_CONTROLLER=0 ./auto.sh
+```
+
+启动 FAST-LIO2 LiDAR-Inertial SLAM 建图（需要先编译 FAST_LIO）：
+
+```bash
+ENABLE_FAST_LIO2=1 GUI=false ./auto.sh
+```
+
+> FAST-LIO2 部署详情参见 [FAST-LIO2 部署指南](slam/fast_lio2_deployment_guide.md) 和 [集成包 README](../src/simenv_fast_lio2_integration/README.md)。
+>
+> `ENABLE_POINTCLOUD_CONVERTER=0` 可关闭 odom 系点云转换，使 FAST-LIO2 适配器获得 sensor-frame 原始点云。
 
 ## 单独生成场景
 

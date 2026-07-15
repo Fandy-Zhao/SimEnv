@@ -1,0 +1,247 @@
+README.md:76:| `/scan` | `sensor_msgs/PointCloud` | Livox Mid-360 原始点云 |
+README.md:77:| `/livox/Pointcloud2` | `sensor_msgs/PointCloud2` | 转换后的 Livox 点云 |
+README.md:78:| `/trunk_imu` | `sensor_msgs/Imu` | 机体 IMU |
+README.md:79:| `/livox/imu` | `sensor_msgs/Imu` | Livox 内置 IMU |
+README.md:81:| `/real_sense/depth/points` | `sensor_msgs/PointCloud2` | 深度相机点云 |
+docs/reports/0704_fast-lio2-mapping.md:18:- SimEnv LiDAR topic: `/scan` → `/scan_pointcloud2` (via adapter)
+docs/reports/0704_fast-lio2-mapping.md:19:- SimEnv IMU topic: `/livox/imu` (frame: livox_imu_link)
+docs/reports/0704_fast-lio2-mapping.md:20:- 可选 IMU topic: `/trunk_imu`
+docs/reports/0704_fast-lio2-mapping.md:22:- 配置文件: `config/simenv_mid360.yaml`
+docs/reports/0704_fast-lio2-mapping.md:23:- 输出 topic / TF: `/Odometry`, `/cloud_registered`, `/Laser_map`, TF `camera_init → body`
+docs/reports/0704_fast-lio2-mapping.md:26:## PointCloud / IMU Compatibility
+docs/reports/0704_fast-lio2-mapping.md:27:- `/scan` 字段: x, y, z only (sensor_msgs/PointCloud)
+docs/reports/0704_fast-lio2-mapping.md:30:- 是否包含 ring/line 字段: ❌ (scan_line=4 作为近似)
+docs/reports/0704_fast-lio2-mapping.md:31:- `/livox/imu` 可用性: ✅ (1000 Hz, frame: livox_imu_link)
+docs/reports/0704_fast-lio2-mapping.md:32:- `/trunk_imu` 可用性: ✅ (1000 Hz, frame: imu_link)
+docs/reports/0704_fast-lio2-mapping.md:34:- 坐标系风险: LiDAR 45° pitch 安装, IMU 与 LiDAR 共位
+docs/reports/0704_fast-lio2-mapping.md:44:| `catkin_make` / `build_with_venv.sh` | ⚠️ PROGRESS | CUDA host compiler FIXED; blocked by CMakeCache mismatch + livox_ros_driver C++11 |
+docs/reports/0704_fast-lio2-mapping.md:59:- 需要用户确认: FAST_LIO 已存在于 `SimEnv/src/FAST_LIO`；当前阻塞点是 CUDA toolkit (torch cu118 需要) + livox_ros_driver C++11 编译问题
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:1:# FAST-LIO2 configuration for SimEnv Livox Mid-360 simulation
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:15:  lid_topic: "/scan_pointcloud2"
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:16:  imu_topic: "/livox/imu"
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:19:  lidar_type: 1                # 1=Livox Avia/Mid-360 pattern
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:20:  scan_line: 4                 # Mid-360: 4 scan lines
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:21:  timestamp_unit: 0.0          # DISABLED — no per-point time in simulated /scan
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:33:  # Extrinsic: LiDAR -> IMU (from SimEnv URDF: robot.xacro & gazebo.xacro)
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:34:  # laser_livox (LiDAR) -> livox_imu_link (IMU)
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:35:  # pos: (-0.011, -0.02329, 0.04412) relative to laser_livox
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:41:  # LiDAR mounting: 45-degree pitch down on A1 base
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:42:  # This is the transform from base->laser_livox, documented for reference.
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:43:  # FAST-LIO2 handles this via extrinsic_T/extrinsic_R + IMU gravity alignment.
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:48:    scan_publish_en: true
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml:50:    scan_bodyframe_pub_en: true
+docs/architecture.md:30:                ├── Livox Mid-360 LiDAR (Mid360_imu_sim)
+docs/architecture.md:53:Mid360_imu_sim          (独立; Gazebo plugin)
+docs/architecture.md:54:uav_simulator/          (独立; 与地面机器人解耦)
+docs/architecture.md:57:    ├── so3_quadrotor_simulator
+docs/architecture.md:62:    ├── scan_to_pointcloud2.py  →  /scan (PointCloud) → /scan_pointcloud2 (PointCloud2)
+docs/architecture.md:63:    ├── config/simenv_mid360.yaml
+docs/architecture.md:72:| `/Odometry_gazebo` | Gazebo → Contest algorithm | `nav_msgs/Odometry` |
+docs/architecture.md:73:| `/scan` | Livox Mid-360 → Contest algorithm | `sensor_msgs/PointCloud` |
+docs/architecture.md:74:| `/scan_pointcloud2` | Adapter → FAST-LIO2 | `sensor_msgs/PointCloud2` |
+docs/architecture.md:75:| `/livox/imu` | Livox IMU → FAST-LIO2 | `sensor_msgs/Imu` |
+docs/architecture.md:77:| `/real_sense/depth/points` | Depth camera → Contest algorithm | `sensor_msgs/PointCloud2` |
+docs/architecture.md:79:| FAST-LIO2 output | `/Odometry`, `/cloud_registered`, TF | In development |
+docs/architecture.md:84:2. **Simulation Launch** (`auto.sh`): world loading → Gazebo + sensors → robot controller
+docs/architecture.md:85:3. **PointCloud Adapter** (`scan_to_pointcloud2.py`): `/scan` → `/scan_pointcloud2` (sensor-frame PointCloud2)
+docs/architecture.md:86:4. **SLAM** (FAST-LIO2, optional via `ENABLE_FAST_LIO2=1`): `/scan_pointcloud2` + `/livox/imu` → map + odometry
+docs/architecture.md:95:- **Simulator**: Gazebo Classic 11
+docs/reports/0704_build-with-venv.md:28:| `tools/build_with_venv.sh` | Added | Core deliverable: venv-based catkin build script |
+docs/module_status.md:13:> **2026-07-04 update**: 编译修复: unitree PIE, FAST_LIO/livox C++17, PCL serialization, missing includes (fix/0704-fast-lio2-build-errors).
+docs/module_status.md:24:| `Mid360_imu_sim` | Livox Mid-360 LiDAR plugin | stable | 编译检查 + 话题发布检查 | Gazebo plugin，依赖 Gazebo 开发头文件 |
+docs/module_status.md:26:| `uav_simulator` (5 sub-pkgs) | UAV local sensing, mapping, SO3 control | experimental | 编译检查 (含部分测试) | 与地面机器人大赛解耦，为独立实验功能 |
+docs/module_status.md:32:- `uav_simulator` 子模块与比赛目标解耦，维护成本高且无明确 owner；建议移出到独立仓库或归档
+docs/module_status.md:33:- `Mid360_imu_sim` 仅提供编译检查，无运行时自动化验证；依赖硬件特定的点云格式
+docs/decisions/ADR-0704-fast-lio2-mapping.md:7:SimEnv 仿真环境需要 SLAM 建图能力，FAST-LIO2 是 LiDAR-Inertial SLAM 的标准方案。当前环境发布 `sensor_msgs/PointCloud` 点云和两个 IMU 话题，需要做出多项架构决策。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:15:### 2. 新增 PointCloud2 适配器
+docs/decisions/ADR-0704-fast-lio2-mapping.md:16:**决定**: 创建 `scan_to_pointcloud2.py`，将 `/scan` (PointCloud) 转换为 `/scan_pointcloud2` (PointCloud2, laser_livox 帧)。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:17:**理由**: `/scan` 是 PointCloud 类型，FAST-LIO2 期望 PointCloud2。现有的 `pointcloud2livox.py` 将点云转换到 odom 帧 (使用真值里程计)，不适合 SLAM。新适配器保留传感器帧。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:18:**替代方案**: 修改 Gazebo LiDAR 插件直接发布 PointCloud2。该方案更优但风险更高，推迟到后续阶段。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:24:### 4. 使用 `/livox/imu` 而非 `/trunk_imu`
+docs/decisions/ADR-0704-fast-lio2-mapping.md:25:**决定**: 默认使用 `/livox/imu` (帧 `livox_imu_link`)。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:26:**理由**: Livox IMU 与 LiDAR 物理上共位，外参更精确 (直接从 URDF 提取)。躯干 IMU 位于 CoM 处，距 LiDAR 较远，外参误差更大。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:27:**替代方案**: 通过 `use_trunk_imu:=true` 参数可选切换。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:35:2. **直接修改 pointcloud2livox.py**: 被拒绝——该脚本负责 `/livox/Pointcloud2`，修改可能破坏现有使用方。新适配器独立运行。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:36:3. **修改 Gazebo 插件添加 per-point 时间**: 被推迟——需要重新编译插件，且注释代码已有 `PublishPointCloud2XYZRTL` 实现，可作为后续参考。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:41:- 后续导航探索模块需依赖 FAST-LIO2 输出的 `/Odometry`、`/cloud_registered`、TF `camera_init → body`
+docs/troubleshooting.md:34:## `/scan` 一开始显示 `no new messages`
+docs/troubleshooting.md:36:Livox 插件启动时会读取扫描模式 CSV 文件，启动后前十几秒可能暂时没有点云。请等待 `auto.sh` 完成并再等待数秒后检查：
+docs/troubleshooting.md:39:rostopic info /scan
+docs/troubleshooting.md:40:rostopic hz /scan
+docs/troubleshooting.md:41:rostopic hz /livox/Pointcloud2
+docs/troubleshooting.md:46:- `/scan` 类型为 `sensor_msgs/PointCloud`，publisher 为 `/gazebo`。
+docs/troubleshooting.md:47:- `/livox/Pointcloud2` 类型为 `sensor_msgs/PointCloud2`，publisher 为 `/pointcloud2livox`。
+docs/troubleshooting.md:52:`rostopic hz` 统计的是整帧点云消息频率，不是雷达点率。当前 Livox 仿真默认约 24000 点/帧、10 Hz，点率约 24 万点/s。
+docs/troubleshooting.md:66:也可以在调试导航或控制时暂时关闭点云转换节点，直接使用 `/scan`：
+docs/troubleshooting.md:69:ENABLE_POINTCLOUD_CONVERTER=0 ./auto.sh
+docs/troubleshooting.md:87:rospack find livox_laser_simulation
+docs/sensors-and-topics.md:7:### 机载 IMU `imu_link`
+docs/sensors-and-topics.md:16:IMU 安装于机器人质心位置，与躯干坐标系重合。
+docs/sensors-and-topics.md:18:### Livox Mid-360 `laser_livox`
+docs/sensors-and-topics.md:22:| 父坐标系 | `base` |
+docs/sensors-and-topics.md:27:Livox 内置 IMU `livox_imu_link`：
+docs/sensors-and-topics.md:29:- 父坐标系：`laser_livox`
+docs/sensors-and-topics.md:36:| 父坐标系 | `base` |
+docs/sensors-and-topics.md:48:| `/trunk_imu` | `sensor_msgs/Imu` | 1000 Hz | 躯干 IMU 数据 |
+docs/sensors-and-topics.md:49:| `/livox/imu` | `sensor_msgs/Imu` | 1000 Hz | Livox 雷达内置 IMU |
+docs/sensors-and-topics.md:50:| `/ground_truth/base_trunk` | `nav_msgs/Odometry` | 100 Hz | `base` 相对于 `trunk` 的真值位姿 |
+docs/sensors-and-topics.md:51:| `/ground_truth/base_w` | `nav_msgs/Odometry` | 100 Hz | `base` 相对于 `world` 的真值位姿 |
+docs/sensors-and-topics.md:57:| `/ground_truth/FL_foot` | `nav_msgs/Odometry` | 100 Hz | 左前足位姿与速度 |
+docs/sensors-and-topics.md:58:| `/ground_truth/FR_foot` | `nav_msgs/Odometry` | 100 Hz | 右前足位姿与速度 |
+docs/sensors-and-topics.md:59:| `/ground_truth/RL_foot` | `nav_msgs/Odometry` | 100 Hz | 左后足位姿与速度 |
+docs/sensors-and-topics.md:60:| `/ground_truth/RR_foot` | `nav_msgs/Odometry` | 100 Hz | 右后足位姿与速度 |
+docs/sensors-and-topics.md:75:| `/scan` | `sensor_msgs/PointCloud` | 10 Hz | Livox Mid-360 原始点云，Gazebo 插件直接发布 |
+docs/sensors-and-topics.md:76:| `/livox/Pointcloud2` | `sensor_msgs/PointCloud2` | 约 10 Hz | 转换后的点云，便于 RViz 和常见点云算法使用 |
+docs/sensors-and-topics.md:77:| `/livox/lidar2` | `unitree_guide/CustomMsg` | 约 10 Hz | Livox 风格自定义点云消息 |
+docs/sensors-and-topics.md:78:| `/livox/imu` | `sensor_msgs/Imu` | 1000 Hz | 雷达内置 IMU |
+docs/sensors-and-topics.md:90:- `rostopic hz /scan` 统计的是整帧点云消息频率，不是每秒点数。
+docs/sensors-and-topics.md:92:- 仿真刚启动时 Livox 插件需要读取扫描模式文件，前十几秒可能暂时没有点云消息。
+docs/sensors-and-topics.md:119:| `/real_sense/depth/points` | `sensor_msgs/PointCloud2` | 10 Hz | 点云数据 |
+docs/sensors-and-topics.md:139:| `base` | `world` | 机器人基坐标系 |
+docs/sensors-and-topics.md:140:| `trunk` | `base` | 浮动基座，接近质心 |
+docs/sensors-and-topics.md:141:| `imu_link` | `trunk` | 机载 IMU |
+docs/sensors-and-topics.md:142:| `laser_livox` | `base` | Livox 雷达 |
+docs/sensors-and-topics.md:143:| `livox_imu_link` | `laser_livox` | 雷达内置 IMU |
+docs/sensors-and-topics.md:144:| `real_sense` | `base` | RealSense 深度相机 |
+docs/sensors-and-topics.md:151:# 查看 IMU 数据
+docs/sensors-and-topics.md:152:rostopic echo /trunk_imu
+docs/sensors-and-topics.md:154:# 可视化 Livox 点云
+docs/sensors-and-topics.md:156:# 添加 PointCloud2 显示，订阅 /livox/Pointcloud2
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:2:# -*- coding: utf-8 -*-
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:4:scan_to_pointcloud2.py — Adapter node for FAST-LIO2
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:6:Subscribes to /scan (sensor_msgs/PointCloud) and republishes as
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:7:/scan_pointcloud2 (sensor_msgs/PointCloud2) in the laser_livox frame,
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:10:This avoids the odom-frame transformation of the existing pointcloud2livox.py,
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:14:    rosrun simenv_fast_lio2_integration scan_to_pointcloud2.py _scan_topic:=/scan
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:19:from sensor_msgs.msg import PointCloud, PointCloud2
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:22:class ScanToPointCloud2:
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:24:        scan_topic = rospy.get_param("~scan_topic", "/scan")
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:25:        output_topic = rospy.get_param("~output_topic", "/scan_pointcloud2")
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:27:        self.pub = rospy.Publisher(output_topic, PointCloud2, queue_size=10)
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:28:        self.sub = rospy.Subscriber(scan_topic, PointCloud, self.callback, queue_size=10)
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:30:        rospy.loginfo("scan_to_pointcloud2: /scan -> %s (frame: laser_livox)", output_topic)
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:34:        header.frame_id = "laser_livox"
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:41:    rospy.init_node("scan_to_pointcloud2", anonymous=True)
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:42:    ScanToPointCloud2()
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:2:# -*- coding: utf-8 -*-
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:4:pointcloud_fields_check.py — Diagnostic script for PointCloud2 field inspection.
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:6:Subscribes to a PointCloud2 topic (default /scan_pointcloud2 or /livox/Pointcloud2)
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:10:    rosrun simenv_fast_lio2_integration pointcloud_fields_check.py _topic:=/scan_pointcloud2
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:14:from sensor_msgs.msg import PointCloud2
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:26:    rospy.loginfo("=== PointCloud2 Field Check ===")
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:48:        status = "OK" if field_found[name] else "MISSING (optional for odometry, needed for reflectivity)"
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:56:        status = "OK" if field_found[name] else "MISSING (scan line info not available)"
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:59:    rospy.loginfo("=== End PointCloud2 Field Check ===")
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:64:    topic = rospy.get_param("~topic", "/scan_pointcloud2")
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:65:    rospy.init_node("pointcloud_fields_check", anonymous=True)
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:66:    sub = rospy.Subscriber(topic, PointCloud2, callback, queue_size=1)
+docs/deprecated/0704-unused-multi-map-server/README.md:3:- **Original location**: `src/uav_simulator/Utils/multi_map_server/src/unused/multi_map_server.cc`
+docs/deprecated/0704-unused-multi-map-server/README.md:5:- **Reason**: 文件位于 `unused/` 子目录，表明已被主动弃用。UAV simulator 模块整体标记为 experimental，该文件无对应编译目标。
+docs/algorithm-interfaces.md:37:| `/scan` | `sensor_msgs/PointCloud` | Livox Mid-360 原始点云 |
+docs/algorithm-interfaces.md:38:| `/livox/Pointcloud2` | `sensor_msgs/PointCloud2` | 点云转换节点输出，开启时可用 |
+docs/algorithm-interfaces.md:39:| `/livox/lidar2` | `unitree_guide/CustomMsg` | Livox 风格点云消息，开启时可用 |
+docs/algorithm-interfaces.md:40:| `/livox/imu` | `sensor_msgs/Imu` | Livox 内置 IMU |
+docs/algorithm-interfaces.md:41:| `/trunk_imu` | `sensor_msgs/Imu` | 机体 IMU |
+docs/algorithm-interfaces.md:46:| `/real_sense/depth/points` | `sensor_msgs/PointCloud2` | 深度相机点云 |
+docs/algorithm-interfaces.md:59:`/Odometry_gazebo`、`/ground_truth/base_w`、`/ground_truth/base_trunk` 和 `/ground_truth/*_foot` 是 Gazebo 真值通道，不作为正式比赛算法输入。即使本地调试时能够看到这些话题，参赛算法也不得订阅或读取。
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:3:#include <sensor_msgs/LaserScan.h>
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:4:#include <sensor_msgs/PointCloud.h>
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:59:void scan_callback(const sensor_msgs::LaserScan::ConstPtr &msg)
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:77:  // Scan cnt
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:93:  // Horizontal laser scans
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:94:  sensor_msgs::LaserScan scan = *msg;
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:95:  scan.intensities.clear();
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:97:  sensor_msgs::PointCloud scanCloud;
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:98:  projector.projectLaser(scan, scanCloud);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:99:  mat scanMat(3, scanCloud.points.size());
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:100:  // Get scan in body frame
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:101:  for (int k = 0; k < scanCloud.points.size(); k++)
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:103:    scanMat(0,k) = scanCloud.points[k].x;
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:104:    scanMat(1,k) = scanCloud.points[k].y;
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:105:    scanMat(2,k) = 0.215 - 0.09;
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:107:  // Downsample Laser scan to map resolution
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:112:  mat scanMatDown = zeros<mat>(3, scanMat.n_cols);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:113:  for (int k = 0; k < scanMat.n_cols; k++)
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:115:    double x = scanMat(0,k);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:116:    double y = scanMat(1,k);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:120:      scanMatDown.col(cnt) = scanMat.col(k);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:127:    scanMat = scanMatDown.cols(0, cnt-1);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:129:    scanMat = scanMatDown.cols(0,cnt);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:131:  scanMat = ypr_to_R(pose.rows(3,5)) * scanMat + pose.rows(0,2)*ones<rowvec>(scanMat.n_cols);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:133:  for (int k = 0; k < scanMat.n_cols; k++)
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:134:    maps3d[maps3dCnt-1].SetOccupancyFromWorldFrame(scanMat(0,k), scanMat(1,k), scanMat(2,k), PROB_LASER_OCCUPIED);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:135:  // downward facing laser scans
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:149:  maps3d[maps3dCnt-1].SetFloor(currFloor);
+docs/deprecated/0704-unused-multi-map-server/multi_map_server.cc:163:  ros::Subscriber sub2 = n.subscribe("scan",         100, scan_callback);
+src/simenv_fast_lio2_integration/CMakeLists.txt:1:cmake_minimum_required(VERSION 3.0.2)
+src/simenv_fast_lio2_integration/CMakeLists.txt:11:  tf
+src/simenv_fast_lio2_integration/CMakeLists.txt:12:  tf2_ros
+src/simenv_fast_lio2_integration/CMakeLists.txt:18:  scripts/scan_to_pointcloud2.py
+src/simenv_fast_lio2_integration/CMakeLists.txt:19:  scripts/pointcloud_fields_check.py
+src/simenv_fast_lio2_integration/README.md:8:- SimEnv 仿真环境 (提供 `/scan` 和 `/livox/imu`)
+src/simenv_fast_lio2_integration/README.md:39:│   └── simenv_mid360.yaml                     FAST-LIO2 参数
+src/simenv_fast_lio2_integration/README.md:41:    ├── scan_to_pointcloud2.py                  /scan → /scan_pointcloud2 适配器
+src/simenv_fast_lio2_integration/README.md:42:    └── pointcloud_fields_check.py              点云字段诊断工具
+src/simenv_fast_lio2_integration/README.md:55:ENABLE_POINTCLOUD_CONVERTER=0 ./auto.sh
+src/simenv_fast_lio2_integration/README.md:74:此模式会自动在后台启动 scan_to_pointcloud2 适配器和 FAST-LIO2。
+src/simenv_fast_lio2_integration/README.md:79:rosrun simenv_fast_lio2_integration pointcloud_fields_check.py _topic:=/scan_pointcloud2
+src/simenv_fast_lio2_integration/README.md:87:| `/scan_pointcloud2` | `sensor_msgs/PointCloud2` | `laser_livox` | LiDAR 点云 (x,y,z) |
+src/simenv_fast_lio2_integration/README.md:88:| `/livox/imu` | `sensor_msgs/Imu` | `livox_imu_link` | LiDAR 内置 IMU (1000 Hz) |
+src/simenv_fast_lio2_integration/README.md:93:| `/Odometry` | `nav_msgs/Odometry` | LiDAR-inertial 里程计 |
+src/simenv_fast_lio2_integration/README.md:94:| `/cloud_registered` | `sensor_msgs/PointCloud2` | 配准后点云 (world 帧) |
+src/simenv_fast_lio2_integration/README.md:95:| `/Laser_map` | `sensor_msgs/PointCloud2` | 全局地图点云 |
+src/simenv_fast_lio2_integration/README.md:98:| TF: `camera_init` → `body` | | SLAM 坐标系 |
+src/simenv_fast_lio2_integration/README.md:106:2. **无扫描线/ring 信息**: `line=0` (硬编码)。FAST-LIO2 使用 `scan_line=4` 参数作为近似。
+src/simenv_fast_lio2_integration/README.md:110:4. **LiDAR 45° 俯仰安装**: A1 上 Livox Mid-360 以 45° pitch 安装。FAST-LIO2 外参已从 URDF 中提取，但可能需要实际运行调优。
+docs/quick-start.md:45:Livox 点云插件启动时会读取扫描模式 CSV 文件，启动后前十几秒可能出现 `rostopic hz /scan` 暂时显示 `no new messages`。请等待 `auto.sh` 完成并再等待数秒后检查传感器话题。
+docs/reference.md:198:| `/scan` | `sensor_msgs/PointCloud2` | Livox Mid-360 点云数据 |
+docs/reference.md:199:| `/livox/Pointcloud2` | `sensor_msgs/PointCloud2` | 点云转换节点输出，开启时可用 |
+docs/reference.md:200:| `/livox/lidar2` | `unitree_guide/CustomMsg` | Livox 风格点云消息，开启时可用 |
+docs/reference.md:201:| `/livox/imu` | `sensor_msgs/Imu` | Livox 内置 IMU |
+docs/reference.md:202:| `/trunk_imu` | `sensor_msgs/Imu` | 机体 IMU |
+docs/reference.md:207:| `/real_sense/depth/points` | `sensor_msgs/PointCloud2` | 深度相机点云 |
+docs/reference.md:215:`/Odometry_gazebo`、`/ground_truth/base_w`、`/ground_truth/base_trunk` 和 `/ground_truth/*_foot` 是 Gazebo 真值通道，不作为正式比赛算法输入。即使本地调试时能够看到这些话题，参赛算法也不得订阅或读取。
+docs/reference.md:357:### 1. 机载IMU (`imu_link`)
+docs/reference.md:366:&gt; 注：IMU安装于机器人质心位置，与躯干坐标系重合。
+docs/reference.md:370:### 2. Livox Mid-360 激光雷达 (`laser_livox`)
+docs/reference.md:374:| **父坐标系** | `base` |
+docs/reference.md:379:**Livox内置IMU** (`livox_imu_link`):
+docs/reference.md:380:- **父坐标系**: `laser_livox`
+docs/reference.md:382:- 该IMU固连于激光雷达本体，提供高频姿态数据
+docs/reference.md:390:| **父坐标系** | `base` |
+docs/reference.md:406:| `/trunk_imu` | `sensor_msgs/Imu` | 1000 Hz | 躯干IMU数据（加速度、角速度、姿态） |
+docs/reference.md:407:| `/livox/imu` | `sensor_msgs/Imu` | 1000 Hz | Livox雷达内置IMU数据 |
+docs/reference.md:408:| `/ground_truth/base_trunk` | `nav_msgs/Odometry` | 100 Hz | base相对于trunk的真值位姿（用于调试） |
+docs/reference.md:409:| `/ground_truth/base_w` | `nav_msgs/Odometry` | 100 Hz | base相对于world的真值位姿 |
+docs/reference.md:415:| `/ground_truth/FL_foot` | `nav_msgs/Odometry` | 100 Hz | 左前足(FL)相对于base的位姿与速度 |
+docs/reference.md:416:| `/ground_truth/FR_foot` | `nav_msgs/Odometry` | 100 Hz | 右前足(FR)相对于base的位姿与速度 |
+docs/reference.md:417:| `/ground_truth/RL_foot` | `nav_msgs/Odometry` | 100 Hz | 左后足(RL)相对于base的位姿与速度 |
+docs/reference.md:418:| `/ground_truth/RR_foot` | `nav_msgs/Odometry` | 100 Hz | 右后足(RR)相对于base的位姿与速度 |
+docs/reference.md:433:| `/scan` | `sensor_msgs/PointCloud2` | 10 Hz | Livox Mid-360点云数据 |
+docs/reference.md:434:| `/livox/imu` | `sensor_msgs/Imu` | 1000 Hz | 雷达内置IMU（同状态估计） |
+docs/reference.md:466:| `/real_sense/depth/points` | `sensor_msgs/PointCloud2` | 10 Hz | 点云数据 |
+docs/reference.md:487:| `base` | `world` | 机器人基坐标系（几何中心） |
+docs/reference.md:488:| `trunk` | `base` | 浮动基座（质心） |
+docs/reference.md:489:| `imu_link` | `trunk` | 机载IMU |
+docs/reference.md:490:| `laser_livox` | `base` | Livox雷达 |
+docs/reference.md:491:| `livox_imu_link` | `laser_livox` | 雷达内置IMU |
+docs/reference.md:492:| `real_sense` | `base` | RealSense深度相机 |
+docs/reference.md:499:# 查看IMU数据
+docs/reference.md:500:rostopic echo /trunk_imu
+docs/reference.md:504:# 添加 PointCloud2 显示，订阅 /scan
+src/simenv_fast_lio2_integration/package.xml:17:  <depend>tf</depend>
+src/simenv_fast_lio2_integration/package.xml:18:  <depend>tf2_ros</depend>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:9:      - The scan_to_pointcloud2 adapter node is providing /scan_pointcloud2.
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:15:      ENABLE_POINTCLOUD_CONVERTER=0 ./auto.sh
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:20:  <!-- PointCloud adapter: /scan (PointCloud) -> /scan_pointcloud2 (PointCloud2) -->
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:22:  <arg name="scan_topic" default="/scan"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:23:  <arg name="pointcloud2_topic" default="/scan_pointcloud2"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:26:  <arg name="lidar_topic" default="/scan_pointcloud2"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:27:  <arg name="imu_topic" default="/livox/imu"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:28:  <arg name="use_trunk_imu" default="false"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:29:  <arg name="fast_lio_config" default="$(find simenv_fast_lio2_integration)/config/simenv_mid360.yaml"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:33:  <!-- PointCloud adapter node -->
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:35:        type="scan_to_pointcloud2.py" name="scan_to_pointcloud2" output="screen">
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:36:    <param name="scan_topic" value="$(arg scan_topic)"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:37:    <param name="output_topic" value="$(arg pointcloud2_topic)"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:45:    <param name="imu_topic" value="$(arg imu_topic)"/>

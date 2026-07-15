@@ -5,11 +5,13 @@
 #include <iomanip>
 
 State_Trotting::State_Trotting(CtrlComponents *ctrlComp)
-             :FSMState(ctrlComp, FSMStateName::TROTTING, "trotting"), 
-              _est(ctrlComp->estimator), _phase(ctrlComp->phase), 
-              _contact(ctrlComp->contact), _robModel(ctrlComp->robotModel), 
+             :FSMState(ctrlComp, FSMStateName::TROTTING, "trotting"),
+              _est(ctrlComp->estimator), _phase(ctrlComp->phase),
+              _contact(ctrlComp->contact), _robModel(ctrlComp->robotModel),
               _balCtrl(ctrlComp->balCtrl){
     _gait = new GaitGenerator(ctrlComp);
+    _cmdVelSub = _nh.subscribe<geometry_msgs::Twist>("/cmd_vel", 10,
+        &State_Trotting::cmdVelCallback, this);
 
     _gaitHeight = 0.08;
 
@@ -42,6 +44,14 @@ State_Trotting::State_Trotting(CtrlComponents *ctrlComp)
 }
 
 State_Trotting::~State_Trotting(){
+    ampthreadRunning = State_Trotting::STOP;
+    if(amp_obs_thread != nullptr){
+        if(amp_obs_thread->joinable()){
+            amp_obs_thread->join();
+        }
+        delete amp_obs_thread;
+        amp_obs_thread = nullptr;
+    }
     delete _gait;
 }
 
@@ -56,16 +66,29 @@ void State_Trotting::enter(){
     _ctrlComp->ioInter->zeroCmdPanel();
     _gait->restart();
 
-    amp_obs_thread = new std::thread(&State_Trotting::save_amp_obs_thread,this);
+    if(amp_obs_thread != nullptr){
+        if(amp_obs_thread->joinable()){
+            amp_obs_thread->join();
+        }
+        delete amp_obs_thread;
+        amp_obs_thread = nullptr;
+    }
     ampthreadRunning = State_Trotting::RUNNING;
+    amp_obs_thread = new std::thread(&State_Trotting::save_amp_obs_thread,this);
 }
 
 void State_Trotting::exit(){
     _ctrlComp->ioInter->zeroCmdPanel();
     _ctrlComp->setAllSwing();
     ampthreadRunning = State_Trotting::STOP;
-    amp_obs_thread->join();
-    std::cout << "amp_obs_thread退出!" << std::endl;
+    if(amp_obs_thread != nullptr){
+        if(amp_obs_thread->joinable()){
+            amp_obs_thread->join();
+        }
+        delete amp_obs_thread;
+        amp_obs_thread = nullptr;
+        std::cout << "amp_obs_thread退出!" << std::endl;
+    }
     if (outfile.is_open()) {
         outfile.close();
         std::cout << "文件关闭成功!" << std::endl;
@@ -157,16 +180,33 @@ void State_Trotting::setHighCmd(double vx, double vy, double wz){
     _dYawCmd = wz;
 }
 
-void State_Trotting::getUserCmd(){
-    /* Movement */
-    _vCmdBody(0) =  invNormalize(_userValue.ly, _vxLim(0), _vxLim(1));
-    _vCmdBody(1) = -invNormalize(_userValue.lx, _vyLim(0), _vyLim(1));
-    _vCmdBody(2) = 0;
+void State_Trotting::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
+    _cmdVelActive = true;
+    _cmdVx = msg->linear.x;
+    _cmdVy = msg->linear.y;
+    _cmdWz = msg->angular.z;
+}
 
-    /* Turning */
-    _dYawCmd = -invNormalize(_userValue.rx, _wyawLim(0), _wyawLim(1));
-    _dYawCmd = 0.9*_dYawCmdPast + (1-0.9) * _dYawCmd;
-    _dYawCmdPast = _dYawCmd;
+void State_Trotting::getUserCmd(){
+    if (_cmdVelActive){
+        /* Use /cmd_vel when available */
+        _vCmdBody(0) = saturation(_cmdVx, _vxLim);
+        _vCmdBody(1) = saturation(_cmdVy, _vyLim);
+        _vCmdBody(2) = 0;
+        _dYawCmd = saturation(_cmdWz, _wyawLim);
+        _dYawCmd = 0.9*_dYawCmdPast + (1-0.9) * _dYawCmd;
+        _dYawCmdPast = _dYawCmd;
+    } else {
+        /* Movement */
+        _vCmdBody(0) =  invNormalize(_userValue.ly, _vxLim(0), _vxLim(1));
+        _vCmdBody(1) = -invNormalize(_userValue.lx, _vyLim(0), _vyLim(1));
+        _vCmdBody(2) = 0;
+
+        /* Turning */
+        _dYawCmd = -invNormalize(_userValue.rx, _wyawLim(0), _wyawLim(1));
+        _dYawCmd = 0.9*_dYawCmdPast + (1-0.9) * _dYawCmd;
+        _dYawCmdPast = _dYawCmd;
+    }
 }
 
 void State_Trotting::calcCmd(){
@@ -404,7 +444,7 @@ void State_Trotting::close_amp_save_file()
 
         if (current_pos > 0) {
             // 退回一个字符
-            outfile.seekp(current_pos - 1);
+            outfile.seekp(current_pos - std::streamoff(1));
         }
 
         // 写入结尾内容

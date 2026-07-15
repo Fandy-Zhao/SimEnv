@@ -1,0 +1,14 @@
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:334:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.h:46:8: error: ‘shared_ptr’ in namespace ‘std’ does not name a template type
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:342:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:34:3: error: ‘thread_’ was not declared in this scope; did you mean ‘pthread_t’?
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:346:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:34:18: error: ‘make_shared’ is not a member of ‘std’
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:353:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:34:41: error: expected primary-expression before ‘>’ token
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:356:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:34:68: error: left operand of comma operator has no effect [-Werror=unused-value]
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:360:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:41:5: error: ‘thread_’ was not declared in this scope; did you mean ‘pthread_t’?
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:737:CUDA_TOOLKIT_ROOT_DIR not found or specified
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:738:-- Could NOT find CUDA (missing: CUDA_TOOLKIT_ROOT_DIR CUDA_NVCC_EXECUTABLE CUDA_INCLUDE_DIRS CUDA_CUDART_LIBRARY) 
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:739:CMake Warning at /home/zzf/search_ws/SimEnv/.venv/lib/python3.10/site-packages/torch/share/cmake/Caffe2/public/cuda.cmake:31 (message):
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:740:  Caffe2: CUDA cannot be found.  Depending on whether you are building Caffe2
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:745:  /home/zzf/search_ws/SimEnv/.venv/lib/python3.10/site-packages/torch/share/cmake/Torch/TorchConfig.cmake:68 (find_package)
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:750:  Your installed Caffe2 version uses CUDA but I cannot find the CUDA
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:751:  libraries.  Please set the proper CUDA prefixes and / or install CUDA.
+experiments/runs/0704_fast-lio2-libtorch-check/build_with_venv_libtorch.log:753:  /home/zzf/search_ws/SimEnv/.venv/lib/python3.10/site-packages/torch/share/cmake/Torch/TorchConfig.cmake:68 (find_package)

@@ -1,0 +1,33 @@
+{
+  "test": "P1 straight-line RL-policy test (1.0m target)",
+  "run_tag": "p1_straight_1p0m",
+  "target_forward_distance_m": 1.0,
+  "command_linear_x_mps": 0.15,
+  "completed_target": false,
+  "ground_truth": {
+    "samples": 276,
+    "simulation_duration_s": 13.75,
+    "planar_displacement_m": 0.009601202033065736,
+    "forward_displacement_m": -0.005376486313359244,
+    "speed_mps": 0.0006982692387684171,
+    "start_pose": [
+      -0.2790978613646099,
+      1.932002237920156,
+      0.12032401534411856,
+      -0.014374687534996542,
+      0.021870864913464443,
+      0.5336687758531774,
+      0.8452885136481978
+    ],
+    "end_pose": [
+      -0.288591483043198,
+      1.9305689801263213,
+      0.12033634277569973,
+      -0.014473026399679553,
+      0.02151312881054509,
+      0.5350120638525917,
+      0.8444464508349866
+    ]
+  },
+  "note": "RL engaged but 0.15 m/s command produced only ~0.70mm/s actual motion; velocity tracking essentially non-functional"
+}

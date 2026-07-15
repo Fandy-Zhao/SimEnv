@@ -1,0 +1,36 @@
+{
+  "test": "P0 localization-drift diagnostic",
+  "target_simulation_duration_s": 10.0,
+  "odometry": {
+    "samples": 101,
+    "simulation_duration_s": 10.002,
+    "position_change_m": 0.00598024079439881,
+    "orientation_change_deg": 0.36403538011970815
+  },
+  "ground_truth": {
+    "samples": 5001,
+    "simulation_duration_s": 10.0,
+    "position_change_m": 0.012824619751716232,
+    "orientation_change_deg": 0.32546729037009886
+  },
+  "ground_truth_linear_speed_mps": {
+    "samples": 5001,
+    "mean": 0.002908392087696747,
+    "max": 0.023321598351754274
+  },
+  "ground_truth_angular_speed_radps": {
+    "samples": 5001,
+    "mean": 0.050412131892777,
+    "max": 0.8315000413383224
+  },
+  "imu_angular_speed_radps": {
+    "samples": 3261,
+    "mean": 0.048113668718086366,
+    "max": 0.8314907559329158
+  },
+  "imu_acceleration_norm_mps2": {
+    "samples": 3261,
+    "mean": 12.530241854253811,
+    "max": 87.1124308342283
+  }
+}

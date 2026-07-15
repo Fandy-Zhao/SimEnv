@@ -1,0 +1,28 @@
+=== Git State at Task Start ===
+Date: 2026-07-14
+Branch: develop
+HEAD: c67239880c6fe5d4526645fef6de055cb43ebd57
+
+Recent commits:
+c6723988 docs: update governance for FAST-LIO2 startup + TF bridge fixes
+446571e4 exp(fastlio2): try imu_link + Ry(-45 deg) for camera_init bridge
+b72ecab9 refactor(fastlio2): use imu_link for camera_init TF bridge again
+035d964b fix(fastlio2): use laser_livox + Ry(135) for camera_init TF bridge
+fd28773b revert: remove 180° Z flip from camera_init TF bridge
+
+User uncommitted modifications (runtime artifacts, not task-related):
+- generated_building/* (12 files)
+- logs/* (4 files)
+- results/danger_truth.json
+
+Untracked (not yet in git):
+- .venv/
+- cuda_11.8.0_520.61.05_linux.run
+- src/FAST_LIO/
+- src/livox_ros_driver/
+- src/tare_planner/
+- src/ground_based_autonomy_basic/
+- src/move_base_msgs/
+- prompts/
+- experiments/runs/0713_fast-lio2-stage01/
+- experiments/runs/0714_fastlio2-startup-order/issue.md

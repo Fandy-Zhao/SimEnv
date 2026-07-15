@@ -9,6 +9,8 @@
 #include "control/BalanceCtrl.h"
 #include <torch/torch.h>
 #include <fstream>
+#include <ros/ros.h>
+#include <geometry_msgs/Twist.h>
 
 class State_Trotting : public FSMState{
 public:
@@ -19,6 +21,7 @@ public:
     void exit();
     virtual FSMStateName checkChange();
     void setHighCmd(double vx, double vy, double wz);
+    void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg);
 
     void refresh_amp_obs();
     void save_amp_obs_thread();
@@ -99,9 +102,15 @@ private:
     std::vector<float> motion_data;
     uint32_t dofPosSwitBeginTime = 0.0;//关节位置切换开始时间
     float motion_time = 0.0;
-    std::thread* amp_obs_thread;
-    uint8_t ampthreadRunning=false;
+    std::thread* amp_obs_thread = nullptr;
+    uint8_t ampthreadRunning = State_Trotting::STOP;
     float amp_duration = 0.020;
+
+    // /cmd_vel subscriber
+    ros::NodeHandle _nh;
+    ros::Subscriber _cmdVelSub;
+    bool _cmdVelActive = false;
+    double _cmdVx = 0.0, _cmdVy = 0.0, _cmdWz = 0.0;
 };
 
 #endif  // TROTTING_H

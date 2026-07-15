@@ -1,0 +1,11 @@
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:346:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.h:46:8: error: ‘shared_ptr’ in namespace ‘std’ does not name a template type
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:354:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:34:3: error: ‘thread_’ was not declared in this scope; did you mean ‘pthread_t’?
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:358:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:34:18: error: ‘make_shared’ is not a member of ‘std’
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:365:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:34:41: error: expected primary-expression before ‘>’ token
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:368:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:34:68: error: left operand of comma operator has no effect [-Werror=unused-value]
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:372:/home/zzf/search_ws/SimEnv/src/livox_ros_driver/livox_ros_driver/Livox-SDK/sdk_core/src/base/thread_base.cpp:41:5: error: ‘thread_’ was not declared in this scope; did you mean ‘pthread_t’?
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:763:  static library kineto_LIBRARY-NOTFOUND not found.
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:786:-- Could NOT find move_base_msgs (missing: move_base_msgs_DIR)
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:787:-- Could not find the required component 'move_base_msgs'. The following CMake error indicates that you either need to install the package with the same name or change your environment so that it can be found.
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:789:  Could not find a package configuration file provided by "move_base_msgs"
+experiments/runs/0704_cuda-gcc11-build/build_with_gcc11.log:887:CMake Generate step failed.  Build files cannot be regenerated correctly.
