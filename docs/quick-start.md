@@ -23,9 +23,15 @@ libtorch 和 CUDA 路径在 `src/unitree_guide/unitree_guide/unitree_guide/CMake
 
 ```bash
 source /opt/ros/noetic/setup.bash
-catkin_make -j
+./tools/build_with_venv.sh
 source ./devel/setup.bash
 ```
+
+`build_with_venv.sh` 默认只编译 `auto.sh` 的运行时依赖（FAST-LIO2、
+Unitree 控制器及 Gazebo 插件），避免工作区内的可选第三方包阻塞启动构建。
+如确实要编译全部已发现包，可显式运行
+`SIMENV_CATKIN_WHITELIST="" ./tools/build_with_venv.sh`；该模式要求所有本地
+额外源码的依赖均已满足。
 
 ## 一键启动
 
@@ -120,6 +126,10 @@ ENABLE_FAST_LIO2=1 GUI=false ./auto.sh
 当 `CONTROLLER_FOREGROUND=1`（默认）时，启动完成后该终端会保持连接到
 `junior_ctrl`：输入 `2` 站立、`4` 小跑、`6` RL。请从交互式终端启动；在
 CI、重定向或无 TTY 环境中，键盘不可用，应改用 `/fsm/state_cmd` 与 `/cmd_vel`。
+
+若 `auto.sh` 在场景生成前报告 `junior_ctrl is not built`，请先完成
+Unitree 控制器构建。该预检会保护当前生成场景，避免控制器缺失时启动一半
+Gazebo 后终端因等待失败而返回。
 
 > FAST-LIO2 部署详情参见 [FAST-LIO2 部署指南](slam/fast_lio2_deployment_guide.md) 和 [集成包 README](../src/simenv_fast_lio2_integration/README.md)。
 >

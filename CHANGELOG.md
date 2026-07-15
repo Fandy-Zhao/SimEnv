@@ -10,6 +10,13 @@
   attached to the controller after startup.  Non-TTY launches now warn and
   document ROS-topic control as the supported alternative.
 
+### Build and Controller Startup Guard (fix/0715-build-auto-startup)
+- Updated the default `build_with_venv.sh` profile to build every `auto.sh`
+  runtime dependency (FAST-LIO2, `junior_ctrl`, Unitree Gazebo plugins) while
+  excluding unrelated locally added packages such as legacy `ps3joy`.
+- Added an early `junior_ctrl` artifact check in `auto.sh`, preventing scene
+  generation and Gazebo startup when the controller has not been built.
+
 ### FAST-LIO2 LiDAR–IMU Axis Correction (fix/0715-fast-lio2-axis)
 - Corrected `simenv_mid360.yaml` to the direct FAST-LIO2 point transform
   `p_imu = R_L_I * p_lidar + T_L_I`: `Ry(+45°)` and `[0.2, 0, 0.08]`.

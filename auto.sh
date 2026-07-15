@@ -59,6 +59,17 @@ ROBOT_X="${ROBOT_X:-0.0}"
 ROBOT_Y="${ROBOT_Y:-2.3}"
 ROBOT_Z="${ROBOT_Z:-0.6}"
 ROBOT_YAW="${ROBOT_YAW:-1.5708}"
+CONTROLLER_BIN="$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl"
+
+# Fail before cleanup, scene generation, or Gazebo startup when the controller
+# build is missing.  Without this check, the later background command exits
+# with 127 and `wait` makes the terminal appear to close unexpectedly.
+if [ "$START_CONTROLLER" = "1" ] && [ ! -x "$CONTROLLER_BIN" ]; then
+  echo "ERROR: junior_ctrl is not built: $CONTROLLER_BIN" >&2
+  echo "  Rebuild the Unitree controller, then source devel/setup.bash before running auto.sh." >&2
+  echo "  The simulation was not started and the current generated scene was left unchanged." >&2
+  exit 1
+fi
 
 schedule_unpause_physics() {
   if [ "$AUTO_UNPAUSE" != "true" ]; then
@@ -271,9 +282,9 @@ if [ "$START_CONTROLLER" = "1" ]; then
     echo "Use keyboard input: 2 = stand, 6 = RL mode."
     schedule_unpause_physics
     if [ -n "$CTRL_TTY" ]; then
-      "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" < "$CTRL_TTY"
+      "$CONTROLLER_BIN" < "$CTRL_TTY"
     else
-      "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl"
+      "$CONTROLLER_BIN"
     fi
   else
     # Background first: script continues to auto-stabilise + FAST-LIO2.
@@ -283,10 +294,10 @@ if [ "$START_CONTROLLER" = "1" ]; then
     echo "Starting junior_ctrl controller in the background."
     echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
     if [ -n "$CTRL_TTY" ]; then
-      "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
+      "$CONTROLLER_BIN" \
         < "$CTRL_TTY" > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
     else
-      "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
+      "$CONTROLLER_BIN" \
         > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
     fi
     CTRL_PID=$!
