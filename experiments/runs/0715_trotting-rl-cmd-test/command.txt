@@ -1,0 +1,27 @@
+# Accepted headless profile
+GUI=false ENABLE_RVIZ=0 ENABLE_FAST_LIO2=0 ENABLE_SENSORS=0 \
+ENABLE_POINTCLOUD_CONVERTER=0 START_BUILDING_CONTROL=0 FLOOR_COUNT=1 \
+ROOMS_PER_FLOOR=2 DANGER_COUNT=1:1 DISTRACTOR_COUNT=1:1 SEED=71501 \
+PAUSED=true AUTO_UNPAUSE=0 TERMINAL_BACKEND=tmux \
+TMUX_SESSION_PREFIX=simenv-cmdtest UNITREE_CTRL_DT=0.002 \
+GAZEBO_PHYSICS_MAX_STEP_SIZE=0.002 \
+GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE=500 \
+GAZEBO_PHYSICS_ODE_ITERS=40 ./auto.sh
+
+# Stand while feedback becomes ready, then unpause
+timeout 8s rostopic pub -r 20 /fsm/state_cmd std_msgs/Int8 'data: 2'
+rosservice call /gazebo/unpause_physics
+
+# State and velocity commands
+rostopic pub /fsm/state_cmd std_msgs/Int8 'data: 4' -1
+rostopic pub /fsm/state_cmd std_msgs/Int8 'data: 6' -1
+rostopic pub /cmd_vel geometry_msgs/Twist \
+  '{linear: {x: 0.3, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}' -1
+
+# Measurements
+rosservice call /gazebo/get_model_state \
+  '{model_name: a1_gazebo, relative_entity_name: world}'
+rostopic echo -n 1 /ground_truth/base_w
+rostopic echo -n 1 /trunk_imu
+rostopic echo -n 1 /clock
+tmux capture-pane -pt simenv-cmdtest-junior_ctrl -S -400
