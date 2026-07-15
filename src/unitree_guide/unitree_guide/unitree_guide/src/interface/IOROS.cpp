@@ -159,7 +159,7 @@ void IOROS::recvState(LowlevelState *state){
         state->footForceValid[i] = stampNs != 0 && nowNs >= stampNs &&
             (nowNs - stampNs) <= maxContactAgeNs;
     }
-    const std::uint64_t stampUs = static_cast<std::uint64_t>(current_time);
+    const std::uint64_t stampUs = current_time.load(std::memory_order_acquire);
     const std::uint64_t previousStamp = _state_stamp_us.exchange(stampUs, std::memory_order_acq_rel);
     if(stampUs != previousStamp){
         _state_sequence.fetch_add(1, std::memory_order_acq_rel);
@@ -294,7 +294,15 @@ void IOROS::joyCallback(const sensor_msgs::Joy::ConstPtr& msg) {
 }
 
 void IOROS::timeCallback(const rosgraph_msgs::Clock& msg) {
-    current_time = (msg.clock.sec)*1e6 + (msg.clock.nsec)/1000;
+    const std::uint64_t nextTimeUs = static_cast<std::uint64_t>(msg.clock.sec) * 1000000ULL +
+                                     static_cast<std::uint64_t>(msg.clock.nsec) / 1000ULL;
+    const std::uint64_t previousTimeUs = current_time.exchange(nextTimeUs, std::memory_order_acq_rel);
+    if(previousTimeUs != 0 && nextTimeUs < previousTimeUs){
+        _state_sequence.store(0, std::memory_order_release);
+        _state_stamp_us.store(0, std::memory_order_release);
+        std::lock_guard<std::mutex> lock(_policy_snapshot_mutex);
+        _policy_input_snapshot = PolicyInputSnapshot{};
+    }
     // std::cout << "current_time: " << current_time << std::endl;
 }
 

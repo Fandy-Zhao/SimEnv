@@ -73,7 +73,8 @@ private:
     FSMState* getNextState(FSMStateName stateName);
     bool checkSafty();
     bool updateControlTime();
-    void resetForTimeDiscontinuity(const char *reason, const ros::Time &now);
+    void resetForTimeDiscontinuity(const char *reason, const ros::Time &now,
+                                   ControlTimeResetReason resetReason);
     void recordTiming(bool accepted);
     CtrlComponents *_ctrlComp;
     FSMState *_currentState;

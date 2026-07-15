@@ -160,7 +160,7 @@ void State_Trotting::exit(){
     }
 }
 
-void State_Trotting::onControlTimeReset(){
+void State_Trotting::onControlTimeReset(ControlTimeResetReason){
     _posBody = _est->getPosition();
     _velBody = _est->getVelocity();
     _posFeetGlobal = _est->getFeetPos();

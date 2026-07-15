@@ -19,6 +19,11 @@
 - Runtime history updates now require a new state generation, increasing
   simulation timestamp, and a full 20 ms policy interval; the existing
   repeated-current-observation entry initialization is preserved.
+- Promoted the Gazebo microsecond clock to an atomic 64-bit value, explicitly
+  propagated `use_sim_time` into Gazebo launch, and reset policy tensors,
+  history timestamps, command/action snapshots, and transition state when
+  simulation time moves backward or jumps forward. A pause does not advance or
+  invalidate the last complete action.
 
 ### Gazebo Simulation-Time Locomotion Control
 

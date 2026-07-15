@@ -23,6 +23,7 @@ public:
     void enter();
     void run();
     void exit();
+    void onControlTimeReset(ControlTimeResetReason resetReason) override;
     FSMStateName checkChange();
     bool refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot = nullptr,
                         const PolicyCommandSnapshot *commandSnapshot = nullptr,
@@ -115,6 +116,9 @@ private:
     std::uint64_t last_history_state_sequence_ = 0;
     std::uint64_t last_history_sim_time_us_ = 0;
     std::uint64_t last_policy_sim_time_us_ = 0;
+    std::atomic<std::uint64_t> reset_generation_{0};
+    std::uint64_t handled_reset_generation_ = 0;
+    void resetPolicyStateForTimeDiscontinuity();
 };
 
 #endif

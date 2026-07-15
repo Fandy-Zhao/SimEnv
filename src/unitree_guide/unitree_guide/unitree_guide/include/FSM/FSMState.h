@@ -22,6 +22,12 @@
 #include "geometry_msgs/Twist.h"
 
 #define  OVERTIME 200000
+enum class ControlTimeResetReason {
+    Paused,
+    MovedBackward,
+    JumpedForward,
+};
+
 class FSMState{
 
 struct CmdVel {
@@ -38,7 +44,7 @@ public:
     virtual void enter() = 0;
     virtual void run() = 0;
     virtual void exit() = 0;
-    virtual void onControlTimeReset() {}
+    virtual void onControlTimeReset(ControlTimeResetReason) {}
     virtual FSMStateName checkChange() {return FSMStateName::INVALID;}
 
     FSMStateName _stateName;

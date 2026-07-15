@@ -11,7 +11,8 @@ FSMState::FSMState(CtrlComponents *ctrlComp, FSMStateName stateName, std::string
 
 long long FSMState::getRosTime()
 {
-    return _ctrlComp->ioInter->current_time;
+    return static_cast<long long>(
+        _ctrlComp->ioInter->current_time.load(std::memory_order_acquire));
 }
 
 long long  FSMState::getTime()
@@ -48,6 +49,10 @@ PolicyWaitExitReason FSMState::rosAbsoluteWait(long long startTime, long long wa
         << "The program has already cost " << elapsed << "us." << std::endl;
     }
     while((getRosTime() - startTime < waitTime) && (overtime < OVERTIME)){
+
+        if(getRosTime() < startTime){
+            return PolicyWaitExitReason::SimTimeReset;
+        }
 
         // std::cout << "getRosTime()" << getRosTime() << std::endl;
         // std::cout << "startTime" << startTime << std::endl;

@@ -17,7 +17,10 @@
   period. Policy input and output snapshots remove mixed-state observation and
   torn LowCmd updates. Runtime history is deduplicated and simulation-time
   gated while preserving the unverified training-time entry convention;
-  reset cleanup remains in progress.
+  Reset cleanup now invalidates pre-reset commands/actions, clears policy and
+  history state, and restarts history in the new simulation epoch; the ROS
+  microsecond timestamp is now atomic 64-bit. Automated regression coverage
+  and the final report remain in progress.
 - **Trotting simulation-time synchronization validated**: Gazebo locomotion
   updates now run only when `/clock` advances. Wave phase, estimator `dt`,
   height/readiness timing, and desired body/yaw integration use measured

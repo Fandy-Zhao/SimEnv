@@ -10,6 +10,7 @@
 #include "interface/PolicySnapshots.h"
 #include <array>
 #include <cstdint>
+#include <atomic>
 #include <string>
 #include "ros/ros.h"
 #include <vector>
@@ -21,7 +22,7 @@ virtual ~IOInterface(){delete cmdPanel;}
 virtual void sendRecv(const LowlevelCmd *cmd, LowlevelState *state) = 0;
 virtual bool hasFullStateFeedback() const { return true; }
 virtual std::uint64_t stateSequence() const { return 0; }
-virtual std::uint64_t stateStampUs() const { return current_time; }
+virtual std::uint64_t stateStampUs() const { return current_time.load(std::memory_order_acquire); }
 virtual bool getPolicyInputSnapshot(PolicyInputSnapshot &) const { return false; }
 void zeroCmdPanel(){cmdPanel->setZero();}
 void setPassive(){cmdPanel->setPassive();}
@@ -43,7 +44,7 @@ std::array<double, 3> _RR_foot_pos = {0.0, 0.0, 0.0};
 std::array<double, 3> _RR_foot_vel = {0.0, 0.0, 0.0};
 std::vector<float> axes = std::vector<float>(6, 0.0f);
 std::vector<int> buttons = std::vector<int>(10, 0);
-uint32_t current_time = 0;
+std::atomic<std::uint64_t> current_time{0};
 protected:
 CmdPanel *cmdPanel;
 };

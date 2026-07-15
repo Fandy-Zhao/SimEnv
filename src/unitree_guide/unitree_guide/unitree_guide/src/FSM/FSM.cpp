@@ -188,7 +188,8 @@ bool FSM::updateControlTime(){
     if(now == _lastSimTime){
         const double stoppedWallTime = (wallNow - _lastSimAdvanceWallTime).toSec();
         if(!_simPauseHandled && stoppedWallTime >= _simPauseResetTimeout){
-            resetForTimeDiscontinuity("Gazebo simulation time paused", now);
+            resetForTimeDiscontinuity("Gazebo simulation time paused", now,
+                                      ControlTimeResetReason::Paused);
             _simPauseHandled = true;
         }
         return false;
@@ -200,11 +201,13 @@ bool FSM::updateControlTime(){
     _simPauseHandled = false;
 
     if(!std::isfinite(simDt) || simDt <= 0.0){
-        resetForTimeDiscontinuity("Gazebo simulation time moved backward", now);
+        resetForTimeDiscontinuity("Gazebo simulation time moved backward", now,
+                                  ControlTimeResetReason::MovedBackward);
         return false;
     }
     if(simDt > _maxSimTimeStep){
-        resetForTimeDiscontinuity("Gazebo simulation time jumped forward", now);
+        resetForTimeDiscontinuity("Gazebo simulation time jumped forward", now,
+                                  ControlTimeResetReason::JumpedForward);
         return false;
     }
 
@@ -213,7 +216,8 @@ bool FSM::updateControlTime(){
     return true;
 }
 
-void FSM::resetForTimeDiscontinuity(const char *reason, const ros::Time &now){
+void FSM::resetForTimeDiscontinuity(const char *reason, const ros::Time &now,
+                                    ControlTimeResetReason resetReason){
     ROS_WARN("%s at %.6f s; resetting gait time and holding all stance.",
              reason, now.toSec());
     _ctrlComp->controlTime = now;
@@ -221,7 +225,7 @@ void FSM::resetForTimeDiscontinuity(const char *reason, const ros::Time &now){
     _ctrlComp->setAllStance();
     _ctrlComp->resetWaveTime(now);
     if(_currentState != nullptr){
-        _currentState->onControlTimeReset();
+        _currentState->onControlTimeReset(resetReason);
     }
 }
 

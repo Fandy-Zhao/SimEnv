@@ -55,5 +55,25 @@
     "first_reset_wait_sim_elapsed_us": -78501000,
     "pre_reset_history_retained": true,
     "pre_reset_action_generated_before_detection": true
+  },
+  "reset_regression": {
+    "before_reset_sim_time_us": 18487000,
+    "sim_time_reset_wait_count": 1,
+    "first_reset_wait_wall_us": 64309,
+    "first_post_reset_action_sequence": 1,
+    "first_post_reset_source_state_sequence": 21,
+    "first_post_reset_source_sim_time_us": 21000,
+    "first_post_reset_history_span_us": 20000,
+    "steady_post_reset_history_span_us": 80000,
+    "pre_reset_history_retained": false,
+    "pre_reset_action_retained": false
+  },
+  "patch6_pause_regression": {
+    "sim_time_us": 17907000,
+    "wall_seconds": 5,
+    "policy_sequence_before": 616,
+    "policy_sequence_after": 616,
+    "action_sequence_before": 472,
+    "action_sequence_after": 472
   }
 }

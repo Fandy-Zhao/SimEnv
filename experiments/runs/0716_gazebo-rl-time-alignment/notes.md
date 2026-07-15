@@ -87,3 +87,30 @@
   duplicate counter remained at the four entry-initialization duplicates,
   timestamp span averaged 81,325 us (80,000--84,000 us), and oldest history
   timestamps were strictly increasing. `catkin_make -j` passed.
+
+## Patch 6: Reset and 64-bit Time
+
+- `IOInterface::current_time` is now an atomic `uint64_t`; the `/clock`
+  conversion performs 64-bit multiplication before addition and invalidates
+  the coherent input snapshot when time moves backward.
+- Pause keeps the last complete action and policy/history state unchanged.
+  Backward or excessive-forward time discontinuities invalidate command/action
+  snapshots, publish a measured-position hold, clear policy tensors and
+  history timestamps, and restart the RL entry transition in the new epoch.
+- `rosAbsoluteWait()` detects backward time inside the wait loop and returns
+  `SIM_TIME_RESET` immediately instead of waiting for wall overtime.
+- Both Gazebo launch files now explicitly pass `use_sim_time` to
+  `empty_world.launch`; runtime confirmed `/use_sim_time=true`.
+- Pause regression at fixed simulation time 17.907 s: over five wall seconds,
+  policy/action stayed at 616/472 with zero delta.
+- Reset regression: time moved from 18.487 s to the new epoch; one
+  `SIM_TIME_RESET` was recorded. The old action was invalidated, the first new
+  action used source state/time 21/21,000 us and action sequence 1, and history
+  warmed from a 20,000 us span to the nominal 80,000 us span without retaining
+  pre-reset timestamps.
+- Failed history-gate polling no longer increments `policy_sequence`; the
+  counter now represents completed inference calls. `catkin_make -j` passed.
+- The opt-in diagnostics load caused very low/bursty RTF and the existing
+  0.5 s wall pause detector emitted false pause warnings between `/clock`
+  bursts. The RL pause hook is non-mutating, but pause detection based only on
+  wall silence remains a documented tuning risk.

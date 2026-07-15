@@ -49,6 +49,23 @@ void State_RL::enter(){
         _ctrlComp->ioInterFreeDog->setCmd(i,joint);
     }
     */
+    obs_history_tensor = torch::zeros({HISTORY_LEN, 45}).to(device);
+    actions_tensor = torch::zeros({12});
+    actions_tensor_scaled = torch::zeros({12});
+    last_actions.fill(0.0f);
+    history_stamps_us_.fill(0);
+    history_duplicate_count_ = 0;
+    last_history_state_sequence_ = 0;
+    last_history_sim_time_us_ = 0;
+    last_policy_sim_time_us_ = 0;
+    policy_sequence_ = 0;
+    action_sequence_ = 0;
+    last_applied_action_sequence_ = 0;
+    handled_reset_generation_ = reset_generation_.load(std::memory_order_acquire);
+    {
+        std::lock_guard<std::mutex> lock(action_mutex_);
+        action_snapshot_ = PolicyOutputSnapshot{};
+    }
     for (int i = 0; i < HISTORY_LEN; i++)
     {
         PolicyInputSnapshot stateSnapshot;
@@ -65,6 +82,58 @@ void State_RL::enter(){
     if (debug == true){
         ampthreadRunning.store(State_RL::RUNNING, std::memory_order_release);
         amp_obs_thread = new std::thread(&State_RL::save_amp_obs_thread,this);
+    }
+}
+
+void State_RL::onControlTimeReset(ControlTimeResetReason resetReason){
+    if(resetReason == ControlTimeResetReason::Paused){
+        return;
+    }
+    {
+        std::lock_guard<std::mutex> lock(action_mutex_);
+        action_snapshot_ = PolicyOutputSnapshot{};
+    }
+    {
+        std::lock_guard<std::mutex> lock(command_mutex_);
+        command_snapshot_ = PolicyCommandSnapshot{};
+    }
+    TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
+    diagnostics.beginActionWrite();
+    for(int i=0; i<12; ++i){
+        _lowCmd->motorCmd[i].q = _lowState->motorState[i].q;
+    }
+    diagnostics.endActionWrite(0, _ctrlComp->ioInter->stateSequence(),
+                               _ctrlComp->ioInter->stateStampUs());
+    last_applied_action_sequence_ = 0;
+    dofPosSwitBeginTime = getTime();
+    _percent = 0;
+    reset_generation_.fetch_add(1, std::memory_order_acq_rel);
+}
+
+void State_RL::resetPolicyStateForTimeDiscontinuity(){
+    obs_history_tensor = torch::zeros({HISTORY_LEN, 45}).to(device);
+    actions_tensor = torch::zeros({12});
+    actions_tensor_scaled = torch::zeros({12});
+    last_actions.fill(0.0f);
+    history_stamps_us_.fill(0);
+    history_duplicate_count_ = 0;
+    last_history_state_sequence_ = 0;
+    last_history_sim_time_us_ = 0;
+    last_policy_sim_time_us_ = 0;
+    policy_sequence_ = 0;
+    action_sequence_ = 0;
+
+    PolicyInputSnapshot stateSnapshot;
+    PolicyCommandSnapshot commandSnapshot;
+    if(!_ctrlComp->ioInter->getPolicyInputSnapshot(stateSnapshot)){
+        return;
+    }
+    {
+        std::lock_guard<std::mutex> lock(command_mutex_);
+        commandSnapshot = command_snapshot_;
+    }
+    for(int i=0; i<HISTORY_LEN; ++i){
+        refresh_rl_obs(&stateSnapshot, &commandSnapshot, true);
     }
 }
 
@@ -158,6 +227,12 @@ void State_RL::infer_thread_callback()
 {
     while(infer_thread_runnning.load(std::memory_order_acquire) == State_RL::RUNNING)
     {
+        const std::uint64_t resetGeneration =
+            reset_generation_.load(std::memory_order_acquire);
+        if(resetGeneration != handled_reset_generation_){
+            resetPolicyStateForTimeDiscontinuity();
+            handled_reset_generation_ = resetGeneration;
+        }
         long long _start_time = getTime();
         const std::uint64_t wallStartNs = ros::WallTime::now().toNSec();
         PolicyInputSnapshot stateSnapshot;
@@ -172,12 +247,12 @@ void State_RL::infer_thread_callback()
         }
         const std::uint64_t sourceStateSequence = stateSnapshot.state_sequence;
         const std::uint64_t sourceSimTimeUs = stateSnapshot.sim_time_us;
-        const std::uint64_t policySequence = ++policy_sequence_;
         // std::cout << "_start_time" << _start_time << std::endl;
         if(!refresh_rl_obs(&stateSnapshot, &commandSnapshot)){
             usleep(50);
             continue;
         }
+        const std::uint64_t policySequence = ++policy_sequence_;
         torch::Tensor flattened_obs = obs_history_tensor.view({1, HISTORY_LEN * 45});
         if (debug == true)
         {
@@ -271,15 +346,16 @@ void State_RL::infer_thread_callback()
             waitTiming.action_source_state_sequence = sourceStateSequence;
             diagnostics.record(waitTiming);
 
-            if(waitResult == PolicyWaitExitReason::SimTimeReset){
-                _start_time = getTime();
-            }
         } while(infer_thread_runnning.load(std::memory_order_acquire) == State_RL::RUNNING &&
                 waitResult != PolicyWaitExitReason::SimPeriodReached &&
+                waitResult != PolicyWaitExitReason::SimTimeReset &&
                 waitResult != PolicyWaitExitReason::Shutdown);
 
         if(waitResult == PolicyWaitExitReason::Shutdown){
             break;
+        }
+        if(waitResult == PolicyWaitExitReason::SimTimeReset){
+            continue;
         }
     }
     infer_thread_runnning.store(State_RL::OVER, std::memory_order_release);

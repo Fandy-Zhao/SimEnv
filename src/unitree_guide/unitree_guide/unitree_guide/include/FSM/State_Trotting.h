@@ -19,7 +19,7 @@ public:
     void enter();
     void run();
     void exit();
-    void onControlTimeReset() override;
+    void onControlTimeReset(ControlTimeResetReason resetReason) override;
     virtual FSMStateName checkChange();
     void setHighCmd(double vx, double vy, double wz);
     void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg);
