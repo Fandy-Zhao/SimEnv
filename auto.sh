@@ -131,7 +131,9 @@ launch_in_terminal() {
       echo '=== ${title} ==='
       echo 'Command: ${command}'
       echo ''
-      ${command}
+      # rosrun ends with exec; isolate it so it cannot replace this terminal
+      # shell and bypass the diagnostic shell below when RViz exits or fails.
+      ( ${command} )
       echo ''
       echo '=== ${title} exited. This terminal is kept open for diagnostics. Type exit to close. ==='
       exec bash --noprofile --norc -i
@@ -142,7 +144,8 @@ launch_in_terminal() {
       source '${WORKSPACE_DIR}/devel/setup.bash'
       ${env_block}
       echo === ${title} ===
-      ${command}
+      # Keep rosrun's exec confined to a child shell.
+      ( ${command} )
       echo ''
       echo === ${title} exited. This terminal is kept open for diagnostics. Type exit to close. ===
       exec bash --noprofile --norc -i

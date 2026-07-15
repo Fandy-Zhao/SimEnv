@@ -9,6 +9,9 @@
 - Keep a diagnostic interactive shell open after either dedicated command
   exits, so a controller/RViz failure is visible instead of flashing and
   immediately closing its terminal window.
+- Run each terminal command in a child shell because `rosrun` ends in `exec`;
+  this prevents an RViz launch failure from replacing the outer shell and
+  bypassing the terminal-preservation logic.
 - `auto.sh` now launches `junior_ctrl` and rviz in dedicated `gnome-terminal`
   windows (fallback: `xterm` → background).  This guarantees a real TTY for
   keyboard state switching (`2`=stand, `4`=trot, `6`=RL), eliminating the
