@@ -89,13 +89,14 @@ std::uint64_t TimingDiagnostics::beginActionWrite() {
     return action_write_generation_.fetch_add(1, std::memory_order_acq_rel) + 1;
 }
 
-std::uint64_t TimingDiagnostics::endActionWrite(std::uint64_t sourceStateSequence,
+std::uint64_t TimingDiagnostics::endActionWrite(std::uint64_t actionSequence,
+                                                std::uint64_t sourceStateSequence,
                                                 std::uint64_t sourceSimTimeUs) {
     latest_action_source_state_sequence_.store(sourceStateSequence, std::memory_order_release);
     latest_action_source_sim_time_us_.store(sourceSimTimeUs, std::memory_order_release);
-    const std::uint64_t sequence = latest_action_sequence_.fetch_add(1, std::memory_order_acq_rel) + 1;
+    latest_action_sequence_.store(actionSequence, std::memory_order_release);
     action_write_generation_.fetch_add(1, std::memory_order_release);
-    return sequence;
+    return actionSequence;
 }
 
 std::uint64_t TimingDiagnostics::actionWriteGeneration() const {

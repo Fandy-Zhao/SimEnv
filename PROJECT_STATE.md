@@ -14,7 +14,8 @@
   49.25 Hz simulation time with no overtime, while pause advanced policy and
   action on wall overtime; 28 LowCmd copies overlapped action writes. The first
   behavior fix now prevents overtime from being treated as a completed policy
-  period; action and state snapshot fixes remain staged behind this evidence.
+  period. Policy input and output snapshots remove mixed-state observation and
+  torn LowCmd updates; history/reset cleanup remains in progress.
 - **Trotting simulation-time synchronization validated**: Gazebo locomotion
   updates now run only when `/clock` advances. Wave phase, estimator `dt`,
   height/readiness timing, and desired body/yaw integration use measured

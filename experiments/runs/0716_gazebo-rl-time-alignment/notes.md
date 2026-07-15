@@ -61,3 +61,16 @@
 - Headless pause regression: 14 `WALL_OVERTIME` events at constant simulation
   time 13.277 s reused policy/action sequence 87; policy delta, action delta,
   and history duplicate delta were all zero. `catkin_make -j` passed.
+
+## Patch 3/4: State and Action Snapshots
+
+- `IOROS::recvState()` now publishes LowState, base quaternion/angular velocity,
+  simulation timestamp, and state sequence as one mutex-protected snapshot.
+- RL command input has its own mutex, sequence, and ROS timestamp.
+- Torch inference reads local copies without holding either mutex.
+- Inference publishes a complete 12-joint action/target snapshot; only
+  `State_RL::run()` on the FSM thread applies it to LowCmd.
+- The inference running flags are atomic and are set before thread creation.
+- Headless interval 9.220--14.622 s: 265 policy/action generations, 7,241
+  LowCmd sends, zero torn actions, zero source-trace mismatches, and zero
+  LowCmd action-sequence regressions. `catkin_make --force-cmake -j` passed.

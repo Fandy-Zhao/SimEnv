@@ -13,6 +13,9 @@
 - Changed the simulation policy wait caller so wall overtime is diagnostic only:
   it keeps waiting from the same simulation-time origin and does not advance
   observation, history, inference, or action until the full simulation period.
+- Replaced inference-thread writes to shared LowCmd with a complete policy
+  output snapshot applied by the FSM thread, and build observations from a
+  locked LowState/base snapshot plus an independently sequenced command.
 
 ### Gazebo Simulation-Time Locomotion Control
 

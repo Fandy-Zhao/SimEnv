@@ -100,6 +100,12 @@ std::uint64_t IOROS::stateStampUs() const{
     return _state_stamp_us.load(std::memory_order_acquire);
 }
 
+bool IOROS::getPolicyInputSnapshot(PolicyInputSnapshot &snapshot) const{
+    std::lock_guard<std::mutex> lock(_policy_snapshot_mutex);
+    snapshot = _policy_input_snapshot;
+    return snapshot.valid;
+}
+
 void IOROS::sendCmd(const LowlevelCmd *lowCmd){
     TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
     const std::uint64_t actionGenerationBefore = diagnostics.actionWriteGeneration();
@@ -157,6 +163,17 @@ void IOROS::recvState(LowlevelState *state){
     const std::uint64_t previousStamp = _state_stamp_us.exchange(stampUs, std::memory_order_acq_rel);
     if(stampUs != previousStamp){
         _state_sequence.fetch_add(1, std::memory_order_acq_rel);
+    }
+    PolicyInputSnapshot snapshot;
+    snapshot.low_state = *state;
+    snapshot.base_w_orientation = _base_w_ori;
+    snapshot.base_w_angular_velocity = _base_w_angular_vel;
+    snapshot.sim_time_us = stampUs;
+    snapshot.state_sequence = _state_sequence.load(std::memory_order_acquire);
+    snapshot.valid = stampUs != 0 && snapshot.state_sequence != 0;
+    {
+        std::lock_guard<std::mutex> lock(_policy_snapshot_mutex);
+        _policy_input_snapshot = snapshot;
     }
 }
 

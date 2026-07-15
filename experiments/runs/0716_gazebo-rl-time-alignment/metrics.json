@@ -27,6 +27,16 @@
     "action_sequence_delta": 0,
     "history_duplicate_delta": 0
   },
+  "snapshot_regression": {
+    "simulation_start_s": 9.22,
+    "simulation_end_s": 14.622,
+    "policy_count": 265,
+    "action_count": 265,
+    "lowcmd_count": 7241,
+    "torn_action_count": 0,
+    "source_trace_mismatch_count": 0,
+    "lowcmd_action_sequence_regression_count": 0
+  },
   "reset_simulation": {
     "before_sim_time_s": 78.315,
     "after_sim_time_s": 1.048,

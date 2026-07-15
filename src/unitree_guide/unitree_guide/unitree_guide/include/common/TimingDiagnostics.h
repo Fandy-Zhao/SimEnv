@@ -57,7 +57,8 @@ public:
     void record(const TimingRecord &record);
 
     std::uint64_t beginActionWrite();
-    std::uint64_t endActionWrite(std::uint64_t sourceStateSequence,
+    std::uint64_t endActionWrite(std::uint64_t actionSequence,
+                                 std::uint64_t sourceStateSequence,
                                  std::uint64_t sourceSimTimeUs);
     std::uint64_t actionWriteGeneration() const;
     std::uint64_t latestActionSequence() const;
