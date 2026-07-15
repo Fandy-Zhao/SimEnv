@@ -250,6 +250,18 @@ fi
 CTRL_IS_BACKGROUND=0
 CTRL_PID=""
 CTRL_WANTS_FOREGROUND=0
+CTRL_TTY=""
+
+# A background process started by a non-interactive shell receives /dev/null
+# as stdin.  junior_ctrl's KeyBoard reads stdin directly, so explicitly bind
+# it to the terminal that launched auto.sh instead of relying on Bash job
+# control (fg is unavailable in a non-interactive script).
+if [ -r /dev/tty ] && [ -w /dev/tty ]; then
+  CTRL_TTY="/dev/tty"
+elif [ "$START_CONTROLLER" = "1" ] && [ "$CONTROLLER_FOREGROUND" = "1" ]; then
+  echo "WARNING: No controlling terminal is available; junior_ctrl keyboard input is disabled." >&2
+  echo "  Run ./auto.sh from an interactive terminal, or use /fsm/state_cmd and /cmd_vel." >&2
+fi
 
 if [ "$START_CONTROLLER" = "1" ]; then
   if [ "$CONTROLLER_FOREGROUND" = "1" ] && [ "$ENABLE_FAST_LIO2" != "true" ]; then
@@ -258,7 +270,11 @@ if [ "$START_CONTROLLER" = "1" ]; then
     echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
     echo "Use keyboard input: 2 = stand, 6 = RL mode."
     schedule_unpause_physics
-    "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl"
+    if [ -n "$CTRL_TTY" ]; then
+      "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" < "$CTRL_TTY"
+    else
+      "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl"
+    fi
   else
     # Background first: script continues to auto-stabilise + FAST-LIO2.
     if [ "$CONTROLLER_FOREGROUND" = "1" ]; then
@@ -266,8 +282,13 @@ if [ "$START_CONTROLLER" = "1" ]; then
     fi
     echo "Starting junior_ctrl controller in the background."
     echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
-    "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
-      > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
+    if [ -n "$CTRL_TTY" ]; then
+      "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
+        < "$CTRL_TTY" > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
+    else
+      "$WORKSPACE_DIR/devel/lib/unitree_guide/junior_ctrl" \
+        > "$WORKSPACE_DIR/logs/junior_ctrl.log" 2>&1 &
+    fi
     CTRL_PID=$!
     echo "$CTRL_PID" > "$WORKSPACE_DIR/logs/junior_ctrl.pid"
     CTRL_IS_BACKGROUND=1
@@ -353,9 +374,12 @@ echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 2\"  # FixedStand"
 echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\"  # Trotting"
 echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL"
 
-# Bring controller to foreground if requested (after FAST-LIO2 is running).
+# Keep the invoking terminal attached when foreground mode is requested.  The
+# controller may be a background child during FAST-LIO2 startup, but it reads
+# /dev/tty explicitly; waiting avoids unreliable `fg %1` job-control calls.
 if [ "$CTRL_WANTS_FOREGROUND" = "1" ] && [ -n "$CTRL_PID" ]; then
   echo ""
-  echo "Bringing junior_ctrl to foreground (keyboard: 2=stand 4=trot 6=RL)..."
-  fg %1 2>/dev/null || wait "$CTRL_PID"
+  echo "Controller is reading this terminal (keyboard: 2=stand 4=trot 6=RL)."
+  echo "Press Ctrl-C to stop auto.sh and junior_ctrl."
+  wait "$CTRL_PID"
 fi

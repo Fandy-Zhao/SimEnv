@@ -2,6 +2,14 @@
 
 ## 2026-07-15
 
+### Controller Terminal Keyboard Fix (fix/0715-auto-keyboard)
+- `auto.sh` now explicitly assigns `/dev/tty` to background `junior_ctrl`.
+  This preserves keyboard input when FAST-LIO2 startup requires the controller
+  to run before mapping.
+- Replaced non-interactive `fg %1` with `wait`, keeping the invoking terminal
+  attached to the controller after startup.  Non-TTY launches now warn and
+  document ROS-topic control as the supported alternative.
+
 ### FAST-LIO2 LiDAR–IMU Axis Correction (fix/0715-fast-lio2-axis)
 - Corrected `simenv_mid360.yaml` to the direct FAST-LIO2 point transform
   `p_imu = R_L_I * p_lidar + T_L_I`: `Ry(+45°)` and `[0.2, 0, 0.08]`.
