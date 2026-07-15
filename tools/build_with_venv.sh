@@ -162,10 +162,11 @@ CATKIN_CMAKE_ARGS=(
 # ---------------------------------------------------------------------------
 # Catkin package selection
 # ---------------------------------------------------------------------------
-# Default: build the runtime profile used by auto.sh: FAST-LIO2 plus the
-# Unitree controller and the Gazebo control/contact plugins.  This avoids
-# unrelated, locally added packages (for example the legacy ps3joy sixpair
-# utility, which requires libusb-0.1) from blocking normal simulation builds.
+# Default: build the runtime profile used by auto.sh: FAST-LIO2, the Livox
+# Mid-360 Gazebo sensor plugin, the Unitree controller, and Gazebo control /
+# contact plugins. This avoids unrelated, locally added packages (for example
+# the legacy ps3joy sixpair utility, which requires libusb-0.1) from blocking
+# normal simulation builds.
 #
 # Override examples:
 #   SIMENV_CATKIN_WHITELIST="" ./tools/build_with_venv.sh
@@ -175,7 +176,7 @@ CATKIN_CMAKE_ARGS=(
 # - livox_ros_driver is kept for CustomMsg / CustomPoint message definitions.
 # - BUILD_LIVOX_DRIVER_NODE=OFF means the real Livox hardware driver node is skipped.
 if [[ -z "${SIMENV_CATKIN_WHITELIST+x}" ]]; then
-  SIMENV_CATKIN_WHITELIST="livox_ros_driver;fast_lio;simenv_fast_lio2_integration;unitree_guide;unitree_legged_control;unitree_gazebo"
+  SIMENV_CATKIN_WHITELIST="livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_guide;unitree_legged_control;unitree_gazebo"
 fi
 
 if [[ -n "$SIMENV_CATKIN_WHITELIST" ]]; then

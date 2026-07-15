@@ -12,8 +12,9 @@
 
 ### Build and Controller Startup Guard (fix/0715-build-auto-startup)
 - Updated the default `build_with_venv.sh` profile to build every `auto.sh`
-  runtime dependency (FAST-LIO2, `junior_ctrl`, Unitree Gazebo plugins) while
-  excluding unrelated locally added packages such as legacy `ps3joy`.
+  runtime dependency (FAST-LIO2, Mid-360 sensor plugin, `junior_ctrl`, Unitree
+  Gazebo plugins) while excluding unrelated locally added packages such as
+  legacy `ps3joy`.
 - Added an early `junior_ctrl` artifact check in `auto.sh`, preventing scene
   generation and Gazebo startup when the controller has not been built.
 
