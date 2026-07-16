@@ -22,7 +22,8 @@
   microsecond timestamp is now atomic 64-bit. Post-commit review also tags
   policy outputs with the reset generation so an in-flight pre-reset inference
   cannot be applied in the new epoch. Automated regression coverage passes;
-  the final report remains in progress.
+  the final report is available at
+  `docs/reports/0717_gazebo_rl_time_alignment.md`.
 - **Trotting simulation-time synchronization validated**: Gazebo locomotion
   updates now run only when `/clock` advances. Wave phase, estimator `dt`,
   height/readiness timing, and desired body/yaw integration use measured

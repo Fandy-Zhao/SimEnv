@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-17
+
+- Completed the Gazebo–unitree_guide–RL timing-alignment review. Policy/history
+  now remain stationary during simulation pause, state and action snapshots
+  prevent torn LowCmd, reset clears the prior epoch, and reset-generation
+  validation rejects in-flight stale policy output. Added the final report and
+  five timing regression tests.
+
 ## 2026-07-16
 
 ### Gazebo RL Timing Diagnostics
