@@ -1,5 +1,12 @@
 # Module Status
 
+> **2026-07-17 Stage 2 navigation topics**: `simenv_fast_lio2_integration`
+> now exposes `/state_estimation` and `/registered_scan` via transparent
+> `topic_tools` relays without removing FAST-LIO2's legacy output topics or
+> changing `camera_init/body` frames. Static tests and package build pass;
+> five-minute isolated runtime validation is pending
+> (`feat/0717-fastlio2-stage2`).
+
 ## Overview
 
 ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。

@@ -25,3 +25,7 @@ catkin_install_python(PROGRAMS
 install(DIRECTORY launch config
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+
+if(CATKIN_ENABLE_TESTING)
+  catkin_add_nosetests(test/test_stage2_topic_contract.py)
+endif()

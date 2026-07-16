@@ -1,5 +1,13 @@
 # Project State
 
+> **2026-07-17 FAST-LIO2 Stage 2 interface**: branch
+> `feat/0717-fastlio2-stage2` adds compatibility-preserving transparent relays
+> `/Odometry → /state_estimation` and
+> `/cloud_registered → /registered_scan`. Static contract tests and the
+> integration-package build pass. Five-minute Gazebo validation remains
+> blocked by isolated-worktree runtime setup and a full-build CUDA host
+> compiler failure; see `docs/reports/0717_fastlio2-stage2.md`.
+
 ## Snapshot
 - Date: 2026-07-16
 - Branch: master (merged `fix/0715-trotting-safety` at `9ded5269`)

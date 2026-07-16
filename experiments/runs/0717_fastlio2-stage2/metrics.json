@@ -1,0 +1,18 @@
+{
+  "status": "runtime_blocked",
+  "ros_time_duration_sec": 0,
+  "state_estimation": {"runtime_status": "not_run"},
+  "registered_scan": {"runtime_status": "not_run"},
+  "tf": {"runtime_status": "not_run"},
+  "static_contract_tests": {"passed": 3, "failed": 0},
+  "relay_smoke": {
+    "status": "pass",
+    "state_estimation_type": "nav_msgs/Odometry",
+    "registered_scan_type": "sensor_msgs/PointCloud2",
+    "odometry_frame": "camera_init",
+    "odometry_child_frame": "body",
+    "scan_frame": "camera_init"
+  },
+  "package_build": "pass",
+  "full_workspace_build": "blocked_nvcc_cc1plus"
+}
