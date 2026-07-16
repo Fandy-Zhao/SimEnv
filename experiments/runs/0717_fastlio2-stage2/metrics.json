@@ -1,6 +1,6 @@
 {
-  "status": "runtime_blocked",
-  "ros_time_duration_sec": 0,
+  "status": "runtime_blocked_unitree_plugin",
+  "ros_time_duration_sec": 2.518,
   "state_estimation": {"runtime_status": "not_run"},
   "registered_scan": {"runtime_status": "not_run"},
   "tf": {"runtime_status": "not_run"},

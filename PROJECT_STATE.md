@@ -7,6 +7,9 @@
 > integration-package build pass. Five-minute Gazebo validation remains
 > blocked by isolated-worktree runtime setup and a full-build CUDA host
 > compiler failure; see `docs/reports/0717_fastlio2-stage2.md`.
+> A subsequent isolated retry reached 2.518 s ROS time and verified `/scan`
+> plus upright IMU gravity, but the partial worktree devel could not load the
+> Unitree joint-controller plugin. No five-minute result is claimed.
 
 ## Snapshot
 - Date: 2026-07-16

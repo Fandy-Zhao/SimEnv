@@ -42,3 +42,24 @@ Topic rate, timestamp delta, five-minute ROS-time endurance, `map → body` TF
 success ratio, motion axes, and RViz overlay remain NOT RUN. Static inspection
 and Stage 0/1 evidence support the unchanged `camera_init → body` and
 `map → camera_init` semantics, but do not replace this runtime evidence.
+
+## Isolated worktree runtime attempts
+
+Two bounded attempts ran `stage2/auto.sh` with generated scene and log paths
+inside this worktree while reusing main-worktree binaries read-only:
+
+1. Gazebo reached ROS time 2.518 s, but every Unitree joint controller failed
+   because pluginlib could not find the library for
+   `unitree_legged_control/UnitreeJointController`; `/scan` was unavailable.
+2. After explicitly adding the external built library directory, `/scan`
+   became `sensor_msgs/PointCloud` and `/trunk_imu` reported z acceleration
+   `9.79999999216685 m/s²`. However the controller remained at
+   `Waiting for Gazebo joint state feedback before accepting stand command`,
+   while controller_spawner still reported the same missing plugin. The run was
+   stopped before FAST-LIO2 startup and no data was accepted as Stage 2 runtime
+   evidence.
+
+The root cause is the partial worktree devel overlay: rospack resolves the
+worktree's Unitree package metadata, while its controller plugin was not built
+because the full Torch/CUDA build is blocked. Environment-only library path
+injection was insufficient for pluginlib resolution.

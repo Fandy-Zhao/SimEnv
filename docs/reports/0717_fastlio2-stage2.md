@@ -78,3 +78,11 @@ commit hash and diff stat.
 Repair the CUDA host compiler lookup, build the isolated worktree fully, then
 repeat the five-minute Stage 2 runtime matrix and update this report with
 measured metrics before considering Stage 2 runtime-complete.
+
+The later isolated-worktree retry reached 2.518 s ROS time. A second startup
+confirmed `/scan` as `sensor_msgs/PointCloud` and upright IMU gravity
+(`z=9.79999999216685 m/s²`), but the Unitree controller never received joint
+feedback. Gazebo reported that pluginlib could not find the library for
+`unitree_legged_control/UnitreeJointController`. FAST-LIO2 and the five-minute
+capture were deliberately not started, so this does not count as Stage 2
+runtime acceptance.
