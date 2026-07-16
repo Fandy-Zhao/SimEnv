@@ -127,3 +127,33 @@
   rejection, reset acceptance, and 10,000-generation concurrent action reads.
 - `catkin_test_results build/test_results` reported 8 tests total, 0 errors,
   0 failures, and 0 skipped (including existing workspace results).
+
+## Post-commit review (2026-07-17)
+
+- Compared entry-history initialization with the local official reference at
+  `/home/zzf/search_ws/unitree_rl`: its `State_RL::enter()` also starts from a
+  zero buffer and repeatedly appends the current observation. The four
+  same-timestamp startup duplicates are therefore intentional deployment
+  parity, while runtime duplicates remain forbidden.
+- Found a narrow reset race: an inference already running on a pre-reset
+  snapshot could publish after the main thread invalidated the action buffer.
+  Policy outputs now carry the reset generation, and the FSM rejects every
+  output whose generation does not match the current simulation epoch.
+- Streamed the uncommitted `final_rtf_timing.csv` rather than loading its
+  1.5 GiB contents into memory. Of 13,696,599 data lines, the last line is a
+  truncated process-ending record and was excluded. Across 1,377.340 s of
+  action-source simulation time and 14,056.005 s wall time (average RTF
+  approximately 0.098), 68,868 actions were produced at exactly 50.000 Hz
+  simulation time. There were 5,047 diagnostic wall-overtime returns, but no
+  extra action sequence, no sequence regression, and no torn LowCmd.
+- The same extended run sent 6,776,908 LowCmd generations: 6,708,040 repeated
+  the current action generation and 68,868 carried a changed generation. This
+  confirms that wall-scheduled sends repeat the same complete command between
+  simulation updates; they do not create partial or independently evolving
+  policy actions.
+- The extended file does not constitute four independently controlled RTF
+  points. Together with the earlier RTF 0.276 interval it validates two actual
+  low-RTF regimes; 0.15/0.20/0.30/0.50 must not be claimed as measured.
+- Post-review validation: `catkin_make -j` passed; the timing target passed 5/5
+  tests and `catkin_test_results build/test_results` reported 10 tests total,
+  0 errors and 0 failures.

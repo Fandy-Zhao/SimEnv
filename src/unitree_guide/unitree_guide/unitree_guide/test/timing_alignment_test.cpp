@@ -53,6 +53,7 @@ TEST(PolicyOutputBuffer, ConcurrentReadsObserveOneCompleteGeneration){
             snapshot.action_sequence = sequence;
             snapshot.source_state_sequence = sequence * 10;
             snapshot.source_sim_time_us = sequence * 20000;
+            snapshot.reset_generation = sequence / 100;
             snapshot.valid = true;
             snapshot.raw_action.fill(static_cast<float>(sequence));
             snapshot.q_target.fill(static_cast<float>(sequence));
@@ -69,7 +70,8 @@ TEST(PolicyOutputBuffer, ConcurrentReadsObserveOneCompleteGeneration){
             }
             const float expected = static_cast<float>(snapshot.action_sequence);
             if(snapshot.source_state_sequence != snapshot.action_sequence * 10 ||
-               snapshot.source_sim_time_us != snapshot.action_sequence * 20000){
+               snapshot.source_sim_time_us != snapshot.action_sequence * 20000 ||
+               snapshot.reset_generation != snapshot.action_sequence / 100){
                 inconsistent.store(true, std::memory_order_release);
                 break;
             }
@@ -86,6 +88,20 @@ TEST(PolicyOutputBuffer, ConcurrentReadsObserveOneCompleteGeneration){
     reader.join();
     EXPECT_FALSE(inconsistent.load(std::memory_order_acquire));
     EXPECT_EQ(10000U, buffer.read().action_sequence);
+}
+
+TEST(PolicyOutputBuffer, ResetGenerationRejectsInflightOldEpochAction){
+    PolicyOutputBuffer buffer;
+    PolicyOutputSnapshot oldEpoch;
+    oldEpoch.action_sequence = 9;
+    oldEpoch.reset_generation = 3;
+    oldEpoch.valid = true;
+    buffer.publish(oldEpoch);
+
+    const std::uint64_t currentResetGeneration = 4;
+    const PolicyOutputSnapshot snapshot = buffer.read();
+    EXPECT_TRUE(snapshot.valid);
+    EXPECT_NE(currentResetGeneration, snapshot.reset_generation);
 }
 
 int main(int argc, char **argv){

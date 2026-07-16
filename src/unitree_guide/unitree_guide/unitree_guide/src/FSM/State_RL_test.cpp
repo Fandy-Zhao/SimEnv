@@ -129,7 +129,9 @@ void State_RL::resetPolicyStateForTimeDiscontinuity(){
 
 void State_RL::run(){
     const PolicyOutputSnapshot snapshot = action_buffer_.read();
-    if(!snapshot.valid || snapshot.action_sequence == last_applied_action_sequence_){
+    if(!snapshot.valid ||
+       snapshot.reset_generation != reset_generation_.load(std::memory_order_acquire) ||
+       snapshot.action_sequence == last_applied_action_sequence_){
         return;
     }
     TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
@@ -266,6 +268,7 @@ void State_RL::infer_thread_callback()
         outputSnapshot.action_sequence = ++action_sequence_;
         outputSnapshot.source_state_sequence = sourceStateSequence;
         outputSnapshot.source_sim_time_us = sourceSimTimeUs;
+        outputSnapshot.reset_generation = resetGeneration;
         outputSnapshot.valid = true;
         for(int i=0; i<12; i++){
             if (real == false)

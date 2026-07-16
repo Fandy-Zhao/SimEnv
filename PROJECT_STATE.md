@@ -19,8 +19,10 @@
   gated while preserving the unverified training-time entry convention;
   Reset cleanup now invalidates pre-reset commands/actions, clears policy and
   history state, and restarts history in the new simulation epoch; the ROS
-  microsecond timestamp is now atomic 64-bit. Automated regression coverage
-  and the final report remain in progress.
+  microsecond timestamp is now atomic 64-bit. Post-commit review also tags
+  policy outputs with the reset generation so an in-flight pre-reset inference
+  cannot be applied in the new epoch. Automated regression coverage passes;
+  the final report remains in progress.
 - **Trotting simulation-time synchronization validated**: Gazebo locomotion
   updates now run only when `/clock` advances. Wave phase, estimator `dt`,
   height/readiness timing, and desired body/yaw integration use measured

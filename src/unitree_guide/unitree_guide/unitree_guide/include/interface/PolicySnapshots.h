@@ -33,6 +33,7 @@ struct PolicyOutputSnapshot {
     std::uint64_t action_sequence = 0;
     std::uint64_t source_state_sequence = 0;
     std::uint64_t source_sim_time_us = 0;
+    std::uint64_t reset_generation = 0;
     bool valid = false;
 };
 
