@@ -14,6 +14,7 @@
 #include "common/mathTools.h"
 #include "common/mathTypes.h"
 #include "common/timeMarker.h"
+#include "common/TimingDiagnostics.h"
 #include "interface/CmdPanel.h"
 
 //添加ros节点，读取move_base
@@ -21,6 +22,12 @@
 #include "geometry_msgs/Twist.h"
 
 #define  OVERTIME 200000
+enum class ControlTimeResetReason {
+    Paused,
+    MovedBackward,
+    JumpedForward,
+};
+
 class FSMState{
 
 struct CmdVel {
@@ -37,7 +44,7 @@ public:
     virtual void enter() = 0;
     virtual void run() = 0;
     virtual void exit() = 0;
-    virtual void onControlTimeReset() {}
+    virtual void onControlTimeReset(ControlTimeResetReason) {}
     virtual FSMStateName checkChange() {return FSMStateName::INVALID;}
 
     FSMStateName _stateName;
@@ -45,8 +52,8 @@ public:
     int real = false;
     long long getRosTime();
     long long getTime();
-    void rosAbsoluteWait(long long startTime, long long waitTime);
-    void wait(long long startTime, long long waitTime);
+    PolicyWaitExitReason rosAbsoluteWait(long long startTime, long long waitTime);
+    PolicyWaitExitReason wait(long long startTime, long long waitTime);
 
 
 protected:

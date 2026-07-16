@@ -5,8 +5,13 @@
 #define STATE_RL_TEST_H
 
 #include "FSM/FSMState.h"
+#include "common/TimingAlignment.h"
 #include <fstream>  // 包含文件流的头文件
 #include <thread>
+#include <array>
+#include <cstdint>
+#include <atomic>
+#include <mutex>
 #include <string>
 #include <torch/torch.h>
 #include <torch/script.h>
@@ -19,11 +24,15 @@ public:
     void enter();
     void run();
     void exit();
+    void onControlTimeReset(ControlTimeResetReason resetReason) override;
     FSMStateName checkChange();
-    void refresh_rl_obs();
+    bool refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot = nullptr,
+                        const PolicyCommandSnapshot *commandSnapshot = nullptr,
+                        bool initializeHistory = false);
     void refresh_rl_obs_real_robot();
     void refresh_amp_obs();
     void infer_thread_callback();
+    void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
     void save_amp_obs_thread();
     void open_amp_save_file();
     void close_amp_save_file();
@@ -92,10 +101,22 @@ private:
     float motion_time = 0.0;
     std::thread* infer_thread = nullptr;
     std::thread* amp_obs_thread = nullptr;
-    uint8_t infer_thread_runnning = State_RL::STOP;
-    uint8_t ampthreadRunning = State_RL::STOP;
+    std::atomic<uint8_t> infer_thread_runnning{State_RL::STOP};
+    std::atomic<uint8_t> ampthreadRunning{State_RL::STOP};
     float infer_duration = 0.02;
     float amp_duration = 0.005;
+    std::uint64_t policy_sequence_ = 0;
+    std::uint64_t history_duplicate_count_ = 0;
+    std::array<std::uint64_t, HISTORY_LEN> history_stamps_us_{};
+    std::mutex command_mutex_;
+    PolicyCommandSnapshot command_snapshot_;
+    PolicyOutputBuffer action_buffer_;
+    std::uint64_t action_sequence_ = 0;
+    std::uint64_t last_applied_action_sequence_ = 0;
+    PolicyHistoryGate history_gate_{20000};
+    std::atomic<std::uint64_t> reset_generation_{0};
+    std::uint64_t handled_reset_generation_ = 0;
+    void resetPolicyStateForTimeDiscontinuity();
 };
 
 #endif

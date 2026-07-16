@@ -1,6 +1,40 @@
 # Changelog
 
+## 2026-07-17
+
+- Completed the Gazebo–unitree_guide–RL timing-alignment review. Policy/history
+  now remain stationary during simulation pause, state and action snapshots
+  prevent torn LowCmd, reset clears the prior epoch, and reset-generation
+  validation rejects in-flight stale policy output. Added the final report and
+  five timing regression tests.
+
 ## 2026-07-16
+
+### Gazebo RL Timing Diagnostics
+
+- Added opt-in buffered CSV diagnostics for FSM iterations, simulation/state
+  generations, policy wait exit reasons, history timestamps, action
+  generations, LowCmd sends, and torn-action detection.
+- Recorded an RTF 0.276 baseline: policy remained 49.25 Hz in simulation time
+  with no normal-run wall overtime, while pause advanced policy/history/action
+  and 28 LowCmd copies overlapped an action write.
+- Changed the simulation policy wait caller so wall overtime is diagnostic only:
+  it keeps waiting from the same simulation-time origin and does not advance
+  observation, history, inference, or action until the full simulation period.
+- Replaced inference-thread writes to shared LowCmd with a complete policy
+  output snapshot applied by the FSM thread, and build observations from a
+  locked LowState/base snapshot plus an independently sequenced command.
+- Runtime history updates now require a new state generation, increasing
+  simulation timestamp, and a full 20 ms policy interval; the existing
+  repeated-current-observation entry initialization is preserved.
+- Promoted the Gazebo microsecond clock to an atomic 64-bit value, explicitly
+  propagated `use_sim_time` into Gazebo launch, and reset policy tensors,
+  history timestamps, command/action snapshots, and transition state when
+  simulation time moves backward or jumps forward. A pause does not advance or
+  invalidate the last complete action.
+- Added production-backed regression tests for simulation wait outcomes,
+  history deduplication/reset across the former 32-bit boundary, and concurrent
+  complete-generation action publication.
 
 ### Gazebo Simulation-Time Locomotion Control
 

@@ -12,7 +12,8 @@ State_RL::State_RL(CtrlComponents *ctrlComp)
     gravity(1,0) = 0.0;
     gravity(2,0) = -0.98;
     //在构造函数中初始化，订阅
-    this->Sub_=nh.subscribe<geometry_msgs::Twist>("/cmd_vel",1000,boost::bind(&FSMState::cmdVelCallback,this,_1));
+    this->Sub_=nh.subscribe<geometry_msgs::Twist>("/cmd_vel",1000,
+        boost::bind(&State_RL::cmdVelCallback,this,_1));
 
 }
 
@@ -48,25 +49,110 @@ void State_RL::enter(){
         _ctrlComp->ioInterFreeDog->setCmd(i,joint);
     }
     */
+    obs_history_tensor = torch::zeros({HISTORY_LEN, 45}).to(device);
+    actions_tensor = torch::zeros({12});
+    actions_tensor_scaled = torch::zeros({12});
+    last_actions.fill(0.0f);
+    history_stamps_us_.fill(0);
+    history_duplicate_count_ = 0;
+    history_gate_.reset();
+    policy_sequence_ = 0;
+    action_sequence_ = 0;
+    last_applied_action_sequence_ = 0;
+    handled_reset_generation_ = reset_generation_.load(std::memory_order_acquire);
+    action_buffer_.invalidate();
     for (int i = 0; i < HISTORY_LEN; i++)
     {
-        refresh_rl_obs();
+        PolicyInputSnapshot stateSnapshot;
+        PolicyCommandSnapshot commandSnapshot;
+        _ctrlComp->ioInter->getPolicyInputSnapshot(stateSnapshot);
+        {
+            std::lock_guard<std::mutex> lock(command_mutex_);
+            commandSnapshot = command_snapshot_;
+        }
+        refresh_rl_obs(&stateSnapshot, &commandSnapshot, true);
     }
+    infer_thread_runnning.store(State_RL::RUNNING, std::memory_order_release);
     infer_thread = new std::thread(&State_RL::infer_thread_callback,this);
-    infer_thread_runnning = State_RL::RUNNING;
     if (debug == true){
+        ampthreadRunning.store(State_RL::RUNNING, std::memory_order_release);
         amp_obs_thread = new std::thread(&State_RL::save_amp_obs_thread,this);
-        ampthreadRunning = State_RL::RUNNING;
+    }
+}
+
+void State_RL::onControlTimeReset(ControlTimeResetReason resetReason){
+    if(resetReason == ControlTimeResetReason::Paused){
+        return;
+    }
+    action_buffer_.invalidate();
+    {
+        std::lock_guard<std::mutex> lock(command_mutex_);
+        command_snapshot_ = PolicyCommandSnapshot{};
+    }
+    TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
+    diagnostics.beginActionWrite();
+    for(int i=0; i<12; ++i){
+        _lowCmd->motorCmd[i].q = _lowState->motorState[i].q;
+    }
+    diagnostics.endActionWrite(0, _ctrlComp->ioInter->stateSequence(),
+                               _ctrlComp->ioInter->stateStampUs());
+    last_applied_action_sequence_ = 0;
+    dofPosSwitBeginTime = getTime();
+    _percent = 0;
+    reset_generation_.fetch_add(1, std::memory_order_acq_rel);
+}
+
+void State_RL::resetPolicyStateForTimeDiscontinuity(){
+    obs_history_tensor = torch::zeros({HISTORY_LEN, 45}).to(device);
+    actions_tensor = torch::zeros({12});
+    actions_tensor_scaled = torch::zeros({12});
+    last_actions.fill(0.0f);
+    history_stamps_us_.fill(0);
+    history_duplicate_count_ = 0;
+    history_gate_.reset();
+    policy_sequence_ = 0;
+    action_sequence_ = 0;
+
+    PolicyInputSnapshot stateSnapshot;
+    PolicyCommandSnapshot commandSnapshot;
+    if(!_ctrlComp->ioInter->getPolicyInputSnapshot(stateSnapshot)){
+        return;
+    }
+    {
+        std::lock_guard<std::mutex> lock(command_mutex_);
+        commandSnapshot = command_snapshot_;
+    }
+    for(int i=0; i<HISTORY_LEN; ++i){
+        refresh_rl_obs(&stateSnapshot, &commandSnapshot, true);
     }
 }
 
 void State_RL::run(){
+    const PolicyOutputSnapshot snapshot = action_buffer_.read();
+    if(!snapshot.valid ||
+       snapshot.reset_generation != reset_generation_.load(std::memory_order_acquire) ||
+       snapshot.action_sequence == last_applied_action_sequence_){
+        return;
+    }
+    TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
+    diagnostics.beginActionWrite();
+    if(real == false){
+        for(int i=0; i<12; ++i){
+            _lowCmd->motorCmd[i].q = snapshot.q_target[i];
+            _lowCmd->motorCmd[i].Kp = 80;
+            _lowCmd->motorCmd[i].Kd = 1;
+        }
+    }
+    diagnostics.endActionWrite(snapshot.action_sequence,
+                               snapshot.source_state_sequence,
+                               snapshot.source_sim_time_us);
+    last_applied_action_sequence_ = snapshot.action_sequence;
 }
 
 void State_RL::exit(){
     _percent = 0;
-    ampthreadRunning = State_RL::STOP;
-    infer_thread_runnning = State_RL::STOP;
+    ampthreadRunning.store(State_RL::STOP, std::memory_order_release);
+    infer_thread_runnning.store(State_RL::STOP, std::memory_order_release);
     if(amp_obs_thread != nullptr){
         if(amp_obs_thread->joinable()){
             amp_obs_thread->join();
@@ -127,11 +213,34 @@ FSMStateName State_RL::checkChange(){
 
 void State_RL::infer_thread_callback()
 {
-    while(infer_thread_runnning == State_RL::RUNNING)
+    while(infer_thread_runnning.load(std::memory_order_acquire) == State_RL::RUNNING)
     {
+        const std::uint64_t resetGeneration =
+            reset_generation_.load(std::memory_order_acquire);
+        if(resetGeneration != handled_reset_generation_){
+            resetPolicyStateForTimeDiscontinuity();
+            handled_reset_generation_ = resetGeneration;
+        }
         long long _start_time = getTime();
+        const std::uint64_t wallStartNs = ros::WallTime::now().toNSec();
+        PolicyInputSnapshot stateSnapshot;
+        PolicyCommandSnapshot commandSnapshot;
+        if(!_ctrlComp->ioInter->getPolicyInputSnapshot(stateSnapshot)){
+            wait(_start_time, (long long)(infer_duration * 1000000));
+            continue;
+        }
+        {
+            std::lock_guard<std::mutex> lock(command_mutex_);
+            commandSnapshot = command_snapshot_;
+        }
+        const std::uint64_t sourceStateSequence = stateSnapshot.state_sequence;
+        const std::uint64_t sourceSimTimeUs = stateSnapshot.sim_time_us;
         // std::cout << "_start_time" << _start_time << std::endl;
-        refresh_rl_obs();
+        if(!refresh_rl_obs(&stateSnapshot, &commandSnapshot)){
+            usleep(50);
+            continue;
+        }
+        const std::uint64_t policySequence = ++policy_sequence_;
         torch::Tensor flattened_obs = obs_history_tensor.view({1, HISTORY_LEN * 45});
         if (debug == true)
         {
@@ -155,12 +264,18 @@ void State_RL::infer_thread_callback()
         std::vector<float> actions(actions_tensor_scaled.data_ptr<float>(),
                            actions_tensor_scaled.data_ptr<float>() + actions_tensor_scaled.numel());
         if (debug == true) std::cout << "actions[reindex[j]]  + default_dof_pos" << std::endl;
+        PolicyOutputSnapshot outputSnapshot;
+        outputSnapshot.action_sequence = ++action_sequence_;
+        outputSnapshot.source_state_sequence = sourceStateSequence;
+        outputSnapshot.source_sim_time_us = sourceSimTimeUs;
+        outputSnapshot.reset_generation = resetGeneration;
+        outputSnapshot.valid = true;
         for(int i=0; i<12; i++){
             if (real == false)
             {
-                _lowCmd->motorCmd[i].q = actions[reindex[i]]  + default_dof_pos_tensor[reindex[i]].item<float>();
-                _lowCmd->motorCmd[i].Kp = 80;
-                _lowCmd->motorCmd[i].Kd = 1;
+                outputSnapshot.raw_action[i] = actions[reindex[i]];
+                outputSnapshot.q_target[i] = actions[reindex[i]] +
+                    default_dof_pos_tensor[reindex[i]].item<float>();
             }
             else if (real == true)
             {
@@ -170,17 +285,71 @@ void State_RL::infer_thread_callback()
             }
             if (debug == true) std::cout << actions[reindex[i]]  + default_dof_pos_tensor[reindex[i]].item<float>() << " ";
         }
+        action_buffer_.publish(outputSnapshot);
+        const std::uint64_t actionSequence = outputSnapshot.action_sequence;
+        TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
+        TimingRecord actionTiming;
+        actionTiming.event = "ACTION";
+        actionTiming.wall_time_ns = ros::WallTime::now().toNSec();
+        actionTiming.sim_time_us = _ctrlComp->ioInter->stateStampUs();
+        actionTiming.state_sequence = _ctrlComp->ioInter->stateSequence();
+        actionTiming.state_stamp_us = _ctrlComp->ioInter->stateStampUs();
+        actionTiming.policy_sequence = policySequence;
+        actionTiming.policy_source_state_sequence = sourceStateSequence;
+        actionTiming.policy_sim_time_us = sourceSimTimeUs;
+        actionTiming.policy_wall_time_ns = wallStartNs;
+        actionTiming.action_sequence = actionSequence;
+        actionTiming.action_source_state_sequence = sourceStateSequence;
+        diagnostics.record(actionTiming);
         if (debug == true)
             std::cout << std::endl;
         // std::cout << "actions_tensor: " << actions_tensor << std::endl;
-        wait(_start_time, (long long)(infer_duration * 1000000));
+        PolicyWaitExitReason waitResult = PolicyWaitExitReason::WallOvertime;
+        do {
+            const std::uint64_t waitWallStartNs = ros::WallTime::now().toNSec();
+            waitResult = wait(_start_time, (long long)(infer_duration * 1000000));
+            const std::int64_t simElapsed = getTime() - _start_time;
+            TimingRecord waitTiming;
+            waitTiming.event = "POLICY_WAIT";
+            waitTiming.wall_time_ns = ros::WallTime::now().toNSec();
+            waitTiming.sim_time_us = _ctrlComp->ioInter->stateStampUs();
+            waitTiming.state_sequence = _ctrlComp->ioInter->stateSequence();
+            waitTiming.state_stamp_us = _ctrlComp->ioInter->stateStampUs();
+            waitTiming.policy_sequence = policySequence;
+            waitTiming.policy_source_state_sequence = sourceStateSequence;
+            waitTiming.policy_sim_time_us = sourceSimTimeUs;
+            waitTiming.policy_wall_time_ns = wallStartNs;
+            waitTiming.policy_wait_exit_reason = policyWaitExitReasonName(waitResult);
+            waitTiming.policy_wait_sim_elapsed_us = simElapsed;
+            waitTiming.policy_wait_wall_elapsed_us =
+                (waitTiming.wall_time_ns - waitWallStartNs) / 1000U;
+            waitTiming.history_oldest_stamp_us = history_stamps_us_.front();
+            waitTiming.history_newest_stamp_us = history_stamps_us_.back();
+            waitTiming.history_span_us = history_stamps_us_.back() >= history_stamps_us_.front() ?
+                history_stamps_us_.back() - history_stamps_us_.front() : 0;
+            waitTiming.history_duplicate_count = history_duplicate_count_;
+            waitTiming.action_sequence = actionSequence;
+            waitTiming.action_source_state_sequence = sourceStateSequence;
+            diagnostics.record(waitTiming);
+
+        } while(infer_thread_runnning.load(std::memory_order_acquire) == State_RL::RUNNING &&
+                waitResult != PolicyWaitExitReason::SimPeriodReached &&
+                waitResult != PolicyWaitExitReason::SimTimeReset &&
+                waitResult != PolicyWaitExitReason::Shutdown);
+
+        if(waitResult == PolicyWaitExitReason::Shutdown){
+            break;
+        }
+        if(waitResult == PolicyWaitExitReason::SimTimeReset){
+            continue;
+        }
     }
-    infer_thread_runnning = State_RL::OVER;
+    infer_thread_runnning.store(State_RL::OVER, std::memory_order_release);
 }
 
 void State_RL::save_amp_obs_thread()
 {
-    while(ampthreadRunning == State_RL::RUNNING)
+    while(ampthreadRunning.load(std::memory_order_acquire) == State_RL::RUNNING)
     {
         long long _start_time = getTime();
         if ((getTime() - dofPosSwitBeginTime)<_duration) {
@@ -216,21 +385,31 @@ void State_RL::save_amp_obs_thread()
         }
         wait(_start_time, (long long)(infer_duration * 1000000));
     }
-    ampthreadRunning = State_RL::OVER;
+    ampthreadRunning.store(State_RL::OVER, std::memory_order_release);
 }
 
 
 
-void State_RL::refresh_rl_obs(){
+bool State_RL::refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot,
+                              const PolicyCommandSnapshot *commandSnapshot,
+                              bool initializeHistory){
     auto opts = torch::TensorOptions().dtype(torch::kFloat32);
     //gazebo simulation mode
     if (real == false)
     {
+        if(stateSnapshot == nullptr || commandSnapshot == nullptr ||
+           !stateSnapshot->valid){
+            return false;
+        }
+        if(!initializeHistory && !history_gate_.shouldAppend(
+               stateSnapshot->state_sequence, stateSnapshot->sim_time_us)){
+            return false;
+        }
         for (int i=0; i<4; i++) {
-            base_w_orientation[i] = _ctrlComp->ioInter->_base_w_ori[i];
+            base_w_orientation[i] = stateSnapshot->base_w_orientation[i];
         }
         for (int i=0; i<3; i++) {
-            base_w_angular_vel[i] = _ctrlComp->ioInter->_base_w_angular_vel[i];
+            base_w_angular_vel[i] = stateSnapshot->base_w_angular_velocity[i];
         }
         torch::Tensor orientation_tensor = torch::from_blob(base_w_orientation.data(), {int64_t(base_w_orientation.size())}, opts).unsqueeze(0).clone();
         torch::Tensor w_angular_vel_tensor = torch::from_blob(base_w_angular_vel.data(), {int64_t(base_w_angular_vel.size())}, opts).unsqueeze(0).clone();
@@ -244,20 +423,20 @@ void State_RL::refresh_rl_obs(){
         // commands_tensor[1] = _ctrlComp->ioInter->axes[0];
         // commands_tensor[2] = _ctrlComp->ioInter->axes[3]*3.14;
 
-        commands_tensor[0] = this->current_cmd_vel_.linear_x;
-        commands_tensor[1] = this->current_cmd_vel_.linear_y;
-        commands_tensor[2] = this->current_cmd_vel_.angular_z;
+        commands_tensor[0] = commandSnapshot->linear_x;
+        commands_tensor[1] = commandSnapshot->linear_y;
+        commands_tensor[2] = commandSnapshot->angular_z;
 
 
         // std::cout << _ctrlComp->ioInter->axes << std::endl;
         // std::cout << "commands_tensor: " << commands_tensor << std::endl;
         for(int i=0; i<12; i++){
-            joint_pos[i] = _lowState->motorState[reindex[i]].q;
+            joint_pos[i] = stateSnapshot->low_state.motorState[reindex[i]].q;
         }
         dof_pos_tensor = torch::from_blob(joint_pos.data(), {int64_t(joint_pos.size())}, opts).clone();
         // printTensorHorizontal(dof_pos_tensor,"dof_pos_tensor");
         for(int i=0; i<12; i++){
-            joint_vel[i] = _lowState->motorState[reindex[i]].dq;
+            joint_vel[i] = stateSnapshot->low_state.motorState[reindex[i]].dq;
         }
         dof_vel_tensor = torch::from_blob(joint_vel.data(), {int64_t(joint_vel.size())}, opts).clone();
         obs_tensor = torch::cat({
@@ -272,6 +451,15 @@ void State_RL::refresh_rl_obs(){
             obs_history_tensor.slice(0, 1, HISTORY_LEN).to(device),  // 删除最早的一步
             obs_tensor.unsqueeze(0)  // 将当前 obs_tensor 插入到历史中
         }, 0);  // 按行（第0维）拼接
+        const std::uint64_t stampUs = stateSnapshot->sim_time_us;
+        if(history_stamps_us_.back() == stampUs){
+            ++history_duplicate_count_;
+        }
+        for(std::size_t i=1; i<history_stamps_us_.size(); ++i){
+            history_stamps_us_[i - 1] = history_stamps_us_[i];
+        }
+        history_stamps_us_.back() = stampUs;
+        history_gate_.commit(stateSnapshot->state_sequence, stampUs);
     }
     else if (real == true)
     {
@@ -306,6 +494,22 @@ void State_RL::refresh_rl_obs(){
             obs_tensor.unsqueeze(0)  // 将当前 obs_tensor 插入到历史中
         }, 0);  // 按行（第0维）拼接
     }
+    return true;
+}
+
+void State_RL::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
+    if(!msg){
+        return;
+    }
+    PolicyCommandSnapshot snapshot;
+    snapshot.linear_x = msg->linear.x;
+    snapshot.linear_y = msg->linear.y;
+    snapshot.angular_z = msg->angular.z;
+    snapshot.stamp = ros::Time::now();
+    snapshot.valid = true;
+    std::lock_guard<std::mutex> lock(command_mutex_);
+    snapshot.sequence = command_snapshot_.sequence + 1;
+    command_snapshot_ = snapshot;
 }
 
 

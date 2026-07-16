@@ -2,6 +2,7 @@
  Copyright (c) 2020-2023, Unitree Robotics.Co.Ltd. All rights reserved.
 ***********************************************************************/
 #include "FSM/FSMState.h"
+#include "common/TimingAlignment.h"
 
 FSMState::FSMState(CtrlComponents *ctrlComp, FSMStateName stateName, std::string stateNameString)
             :_ctrlComp(ctrlComp), _stateName(stateName), _stateNameString(stateNameString){
@@ -11,7 +12,8 @@ FSMState::FSMState(CtrlComponents *ctrlComp, FSMStateName stateName, std::string
 
 long long FSMState::getRosTime()
 {
-    return _ctrlComp->ioInter->current_time;
+    return static_cast<long long>(
+        _ctrlComp->ioInter->current_time.load(std::memory_order_acquire));
 }
 
 long long  FSMState::getTime()
@@ -26,18 +28,20 @@ long long  FSMState::getTime()
     }
 }
 
-void FSMState::wait(long long startTime, long long waitTime){
+PolicyWaitExitReason FSMState::wait(long long startTime, long long waitTime){
     if (real == false)
     {
-        rosAbsoluteWait(startTime,waitTime);
+        return rosAbsoluteWait(startTime,waitTime);
     }
     else
     {
         absoluteWait(startTime,waitTime);
+        return ros::ok() ? PolicyWaitExitReason::SimPeriodReached :
+                           PolicyWaitExitReason::Shutdown;
     }
 }
 
-void FSMState::rosAbsoluteWait(long long startTime, long long waitTime){
+PolicyWaitExitReason FSMState::rosAbsoluteWait(long long startTime, long long waitTime){
     overtime = 0;
     long long elapsed = getRosTime() - startTime;
     long long now = getSystemTime();
@@ -47,6 +51,14 @@ void FSMState::rosAbsoluteWait(long long startTime, long long waitTime){
     }
     while((getRosTime() - startTime < waitTime) && (overtime < OVERTIME)){
 
+        if(classifyPolicyWaitExit(
+               static_cast<std::uint64_t>(getRosTime()),
+               static_cast<std::uint64_t>(startTime),
+               static_cast<std::uint64_t>(waitTime), false) ==
+           PolicyWaitExitReason::SimTimeReset){
+            return PolicyWaitExitReason::SimTimeReset;
+        }
+
         // std::cout << "getRosTime()" << getRosTime() << std::endl;
         // std::cout << "startTime" << startTime << std::endl;
         // std::cout << "wait" << std::endl;
@@ -54,7 +66,10 @@ void FSMState::rosAbsoluteWait(long long startTime, long long waitTime){
         usleep(50);
         overtime += 50;
     }
-
+    return classifyPolicyWaitExit(
+        static_cast<std::uint64_t>(getRosTime()),
+        static_cast<std::uint64_t>(startTime),
+        static_cast<std::uint64_t>(waitTime), !ros::ok());
 }
 
 //设置cmd_vel的回调函数，将move_base转化为
@@ -70,4 +85,3 @@ void FSMState::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
     // std::cout << "cmd_vel_linear_y"<< this->current_cmd_vel_.linear_y<< std::endl;
     // std::cout << "cmd_vel_angular_z"<< this->current_cmd_vel_.angular_z<< std::endl;
 }
-

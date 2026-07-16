@@ -1,0 +1,109 @@
+{
+  "normal_low_rtf": {
+    "simulation_seconds": 10.355,
+    "wall_seconds": 37.567094,
+    "rtf": 0.27564,
+    "policy_count": 510,
+    "policy_sim_hz": 49.2516,
+    "wall_overtime_count": 0,
+    "lowcmd_count": 17641,
+    "torn_action_count": 28,
+    "history_span_average_us": 81286.3,
+    "history_span_min_us": 80000,
+    "history_span_max_us": 84000,
+    "history_enter_duplicate_count": 4
+  },
+  "pause": {
+    "sim_time_us": 70993000,
+    "wall_overtime_count": 46,
+    "policy_sequence_delta": 46,
+    "action_sequence_delta": 45,
+    "history_duplicate_delta": 44
+  },
+  "patch2_pause_regression": {
+    "sim_time_us": 13277000,
+    "wall_overtime_count": 14,
+    "policy_sequence_delta": 0,
+    "action_sequence_delta": 0,
+    "history_duplicate_delta": 0
+  },
+  "snapshot_regression": {
+    "simulation_start_s": 9.22,
+    "simulation_end_s": 14.622,
+    "policy_count": 265,
+    "action_count": 265,
+    "lowcmd_count": 7241,
+    "torn_action_count": 0,
+    "source_trace_mismatch_count": 0,
+    "lowcmd_action_sequence_regression_count": 0
+  },
+  "history_regression": {
+    "simulation_start_s": 10.222,
+    "simulation_end_s": 14.464,
+    "policy_wait_count": 209,
+    "runtime_duplicate_count": 0,
+    "entry_duplicate_count": 4,
+    "history_span_average_us": 81325.4,
+    "history_span_min_us": 80000,
+    "history_span_max_us": 84000,
+    "nonmonotonic_oldest_timestamp_count": 0
+  },
+  "reset_simulation": {
+    "before_sim_time_s": 78.315,
+    "after_sim_time_s": 1.048,
+    "sim_time_reset_wait_count": 1,
+    "first_reset_wait_sim_elapsed_us": -78501000,
+    "pre_reset_history_retained": true,
+    "pre_reset_action_generated_before_detection": true
+  },
+  "reset_regression": {
+    "before_reset_sim_time_us": 18487000,
+    "sim_time_reset_wait_count": 1,
+    "first_reset_wait_wall_us": 64309,
+    "first_post_reset_action_sequence": 1,
+    "first_post_reset_source_state_sequence": 21,
+    "first_post_reset_source_sim_time_us": 21000,
+    "first_post_reset_history_span_us": 20000,
+    "steady_post_reset_history_span_us": 80000,
+    "pre_reset_history_retained": false,
+    "pre_reset_action_retained": false
+  },
+  "patch6_pause_regression": {
+    "sim_time_us": 17907000,
+    "wall_seconds": 5,
+    "policy_sequence_before": 616,
+    "policy_sequence_after": 616,
+    "action_sequence_before": 472,
+    "action_sequence_after": 472
+  },
+  "extended_low_rtf_regression": {
+    "valid_csv_rows": 13696598,
+    "truncated_csv_rows": 1,
+    "action_simulation_start_s": 3.749,
+    "action_simulation_end_s": 1381.089,
+    "action_simulation_span_s": 1377.34,
+    "action_wall_span_s": 14056.005388,
+    "average_rtf": 0.09799,
+    "action_count": 68868,
+    "policy_sim_hz": 50.0,
+    "sim_period_reached_count": 68867,
+    "wall_overtime_count": 5047,
+    "lowcmd_count": 6776908,
+    "lowcmd_repeated_action_count": 6708040,
+    "lowcmd_changed_action_count": 68868,
+    "lowcmd_action_sequence_regression_count": 0,
+    "torn_action_count": 0,
+    "history_span_average_us": 79998.26,
+    "history_span_min_warmup_us": 20000,
+    "history_span_max_us": 80000,
+    "history_enter_duplicate_count": 4
+  },
+  "unit_regression": {
+    "timing_alignment_test_count": 5,
+    "timing_alignment_failure_count": 0,
+    "workspace_test_count": 10,
+    "workspace_error_count": 0,
+    "workspace_failure_count": 0,
+    "concurrent_action_generations": 10000
+  }
+}
