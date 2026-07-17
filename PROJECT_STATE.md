@@ -23,6 +23,11 @@
   `/cmd_vel` locomotion
 
 ## Active Work
+- **2026-07-17 单层 Trotting/RL 速度短窗验证（完成）**：在六个全新、独立 ROS
+  master epoch 中，对 `0.1/0.5/1.0 m/s` `/cmd_vel` 指令采集了 Gazebo 真值轨迹。
+  当前 RTF 为 0.065--0.151，实际速度并不随 RTF 单调变化；RL 的 0.5/1.0 m/s
+  停止尾速为 0.288/0.328 m/s，是优先风险。图、CSV、原始轨迹和完整限制见
+  `docs/reports/0717_trot-rl-speed-profile.md`。
 - **2026-07-17 single-floor Trotting/RL mapping validation (PARTIAL)**: fixed seed 77
   headless trials completed the same bounded `/cmd_vel` route in fresh epochs.
   Trotting/RL moved 0.192487/0.169675 m with finite truth and FAST-LIO2 odometry;
