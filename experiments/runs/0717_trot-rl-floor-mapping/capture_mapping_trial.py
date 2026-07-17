@@ -60,7 +60,7 @@ class Capture:
         header = ["ros_time", "wall_elapsed", "x", "y", "z", "qx", "qy", "qz", "qw",
                   "vx", "vy", "vz", "wz"]
         with open(os.path.join(self.output_dir, name), "w", newline="") as f:
-            writer = csv.writer(f)
+            writer = csv.writer(f, lineterminator="\n")
             writer.writerow(header)
             writer.writerows(rows)
 
