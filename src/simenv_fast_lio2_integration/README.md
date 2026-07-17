@@ -87,17 +87,28 @@ rosrun simenv_fast_lio2_integration pointcloud_fields_check.py _topic:=/scan_poi
 | `/scan_pointcloud2` | `sensor_msgs/PointCloud2` | `laser_livox` | LiDAR 点云 (x,y,z) |
 | `/livox/imu` | `sensor_msgs/Imu` | `livox_imu_link` | LiDAR 内置 IMU (1000 Hz) |
 
-### 输出 (FAST-LIO2 发布, 需运行时验证)
+### 输出
 | Topic | 类型 | 说明 |
 |-------|------|------|
-| `/Odometry` | `nav_msgs/Odometry` | LiDAR-inertial 里程计 |
-| `/cloud_registered` | `sensor_msgs/PointCloud2` | 配准后点云 (world 帧) |
+| `/Odometry` | `nav_msgs/Odometry` | FAST-LIO2 原生里程计，保留供既有消费者使用 |
+| `/cloud_registered` | `sensor_msgs/PointCloud2` | FAST-LIO2 原生配准点云，保留供既有消费者使用 |
+| `/state_estimation` | `nav_msgs/Odometry` | 导航接口；由 `topic_tools/relay` 透明复制 `/Odometry` |
+| `/registered_scan` | `sensor_msgs/PointCloud2` | 导航接口；由 `topic_tools/relay` 透明复制 `/cloud_registered` |
 | `/Laser_map` | `sensor_msgs/PointCloud2` | 全局地图点云 |
 | `/path` | `nav_msgs/Path` | 机器人路径 |
 | `/aft_mapped_to_init` | `geometry_msgs/TransformStamped` | 地图到初始帧变换 |
 | TF: `camera_init` → `body` | | SLAM 坐标系 |
 
 > 注: 实际 topic 名称以 FAST-LIO2 launch/config 和运行结果为准。本文件列出的为常见默认值。
+
+Stage 2 输出名称可通过 launch 参数 `state_estimation_topic` 和
+`registered_scan_topic` 覆盖。`map → camera_init` 仍仅由
+`map_to_camera_init_bridge.py` 发布；relay 不改写 frame，也不发布额外 TF。
+`odometry_tf_bridge.py` 将 `/state_estimation` 中已有的
+`camera_init → body` 位姿原样广播为动态 TF，使该估计链可通过静态
+`map → camera_init` 桥与 Gazebo 世界树连接；它拒绝空 frame 和非有限位姿。
+若另一个估计器已经广播同一 TF，可将 launch 参数
+`enable_odometry_tf_bridge:=false` 关闭，避免重复 authority。
 
 ## 已知限制
 

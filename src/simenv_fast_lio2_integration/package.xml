@@ -16,6 +16,7 @@
   <depend>std_msgs</depend>
   <depend>tf</depend>
   <depend>tf2_ros</depend>
+  <exec_depend>topic_tools</exec_depend>
 
   <export>
   </export>

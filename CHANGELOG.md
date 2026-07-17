@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-17 — FAST-LIO2 Stage 2 navigation interface
+
+- Added transparent, configurable `/state_estimation` and `/registered_scan`
+  relays while preserving legacy `/Odometry` and `/cloud_registered` topics.
+- Kept `map → camera_init` TF ownership unchanged and added static contract
+  tests for topic/frame responsibility.
+- Package build passes; full-workspace CUDA build and five-minute isolated
+  Gazebo validation remain blocked and are documented in the task report.
+- Added an Odometry-to-TF bridge for `camera_init → body` and validated the
+  revised 150-second runtime target with both navigation topics at 10 Hz.
+
 ## 2026-07-17
 
 - Completed the Gazebo–unitree_guide–RL timing-alignment review. Policy/history

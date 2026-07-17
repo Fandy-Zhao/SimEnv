@@ -18,6 +18,7 @@ catkin_install_python(PROGRAMS
   scripts/scan_to_pointcloud2.py
   scripts/pointcloud_fields_check.py
   scripts/map_to_camera_init_bridge.py
+  scripts/odometry_tf_bridge.py
   scripts/check_fast_lio2_extrinsics.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
@@ -25,3 +26,7 @@ catkin_install_python(PROGRAMS
 install(DIRECTORY launch config
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+
+if(CATKIN_ENABLE_TESTING)
+  catkin_add_nosetests(test/test_stage2_topic_contract.py)
+endif()

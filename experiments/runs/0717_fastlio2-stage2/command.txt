@@ -1,0 +1,17 @@
+# Commands and outcomes are appended during validation.
+git status --short
+git branch --show-current
+python3 -m py_compile scripts/map_to_camera_init_bridge.py test/test_stage2_topic_contract.py  # PASS
+python3 -m unittest test/test_stage2_topic_contract.py  # PASS (4 tests final)
+xmllint --noout launch/simenv_fast_lio2_mapping.launch  # PASS
+roslaunch --files launch/simenv_fast_lio2_mapping.launch  # PASS with read-only main-worktree ROS_PACKAGE_PATH
+catkin_make -j --only-pkg-with-deps simenv_fast_lio2_integration  # PASS
+catkin_make -DCATKIN_WHITELIST_PACKAGES= -j  # FAIL: nvcc cannot execute cc1plus
+flock /tmp/simenv-gazebo.lock timeout 25 <relay smoke session>  # PASS; relay_contract.txt
+# Runtime attempt 1: terminated by auto.sh stale-process pkill matching lock wrapper.
+# Runtime attempt 2: stopped immediately after isolation violation was identified.
+# Isolated attempt: stage2/auto.sh reached ROS 2.518 s; Unitree plugin load failed.
+# Isolated retry: /scan type PASS, trunk_imu z=9.79999999216685; controller
+# remained without joint feedback, so FAST-LIO2/capture were not started.
+# Final overlay run: FixedStand/upright PASS; types/frames PASS; 150.0 ROS s,
+# 1500 odometry + 1500 clouds; map->body TF 1197/1501 after live bridge fix.
