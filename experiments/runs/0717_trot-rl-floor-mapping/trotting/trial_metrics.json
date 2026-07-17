@@ -1,0 +1,46 @@
+{
+  "mode": "trotting",
+  "status": "completed",
+  "segments": [
+    {
+      "name": "forward_1",
+      "sim_duration": 0.5,
+      "completed": true
+    },
+    {
+      "name": "left_turn",
+      "sim_duration": 0.5,
+      "completed": true
+    },
+    {
+      "name": "forward_2",
+      "sim_duration": 0.5,
+      "completed": true
+    },
+    {
+      "name": "stop",
+      "sim_duration": 0.25,
+      "completed": true
+    }
+  ],
+  "truth_samples": 2698,
+  "odom_samples": 53,
+  "registered_messages": 53,
+  "laser_map_messages": 0,
+  "truth_finite": true,
+  "odom_finite": true,
+  "ground_truth_displacement_m": 0.1924870202706153,
+  "minimum_base_z_m": 0.09218914279968098,
+  "maximum_tilt_deg": 6.497269823424329,
+  "final_stop_mean_speed_mps": 0.00707588339285755,
+  "map": {
+    "points": 5006,
+    "raw_point_limit": 200000,
+    "saved_point_limit": 50000,
+    "wall_timeout_s": 8.0,
+    "pcd": "/home/zzf/search_ws/SimEnv_worktrees/trot-rl/experiments/runs/0717_trot-rl-floor-mapping/trotting/map_ascii.pcd",
+    "image": "/home/zzf/search_ws/SimEnv_worktrees/trot-rl/experiments/runs/0717_trot-rl-floor-mapping/trotting/map_topdown.png",
+    "frame_id": "camera_init"
+  },
+  "wall_duration_s": 30.204201799999282
+}

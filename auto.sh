@@ -52,6 +52,7 @@ FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-5}"
 ENABLE_RVIZ="$(as_ros_bool "${ENABLE_RVIZ:-1}")"
 TERMINAL_BACKEND="${TERMINAL_BACKEND:-tmux}"
 TMUX_SESSION_PREFIX="${TMUX_SESSION_PREFIX:-simenv}"
+SKIP_GLOBAL_PROCESS_CLEANUP="$(as_ros_bool "${SKIP_GLOBAL_PROCESS_CLEANUP:-0}")"
 UNITREE_CTRL_DT="${UNITREE_CTRL_DT:-0.004}"
 GAZEBO_PHYSICS_MAX_STEP_SIZE="${GAZEBO_PHYSICS_MAX_STEP_SIZE:-0.002}"
 GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE:-500}"
@@ -224,8 +225,11 @@ cleanup_tmux_sessions() {
   done
 }
 
-echo "Cleaning up all leftover processes from previous runs..."
-cleanup_tmux_sessions
+if [ "$SKIP_GLOBAL_PROCESS_CLEANUP" = "true" ]; then
+  echo "Skipping global process cleanup (SKIP_GLOBAL_PROCESS_CLEANUP=true)."
+else
+  echo "Cleaning up all leftover processes from previous runs..."
+  cleanup_tmux_sessions
 
 # ---- Gazebo & ROS core ----
 pkill -9 -f "gzserver"     2>/dev/null || true
@@ -259,6 +263,7 @@ pkill -9 -f "controller_spawner"    2>/dev/null || true
 # ---- Stale rostopic processes ----
 pkill -9 -f "rostopic.*/cmd_vel"    2>/dev/null || true
 pkill -9 -f "rostopic.*echo"        2>/dev/null || true
+fi
 
 # Give the OS a moment to reclaim ports and shared memory
 sleep 2
@@ -459,7 +464,9 @@ if [ "$ENABLE_FAST_LIO2" = "true" ]; then
   fi
 
   echo "Starting FAST-LIO2 mapping (scan adapter + fastlio_mapping)..."
-  rosrun simenv_fast_lio2_integration scan_to_pointcloud2.py \
+  # Run with Noetic's system Python even when a catkin wrapper was generated
+  # from an active Conda environment.
+  /usr/bin/python3 "$WORKSPACE_DIR/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py" \
     > "$WORKSPACE_DIR/logs/scan_adapter.log" 2>&1 &
   echo $! > "$WORKSPACE_DIR/logs/scan_adapter.pid"
   sleep 2
