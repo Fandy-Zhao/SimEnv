@@ -1,0 +1,269 @@
+{
+  "schema_version": 1,
+  "trials": [
+    {
+      "active": {
+        "completed": true,
+        "sim_end": 1.6,
+        "sim_start": 1.096,
+        "wall_end": 49066.605301729,
+        "wall_start": 49060.708227003
+      },
+      "active_end_xy_m": [
+        0.04606712166125967,
+        1.8083463806636701
+      ],
+      "active_sim_elapsed_s": 0.504,
+      "active_start_xy_m": [
+        -0.0008059719500949671,
+        1.9428159187023732
+      ],
+      "active_wall_elapsed_s": 5.8970747260027565,
+      "actual_mean_horizontal_speed_mps": 0.32947393393210495,
+      "command_speed_mps": 0.1,
+      "final_stop_mean_speed_mps": 0.018703610438897678,
+      "latter_half_mean_horizontal_speed_mps": 0.41592783501002606,
+      "max_abs_yaw_deg": 164.7964626176712,
+      "min_base_z_m": 0.07977630817967522,
+      "mode": "rl",
+      "net_displacement_m": 0.14240485794045452,
+      "path_length_m": 0.16605486270178088,
+      "real_time_factor": 0.085466103689961,
+      "run_dir": "/home/zzf/search_ws/SimEnv_worktrees/trot-rl-speed/experiments/runs/0717_trot-rl-speed-profile/raw/rl_010",
+      "schema_version": 1,
+      "status": "completed",
+      "stop": {
+        "completed": true,
+        "sim_end": 1.85,
+        "sim_start": 1.6,
+        "wall_end": 49079.043614554,
+        "wall_start": 49066.605323755
+      },
+      "tracking_ratio": 3.2947393393210493,
+      "truth_finite": true,
+      "truth_samples_active": 25,
+      "truth_samples_stop": 12,
+      "truth_samples_total": 93
+    },
+    {
+      "active": {
+        "completed": true,
+        "sim_end": 1.6179999999999999,
+        "sim_start": 1.114,
+        "wall_end": 49463.701430303,
+        "wall_start": 49455.98213953
+      },
+      "active_end_xy_m": [
+        -0.06620094256657358,
+        2.087081155813273
+      ],
+      "active_sim_elapsed_s": 0.5039999999999998,
+      "active_start_xy_m": [
+        0.009314018793112763,
+        1.9629568319655346
+      ],
+      "active_wall_elapsed_s": 7.719290772998647,
+      "actual_mean_horizontal_speed_mps": 0.29695604644283313,
+      "command_speed_mps": 0.5,
+      "final_stop_mean_speed_mps": 0.288418177064932,
+      "latter_half_mean_horizontal_speed_mps": 0.3935819366166265,
+      "max_abs_yaw_deg": 120.44219659561502,
+      "min_base_z_m": 0.2044994786661989,
+      "mode": "rl",
+      "net_displacement_m": 0.145290595565622,
+      "path_length_m": 0.14966584740718783,
+      "real_time_factor": 0.06529097229540107,
+      "run_dir": "/home/zzf/search_ws/SimEnv_worktrees/trot-rl-speed/experiments/runs/0717_trot-rl-speed-profile/raw/rl_050",
+      "schema_version": 1,
+      "status": "completed",
+      "stop": {
+        "completed": true,
+        "sim_end": 1.87,
+        "sim_start": 1.6179999999999999,
+        "wall_end": 49469.843299573,
+        "wall_start": 49463.701490215
+      },
+      "tracking_ratio": 0.5939120928856663,
+      "truth_finite": true,
+      "truth_samples_active": 25,
+      "truth_samples_stop": 12,
+      "truth_samples_total": 92
+    },
+    {
+      "active": {
+        "completed": true,
+        "sim_end": 1.762,
+        "sim_start": 1.248,
+        "wall_end": 49649.658087199,
+        "wall_start": 49645.217083705
+      },
+      "active_end_xy_m": [
+        0.03815546087799691,
+        2.5158172251115203
+      ],
+      "active_sim_elapsed_s": 0.514,
+      "active_start_xy_m": [
+        0.03504391328228505,
+        2.3259661462150514
+      ],
+      "active_wall_elapsed_s": 4.441003494001052,
+      "actual_mean_horizontal_speed_mps": 0.4100264909717983,
+      "command_speed_mps": 1.0,
+      "final_stop_mean_speed_mps": 0.3275156750378327,
+      "latter_half_mean_horizontal_speed_mps": 0.5685205067070495,
+      "max_abs_yaw_deg": 86.63932938184621,
+      "min_base_z_m": 0.08832898539981446,
+      "mode": "rl",
+      "net_displacement_m": 0.18987657540253258,
+      "path_length_m": 0.21075361635950432,
+      "real_time_factor": 0.11573960720686573,
+      "run_dir": "/home/zzf/search_ws/SimEnv_worktrees/trot-rl-speed/experiments/runs/0717_trot-rl-speed-profile/raw/rl_100",
+      "schema_version": 1,
+      "status": "completed",
+      "stop": {
+        "completed": true,
+        "sim_end": 2.022,
+        "sim_start": 1.762,
+        "wall_end": 49651.53623817,
+        "wall_start": 49649.658101901
+      },
+      "tracking_ratio": 0.4100264909717983,
+      "truth_finite": true,
+      "truth_samples_active": 26,
+      "truth_samples_stop": 13,
+      "truth_samples_total": 100
+    },
+    {
+      "active": {
+        "completed": true,
+        "sim_end": 2.044,
+        "sim_start": 1.54,
+        "wall_end": 48707.461454883,
+        "wall_start": 48702.374171684
+      },
+      "active_end_xy_m": [
+        -0.19361502929255425,
+        1.7527344972777226
+      ],
+      "active_sim_elapsed_s": 0.504,
+      "active_start_xy_m": [
+        -0.050942246049011666,
+        1.7008223017183728
+      ],
+      "active_wall_elapsed_s": 5.087283198998193,
+      "actual_mean_horizontal_speed_mps": 0.33759882615055126,
+      "command_speed_mps": 0.1,
+      "final_stop_mean_speed_mps": 0.03693506945366096,
+      "latter_half_mean_horizontal_speed_mps": 0.09414542863675732,
+      "max_abs_yaw_deg": 81.04122284804387,
+      "min_base_z_m": 0.09478129506755323,
+      "mode": "trotting",
+      "net_displacement_m": 0.15182357895350468,
+      "path_length_m": 0.17014980837987784,
+      "real_time_factor": 0.09907056090355842,
+      "run_dir": "/home/zzf/search_ws/SimEnv_worktrees/trot-rl-speed/experiments/runs/0717_trot-rl-speed-profile/raw/trotting_010",
+      "schema_version": 1,
+      "status": "completed",
+      "stop": {
+        "completed": true,
+        "sim_end": 2.294,
+        "sim_start": 2.044,
+        "wall_end": 48711.194804127,
+        "wall_start": 48707.461472474
+      },
+      "tracking_ratio": 3.3759882615055123,
+      "truth_finite": true,
+      "truth_samples_active": 26,
+      "truth_samples_stop": 13,
+      "truth_samples_total": 113
+    },
+    {
+      "active": {
+        "completed": true,
+        "sim_end": 2.11,
+        "sim_start": 1.6099999999999999,
+        "wall_end": 48810.800887083,
+        "wall_start": 48807.479059387
+      },
+      "active_end_xy_m": [
+        -0.008978913958284596,
+        2.321724275498724
+      ],
+      "active_sim_elapsed_s": 0.5,
+      "active_start_xy_m": [
+        0.0026532274230678067,
+        2.2936145047696224
+      ],
+      "active_wall_elapsed_s": 3.321827696003311,
+      "actual_mean_horizontal_speed_mps": 0.06340731147749883,
+      "command_speed_mps": 0.5,
+      "final_stop_mean_speed_mps": 0.03688731226638674,
+      "latter_half_mean_horizontal_speed_mps": 0.10615854035263533,
+      "max_abs_yaw_deg": 90.22480665677614,
+      "min_base_z_m": 0.10514305410085065,
+      "mode": "trotting",
+      "net_displacement_m": 0.030421471423296206,
+      "path_length_m": 0.03170365573874941,
+      "real_time_factor": 0.15051954699564335,
+      "run_dir": "/home/zzf/search_ws/SimEnv_worktrees/trot-rl-speed/experiments/runs/0717_trot-rl-speed-profile/raw/trotting_050",
+      "schema_version": 1,
+      "status": "completed",
+      "stop": {
+        "completed": true,
+        "sim_end": 2.364,
+        "sim_start": 2.11,
+        "wall_end": 48812.614092459,
+        "wall_start": 48810.800902811
+      },
+      "tracking_ratio": 0.12681462295499765,
+      "truth_finite": true,
+      "truth_samples_active": 25,
+      "truth_samples_stop": 12,
+      "truth_samples_total": 119
+    },
+    {
+      "active": {
+        "completed": true,
+        "sim_end": 2.136,
+        "sim_start": 1.6320000000000001,
+        "wall_end": 48866.571542594,
+        "wall_start": 48862.096260526
+      },
+      "active_end_xy_m": [
+        -0.13139332069655374,
+        1.7502998083690011
+      ],
+      "active_sim_elapsed_s": 0.504,
+      "active_start_xy_m": [
+        -0.08905935462264505,
+        1.6823179549050207
+      ],
+      "active_wall_elapsed_s": 4.475282068000524,
+      "actual_mean_horizontal_speed_mps": 0.4048615773723188,
+      "command_speed_mps": 1.0,
+      "final_stop_mean_speed_mps": 0.06600852262575159,
+      "latter_half_mean_horizontal_speed_mps": 0.5135011734595014,
+      "max_abs_yaw_deg": 100.89306720852608,
+      "min_base_z_m": 0.08724781474658463,
+      "mode": "trotting",
+      "net_displacement_m": 0.08008556102035473,
+      "path_length_m": 0.20405023499564867,
+      "real_time_factor": 0.11261859975346272,
+      "run_dir": "/home/zzf/search_ws/SimEnv_worktrees/trot-rl-speed/experiments/runs/0717_trot-rl-speed-profile/raw/trotting_100",
+      "schema_version": 1,
+      "status": "completed",
+      "stop": {
+        "completed": true,
+        "sim_end": 2.388,
+        "sim_start": 2.136,
+        "wall_end": 48868.549501318,
+        "wall_start": 48866.571556183
+      },
+      "tracking_ratio": 0.4048615773723188,
+      "truth_finite": true,
+      "truth_samples_active": 25,
+      "truth_samples_stop": 13,
+      "truth_samples_total": 119
+    }
+  ]
+}

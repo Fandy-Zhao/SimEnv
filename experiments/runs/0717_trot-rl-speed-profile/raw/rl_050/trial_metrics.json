@@ -1,0 +1,43 @@
+{
+  "active": {
+    "completed": true,
+    "sim_end": 1.6179999999999999,
+    "sim_start": 1.114,
+    "wall_end": 49463.701430303,
+    "wall_start": 49455.98213953
+  },
+  "active_end_xy_m": [
+    -0.06620094256657358,
+    2.087081155813273
+  ],
+  "active_sim_elapsed_s": 0.5039999999999998,
+  "active_start_xy_m": [
+    0.009314018793112763,
+    1.9629568319655346
+  ],
+  "active_wall_elapsed_s": 7.719290772998647,
+  "actual_mean_horizontal_speed_mps": 0.29695604644283313,
+  "command_speed_mps": 0.5,
+  "final_stop_mean_speed_mps": 0.288418177064932,
+  "latter_half_mean_horizontal_speed_mps": 0.3935819366166265,
+  "max_abs_yaw_deg": 120.44219659561502,
+  "min_base_z_m": 0.2044994786661989,
+  "mode": "rl",
+  "net_displacement_m": 0.145290595565622,
+  "path_length_m": 0.14966584740718783,
+  "real_time_factor": 0.06529097229540107,
+  "schema_version": 1,
+  "status": "completed",
+  "stop": {
+    "completed": true,
+    "sim_end": 1.87,
+    "sim_start": 1.6179999999999999,
+    "wall_end": 49469.843299573,
+    "wall_start": 49463.701490215
+  },
+  "tracking_ratio": 0.5939120928856663,
+  "truth_finite": true,
+  "truth_samples_active": 25,
+  "truth_samples_stop": 12,
+  "truth_samples_total": 92
+}

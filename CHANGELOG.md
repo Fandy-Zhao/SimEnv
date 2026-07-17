@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-17 — Single-floor Trotting/RL speed profile
+
+- Added reproducible, isolated ROS-master speed trials for Trotting and RL at
+  0.1, 0.5, and 1.0 m/s, with Gazebo-truth planar traces and per-epoch metrics.
+- Recorded the current RTF/mobility relationship and explicitly classified the
+  0.5 s windows as short-response evidence, not steady-state calibration.
+- Added a report, raw-data artifact guide, summary CSV/JSON, and generated
+  planar-trajectory and RTF/mobility figures.
+
 ## 2026-07-17 — FAST-LIO2 Stage 2 navigation interface
 
 - Added transparent, configurable `/state_estimation` and `/registered_scan`
