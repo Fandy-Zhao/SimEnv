@@ -52,6 +52,8 @@ IOROS::IOROS():IOInterface(){
     for(std::size_t i=0; i<_foot_force.size(); ++i){
         _foot_force[i].store(0.0f);
         _foot_force_wall_stamp_ns[i].store(0);
+        _foot_force_callback_sequence[i].store(0);
+        _foot_force_sim_time_us[i].store(0);
     }
     _imu_received.store(false);
 
@@ -169,6 +171,10 @@ void IOROS::recvState(LowlevelState *state){
         state->footForce[i] = _foot_force[i].load();
         state->footForceValid[i] = stampNs != 0 && nowNs >= stampNs &&
             (nowNs - stampNs) <= maxContactAgeNs;
+        state->footForceCallbackSequence[i] = _foot_force_callback_sequence[i].load(
+            std::memory_order_relaxed);
+        state->footForceSimTimeUs[i] = _foot_force_sim_time_us[i].load(
+            std::memory_order_relaxed);
     }
     const std::uint64_t stampUs = current_time.load(std::memory_order_acquire);
     const std::uint64_t previousStamp = _state_stamp_us.exchange(stampUs, std::memory_order_acq_rel);
@@ -254,6 +260,10 @@ void IOROS::updateFootForce(int index, const geometry_msgs::WrenchStamped& msg){
     }
     _foot_force[index].store(static_cast<float>(std::sqrt(x*x + y*y + z*z)));
     _foot_force_wall_stamp_ns[index].store(ros::WallTime::now().toNSec());
+    _foot_force_callback_sequence[index].fetch_add(1, std::memory_order_relaxed);
+    _foot_force_sim_time_us[index].store(
+        static_cast<std::uint64_t>(msg.header.stamp.toNSec() / 1000ULL),
+        std::memory_order_relaxed);
 }
 
 void IOROS::FRfootForceCallback(const geometry_msgs::WrenchStamped& msg){
