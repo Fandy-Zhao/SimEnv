@@ -371,6 +371,9 @@ void State_Trotting::getUserCmd(){
         _dYawCmd = saturation(_dYawCmd, _wyawLim);
         _dYawCmdPast = _dYawCmd;
     }
+    _ctrlComp->resolvedVx = _vCmdBody(0);
+    _ctrlComp->resolvedVy = _vCmdBody(1);
+    _ctrlComp->resolvedYawRate = _dYawCmd;
 }
 
 bool State_Trotting::stateEstimateFinite() const{
@@ -417,6 +420,9 @@ void State_Trotting::resetCommandState(){
     _wCmdGlobal.setZero();
     _dYawCmd = 0.0;
     _dYawCmdPast = 0.0;
+    _ctrlComp->resolvedVx = 0.0;
+    _ctrlComp->resolvedVy = 0.0;
+    _ctrlComp->resolvedYawRate = 0.0;
     _cmdVelActive = false;
     _cmdVx = 0.0;
     _cmdVy = 0.0;

@@ -16,6 +16,7 @@
 #include <string>
 #include <iostream>
 #include <cmath>
+#include <cstdint>
 #include <ros/time.h>
 
 #ifdef COMPILE_DEBUG
@@ -62,8 +63,21 @@ public:
     Vec4 *phase;
 
     double dt;
+    std::uint64_t controlPeriodUs = 2000;
     double controlDt = 0.0;
     ros::Time controlTime;
+    std::uint64_t controlResetGeneration = 0;
+    std::uint64_t fsmSequence = 0;
+    std::uint64_t waveSequence = 0;
+    std::uint64_t gaitCycleSequence = 0;
+    std::uint64_t acceptedStateSequence = 0;
+    std::uint64_t nextControlDeadlineUs = 0;
+    std::uint64_t schedulerLagUs = 0;
+    std::uint64_t schedulerMissedPeriods = 0;
+    std::uint64_t repeatedStateRejectedCount = 0;
+    double resolvedVx = 0.0;
+    double resolvedVy = 0.0;
+    double resolvedYawRate = 0.0;
     bool *running;
     CtrlPlatform ctrlPlatform;
 
@@ -75,8 +89,27 @@ public:
         ioInter->sendRecv(lowCmd, lowState);
     }
 
+    void recvStateOnly(){
+        ioInter->recvStateOnly(lowState);
+    }
+
+    void publishCmdOnly(){
+        ioInter->publishCmdOnly(lowCmd);
+    }
+
     void runWaveGen(){
+        const double previousPhase0 = (*phase)(0);
+        const bool hadPreviousPhase = _gaitPhaseInitialized;
         waveGen->calcContactPhase(*phase, *contact, _waveStatus, controlTime);
+        ++waveSequence;
+        if(_waveStatus == WaveStatus::WAVE_ALL){
+            if(hadPreviousPhase && previousPhase0 > 0.8 && (*phase)(0) < 0.2){
+                ++gaitCycleSequence;
+            }
+            _gaitPhaseInitialized = true;
+        } else {
+            _gaitPhaseInitialized = false;
+        }
     }
 
     double getControlDt() const{
@@ -85,6 +118,7 @@ public:
 
     void resetWaveTime(const ros::Time &time){
         waveGen->resetTime(time, _waveStatus);
+        _gaitPhaseInitialized = false;
     }
 
     void setAllStance(){
@@ -106,6 +140,10 @@ public:
         _waveStatus = WaveStatus::WAVE_ALL;
     }
 
+    WaveStatus waveStatus() const{
+        return _waveStatus;
+    }
+
     void geneObj(){
         estimator = new Estimator(robotModel, lowState, contact, phase, dt);
         balCtrl = new BalanceCtrl(robotModel);
@@ -119,6 +157,7 @@ public:
 
 private:
     WaveStatus _waveStatus = WaveStatus::SWING_ALL;
+    bool _gaitPhaseInitialized = false;
 };
 
 #endif  // CTRLCOMPONENTS_H

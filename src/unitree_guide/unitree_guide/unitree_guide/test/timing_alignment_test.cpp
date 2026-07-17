@@ -1,6 +1,7 @@
 #include <atomic>
 #include <cstdint>
 #include <thread>
+#include <vector>
 
 #include <gtest/gtest.h>
 
@@ -40,6 +41,99 @@ TEST(PolicyHistoryGate, RejectsDuplicateEarlyAndBackwardState){
     EXPECT_EQ(nearUint32Boundary + 20000, gate.lastSimTimeUs());
     gate.reset();
     EXPECT_TRUE(gate.shouldAppend(1, 1000));
+}
+
+TEST(ControlTimeScheduler, FixedTwoMillisecondPeriodIgnoresOneMillisecondStateTicks){
+    ControlTimeScheduler scheduler(2000);
+    std::uint64_t accepted = 0;
+    for(std::uint64_t t = 1000; t <= 10000000; t += 1000){
+        const auto decision = scheduler.update({t, t / 1000, 0});
+        if(decision.should_advance){
+            ++accepted;
+            EXPECT_EQ(2000U, decision.accepted_control_dt_us);
+        }
+    }
+    EXPECT_EQ(4999U, accepted);
+    EXPECT_EQ(10001000U, scheduler.nextDeadlineUs());
+}
+
+TEST(ControlTimeScheduler, FixedFourMillisecondPeriodIsConfigurationDriven){
+    ControlTimeScheduler scheduler(4000);
+    std::uint64_t accepted = 0;
+    for(std::uint64_t t = 1000; t <= 10000000; t += 1000){
+        if(scheduler.update({t, t / 1000, 0}).should_advance){
+            ++accepted;
+        }
+    }
+    EXPECT_EQ(2499U, accepted);
+    EXPECT_EQ(10001000U, scheduler.nextDeadlineUs());
+}
+
+TEST(ControlTimeScheduler, IrregularTicksFollowPeriodNotTickCount){
+    ControlTimeScheduler scheduler(2000);
+    const std::vector<std::uint64_t> increments{800, 1100, 1400, 900, 1300};
+    std::uint64_t simUs = 0;
+    std::uint64_t stateSeq = 0;
+    std::uint64_t accepted = 0;
+    while(simUs < 1000000){
+        simUs += increments[stateSeq % increments.size()];
+        ++stateSeq;
+        if(scheduler.update({simUs, stateSeq, 0}).should_advance){
+            ++accepted;
+        }
+    }
+    EXPECT_GE(accepted, 498U);
+    EXPECT_LE(accepted, 500U);
+}
+
+TEST(ControlTimeScheduler, PauseAndWallOvertimeDoNotAdvance){
+    ControlTimeScheduler scheduler(2000);
+    EXPECT_FALSE(scheduler.update({1000, 1, 0}).should_advance);
+    EXPECT_TRUE(scheduler.update({3000, 2, 0}).should_advance);
+    for(std::uint64_t i = 0; i < 1000; ++i){
+        const auto decision = scheduler.update({3000, 2, 0});
+        EXPECT_FALSE(decision.should_advance);
+        EXPECT_TRUE(decision.state_repeated);
+    }
+}
+
+TEST(ControlTimeScheduler, DeadlineWithoutNewStateRejectsRepeatedState){
+    ControlTimeScheduler scheduler(2000);
+    EXPECT_FALSE(scheduler.update({1000, 1, 0}).should_advance);
+    EXPECT_TRUE(scheduler.update({3000, 2, 0}).should_advance);
+    const auto decision = scheduler.update({5000, 2, 0});
+    EXPECT_FALSE(decision.should_advance);
+    EXPECT_TRUE(decision.state_repeated);
+}
+
+TEST(ControlTimeScheduler, LargeLagAcceptsOnceAndSkipsBurstCatchup){
+    ControlTimeScheduler scheduler(2000);
+    EXPECT_FALSE(scheduler.update({1000, 1, 0}).should_advance);
+    const auto decision = scheduler.update({11000, 2, 0});
+    EXPECT_TRUE(decision.should_advance);
+    EXPECT_EQ(3000U, decision.accepted_control_time_us);
+    EXPECT_EQ(8000U, decision.lag_us);
+    EXPECT_EQ(4U, decision.missed_periods);
+    EXPECT_EQ(13000U, decision.next_deadline_us);
+    EXPECT_FALSE(scheduler.update({11000, 3, 0}).should_advance);
+}
+
+TEST(ControlTimeScheduler, ResetClearsDeadlineAndOldState){
+    ControlTimeScheduler scheduler(2000);
+    EXPECT_FALSE(scheduler.update({100000, 10, 0}).should_advance);
+    EXPECT_TRUE(scheduler.update({102000, 11, 0}).should_advance);
+    const auto resetDecision = scheduler.update({1000, 1, 1});
+    EXPECT_TRUE(resetDecision.reset_detected);
+    EXPECT_FALSE(resetDecision.should_advance);
+    EXPECT_EQ(3000U, resetDecision.next_deadline_us);
+    EXPECT_TRUE(scheduler.update({3000, 2, 1}).should_advance);
+}
+
+TEST(ControlTimeScheduler, CrossesFormerUint32Boundary){
+    constexpr std::uint64_t startUs = 4294960000ULL;
+    ControlTimeScheduler scheduler(2000);
+    EXPECT_FALSE(scheduler.update({startUs, 1, 0}).should_advance);
+    EXPECT_TRUE(scheduler.update({startUs + 2000, 2, 0}).should_advance);
 }
 
 TEST(PolicyOutputBuffer, ConcurrentReadsObserveOneCompleteGeneration){

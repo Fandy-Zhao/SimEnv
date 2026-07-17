@@ -15,7 +15,9 @@
 #include "FSM/State_BalanceTest.h"
 #include "FSM/State_SwingTest.h"
 #include "FSM/State_StepTest.h"
+#include <cstdint>
 #include "common/enumClass.h"
+#include "common/TimingAlignment.h"
 #include "control/CtrlComponents.h"
 #include <ros/ros.h>
 #ifdef COMPILE_WITH_MOVE_BASE
@@ -75,7 +77,7 @@ private:
     bool updateControlTime();
     void resetForTimeDiscontinuity(const char *reason, const ros::Time &now,
                                    ControlTimeResetReason resetReason);
-    void recordTiming(bool accepted);
+    void recordTiming(bool accepted, bool repeatedStateConsumed);
     CtrlComponents *_ctrlComp;
     FSMState *_currentState;
     FSMState *_nextState;
@@ -93,6 +95,9 @@ private:
     bool _simClockInitialized = false;
     bool _simPauseHandled = false;
     std::uint64_t _fsmIteration = 0;
+    std::uint64_t _lastAcceptedStateSequence = 0;
+    std::uint64_t _lastObservedSimTimeUs = 0;
+    ControlTimeScheduler _controlScheduler;
     ros::Time _diagnosticLastSimTime;
     ros::WallTime _diagnosticLastWallTime;
 };

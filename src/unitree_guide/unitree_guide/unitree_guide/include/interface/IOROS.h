@@ -28,6 +28,8 @@ public:
 IOROS();
 ~IOROS();
 void sendRecv(const LowlevelCmd *cmd, LowlevelState *state);
+void recvStateOnly(LowlevelState *state) override;
+void publishCmdOnly(const LowlevelCmd *cmd) override;
 bool hasFullStateFeedback() const override;
 std::uint64_t stateSequence() const override;
 std::uint64_t stateStampUs() const override;

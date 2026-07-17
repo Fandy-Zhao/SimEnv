@@ -80,6 +80,17 @@ void IOROS::sendRecv(const LowlevelCmd *cmd, LowlevelState *state){
     state->userValue = cmdPanel->getUserValue();
 }
 
+void IOROS::recvStateOnly(LowlevelState *state){
+    recvState(state);
+    state->userCmd = cmdPanel->getUserCmd();
+    state->userValue = cmdPanel->getUserValue();
+    ros::spinOnce();
+}
+
+void IOROS::publishCmdOnly(const LowlevelCmd *cmd){
+    sendCmd(cmd);
+}
+
 bool IOROS::hasFullStateFeedback() const{
     if(!_imu_received.load()){
         return false;

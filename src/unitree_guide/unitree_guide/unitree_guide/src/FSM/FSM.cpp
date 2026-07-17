@@ -7,7 +7,8 @@
 #include <iostream>
 
 FSM::FSM(CtrlComponents *ctrlComp)
-    :_ctrlComp(ctrlComp){
+    :_ctrlComp(ctrlComp),
+     _controlScheduler(ctrlComp->controlPeriodUs){
 
     TimingDiagnostics::instance().configure(_nh);
 
@@ -57,7 +58,11 @@ void FSM::initialize(){
 void FSM::run(){
     _startTime = getSystemTime();
     ++_fsmIteration;
-    _ctrlComp->sendRecv();
+    if(_ctrlComp->ctrlPlatform == CtrlPlatform::GAZEBO){
+        _ctrlComp->recvStateOnly();
+    }else{
+        _ctrlComp->sendRecv();
+    }
     _ctrlComp->ioInterFreeDog->sendRecv();
 
     if(!_ctrlComp->ioInter->hasFullStateFeedback()){
@@ -66,7 +71,7 @@ void FSM::run(){
             _waitingForStateFeedback = true;
         }
         absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
-        recordTiming(false);
+        recordTiming(false, false);
         return;
     }
     if(_waitingForStateFeedback){
@@ -76,12 +81,16 @@ void FSM::run(){
     if(!_ctrlComp->lowState->isFinite()){
         std::cout << "[WARNING] Gazebo state feedback is not finite; skipping control update." << std::endl;
         absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
-        recordTiming(false);
+        recordTiming(false, false);
         return;
     }
+    const std::uint64_t acceptedStateSequence = _ctrlComp->acceptedStateSequence;
+    const bool repeatedStateConsumed =
+        _lastAcceptedStateSequence != 0 && acceptedStateSequence == _lastAcceptedStateSequence;
+    _lastAcceptedStateSequence = acceptedStateSequence;
     if(!updateControlTime()){
         absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
-        recordTiming(false);
+        recordTiming(false, repeatedStateConsumed);
         return;
     }
 
@@ -126,11 +135,14 @@ void FSM::run(){
         }
     }
 
-    recordTiming(true);
+    if(_ctrlComp->ctrlPlatform == CtrlPlatform::GAZEBO){
+        _ctrlComp->publishCmdOnly();
+    }
+    recordTiming(true, repeatedStateConsumed);
     absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
 }
 
-void FSM::recordTiming(bool accepted){
+void FSM::recordTiming(bool accepted, bool repeatedStateConsumed){
     TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
     if(!diagnostics.enabled()){
         return;
@@ -153,10 +165,35 @@ void FSM::recordTiming(bool accepted){
     timing.sim_time_us = simNow.toNSec() / 1000U;
     timing.sim_dt_us = accepted ? static_cast<std::int64_t>(_ctrlComp->controlDt * 1e6) : 0;
     timing.estimated_rtf = estimatedRtf;
-    timing.state_sequence = _ctrlComp->ioInter->stateSequence();
+    timing.state_sequence = _ctrlComp->acceptedStateSequence;
     timing.state_stamp_us = _ctrlComp->ioInter->stateStampUs();
     timing.fsm_iteration = _fsmIteration;
+    timing.fsm_sequence = _ctrlComp->fsmSequence;
+    timing.estimator_sequence = _ctrlComp->estimator ? _ctrlComp->estimator->runSequence() : 0;
+    timing.estimator_source_state_sequence = accepted ? timing.state_sequence : 0;
+    timing.wave_sequence = _ctrlComp->waveSequence;
+    timing.gait_cycle_sequence = _ctrlComp->gaitCycleSequence;
+    timing.reset_generation = _ctrlComp->controlResetGeneration;
+    timing.runtime_ctrl_dt_us = _ctrlComp->controlPeriodUs;
+    timing.target_control_hz = _ctrlComp->controlPeriodUs > 0 ?
+        1000000.0 / static_cast<double>(_ctrlComp->controlPeriodUs) : 0.0;
     timing.control_update_accepted = accepted;
+    timing.new_state_consumed = accepted && !repeatedStateConsumed;
+    timing.repeated_state_consumed = accepted && repeatedStateConsumed;
+    timing.scheduler_accepted = accepted;
+    timing.accepted_state_sequence = _ctrlComp->acceptedStateSequence;
+    timing.scheduler_lag_us = _ctrlComp->schedulerLagUs;
+    timing.missed_periods = _ctrlComp->schedulerMissedPeriods;
+    timing.repeated_state_rejected_count = _ctrlComp->repeatedStateRejectedCount;
+    timing.fsm_state = _currentState != nullptr ? static_cast<int>(_currentState->_stateName) : 0;
+    timing.wave_status = static_cast<int>(_ctrlComp->waveStatus());
+    timing.resolved_vx = _ctrlComp->resolvedVx;
+    timing.resolved_vy = _ctrlComp->resolvedVy;
+    timing.resolved_yaw_rate = _ctrlComp->resolvedYawRate;
+    for(int i = 0; i < 4; ++i){
+        timing.phase[i] = (*_ctrlComp->phase)(i);
+        timing.contact[i] = (*_ctrlComp->contact)(i);
+    }
     diagnostics.record(timing);
 }
 
@@ -164,55 +201,81 @@ bool FSM::updateControlTime(){
     if(_ctrlComp->ctrlPlatform != CtrlPlatform::GAZEBO){
         _ctrlComp->controlDt = _ctrlComp->dt;
         _ctrlComp->controlTime = ros::Time::now();
+        _ctrlComp->acceptedStateSequence = _ctrlComp->ioInter->stateSequence();
         return true;
     }
 
-    const ros::Time now = ros::Time::now();
-    const ros::WallTime wallNow = ros::WallTime::now();
-    if(now.isZero()){
+    const std::uint64_t simTimeUs = _ctrlComp->ioInter->stateStampUs();
+    const std::uint64_t stateSequence = _ctrlComp->ioInter->stateSequence();
+    if(simTimeUs == 0 || stateSequence == 0){
         ROS_WARN_THROTTLE(1.0, "Waiting for non-zero Gazebo /clock before running control updates.");
         return false;
     }
+    ros::Time now;
+    now.fromNSec(simTimeUs * 1000ULL);
 
     if(!_simClockInitialized){
         _lastSimTime = now;
-        _lastSimAdvanceWallTime = wallNow;
+        _lastObservedSimTimeUs = simTimeUs;
         _ctrlComp->controlTime = now;
         _ctrlComp->controlDt = 0.0;
         _ctrlComp->setAllStance();
         _ctrlComp->resetWaveTime(now);
+        _controlScheduler.reset();
+        const auto decision = _controlScheduler.update(
+            {simTimeUs, stateSequence, _ctrlComp->controlResetGeneration});
+        _ctrlComp->nextControlDeadlineUs = decision.next_deadline_us;
         _simClockInitialized = true;
         return false;
     }
 
-    if(now == _lastSimTime){
-        const double stoppedWallTime = (wallNow - _lastSimAdvanceWallTime).toSec();
-        if(!_simPauseHandled && stoppedWallTime >= _simPauseResetTimeout){
-            resetForTimeDiscontinuity("Gazebo simulation time paused", now,
-                                      ControlTimeResetReason::Paused);
-            _simPauseHandled = true;
-        }
+    if(simTimeUs == _lastObservedSimTimeUs){
         return false;
     }
 
-    const double simDt = (now - _lastSimTime).toSec();
-    _lastSimTime = now;
-    _lastSimAdvanceWallTime = wallNow;
-    _simPauseHandled = false;
-
-    if(!std::isfinite(simDt) || simDt <= 0.0){
+    if(simTimeUs < _lastObservedSimTimeUs){
+        _lastObservedSimTimeUs = simTimeUs;
         resetForTimeDiscontinuity("Gazebo simulation time moved backward", now,
                                   ControlTimeResetReason::MovedBackward);
+        _controlScheduler.reset();
+        const auto decision = _controlScheduler.update(
+            {simTimeUs, stateSequence, _ctrlComp->controlResetGeneration});
+        _ctrlComp->nextControlDeadlineUs = decision.next_deadline_us;
         return false;
     }
+
+    const double simDt = static_cast<double>(simTimeUs - _lastObservedSimTimeUs) / 1000000.0;
+    _lastObservedSimTimeUs = simTimeUs;
+    _lastSimTime = now;
+    _simPauseHandled = false;
+
     if(simDt > _maxSimTimeStep){
         resetForTimeDiscontinuity("Gazebo simulation time jumped forward", now,
                                   ControlTimeResetReason::JumpedForward);
+        _controlScheduler.reset();
+        const auto decision = _controlScheduler.update(
+            {simTimeUs, stateSequence, _ctrlComp->controlResetGeneration});
+        _ctrlComp->nextControlDeadlineUs = decision.next_deadline_us;
         return false;
     }
 
-    _ctrlComp->controlTime = now;
-    _ctrlComp->controlDt = simDt;
+    const auto decision = _controlScheduler.update(
+        {simTimeUs, stateSequence, _ctrlComp->controlResetGeneration});
+    _ctrlComp->nextControlDeadlineUs = decision.next_deadline_us;
+    _ctrlComp->schedulerLagUs = decision.lag_us;
+    _ctrlComp->schedulerMissedPeriods = decision.missed_periods;
+    if(decision.state_repeated){
+        ++_ctrlComp->repeatedStateRejectedCount;
+    }
+    if(!decision.should_advance){
+        return false;
+    }
+
+    ros::Time acceptedTime;
+    acceptedTime.fromNSec(decision.accepted_control_time_us * 1000ULL);
+    _ctrlComp->controlTime = acceptedTime;
+    _ctrlComp->controlDt = static_cast<double>(decision.accepted_control_dt_us) / 1000000.0;
+    _ctrlComp->acceptedStateSequence = decision.accepted_state_sequence;
     return true;
 }
 
@@ -222,8 +285,16 @@ void FSM::resetForTimeDiscontinuity(const char *reason, const ros::Time &now,
              reason, now.toSec());
     _ctrlComp->controlTime = now;
     _ctrlComp->controlDt = 0.0;
+    ++_ctrlComp->controlResetGeneration;
+    _ctrlComp->acceptedStateSequence = 0;
+    _ctrlComp->nextControlDeadlineUs = 0;
+    _ctrlComp->schedulerLagUs = 0;
+    _ctrlComp->schedulerMissedPeriods = 0;
     _ctrlComp->setAllStance();
     _ctrlComp->resetWaveTime(now);
+    if(_ctrlComp->estimator != nullptr){
+        _ctrlComp->estimator->resetState();
+    }
     if(_currentState != nullptr){
         _currentState->onControlTimeReset(resetReason);
     }

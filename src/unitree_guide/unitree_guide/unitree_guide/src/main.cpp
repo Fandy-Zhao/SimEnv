@@ -11,6 +11,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <cstdint>
 #include <string>
 
 #include <std_msgs/Int8.h>
@@ -80,13 +81,13 @@ void setProcessScheduler()
     }
 }
 
-double readControllerDt()
+std::uint64_t readControllerDtUs()
 {
-    const double defaultDt = 0.002; // 500 Hz, Unitree upstream default.
+    constexpr std::uint64_t defaultDtUs = 2000; // 500 Hz, Unitree upstream default.
     const char *envValue = std::getenv("UNITREE_CTRL_DT");
     if (envValue == nullptr || envValue[0] == '\0')
     {
-        return defaultDt;
+        return defaultDtUs;
     }
 
     char *end = nullptr;
@@ -95,10 +96,20 @@ double readControllerDt()
     if (errno != 0 || end == envValue || *end != '\0' || !std::isfinite(dt) || dt < 0.001 || dt > 0.02)
     {
         std::cout << "[WARNING] Invalid UNITREE_CTRL_DT='" << envValue
-                  << "', using default " << defaultDt << "s." << std::endl;
-        return defaultDt;
+                  << "', using default " << static_cast<double>(defaultDtUs) / 1000000.0
+                  << "s." << std::endl;
+        return defaultDtUs;
     }
-    return dt;
+    const double dtUsFloat = dt * 1000000.0;
+    const double rounded = std::round(dtUsFloat);
+    if(std::fabs(dtUsFloat - rounded) > 1e-6 ||
+       rounded < 1000.0 || rounded > 20000.0){
+        std::cout << "[WARNING] UNITREE_CTRL_DT='" << envValue
+                  << "' is not a supported integer-microsecond period, using default "
+                  << static_cast<double>(defaultDtUs) / 1000000.0 << "s." << std::endl;
+        return defaultDtUs;
+    }
+    return static_cast<std::uint64_t>(rounded);
 }
 
 int main(int argc, char **argv)
@@ -128,9 +139,11 @@ int main(int argc, char **argv)
     ioInter_freedog = new IOFREEDOGSDK();
     CtrlComponents *ctrlComp = new CtrlComponents(ioInter,ioInter_freedog);
     ctrlComp->ctrlPlatform = ctrlPlat;
-    ctrlComp->dt = readControllerDt();
-    std::cout << "controller dt: " << ctrlComp->dt
-              << " s, frequency: " << 1.0 / ctrlComp->dt << " Hz" << std::endl;
+    ctrlComp->controlPeriodUs = readControllerDtUs();
+    ctrlComp->dt = static_cast<double>(ctrlComp->controlPeriodUs) / 1000000.0;
+    std::cout << "controller dt source: UNITREE_CTRL_DT, resolved: "
+              << ctrlComp->dt << " s (" << ctrlComp->controlPeriodUs
+              << " us), frequency: " << 1.0 / ctrlComp->dt << " Hz" << std::endl;
     ctrlComp->running = &running;
 
 #ifdef ROBOT_TYPE_A1
