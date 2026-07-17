@@ -1,9 +1,27 @@
 {
-  "status": "runtime_blocked_unitree_plugin",
-  "ros_time_duration_sec": 2.518,
-  "state_estimation": {"runtime_status": "not_run"},
-  "registered_scan": {"runtime_status": "not_run"},
-  "tf": {"runtime_status": "not_run"},
+  "status": "pass_150s_with_tf_startup_loss",
+  "ros_time_duration_sec": 150.0,
+  "state_estimation": {
+    "count": 1500,
+    "rate_hz": 10.0,
+    "type": "nav_msgs/Odometry",
+    "frame": "camera_init",
+    "child_frame": "body"
+  },
+  "registered_scan": {
+    "count": 1500,
+    "rate_hz": 10.0,
+    "type": "sensor_msgs/PointCloud2",
+    "frame": "camera_init"
+  },
+  "sample_stamp_delta_sec": 0.212,
+  "tf": {
+    "target": "map->body",
+    "attempts": 1501,
+    "success": 1197,
+    "success_ratio": 0.7974683544303798,
+    "note": "Failures occurred before the dynamic odometry TF bridge was started."
+  },
   "static_contract_tests": {"passed": 3, "failed": 0},
   "relay_smoke": {
     "status": "pass",

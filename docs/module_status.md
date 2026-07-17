@@ -4,8 +4,13 @@
 > now exposes `/state_estimation` and `/registered_scan` via transparent
 > `topic_tools` relays without removing FAST-LIO2's legacy output topics or
 > changing `camera_init/body` frames. Static tests and package build pass;
-> five-minute isolated runtime validation is pending
+> the original five-minute target was later revised to and completed as a
+> 150-second isolated runtime
 > (`feat/0717-fastlio2-stage2`).
+> **2026-07-17 Stage 2 runtime**: revised 150 s isolated target passed with
+> `/state_estimation` and `/registered_scan` at 10 Hz. Added the missing
+> dynamic `camera_init→body` Odometry TF bridge; `map→body` succeeded for
+> 1197/1501 samples including its live-startup interval.
 
 ## Overview
 

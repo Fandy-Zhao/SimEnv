@@ -10,6 +10,10 @@
 > A subsequent isolated retry reached 2.518 s ROS time and verified `/scan`
 > plus upright IMU gravity, but the partial worktree devel could not load the
 > Unitree joint-controller plugin. No five-minute result is claimed.
+> Final validation subsequently passed the revised 150 s target using the
+> read-only `trot-rl/devel` overlay: 1500 odometry and 1500 registered scans at
+> 10 Hz. A new Odometry TF bridge supplies `camera_init→body`; `map→body`
+> succeeded 1197/1501 times including the pre-bridge startup interval.
 
 ## Snapshot
 - Date: 2026-07-16

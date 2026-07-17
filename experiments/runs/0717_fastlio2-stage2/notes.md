@@ -36,12 +36,15 @@ task, so they were not restored, staged, or committed. No external FAST_LIO or
 FALCO source was modified. Runtime must be repeated from an isolated worktree
 whose own full build and generated/log paths are ready.
 
-## Residual runtime checks
+## Status before the final overlay run
 
 Topic rate, timestamp delta, five-minute ROS-time endurance, `map → body` TF
-success ratio, motion axes, and RViz overlay remain NOT RUN. Static inspection
+success ratio, motion axes, and RViz overlay were NOT RUN at that point. Static inspection
 and Stage 0/1 evidence support the unchanged `camera_init → body` and
 `map → camera_init` semantics, but do not replace this runtime evidence.
+The final overlay run below supersedes the topic-rate and TF gaps; motion-axis
+testing and a rendered RViz screenshot remain outside this stationary Stage 2
+validation.
 
 ## Isolated worktree runtime attempts
 
@@ -63,3 +66,21 @@ The root cause is the partial worktree devel overlay: rospack resolves the
 worktree's Unitree package metadata, while its controller plugin was not built
 because the full Torch/CUDA build is blocked. Environment-only library path
 injection was insufficient for pluginlib resolution.
+
+## Final 150-second runtime
+
+The final isolated run reused the fully built `trot-rl/devel` only as a
+read-only runtime overlay and kept scene/log generation in this worktree.
+Pluginlib resolution was repaired with temporary devel-space symlinks, the
+controller entered FixedStand, and upright gravity was measured at
+`9.747037382398663 m/s²` (later `10.019715024621117 m/s²`).
+
+The accepted ROS-time window reached exactly 150.0 s with 1500 odometry and
+1500 registered-cloud messages (10.0 Hz each). Types and frames were
+`nav_msgs/Odometry camera_init→body` and
+`sensor_msgs/PointCloud2 camera_init`. The run exposed that FAST-LIO2 did not
+broadcast its Odometry pose on TF, so `odometry_tf_bridge.py` was added and
+validated live. `map→body` lookup succeeded 1197/1501 times; the 304 failures
+are the startup interval before that bridge was introduced, not later drops.
+The snapshot sample stamp delta was 0.212 s. A visual RViz screenshot was not
+captured; TF connectivity and matching frames are the alignment evidence.
