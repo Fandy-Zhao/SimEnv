@@ -1,0 +1,19 @@
+# Reproducible runtime contract
+# Every full session must run while holding /tmp/simenv-gazebo.lock.
+
+flock /tmp/simenv-gazebo.lock bash -lc '
+  cd /home/zzf/search_ws/SimEnv_worktrees/trot-rl
+  source /opt/ros/noetic/setup.bash
+  source devel/setup.bash
+  FLOOR_COUNT=1 SEED=77 GUI=false ENABLE_RVIZ=false TERMINAL_BACKEND=tmux \
+    TMUX_SESSION_PREFIX=simenv-0717 MODE=trotting|rl \
+    experiments/runs/0717_trot-rl-floor-mapping/run_mapping_trial.sh
+'
+
+# Route (published at 10 Hz, both modes)
+# 1. FixedStand: FSM 2, settle
+# 2. FSM 4 (Trotting) or 6 (RL), settle
+# 3. linear.x=0.15 m/s, angular.z=0.0 rad/s
+# 4. linear.x=0.0 m/s, angular.z=0.25 rad/s (left turn)
+# 5. linear.x=0.15 m/s, angular.z=0.0 rad/s
+# 6. zero Twist and timeout observation
