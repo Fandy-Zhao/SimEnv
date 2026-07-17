@@ -19,15 +19,23 @@
 
 | ID | Path | Description | Status |
 |----|------|-------------|--------|
-| R1 | `g1rc_contact_probe/c0_model_states.txt` | Gazebo model pose at FixedStand | PENDING |
-| R2 | `g1rc_contact_probe/c1_plugin_log.txt` | Gazebo plugin load messages | PENDING |
-| R3 | `g1rc_contact_probe/c3_*_echo.txt` | Per-foot WrenchStamped samples | PENDING |
-| R4 | `g1rc_contact_probe/c3_*_hz.txt` | Per-foot topic rates | PENDING |
+| R1 | `g1rc_contact_probe/probe_output.txt` | Full probe output (captured in session) | **VERIFIED** |
+| R2 | `g1rc_contact_probe/contact_probe_summary.json` | Aggregated C0-C4 checkpoint results | **VERIFIED** |
+| R3 | `g1rc_contact_probe/c3_topic_list.txt` | Full topic list showing all 4 contact topics | **VERIFIED** |
+| R4 | `g1rc_contact_probe/c3_FR_echo.txt` | FR foot WrenchStamped samples (100 Hz) | **VERIFIED** |
 | R5 | `g1rc_trot_2ms_low_rtf/timing.csv` | FSM timing records (2ms, low RTF) | PENDING |
 | R6 | `g1rc_trot_2ms_low_rtf/contact.csv` | Per-foot force time series | PENDING |
 | R7 | `g1rc_trot_2ms_low_rtf/trial_metrics.json` | Aggregated metrics | PENDING |
 | R8 | `g1rc_trot_2ms_low_rtf/trial_status.json` | Pass/fail verdict | PENDING |
 | R9–R18 | `g1rc_trot_2ms_high_rtf/` through `g1rc_trot_4ms/` | Remaining matrix trials | PENDING |
+
+## G1 Final Report Evidence
+
+| ID | Path | Description | Status |
+|----|------|-------------|--------|
+| F1 | `g1-final-report.md` | G1 final validation report | **COMPLETED** |
+| F2 | `manifests/g1_runtime_environment.json` | Runtime environment manifest | **VERIFIED** |
+| F3 | `g1rc_contact_probe/run_contact_probe.sh` | Contact probe runner script | **VERIFIED** |
 
 ## Previous Evidence (0715 Trotting Safety)
 

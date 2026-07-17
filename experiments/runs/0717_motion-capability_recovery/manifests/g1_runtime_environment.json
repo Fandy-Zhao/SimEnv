@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-07-18T02:16:14+08:00",
+  "git": {
+    "branch": "integrate/0718-g1-fixed-sim-scheduler",
+    "head": "e7c130a1",
+    "merge_base_with_master": "03e86fa8"
+  },
+  "binary_devel": {
+    "path": "/home/zzf/search_ws/SimEnv/devel",
+    "contact_plugin_sha256": "8b4dee0e83794217f86490f1d58d563900ed5ded0ff4cf98e814f6288372cc2d",
+    "torch_enabled": true
+  },
+  "compilers": {
+    "gcc": "gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04)",
+    "gpp": "g++-11 (Ubuntu 11.4.0-1ubuntu1~22.04)",
+    "nvcc": "Cuda compilation tools, release 11.8, V11.8.89"
+  },
+  "ros": {
+    "distro": "noetic",
+    "master_uri": "http://127.0.0.1:11411"
+  },
+  "gazebo": {
+    "version": "11.10.2",
+    "plugin_path": "/home/zzf/search_ws/SimEnv/devel/lib"
+  },
+  "ctrl_dt": 0.002,
+  "runtime_config": {
+    "FLOOR_COUNT": 1,
+    "SEED": 77,
+    "GUI": false,
+    "gazebo_physics": "max_step=0.002, update_rate=500, ode_iters=40"
+  }
+}

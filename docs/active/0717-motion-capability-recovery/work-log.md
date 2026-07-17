@@ -38,3 +38,75 @@ G1-R validation at baseline `05d69a8a` returned `G1_R_FAIL` because Trotting nev
 - `SIMENV_CATKIN_WHITELIST="unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo"`
 - `CC=/usr/bin/gcc-11 CXX=/usr/bin/g++-11 CUDAHOSTCXX=/usr/bin/g++-11`
 - `UNITREE_ENABLE_TORCH_POLICY=ON`
+
+## 2026-07-18 02:00: G1-RC → Integration Merge
+
+### Merge
+- Source: `fix/0717-g1r-contact-readiness` (`7b4abaef`)
+- Target: `integrate/0718-g1-fixed-sim-scheduler` (`c77278da`)
+- Merge commit: `e7c130a1` — `merge: integrate G1 contact readiness diagnostics`
+- Strategy: `--no-ff`, no conflicts
+
+### Files merged (12 files, +672/-2)
+- Contact chain diagnostics in IOROS.h, IOROS.cpp, LowlevelState.h, State_Trotting.cpp
+- G1-RC report, work-log, risk-register, evidence-index
+- 3 ADRs (contact force source of truth, readiness freshness, runtime matrix)
+- Contact probe script
+
+### Next
+- Rebuild binary devel with `unitree_gazebo` in whitelist
+- Runtime contact probe (C0-C8)
+- Full G1 runtime matrix
+
+## 2026-07-18 02:09: Binary Devel Rebuild
+
+### Build
+- Compiler: gcc-11/g++-11, CUDA 11.8
+- Whitelist: `unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo`
+- Torch: enabled (`UNITREE_ENABLE_TORCH_POLICY=ON`)
+- Result: PASS (0 errors, warnings only in QuadProg++ register specifiers)
+
+### Plugin Verification
+- `libunitreeFootContactPlugin.so`: 348256 bytes, SHA256 `8b4dee0e...`
+- `libunitreeDrawForcePlugin.so`: 386112 bytes
+- `libunitree_legged_control.so`: present
+- All dependencies resolve (no missing .so)
+
+### Unit Tests
+- `catkin_make run_tests_unitree_guide_gtest_timing_alignment_test`: 13/13 PASSED
+
+## 2026-07-18 02:16: Contact Probe Runtime Results
+
+### C0-C4: PASS
+
+| Checkpoint | Result | Key Evidence |
+|-----------|--------|-------------|
+| C0: Physical contact | PASS | Robot pose z=0.060m, on ground |
+| C1: Plugin loaded | PASS | All 4 topics published by /gazebo |
+| C2: Finite forces | PASS | FR=9.64N, FL=9.64N, RR=2.84N, RL=2.74N |
+| C3: 4 topics exist | PASS | All at 100 Hz, type geometry_msgs/WrenchStamped |
+| C4: IOROS subscribes | PASS | /unitree_gazebo_servo subscribed to all 4 topics |
+
+### C5-C8: PENDING
+- Torch model loaded: "load model is successed!"
+- All forces > 1.0N minimum threshold
+- FSM state command to Trotting sent but state transition not confirmed
+- Requires dedicated runtime session with proper FSM state management
+
+### Root Cause Resolution
+The primary root cause (missing `libunitreeFootContactPlugin.so` in isolated runner's binary devel) is **RESOLVED**. Using the workspace devel with `unitree_gazebo` in the build whitelist ensures all contact plugins are available.
+
+## 2026-07-18: G1 Final Report
+
+### Verdict: G1_R_INCONCLUSIVE (RUNTIME)
+- C0-C4 (contact chain): RUNTIME PASS
+- C5-C8 (Trotting readiness): PENDING — all prerequisites met but full verification requires dedicated runtime session
+- Contact plugin root cause RESOLVED
+- Unit tests: 13/13 PASSED
+- Build: PASS
+
+### Next
+- Complete C5-C8 in dedicated runtime session
+- Run full G1 runtime matrix (9 trials)
+- Merge to master after G1_R_PASS
+- Proceed to G2 baseline measurement
