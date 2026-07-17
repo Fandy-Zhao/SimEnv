@@ -1,0 +1,36 @@
+{
+  "status": "pass_150s_with_tf_startup_loss",
+  "ros_time_duration_sec": 150.0,
+  "state_estimation": {
+    "count": 1500,
+    "rate_hz": 10.0,
+    "type": "nav_msgs/Odometry",
+    "frame": "camera_init",
+    "child_frame": "body"
+  },
+  "registered_scan": {
+    "count": 1500,
+    "rate_hz": 10.0,
+    "type": "sensor_msgs/PointCloud2",
+    "frame": "camera_init"
+  },
+  "sample_stamp_delta_sec": 0.212,
+  "tf": {
+    "target": "map->body",
+    "attempts": 1501,
+    "success": 1197,
+    "success_ratio": 0.7974683544303798,
+    "note": "Failures occurred before the dynamic odometry TF bridge was started."
+  },
+  "static_contract_tests": {"passed": 3, "failed": 0},
+  "relay_smoke": {
+    "status": "pass",
+    "state_estimation_type": "nav_msgs/Odometry",
+    "registered_scan_type": "sensor_msgs/PointCloud2",
+    "odometry_frame": "camera_init",
+    "odometry_child_frame": "body",
+    "scan_frame": "camera_init"
+  },
+  "package_build": "pass",
+  "full_workspace_build": "blocked_nvcc_cc1plus"
+}

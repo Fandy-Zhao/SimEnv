@@ -1,0 +1,135 @@
+target_ros_duration_sec=150
+2026-07-17T12:19:19+08:00
+nav_msgs/Odometry
+sensor_msgs/PointCloud2
+STATE_HEADER
+seq: 1673
+stamp:
+  secs: 182
+  nsecs: 862000000
+frame_id: "camera_init"
+---
+STATE_CHILD
+"body"
+---
+CLOUD_HEADER
+seq: 1675
+stamp:
+  secs: 183
+  nsecs:  74000000
+frame_id: "camera_init"
+---
+TF_MAP_BODY
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.254000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.254000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Failure at 183.260000000
+Exception thrown:"body" passed to lookupTransform argument source_frame does not exist.
+The current list of frames is:
+Frame FL_foot exists with parent FL_calf.
+Frame FL_calf exists with parent FL_thigh.
+Frame FL_thigh_shoulder exists with parent FL_hip.
+Frame FL_hip exists with parent trunk.
+Frame FR_foot exists with parent FR_calf.
+Frame FR_calf exists with parent FR_thigh.
+Frame FR_thigh_shoulder exists with parent FR_hip.
+Frame FR_hip exists with parent trunk.
+Frame RL_foot exists with parent RL_calf.
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame body (parent camera_init) at time 183.174000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame body (parent camera_init) at time 183.174000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.270000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.270000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.296000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.296000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.302000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.302000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.310000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.310000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.316000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.316000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.324000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.324000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.330000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.330000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.334000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.334000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.340000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.340000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.350000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.350000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.350000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.350000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame body (parent camera_init) at time 183.278000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame body (parent camera_init) at time 183.278000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.376000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.376000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.380000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.380000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.386000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.386000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.392000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.392000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.394000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.394000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.400000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.400000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.402000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.402000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.406000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.406000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.414000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.414000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame odom (parent map) at time 183.444000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base (parent odom) at time 183.444000 according to authority unknown_publisher
+         at line 278 in ./src/buffer_core.cpp
+CLOCK
+clock:
+  secs: 183
+  nsecs: 478000000
+---

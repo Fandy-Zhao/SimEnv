@@ -31,10 +31,14 @@
   <arg name="fast_lio_config" default="$(find simenv_fast_lio2_integration)/config/simenv_mid360.yaml"/>
   <arg name="rviz" default="false"/>
   <arg name="save_pcd" default="true"/>
+  <arg name="state_estimation_topic" default="/state_estimation"/>
+  <arg name="registered_scan_topic" default="/registered_scan"/>
+  <arg name="enable_odometry_tf_bridge" default="true"/>
 
   <!-- PointCloud adapter node -->
   <node if="$(arg enable_adapter)" pkg="simenv_fast_lio2_integration"
-        type="scan_to_pointcloud2.py" name="scan_to_pointcloud2" output="screen">
+        type="scan_to_pointcloud2.py" name="scan_to_pointcloud2" output="screen"
+        launch-prefix="/usr/bin/python3">
     <param name="scan_topic" value="$(arg scan_topic)"/>
     <param name="output_topic" value="$(arg pointcloud2_topic)"/>
   </node>
@@ -43,6 +47,20 @@
   <!-- Load YAML config at root namespace (FAST-LIO2 uses public NodeHandle, not private) -->
   <rosparam file="$(arg fast_lio_config)" command="load"/>
   <node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen"/>
+
+  <!-- Navigation-facing Stage 2 contract. topic_tools/relay republishes the
+       original serialized message without changing stamps, covariance, or
+       camera_init/body frame semantics.  Legacy FAST-LIO2 topics remain
+       available for diagnostics and existing consumers. -->
+  <node pkg="topic_tools" type="relay" name="state_estimation_relay"
+        args="/Odometry $(arg state_estimation_topic)" output="screen"/>
+  <node pkg="topic_tools" type="relay" name="registered_scan_relay"
+        args="/cloud_registered $(arg registered_scan_topic)" output="screen"/>
+  <node pkg="simenv_fast_lio2_integration" type="odometry_tf_bridge.py"
+        name="odometry_tf_bridge" output="screen" launch-prefix="/usr/bin/python3"
+        if="$(arg enable_odometry_tf_bridge)">
+    <param name="odometry_topic" value="$(arg state_estimation_topic)"/>
+  </node>
 
   <!-- Bridge: map → camera_init static TF.
        FAST-LIO2 creates its own ``camera_init`` frame, disconnected from the
@@ -54,7 +72,7 @@
        FAST-LIO2's extrinsic_R / extrinsic_T. -->
   <node pkg="simenv_fast_lio2_integration"
         type="map_to_camera_init_bridge.py" name="map_to_camera_init_bridge"
-        output="screen" respawn="false"/>
+        output="screen" respawn="false" launch-prefix="/usr/bin/python3"/>
 
   <!-- RViz (optional) -->
   <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz"
