@@ -23,6 +23,14 @@
   `/cmd_vel` locomotion
 
 ## Active Work
+- **2026-07-17 single-floor Trotting/RL mapping validation (PARTIAL)**: fixed seed 77
+  headless trials completed the same bounded `/cmd_vel` route in fresh epochs.
+  Trotting/RL moved 0.192487/0.169675 m with finite truth and FAST-LIO2 odometry;
+  5,006/5,048 registered-cloud points were saved as PCD and top-down PNG.
+  Trotting stopped to 0.007076 m/s mean tail speed; RL retained 0.024517 m/s and
+  needs a longer stop regression. The short route only validates local mapping,
+  not full-floor coverage; about 1.0%/1.1% of saved points lie at x < -10 m and
+  are treated as remote drift/outliers. See `docs/reports/0717_trot-rl-floor-mapping.md`.
 - **Gazebo RL timing diagnostics (in progress on `fix/0716-gazebo-rl-time-alignment`)**:
   opt-in buffered CSV tracing now correlates FSM, state, policy, history,
   action, and LowCmd generations. At RTF 0.276 the current policy ran at

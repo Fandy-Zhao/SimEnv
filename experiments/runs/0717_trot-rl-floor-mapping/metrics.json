@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "date": "2026-07-17",
+  "scene": {
+    "floor_count": 1,
+    "seed": 77,
+    "spawn": {"x": 0.0, "y": 2.3, "z": 0.6, "yaw": 1.5708}
+  },
+  "route": {
+    "rate_hz": 10,
+    "segments": [
+      {"name": "forward_1", "linear_x": 0.15, "angular_z": 0.0, "sim_duration_s": 0.5},
+      {"name": "left_turn", "linear_x": 0.0, "angular_z": 0.25, "sim_duration_s": 0.5},
+      {"name": "forward_2", "linear_x": 0.15, "angular_z": 0.0, "sim_duration_s": 0.5},
+      {"name": "stop", "linear_x": 0.0, "angular_z": 0.0, "sim_duration_s": 0.25}
+    ]
+  },
+  "trials": {
+    "trotting": {
+      "status": "completed",
+      "wall_duration_s": 30.2042,
+      "ground_truth_displacement_m": 0.192487,
+      "minimum_base_z_m": 0.092189,
+      "maximum_tilt_deg": 6.49727,
+      "final_stop_mean_speed_mps": 0.007076,
+      "truth_samples": 2698,
+      "odometry_samples": 53,
+      "registered_messages": 53,
+      "map_points_saved": 5006,
+      "map_x_range_m": [-33.06926, 2.3778],
+      "map_y_range_m": [-4.59002, 5.82738],
+      "map_x_below_minus_10_count": 50,
+      "map_x_below_minus_10_ratio": 0.009988
+    },
+    "rl": {
+      "status": "completed",
+      "wall_duration_s": 32.111958,
+      "ground_truth_displacement_m": 0.169675,
+      "minimum_base_z_m": 0.096833,
+      "maximum_tilt_deg": 6.672963,
+      "final_stop_mean_speed_mps": 0.024517,
+      "truth_samples": 2551,
+      "odometry_samples": 50,
+      "registered_messages": 50,
+      "map_points_saved": 5048,
+      "map_x_range_m": [-33.01846, 2.36291],
+      "map_y_range_m": [-4.59189, 5.83566],
+      "map_x_below_minus_10_count": 56,
+      "map_x_below_minus_10_ratio": 0.011094
+    }
+  }
+}

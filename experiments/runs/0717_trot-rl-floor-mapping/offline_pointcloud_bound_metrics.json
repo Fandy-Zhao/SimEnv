@@ -1,0 +1,28 @@
+{
+  "small": {
+    "input_points": 100,
+    "elapsed_s": 1.2508856429994921,
+    "result": {
+      "points": 25,
+      "raw_point_limit": 200000,
+      "saved_point_limit": 50000,
+      "wall_timeout_s": 3.0,
+      "pcd": "/tmp/simenv-cloud-bound-ly3x833j/map_ascii.pcd",
+      "image": "/tmp/simenv-cloud-bound-ly3x833j/map_topdown.png",
+      "frame_id": "camera_init"
+    }
+  },
+  "large": {
+    "input_points": 250000,
+    "elapsed_s": 1.0271324279965484,
+    "result": {
+      "points": 50000,
+      "raw_point_limit": 200000,
+      "saved_point_limit": 50000,
+      "wall_timeout_s": 3.0,
+      "pcd": "/tmp/simenv-cloud-bound-d1r9k08b/map_ascii.pcd",
+      "image": "/tmp/simenv-cloud-bound-d1r9k08b/map_topdown.png",
+      "frame_id": "camera_init"
+    }
+  }
+}
