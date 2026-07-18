@@ -1,5 +1,11 @@
 # Module Status
 
+> **2026-07-18 `simenv_fast_lio2_integration`**: default adapter behavior now
+> preserves source point coordinates and header frame semantics; non-zero
+> adapter rotations require `rotated_frame_id`. Python/unit and extrinsic
+> checks pass. Isolated live `/scan` validation is pending repair of the
+> system-Python `unitree_guide.msg` import path.
+
 > **2026-07-17 Stage 2 navigation topics**: `simenv_fast_lio2_integration`
 > now exposes `/state_estimation` and `/registered_scan` via transparent
 > `topic_tools` relays without removing FAST-LIO2's legacy output topics or

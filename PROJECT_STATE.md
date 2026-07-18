@@ -1,5 +1,12 @@
 # Project State
 
+> **2026-07-18 FAST-LIO2 point-cloud frame semantics**: the adapter no longer
+> rotates Livox points by default while retaining `laser_livox`; opt-in
+> rotations require an explicit output frame. Static/unit validation and the
+> LiDAR-to-IMU extrinsic checker pass. Isolated runtime sensor validation is
+> blocked by a system-Python `unitree_guide.msg` import failure; no moving-map
+> claim is made. See `docs/reports/0718_fast-lio2-pointcloud-frame-semantics.md`.
+
 > **2026-07-17 FAST-LIO2 Stage 2 interface**: branch
 > `feat/0717-fastlio2-stage2` adds compatibility-preserving transparent relays
 > `/Odometry → /state_estimation` and

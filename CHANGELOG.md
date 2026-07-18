@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-18 — FAST-LIO2 point-cloud frame semantics
+
+- Made the PointCloud-to-PointCloud2 adapter a coordinate-preserving format
+  conversion by default; optional rotations now require an explicit output
+  frame name rather than being published as `laser_livox`.
+- Added adapter frame-semantics regression coverage and documented the
+  LiDAR-plugin to FAST-LIO2 coordinate responsibility boundary.
+
 ## 2026-07-17 — Single-floor Trotting/RL speed profile
 
 - Added reproducible, isolated ROS-master speed trials for Trotting and RL at
