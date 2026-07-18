@@ -4,31 +4,32 @@
 scan_to_pointcloud2.py — Adapter node for FAST-LIO2
 
 Subscribes to /scan (sensor_msgs/PointCloud) and republishes as
-/scan_pointcloud2 (sensor_msgs/PointCloud2) in the laser_livox frame.
+/scan_pointcloud2 (sensor_msgs/PointCloud2), preserving the source frame.
 Each point carries x, y, z (FLOAT32) and intensity (FLOAT32).
 
 The intensity field is required by FAST-LIO2's PointCloud2 path (lidar_type=4);
 without it the feature extractor rejects every point as "not effective" and the
 EKF diverges within seconds.
 
-Two configurable rotations (applied in order: Y first, then X):
+The default is a message-format conversion only: point coordinates, timestamp,
+and frame_id are preserved.  Two optional rotations are available for sensor
+sources with an externally defined transformed frame.  They are applied in
+order: Y first, then X.
 
-  ``~rotation_y_deg`` (default -90): clockwise around Y axis.
-      Ry(-90°):  (x, y, z) -> (-z, y, x)
+  ``~rotation_y_deg`` (default 0): clockwise around Y axis when negative.
 
-  ``~rotation_x_deg`` (default 180): around X axis.
-      Rx(180°):  (x, y, z) -> (x, -y, -z)
+  ``~rotation_x_deg`` (default 0): around X axis.
 
-  Combined default: (x, y, z) -> (-z, -y, -x)
+  ``~rotated_frame_id`` (required when either rotation is non-zero): frame
+      name whose externally published TF describes the rotated coordinates.
 
-Set either to 0 to disable that axis.  Rotations are applied BEFORE the
-frame_id is stamped.
+Rotated coordinates must never be published under the source frame name.
 
 Usage:
     rosrun simenv_fast_lio2_integration scan_to_pointcloud2.py _scan_topic:=/scan
-    rosrun simenv_fast_lio2_integration scan_to_pointcloud2.py _rotation_y_deg:=0 _rotation_x_deg:=0
 """
 
+import copy
 import math
 import struct
 import rospy
@@ -97,12 +98,11 @@ class ScanToPointCloud2:
     def __init__(self):
         scan_topic = rospy.get_param("~scan_topic", "/scan")
         output_topic = rospy.get_param("~output_topic", "/scan_pointcloud2")
-        # Y-axis rotation (deg).  Negative = clockwise when viewed from +Y.
-        # Default -90°: (x,y,z)->(-z,y,x)
-        rotation_y_deg = rospy.get_param("~rotation_y_deg", -90.0)
+        # Default operation preserves the incoming point coordinates.
+        rotation_y_deg = rospy.get_param("~rotation_y_deg", 0.0)
         # X-axis rotation (deg).  Positive = CCW when viewed from +X.
-        # Default 180°: (x,y,z)->(x,-y,-z)
-        rotation_x_deg = rospy.get_param("~rotation_x_deg", 180.0)
+        rotation_x_deg = rospy.get_param("~rotation_x_deg", 0.0)
+        rotated_frame_id = rospy.get_param("~rotated_frame_id", "").strip()
 
         # Build composed rotation: Rx ∘ Ry (Y first, then X)
         self._rotations = []
@@ -112,20 +112,29 @@ class ScanToPointCloud2:
             self._rotations.append(_build_rotation('x', rotation_x_deg))
 
         if self._rotations:
-            rospy.loginfo("scan_to_pointcloud2: Ry(%.1f°) ∘ Rx(%.1f°) enabled",
-                          rotation_y_deg, rotation_x_deg)
+            if not rotated_frame_id:
+                raise rospy.ROSInitException(
+                    "scan_to_pointcloud2: rotated_frame_id is required when "
+                    "rotation_y_deg or rotation_x_deg is non-zero")
+            self._output_frame_id = rotated_frame_id
+            rospy.loginfo("scan_to_pointcloud2: Y then X rotations enabled: "
+                          "Ry(%.1f°), Rx(%.1f°), output frame: %s",
+                          rotation_y_deg, rotation_x_deg, rotated_frame_id)
         else:
-            rospy.loginfo("scan_to_pointcloud2: all rotations DISABLED")
+            self._output_frame_id = None
+            rospy.loginfo("scan_to_pointcloud2: format conversion only; "
+                          "preserving source point coordinates and frame")
 
         self.pub = rospy.Publisher(output_topic, PointCloud2, queue_size=10)
         self.sub = rospy.Subscriber(scan_topic, PointCloud, self.callback, queue_size=10)
 
-        rospy.loginfo("scan_to_pointcloud2: /scan -> %s (frame: laser_livox, xyzi32)",
-                      output_topic)
+        rospy.loginfo("scan_to_pointcloud2: %s -> %s (xyzi32)",
+                      scan_topic, output_topic)
 
     def callback(self, msg):
-        header = msg.header
-        header.frame_id = "laser_livox"
+        header = copy.copy(msg.header)
+        if self._output_frame_id is not None:
+            header.frame_id = self._output_frame_id
         points = []
         for p in msg.points:
             x, y, z = p.x, p.y, p.z

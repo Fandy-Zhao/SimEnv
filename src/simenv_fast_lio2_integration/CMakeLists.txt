@@ -28,5 +28,6 @@ install(DIRECTORY launch config
 )
 
 if(CATKIN_ENABLE_TESTING)
+  catkin_add_nosetests(test/test_scan_to_pointcloud2.py)
   catkin_add_nosetests(test/test_stage2_topic_contract.py)
 endif()
