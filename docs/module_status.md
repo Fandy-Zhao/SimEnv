@@ -1,5 +1,11 @@
 # Module Status
 
+> **2026-07-18 `simenv_fast_lio2_integration` runtime**: added
+> `runtime_pointcloud_smoke_check.py` and validated live Gazebo data. The active
+> adapter path contains `69ff34e7`, has no rotation params, preserves all
+> `/scan` point coordinates into `/scan_pointcloud2`, and FAST-LIO2
+> `/cloud_registered` fitted ground normal is within `0.550°` of `+Z`.
+
 > **2026-07-18 `simenv_fast_lio2_integration`**: default adapter behavior now
 > preserves source point coordinates and header frame semantics; non-zero
 > adapter rotations require `rotated_frame_id`. Python/unit and extrinsic
