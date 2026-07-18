@@ -28,6 +28,8 @@ public:
 IOROS();
 ~IOROS();
 void sendRecv(const LowlevelCmd *cmd, LowlevelState *state);
+void recvStateOnly(LowlevelState *state) override;
+void publishCmdOnly(const LowlevelCmd *cmd) override;
 bool hasFullStateFeedback() const override;
 std::uint64_t stateSequence() const override;
 std::uint64_t stateStampUs() const override;
@@ -48,6 +50,8 @@ std::array<std::atomic_bool, 12> _joint_state_received;
 std::atomic_bool _imu_received;
 std::array<std::atomic<float>, 4> _foot_force;
 std::array<std::atomic<std::uint64_t>, 4> _foot_force_wall_stamp_ns;
+	std::array<std::atomic<std::uint64_t>, 4> _foot_force_callback_sequence;
+	std::array<std::atomic<std::uint64_t>, 4> _foot_force_sim_time_us;
 std::atomic<std::uint64_t> _state_sequence{0};
 std::atomic<std::uint64_t> _state_stamp_us{0};
 std::uint64_t _lowcmd_sequence = 0;

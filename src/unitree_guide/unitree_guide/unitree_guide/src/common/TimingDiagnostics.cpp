@@ -51,7 +51,15 @@ void TimingDiagnostics::configure(const ros::NodeHandle &nh) {
         return;
     }
     stream_ << "event,wall_time_ns,sim_time_us,sim_dt_us,estimated_rtf,"
-               "state_sequence,state_stamp_us,fsm_iteration,control_update_accepted,"
+               "state_sequence,state_stamp_us,fsm_iteration,fsm_sequence,"
+               "estimator_sequence,estimator_source_state_sequence,wave_sequence,"
+               "gait_cycle_sequence,reset_generation,runtime_ctrl_dt_us,"
+               "target_control_hz,control_update_accepted,"
+               "new_state_consumed,repeated_state_consumed,scheduler_accepted,"
+               "accepted_state_sequence,scheduler_lag_us,missed_periods,"
+               "repeated_state_rejected_count,fsm_state,wave_status,resolved_vx,"
+               "resolved_vy,resolved_yaw_rate,"
+               "phase_0,phase_1,phase_2,phase_3,contact_0,contact_1,contact_2,contact_3,"
                "policy_sequence,policy_source_state_sequence,policy_sim_time_us,"
                "policy_wall_time_ns,policy_wait_exit_reason,policy_wait_sim_elapsed_us,"
                "policy_wait_wall_elapsed_us,history_oldest_stamp_us,"
@@ -74,7 +82,22 @@ void TimingDiagnostics::record(const TimingRecord &r) {
     stream_ << r.event << ',' << r.wall_time_ns << ',' << r.sim_time_us << ','
             << r.sim_dt_us << ',' << std::setprecision(9) << r.estimated_rtf << ','
             << r.state_sequence << ',' << r.state_stamp_us << ',' << r.fsm_iteration << ','
-            << (r.control_update_accepted ? 1 : 0) << ',' << r.policy_sequence << ','
+            << r.fsm_sequence << ',' << r.estimator_sequence << ','
+            << r.estimator_source_state_sequence << ',' << r.wave_sequence << ','
+            << r.gait_cycle_sequence << ',' << r.reset_generation << ','
+            << r.runtime_ctrl_dt_us << ',' << r.target_control_hz << ','
+            << (r.control_update_accepted ? 1 : 0) << ','
+            << (r.new_state_consumed ? 1 : 0) << ','
+            << (r.repeated_state_consumed ? 1 : 0) << ','
+            << (r.scheduler_accepted ? 1 : 0) << ','
+            << r.accepted_state_sequence << ',' << r.scheduler_lag_us << ','
+            << r.missed_periods << ',' << r.repeated_state_rejected_count << ','
+            << r.fsm_state << ',' << r.wave_status << ',' << r.resolved_vx << ','
+            << r.resolved_vy << ',' << r.resolved_yaw_rate << ','
+            << r.phase[0] << ',' << r.phase[1] << ',' << r.phase[2] << ','
+            << r.phase[3] << ',' << r.contact[0] << ',' << r.contact[1] << ','
+            << r.contact[2] << ',' << r.contact[3] << ','
+            << r.policy_sequence << ','
             << r.policy_source_state_sequence << ',' << r.policy_sim_time_us << ','
             << r.policy_wall_time_ns << ',' << r.policy_wait_exit_reason << ','
             << r.policy_wait_sim_elapsed_us << ',' << r.policy_wait_wall_elapsed_us << ','

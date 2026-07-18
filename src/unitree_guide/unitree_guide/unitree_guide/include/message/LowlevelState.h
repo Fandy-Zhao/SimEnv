@@ -5,6 +5,7 @@
 #define LOWLEVELSTATE_HPP
 
 #include <cmath>
+#include <cstdint>
 #include <iostream>
 #include "common/mathTypes.h"
 #include "common/mathTools.h"
@@ -74,6 +75,8 @@ struct LowlevelState
     MotorState motorState[12];
     float footForce[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     bool footForceValid[4] = {false, false, false, false};
+    std::uint64_t footForceCallbackSequence[4] = {0, 0, 0, 0};
+    std::uint64_t footForceSimTimeUs[4] = {0, 0, 0, 0};
     UserCommand userCmd;
     UserValue userValue;
 

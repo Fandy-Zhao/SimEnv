@@ -371,6 +371,9 @@ void State_Trotting::getUserCmd(){
         _dYawCmd = saturation(_dYawCmd, _wyawLim);
         _dYawCmdPast = _dYawCmd;
     }
+    _ctrlComp->resolvedVx = _vCmdBody(0);
+    _ctrlComp->resolvedVy = _vCmdBody(1);
+    _ctrlComp->resolvedYawRate = _dYawCmd;
 }
 
 bool State_Trotting::stateEstimateFinite() const{
@@ -417,6 +420,9 @@ void State_Trotting::resetCommandState(){
     _wCmdGlobal.setZero();
     _dYawCmd = 0.0;
     _dYawCmdPast = 0.0;
+    _ctrlComp->resolvedVx = 0.0;
+    _ctrlComp->resolvedVy = 0.0;
+    _ctrlComp->resolvedYawRate = 0.0;
     _cmdVelActive = false;
     _cmdVx = 0.0;
     _cmdVy = 0.0;
@@ -494,14 +500,53 @@ void State_Trotting::updateWaveReadiness(){
     }
 
     const Vec3 rpy = rotMatToRPY(_B2G_RotMat);
+    // Build reason code for contact failure diagnostics
+    const char* contactReason = "READY";
+    if(!_lowState->footForceValid[0] && !_lowState->footForceValid[1] &&
+       !_lowState->footForceValid[2] && !_lowState->footForceValid[3]){
+        if(_lowState->footForceCallbackSequence[0] == 0 &&
+           _lowState->footForceCallbackSequence[1] == 0 &&
+           _lowState->footForceCallbackSequence[2] == 0 &&
+           _lowState->footForceCallbackSequence[3] == 0){
+            contactReason = "NO_CONTACT_CALLBACK";
+        }else{
+            contactReason = "CONTACT_STALE";
+        }
+    }else{
+        for(int i=0; i<4; ++i){
+            if(!_lowState->footForceValid[i]){
+                contactReason = "CONTACT_STALE";
+                break;
+            }
+            if(!std::isfinite(_lowState->footForce[i])){
+                contactReason = "CONTACT_NONFINITE";
+                break;
+            }
+            if(_lowState->footForce[i] < static_cast<float>(_minimumContactForce)){
+                contactReason = "CONTACT_BELOW_THRESHOLD";
+                break;
+            }
+        }
+    }
     ROS_INFO_THROTTLE(1.0,
-        "Trotting waiting for wave readiness: height=%d stance=%d contact=%d |v|=%.3f |w|=%.3f roll=%.1fdeg pitch=%.1fdeg force=[%.1f %.1f %.1f %.1f]N.",
+        "Trotting waiting for wave readiness: height=%d stance=%d contact=%d reason=%s "
+        "|v|=%.3f |w|=%.3f roll=%.1fdeg pitch=%.1fdeg "
+        "force=[%.1f %.1f %.1f %.1f]N seq=[%lu %lu %lu %lu] sim_us=[%lu %lu %lu %lu].",
         _heightTransitionComplete, expectedAllStance(),
         _lowState->hasAllFeetContact(static_cast<float>(_minimumContactForce)),
+        contactReason,
         _velBody.norm(), _lowState->getGyroGlobal().norm(),
         rpy(0) * 180.0 / M_PI, rpy(1) * 180.0 / M_PI,
         _lowState->footForce[0], _lowState->footForce[1],
-        _lowState->footForce[2], _lowState->footForce[3]);
+        _lowState->footForce[2], _lowState->footForce[3],
+        static_cast<unsigned long>(_lowState->footForceCallbackSequence[0]),
+        static_cast<unsigned long>(_lowState->footForceCallbackSequence[1]),
+        static_cast<unsigned long>(_lowState->footForceCallbackSequence[2]),
+        static_cast<unsigned long>(_lowState->footForceCallbackSequence[3]),
+        static_cast<unsigned long>(_lowState->footForceSimTimeUs[0]),
+        static_cast<unsigned long>(_lowState->footForceSimTimeUs[1]),
+        static_cast<unsigned long>(_lowState->footForceSimTimeUs[2]),
+        static_cast<unsigned long>(_lowState->footForceSimTimeUs[3]));
 }
 
 bool State_Trotting::expectedStanceFeetHaveContact() const{

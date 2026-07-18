@@ -52,6 +52,28 @@ void Estimator::setDt(double dt){
     _QInit += _B * _Cu * _B.transpose();
 }
 
+void Estimator::resetState(){
+    _xhat.setZero();
+    _u.setZero();
+    _y.setZero();
+    _yhat.setZero();
+    _feetPos2Body.setZero();
+    _feetVel2Body.setZero();
+    _feetH.setZero();
+    _P.setIdentity();
+    _P = _largeVariance * _P;
+    _Ppriori.setZero();
+    _S.setZero();
+    _Sy.setZero();
+    _Sc.setZero();
+    _SR.setZero();
+    _STC.setZero();
+    _IKC.setZero();
+    _vxFilter->clear();
+    _vyFilter->clear();
+    _vzFilter->clear();
+}
+
 void Estimator::_initSystem(){
     _g << 0, 0, -9.81;
     _largeVariance = 100;
@@ -134,6 +156,7 @@ void Estimator::_initSystem(){
 }
 
 void Estimator::run(){
+    ++_runSequence;
     _feetH.setZero();
     _feetPosGlobalKine = _robModel->getFeet2BPositions(*_lowState, FrameType::GLOBAL);
     _feetVelGlobalKine = _robModel->getFeet2BVelocities(*_lowState, FrameType::GLOBAL);

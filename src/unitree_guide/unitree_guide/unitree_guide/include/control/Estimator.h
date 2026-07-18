@@ -37,7 +37,9 @@ public:
     Vec34 getFeetVel();
     Vec34 getPosFeet2BGlobal();
     void setDt(double dt);
+    void resetState();
     void run();
+    std::uint64_t runSequence() const { return _runSequence; }
 
 #ifdef COMPILE_DEBUG
     void setPyPlot(PyPlot *plot){_testPlot = plot;}
@@ -93,6 +95,7 @@ private:
     AvgCov *_RCheck;
     AvgCov *_uCheck;
     std::string _estName;
+    std::uint64_t _runSequence = 0;
 
 #ifdef COMPILE_DEBUG
     PyPlot *_testPlot;
