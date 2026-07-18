@@ -20,6 +20,7 @@ catkin_install_python(PROGRAMS
   scripts/map_to_camera_init_bridge.py
   scripts/odometry_tf_bridge.py
   scripts/check_fast_lio2_extrinsics.py
+  scripts/runtime_pointcloud_smoke_check.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

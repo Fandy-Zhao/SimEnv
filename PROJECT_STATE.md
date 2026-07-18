@@ -1,5 +1,15 @@
 # Project State
 
+> **2026-07-18 FAST-LIO2 runtime point-cloud orientation**: isolated runtime
+> validation from `fix/0718-runtime-pointcloud-orientation` confirms the active
+> adapter comes from a worktree containing `69ff34e7`, has no rotation params,
+> and preserves `/scan` into `/scan_pointcloud2` exactly (`24000/24000` points,
+> max error `0`, frame `laser_livox`). TF shows LiDAR local `+X` maps to
+> `base` `[+0.707, 0, -0.707]`, so the remaining 45° downward direction is the
+> physical mount. FAST-LIO2 `/cloud_registered` ground normal is within
+> `0.550°` of `+Z`. See
+> `docs/reports/0718_runtime-pointcloud-orientation.md`.
+
 > **2026-07-18 FAST-LIO2 point-cloud frame semantics**: the adapter no longer
 > rotates Livox points by default while retaining `laser_livox`; opt-in
 > rotations require an explicit output frame. Static/unit validation and the

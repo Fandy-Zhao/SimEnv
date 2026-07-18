@@ -293,6 +293,26 @@ export ROS_PACKAGE_PATH="$WORKSPACE_DIR/src:${ROS_PACKAGE_PATH:-}"
 export CMAKE_PREFIX_PATH="$WORKSPACE_DIR/devel:${CMAKE_PREFIX_PATH:-}"
 export PYTHONPATH="$WORKSPACE_DIR/src/building_generator_classic:$WORKSPACE_DIR/src/building_generator_core:${PYTHONPATH:-}"
 
+echo "Runtime source diagnostics:"
+echo "  Workspace: $WORKSPACE_DIR"
+if command -v git >/dev/null 2>&1 && git -C "$WORKSPACE_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "  Git branch: $(git -C "$WORKSPACE_DIR" branch --show-current 2>/dev/null || true)"
+  echo "  Git HEAD:   $(git -C "$WORKSPACE_DIR" rev-parse --short HEAD 2>/dev/null || true)"
+  if git -C "$WORKSPACE_DIR" merge-base --is-ancestor 69ff34e7 HEAD 2>/dev/null; then
+    echo "  Contains FAST-LIO2 pointcloud semantics fix 69ff34e7: yes"
+  else
+    echo "  WARNING: HEAD does not contain FAST-LIO2 pointcloud semantics fix 69ff34e7" >&2
+  fi
+fi
+echo "  ROS_PACKAGE_PATH: $ROS_PACKAGE_PATH"
+echo "  CMAKE_PREFIX_PATH: $CMAKE_PREFIX_PATH"
+if command -v rospack >/dev/null 2>&1; then
+  echo "  simenv_fast_lio2_integration: $(rospack find simenv_fast_lio2_integration 2>/dev/null || echo NOT_FOUND)"
+  echo "  a1_description: $(rospack find a1_description 2>/dev/null || echo NOT_FOUND)"
+  echo "  fast_lio: $(rospack find fast_lio 2>/dev/null || echo NOT_FOUND)"
+fi
+echo "  scan_to_pointcloud2.py: $WORKSPACE_DIR/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py"
+
 GENERATOR_SCRIPT="$WORKSPACE_DIR/src/building_obstacles/scripts/generate_competition_scene.py"
 BUILDING_CONTROL_SCRIPT="$WORKSPACE_DIR/src/building_generator_classic/scripts/building_generator_classic_control"
 UNITREE_GAZEBO_MODELS="$WORKSPACE_DIR/src/unitree_guide/unitree_ros/unitree_gazebo/models"

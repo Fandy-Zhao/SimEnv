@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-18 — FAST-LIO2 runtime point-cloud orientation
+
+- Added startup diagnostics to `auto.sh` so branch, HEAD, ROS overlay paths,
+  package resolution, and the active adapter path are visible before Gazebo
+  starts.
+- Added a runtime smoke checker proving `/scan` and `/scan_pointcloud2` are
+  coordinate-identical in `laser_livox`, verifying the 45° LiDAR TF, and
+  optionally checking `/cloud_registered` ground-plane alignment.
+- Runtime validation showed the adapter is correct in a worktree containing
+  `69ff34e7`; lingering `-X/-Z` observations point to old branch/overlay or
+  Python environment contamination, not a remaining adapter rotation.
+
 ## 2026-07-18 — FAST-LIO2 point-cloud frame semantics
 
 - Made the PointCloud-to-PointCloud2 adapter a coordinate-preserving format
