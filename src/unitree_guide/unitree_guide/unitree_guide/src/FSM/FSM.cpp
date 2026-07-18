@@ -96,10 +96,21 @@ void FSM::run(){
 
     // Apply ROS /fsm/state_cmd only on an advancing simulation step so a
     // command received while Gazebo is paused remains latched until it can run.
+    _ctrlComp->fsmKeyboardUserCmd = static_cast<int>(_ctrlComp->lowState->userCmd);
     if (_ctrlComp->pendingStateCmd != UserCommand::NONE) {
         _ctrlComp->lowState->userCmd = _ctrlComp->pendingStateCmd;
+        _ctrlComp->fsmCommandSource = 1;  // ROS
         _ctrlComp->pendingStateCmd = UserCommand::NONE;
     }
+    _ctrlComp->fsmResolvedUserCmd = static_cast<int>(_ctrlComp->lowState->userCmd);
+    _ctrlComp->fsmCurrentState = _currentState != nullptr ?
+        static_cast<int>(_currentState->_stateName) : 0;
+    ROS_INFO_THROTTLE(2.0, "[FSM-CMD] apply: keyboard=%d pending_mapped=%d resolved=%d source=%d state=%d",
+        _ctrlComp->fsmKeyboardUserCmd,
+        static_cast<int>(_ctrlComp->fsmMappedUserCmd),
+        _ctrlComp->fsmResolvedUserCmd,
+        _ctrlComp->fsmCommandSource,
+        _ctrlComp->fsmCurrentState);
     _ctrlComp->runWaveGen();
     _ctrlComp->estimator->setDt(_ctrlComp->getControlDt());
     _ctrlComp->estimator->run();
@@ -110,17 +121,34 @@ void FSM::run(){
     if(_mode == FSMMode::NORMAL){
         _currentState->run();
         _nextStateName = _currentState->checkChange();
+        _ctrlComp->fsmRequestedState = static_cast<int>(_nextStateName);
         if(_nextStateName != _currentState->_stateName){
+            ++_ctrlComp->fsmTransitionSequence;
             _nextState = getNextState(_nextStateName);
             if(_nextState != nullptr){
                 _mode = FSMMode::CHANGE;
+                _ctrlComp->fsmNextState = static_cast<int>(_nextStateName);
+                _ctrlComp->fsmTransitionResult = 1;  // ACCEPTED
                 std::cout << "Switched from " << _currentState->_stateNameString
                           << " to " << _nextState->_stateNameString << std::endl;
+                ROS_INFO("[FSM-CMD] TRANSITION seq=%lu from=%d to=%d cmd=%d source=%d : ACCEPTED",
+                    (unsigned long)_ctrlComp->fsmTransitionSequence,
+                    _ctrlComp->fsmCurrentState,
+                    _ctrlComp->fsmNextState,
+                    _ctrlComp->fsmResolvedUserCmd,
+                    _ctrlComp->fsmCommandSource);
             } else {
+                _ctrlComp->fsmTransitionResult = 6;  // DISABLED
                 std::cerr << "[WARNING] FSM: requested state (enum "
                           << static_cast<int>(_nextStateName)
                           << ") is not available (disabled at build time). Ignoring." << std::endl;
+                ROS_WARN("[FSM-CMD] TRANSITION seq=%lu from=%d to=%d : DISABLED (not built)",
+                    (unsigned long)_ctrlComp->fsmTransitionSequence,
+                    _ctrlComp->fsmCurrentState,
+                    static_cast<int>(_nextStateName));
             }
+        } else {
+            _ctrlComp->fsmTransitionResult = (_ctrlComp->fsmResolvedUserCmd == 0) ? 2 : 5;
         }
     }
     else if(_mode == FSMMode::CHANGE){

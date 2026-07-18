@@ -85,6 +85,21 @@ public:
     // FSM::run() after sendRecv() to override keyboard userCmd.
     UserCommand pendingStateCmd = UserCommand::NONE;
 
+    // ---- FSM command-chain diagnostics (G1-F) ----
+    std::uint64_t fsmCmdCallbackSequence = 0;
+    std::uint64_t fsmTransitionSequence = 0;
+    std::uint64_t fsmCmdSimTimeUs = 0;
+    int fsmRawRosCmd = 0;
+    int fsmMappedUserCmd = 0;
+    int fsmKeyboardUserCmd = 0;
+    int fsmResolvedUserCmd = 0;
+    int fsmCurrentState = 0;
+    int fsmRequestedState = 0;
+    int fsmNextState = 0;
+    int fsmCommandSource = 0;      // 0=NONE, 1=ROS, 2=KEYBOARD, 3=JOYSTICK, 4=SAFETY
+    int fsmTransitionResult = 0;   // 0=NONE, 1=ACCEPTED, 2=NO_CMD, 3=WRONG_SRC, 4=GUARD_REJECTED, 5=ALREADY_ACTIVE, 6=DISABLED
+    int fsmGuardRejectReason = 0;  // 0=none, 1=height, 2=contact, 3=orientation, 4=safety, 5=other
+
     void sendRecv(){
         ioInter->sendRecv(lowCmd, lowState);
     }

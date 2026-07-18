@@ -167,6 +167,8 @@ int main(int argc, char **argv)
     // Latch stored in ctrlComp->pendingStateCmd, applied in FSM::run() after sendRecv().
     ros::NodeHandle fsm_nh;
     auto stateCmdCb = [ctrlComp](const std_msgs::Int8::ConstPtr& msg) {
+        ++ctrlComp->fsmCmdCallbackSequence;
+        ctrlComp->fsmRawRosCmd = static_cast<int>(msg->data);
         switch (msg->data) {
             case 1: ctrlComp->pendingStateCmd = UserCommand::L2_B; break;
             case 2: ctrlComp->pendingStateCmd = UserCommand::L2_A; break;
@@ -179,6 +181,15 @@ int main(int argc, char **argv)
             case 9: ctrlComp->pendingStateCmd = UserCommand::L1_A; break;
             default: break;
         }
+        ctrlComp->fsmMappedUserCmd = static_cast<int>(ctrlComp->pendingStateCmd);
+        ctrlComp->fsmCommandSource = (ctrlComp->pendingStateCmd != UserCommand::NONE) ? 1 : 0;
+        ctrlComp->fsmCmdSimTimeUs = ros::Time::now().toNSec() / 1000ULL;
+        ROS_INFO_THROTTLE(2.0, "[FSM-CMD] ROS callback seq=%lu raw=%d mapped=%d source=%d sim_us=%lu",
+            (unsigned long)ctrlComp->fsmCmdCallbackSequence,
+            ctrlComp->fsmRawRosCmd,
+            ctrlComp->fsmMappedUserCmd,
+            ctrlComp->fsmCommandSource,
+            (unsigned long)ctrlComp->fsmCmdSimTimeUs);
     };
     ros::Subscriber stateCmdSub = fsm_nh.subscribe<std_msgs::Int8>("/fsm/state_cmd", 10, stateCmdCb);
 
