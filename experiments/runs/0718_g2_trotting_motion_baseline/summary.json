@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "speeds": {
+    "0.00": {
+      "invalid_runs": 1,
+      "median_drift": null,
+      "median_stop_time_to_0_05": null,
+      "median_tracking_ratio": null,
+      "median_vx": null,
+      "result": "INCONCLUSIVE",
+      "total_runs": 1,
+      "valid_runs": 0
+    },
+    "0.10": {
+      "invalid_runs": 1,
+      "median_drift": null,
+      "median_stop_time_to_0_05": null,
+      "median_tracking_ratio": null,
+      "median_vx": null,
+      "result": "INCONCLUSIVE",
+      "total_runs": 1,
+      "valid_runs": 0
+    },
+    "0.30": {
+      "invalid_runs": 1,
+      "median_drift": null,
+      "median_stop_time_to_0_05": null,
+      "median_tracking_ratio": null,
+      "median_vx": null,
+      "result": "INCONCLUSIVE",
+      "total_runs": 1,
+      "valid_runs": 0
+    },
+    "0.50": {
+      "invalid_runs": 1,
+      "median_drift": null,
+      "median_stop_time_to_0_05": null,
+      "median_tracking_ratio": null,
+      "median_vx": null,
+      "result": "INCONCLUSIVE",
+      "total_runs": 1,
+      "valid_runs": 0
+    }
+  },
+  "trial_count": 4
+}

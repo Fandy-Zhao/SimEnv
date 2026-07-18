@@ -33,13 +33,25 @@
 > succeeded 1197/1501 times including the pre-bridge startup interval.
 
 ## Snapshot
-- Date: 2026-07-16
-- Branch: master (merged `fix/0715-trotting-safety` at `9ded5269`)
+- Date: 2026-07-19
+- Branch: `test/0718-g2-trotting-motion-baseline` at `a2e00509`
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: simulation-time-synchronized, contact-gated A1 Trotting
-  `/cmd_vel` locomotion
+- Current focus: G2-B Trotting motion baseline evidence with frozen controller,
+  model, and Gazebo physics configuration
 
 ## Active Work
+- **2026-07-19 G2-B Trotting baseline tooling（in progress）**：已建立
+  `docs/active/0718-g2-trotting-motion-baseline/` 的 test plan、acceptance
+  criteria、risk register、evidence index、baseline/root-cause/recovery report
+  占位和 4 个 ADR。新增
+  `experiments/runs/0718_g2_trotting_motion_baseline/` 运行器、ROS trial
+  capture、metric helpers、aggregator 和 6 个纯函数单测。已对
+  `vx=0.00/0.10/0.30/0.50` 各跑 1 个 smoke trial，4/4 均为 INVALID：
+  `WAVE_ALL_NOT_REACHED`、`GAIT_NOT_ADVANCING`、`FALL_DETECTED`。非零速度的
+  resolved command 到达 controller，但 wave/gait 未启动；`vx=0.50` controller
+  pane 捕获到 Trotting output non-finite (`q=0`) 后 wave cancelled。当前 G2
+  verdict 为 `G2_BASELINE_INCONCLUSIVE`，未进入 G2-R。G2-B 阶段未修改
+  controller、URDF/SDF 或 Gazebo physics。
 - **2026-07-17 单层 Trotting/RL 速度短窗验证（完成）**：在六个全新、独立 ROS
   master epoch 中，对 `0.1/0.5/1.0 m/s` `/cmd_vel` 指令采集了 Gazebo 真值轨迹。
   当前 RTF 为 0.065--0.151，实际速度并不随 RTF 单调变化；RL 的 0.5/1.0 m/s

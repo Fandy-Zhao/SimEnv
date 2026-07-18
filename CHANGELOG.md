@@ -20,6 +20,21 @@
 - Added adapter frame-semantics regression coverage and documented the
   LiDAR-plugin to FAST-LIO2 coordinate responsibility boundary.
 
+## 2026-07-19 — G2 Trotting baseline tooling
+
+- Added the G2-B governance scaffold for Trotting motion baseline testing,
+  including runtime-configuration, valid-trial, motion-acceptance, and
+  root-cause-classification ADRs.
+- Added G2-B-only trial tooling under
+  `experiments/runs/0718_g2_trotting_motion_baseline/` for isolated ROS master
+  trials, Gazebo truth capture, controller timing CSV capture, foot-force
+  logging, metric aggregation, and pure metric tests.
+- Recorded one smoke trial at each G2 speed point. All four were invalid before
+  WAVE_ALL/gait execution, so the current baseline verdict is
+  `G2_BASELINE_INCONCLUSIVE` and no recovery fix was applied.
+- No controller, model, or Gazebo physics parameters were changed; no G2
+  baseline pass/fail claim is made.
+
 ## 2026-07-17 — Single-floor Trotting/RL speed profile
 
 - Added reproducible, isolated ROS-master speed trials for Trotting and RL at
