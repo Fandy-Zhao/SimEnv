@@ -66,3 +66,21 @@ G1_R_PASS achieved. Contact chain (C0-C8), FSM command chain (F0-F7), scheduler,
 - `G2_BASELINE_INCONCLUSIVE`.
 - G2-R not started; next gate is a focused pre-WAVE non-finite output
   diagnostic branch.
+
+## 2026-07-19: G2-D1 Gate V Started
+
+### Branch
+`fix/0719-g2-fall-validator-frame-semantics` from
+`test/0718-g2-trotting-motion-baseline` at `e5e27cfe`.
+
+### Isolation
+- Root workspace is currently on
+  `diagnose/0719-g2-pre-wave-numerical-validity` with uncommitted runtime
+  evidence; it is treated as read-only for this Gate.
+- Existing baseline trial directories under
+  `experiments/runs/0718_g2_trotting_motion_baseline/baseline/` are read-only
+  inputs and must not be overwritten.
+
+### Gate
+Gate V will audit and, if confirmed, correct fall-validator pose/frame
+semantics before any Gate P Pre-WAVE block diagnostics.

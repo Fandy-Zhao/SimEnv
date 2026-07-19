@@ -20,6 +20,17 @@
 - Added adapter frame-semantics regression coverage and documented the
   LiDAR-plugin to FAST-LIO2 coordinate responsibility boundary.
 
+## 2026-07-19 — G2-D1 fall validator semantics gate
+
+- Added Gate V validator-semantics evidence and tests for G2-D1.
+- Audited `/gazebo/model_states` pose semantics, quaternion order, body tilt,
+  and the existing height-only fall predicate.
+- Reclassified the four existing G2-B smoke trials offline without modifying
+  raw trial files; all four remain invalid with `FALL_DETECTED`,
+  `WAVE_ALL_NOT_REACHED`, and `GAIT_NOT_ADVANCING`.
+- Published ADR-009 and `g2-validator-semantics-report.md` with verdict
+  `G2_VALIDATOR_NO_DEFECT` for the suspected frame/pose false positive.
+
 ## 2026-07-19 — G2 Trotting baseline tooling
 
 - Added the G2-B governance scaffold for Trotting motion baseline testing,

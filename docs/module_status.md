@@ -30,6 +30,13 @@
 > Gazebo physics remain frozen. Four one-run smoke trials covered
 > 0.00/0.10/0.30/0.50 m/s and all were invalid before WAVE_ALL/gait execution,
 > so the current verdict is `G2_BASELINE_INCONCLUSIVE`.
+> **2026-07-19 G2-D1 Gate V validator semantics**:
+> The suspected fall-validator frame/pose false positive was not confirmed.
+> The old predicate is height-only over `/gazebo/model_states`, while offline
+> reclassification with explicit normalized-quaternion tilt+height semantics
+> still marks all four trials fallen. D0 FixedStand pose probes remain upright
+> and above the threshold. Gate P remains required to locate the first
+> Pre-WAVE blocker; no locomotion behavior was changed.
 
 ## Overview
 
@@ -71,7 +78,7 @@ ROS1 Noetic 仿真工作区，含 8 个第一级 ROS 包。2026-07-04 生成。
 | `building_generator_core` | Python core: layout, constraints, generation | stable | `nosetests` via catkin (3 tests) | 纯 Python 库，被 building_obstacles 依赖 |
 | `building_generator_classic` | Gazebo export + door/elevator control runtime | stable | `nosetests` via catkin (2 tests) | 门/电梯控制的主要入口 |
 | `building_generator_interfaces` | ROS message/service definitions | stable | 编译时类型检查 | `.msg` / `.srv` 定义，无运行时逻辑 |
-| `unitree_guide` | A1 robot controller + RL locomotion | Trotting validated earlier; G2-B currently inconclusive; RL partial | Torch build + headless nominal FixedStand + low-RTF timing + pause/tilt/contact abort + zero/forward/invalid Twist; 2026-07-17 short-window truth profiles; G2 metric helpers unit-tested; 2026-07-19 G2 smoke trials invalid | Current G2 smoke evidence shows commands reach `resolved_vx`, but WAVE_ALL/gait do not start and a non-finite Trotting output (`q=0`) was captured; investigate pre-WAVE output before any controller or physics fix |
+| `unitree_guide` | A1 robot controller + RL locomotion | Trotting validated earlier; G2-B currently inconclusive; RL partial | Torch build + headless nominal FixedStand + low-RTF timing + pause/tilt/contact abort + zero/forward/invalid Twist; 2026-07-17 short-window truth profiles; G2 metric helpers unit-tested; 2026-07-19 G2 smoke trials invalid; G2-D1 Gate V validator semantics tests pass | Current G2 smoke evidence shows commands reach `resolved_vx`, but WAVE_ALL/gait do not start and a non-finite Trotting output (`q=0`) was captured. Gate V did not confirm a fall-validator false positive; Gate P must find the first Pre-WAVE blocker before any controller or physics fix |
 | `Mid360_imu_sim` | Livox Mid-360 LiDAR plugin | stable | 编译检查 + 话题发布检查 | Gazebo plugin，依赖 Gazebo 开发头文件 |
 | `simenv_fast_lio2_integration` | FAST-LIO2 bridge: adapter, config, launch, TF bridge | partial validation | extrinsic checker, `roslaunch --files`, runtime `/Odometry` + `/cloud_registered`, controlled P0 | 2026-07-15: LiDAR→IMU external parameter corrected to direct `Ry(+45°), [0.2,0,0.08]`; bridge does not rotate world frames. Restart and moving regression still required |
 | `docs/slam/` | FAST-LIO2 deployment guide & SLAM docs | new | markdown lint (manual) | 部署指南覆盖 15 个章节，含参数映射、编译环境、排错流程 |

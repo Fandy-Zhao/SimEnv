@@ -40,6 +40,16 @@
   model, and Gazebo physics configuration
 
 ## Active Work
+- **2026-07-19 G2-D1 Gate V validator semantics（完成于分支
+  `fix/0719-g2-fall-validator-frame-semantics`）**：已冻结四个旧 G2-B smoke
+  trial 的 pose/fall timeline，并用显式 tilt+height 语义离线重判。旧
+  validator 的 `FALL_DETECTED` 来源是 `/gazebo/model_states` 的 height-only
+  predicate（`min(z)<0.12m`），不是 roll 阈值；D0 FixedStand probe 显示
+  正常站立时 model/link/base_w 高度约 0.326m、roll/pitch 近零；四个旧
+  trial 在新语义下仍为 FALL。Gate V verdict:
+  `G2_VALIDATOR_NO_DEFECT`（针对疑似 frame/pose false positive），未修改
+  locomotion/control/physics，G2-R 仍未授权。下一步进入 Gate P：定位
+  Pre-WAVE 首个阻塞原因。
 - **2026-07-19 G2-B Trotting baseline tooling（in progress）**：已建立
   `docs/active/0718-g2-trotting-motion-baseline/` 的 test plan、acceptance
   criteria、risk register、evidence index、baseline/root-cause/recovery report
