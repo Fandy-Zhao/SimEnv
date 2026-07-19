@@ -222,6 +222,25 @@ void FSM::recordTiming(bool accepted, bool repeatedStateConsumed){
         timing.phase[i] = (*_ctrlComp->phase)(i);
         timing.contact[i] = (*_ctrlComp->contact)(i);
     }
+    // ---- G2-D1: Pre-WAVE diagnostic fields ----
+    {
+        const auto &d = _ctrlComp->preWave;
+        int flags = 0;
+        if(d.height_ready)          flags |= 1;
+        if(d.stance_ready)          flags |= 2;
+        if(d.contact_ready)         flags |= 4;
+        if(d.linear_speed_ready)    flags |= 8;
+        if(d.angular_speed_ready)   flags |= 16;
+        if(d.tilt_ready)            flags |= 32;
+        if(d.readiness_met)         flags |= 64;
+        if(d.readiness_hold_complete) flags |= 128;
+        timing.prewave_readiness_flags = flags;
+        timing.prewave_readiness_hold_elapsed = d.readiness_hold_elapsed;
+        timing.prewave_first_block_reason = d.first_block_reason;
+        timing.prewave_model_height = d.model_height;
+        timing.prewave_numerical_guard_stage = d.numerical_guard_stage;
+        timing.prewave_wave_cancel_reason = d.wave_cancel_reason;
+    }
     diagnostics.record(timing);
 }
 
