@@ -84,3 +84,55 @@ G1_R_PASS achieved. Contact chain (C0-C8), FSM command chain (F0-F7), scheduler,
 ### Gate
 Gate V will audit and, if confirmed, correct fall-validator pose/frame
 semantics before any Gate P Pre-WAVE block diagnostics.
+
+## 2026-07-19: G2-D1 Gate V Completed
+
+### Commit
+`2ac4cd0d test(g2v): record fall validator semantics verdict`
+
+### Verdict
+**G2_VALIDATOR_NO_DEFECT**
+
+- No validator frame/pose semantic defect found.
+- FALL_DETECTED confirmed physically meaningful.
+- No production validator fix to merge.
+- Gate P entered via ADR-010 no-defect exception.
+
+### Gate V Evidence
+- ADR-009: validator semantics fix.
+- 21 files: report, tests, offline reclassification tools, evidence.
+- Cherry-picked into G2 baseline at `af99255b`.
+
+## 2026-07-19: G2-D1 Gate P Started
+
+### Branch
+`diagnose/0719-g2-pre-wave-block-reason` from
+`test/0718-g2-trotting-motion-baseline` at `af99255b` (includes Gate V evidence).
+
+### Worktree
+`/home/zzf/search_ws/SimEnv_worktrees/g2-pre-wave-block-reason`
+
+### Entry
+Entered via ADR-010 (`G2_VALIDATOR_NO_DEFECT` exception path).
+
+### Commit `1a524244`
+```
+test(g2d1): add pre-wave readiness and block diagnostics
+```
+
+### Completed
+1. Static control-path audit → `g2-pre-wave-static-audit.md`
+2. C++ diagnostic fields (PreWaveDiagnostics struct, 6 new CSV columns)
+3. Python analysis module (`prewave_analyze.py`, 23 unit tests)
+4. Build verified, G1 timing tests 13/13 PASS
+5. ADR-010, report structure, evidence index updated
+
+### Key Static Finding
+`checkStepOrNot()` returns false for vx=0 (stable robot). Wave CANNOT start
+with zero velocity command. This is expected behavior — not a defect.
+
+### Pending
+- Trial execution: P0 (FixedStand), P1 (vx=0), P2 (vx=0.10), P3 (vx=0.50 conditional)
+- Event timeline alignment and first failing checkpoint determination
+- Gate P verdict
+- G2-R authorization decision

@@ -48,3 +48,19 @@ Each trial directory contains `manifest.json`, `environment.txt`, `git.txt`,
 Gate V verdict: `G2_VALIDATOR_NO_DEFECT` for the suspected frame/pose
 false-positive mechanism. `FALL_DETECTED` is preserved in all four original
 trials.
+
+## Gate P Pre-WAVE Block Diagnostics Evidence (G2-D1)
+
+| ID | Evidence Type | Path | Status |
+|----|---------------|------|--------|
+| P01 | Gate P entry ADR | `docs/active/0718-g2-trotting-motion-baseline/decisions/ADR-010-pre-wave-block-gate-entry.md` | RECORDED |
+| P02 | Static control path audit | `docs/active/0718-g2-trotting-motion-baseline/g2-pre-wave-static-audit.md` | RECORDED |
+| P03 | Pre-wave analysis module | `experiments/runs/0718_g2_trotting_motion_baseline/diagnostics/pre_wave_block_reason/prewave_analyze.py` | RECORDED |
+| P04 | Pre-wave unit tests (23) | `experiments/runs/0718_g2_trotting_motion_baseline/diagnostics/pre_wave_block_reason/test_prewave.py` | PASS |
+| P05 | C++ diagnostic fields | `src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h` | COMPILED |
+| P06 | Timing CSV extension | `src/unitree_guide/unitree_guide/unitree_guide/include/common/TimingDiagnostics.h` | COMPILED |
+| P07 | G1 timing regression (13 tests) | `build/test_results/unitree_guide/gtest-timing_alignment_test.xml` | PASS |
+| P08 | Pre-wave block report | `docs/active/0718-g2-trotting-motion-baseline/g2-pre-wave-block-report.md` | PENDING |
+
+Gate P diagnostics committed at `1a524244`. Ready for trial execution.
+G2-R remains NOT AUTHORIZED.
