@@ -33,13 +33,21 @@
 > succeeded 1197/1501 times including the pre-bridge startup interval.
 
 ## Snapshot
-- Date: 2026-07-19
-- Branch: `test/0718-g2-trotting-motion-baseline` at `a2e00509`
+- Date: 2026-07-20
+- Branch: `diagnose/0719-g2-pre-wave-block-reason` at `d2492470`
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: G2-B Trotting motion baseline evidence with frozen controller,
-  model, and Gazebo physics configuration
+- Current focus: G2 Fast Exit Gate A; P0 shared-base failure blocks Trotting
+  attribution and active RL validation
 
 ## Active Work
+- **2026-07-20 G2 Fast Exit Gate A（当前分支
+  `diagnose/0719-g2-pre-wave-block-reason`）**：新增只读/诊断型
+  fast-exit probe 和 runner，先执行 P0 FixedStand-only。有效运行
+  `p0_fixedstand_run_02` 失败：`CONTACT_NOT_READY`、
+  `FIXEDSTAND_NOT_ENTERED`、`FALL_DETECTED`，最终 FSM 仍为 PASSIVE，最低
+  model height 为 `0.05698662028992169 m`。Gate A verdict:
+  `G2_FAST_EXIT_SHARED_BASE_FAILURE`。P1/P2 未运行，active RL 未授权；只允许
+  后续做 RL shadow/static validation。
 - **2026-07-19 G2-D1 Gate V validator semantics（完成于分支
   `fix/0719-g2-fall-validator-frame-semantics`）**：已冻结四个旧 G2-B smoke
   trial 的 pose/fall timeline，并用显式 tilt+height 语义离线重判。旧

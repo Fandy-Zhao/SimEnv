@@ -18,3 +18,4 @@
 | R14 | 旧 non-finite 现象可能不可稳定复现 | Runtime | Medium | High | Do not authorize G2-R from stale NaN alone; require Gate P first-block evidence or repeatable non-finite capture |
 | R15 | 诊断日志可能影响 RTF | Runtime overhead | Medium | Medium | Keep Gate V/P probes minimal and record RTF/diagnostic scope in reports |
 | R16 | readiness 和 wave cancel 原因目前缺乏结构化字段 | Observability | High | High | Gate P adds first-block taxonomy and structured readiness/start/cancel fields without changing control behavior |
+| R17 | P0 FixedStand 共享底座未建立，导致 Trotting/RL active 归因不安全 | Runtime | High | High | Gate A stopped after P0 failure; P1/P2 and active RL are blocked until four-foot contact and FixedStand entry are recovered |

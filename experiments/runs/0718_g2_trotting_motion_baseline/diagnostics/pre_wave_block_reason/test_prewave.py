@@ -169,6 +169,63 @@ class TestFirstFailingCheckpoint(unittest.TestCase):
         self.assertEqual(pa.determine_first_failing_checkpoint(s), "P10_PASS_WAVE_ALL_ENTERED")
 
 
+class TestZeroCommandExpectedIdle(unittest.TestCase):
+    """Zero-command vx=0: step not required, no WAVE_ALL is expected idle."""
+
+    def _ready_summary(self):
+        s = pa.PreWaveTrialSummary()
+        s.trotting_entered = True
+        s.fixedstand_stable = True
+        s.height_ready = True
+        s.stance_ready = True
+        s.contact_ready = True
+        s.hold_complete = True
+        return s
+
+    def test_zero_vx_no_wave_is_expected_idle(self):
+        s = self._ready_summary()
+        s.command_vx = 0.0
+        s.step_required = False
+        s.wave_all_entered = False
+        self.assertEqual(
+            pa.determine_first_failing_checkpoint(s),
+            "P8_PASS_EXPECTED_NO_STEP_TRIGGER",
+        )
+
+    def test_nonzero_vx_no_wave_is_failure(self):
+        s = self._ready_summary()
+        s.command_vx = 0.5
+        s.step_required = True
+        s.wave_all_entered = False
+        self.assertEqual(
+            pa.determine_first_failing_checkpoint(s),
+            "P8_FAIL_START_NOT_REQUESTED",
+        )
+
+    def test_threshold_boundary_below_is_idle(self):
+        s = self._ready_summary()
+        s.command_vx = 0.03
+        s.step_required = abs(s.command_vx) > 0.03
+        s.wave_all_entered = False
+        self.assertEqual(
+            pa.determine_first_failing_checkpoint(s),
+            "P8_PASS_EXPECTED_NO_STEP_TRIGGER",
+        )
+
+    def test_threshold_boundary_above_is_failure(self):
+        s = self._ready_summary()
+        s.command_vx = 0.031
+        s.step_required = abs(s.command_vx) > 0.03
+        s.wave_all_entered = False
+        self.assertEqual(
+            pa.determine_first_failing_checkpoint(s),
+            "P8_FAIL_START_NOT_REQUESTED",
+        )
+
+    def test_reason_code_registered(self):
+        self.assertEqual(pa.block_reason_name(417), "EXPECTED_NO_STEP_TRIGGER")
+
+
 class TestTrialClassification(unittest.TestCase):
     """Diagnostic trial validity: no WAVE_ALL is not automatically INVALID."""
 

@@ -64,3 +64,18 @@ trials.
 
 Gate P diagnostics committed at `1a524244`. Ready for trial execution.
 G2-R remains NOT AUTHORIZED.
+
+## Gate A Fast Exit Evidence
+
+| ID | Evidence Type | Path | Status |
+|----|---------------|------|--------|
+| A01 | Fast-exit issue | `experiments/runs/0720_g2_fast_exit/issue.md` | RECORDED |
+| A02 | Fast-exit probe script | `experiments/runs/0718_g2_trotting_motion_baseline/g2_fast_exit_probe.py` | RECORDED |
+| A03 | Fast-exit runner | `experiments/runs/0718_g2_trotting_motion_baseline/run_g2_fast_exit_probe.sh` | RECORDED |
+| A04 | P0 tool-failure run | `experiments/runs/0718_g2_trotting_motion_baseline/fast_exit/p0_fixedstand_run_01/` | TOOL_FAIL |
+| A05 | P0 FixedStand evidence | `experiments/runs/0718_g2_trotting_motion_baseline/fast_exit/p0_fixedstand_run_02/` | FAIL |
+| A06 | Gate A report | `docs/active/0718-g2-trotting-motion-baseline/g2-fast-exit-report.md` | RECORDED |
+| A07 | ADR-011 | `docs/active/0718-g2-trotting-motion-baseline/decisions/ADR-011-g2-fast-exit-and-rl-entry.md` | ACCEPTED |
+
+Gate A verdict: `G2_FAST_EXIT_SHARED_BASE_FAILURE`.
+RL authorization: `RL_SHADOW_ONLY_AUTHORIZED`, `RL_ACTIVE_NOT_AUTHORIZED`.

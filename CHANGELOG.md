@@ -20,6 +20,18 @@
 - Added adapter frame-semantics regression coverage and documented the
   LiDAR-plugin to FAST-LIO2 coordinate responsibility boundary.
 
+## 2026-07-20 — G2 Fast Exit Gate A
+
+- Added diagnostic-only G2 fast-exit P0/P1/P2 probe tooling with private ROS
+  master orchestration and scoped cleanup.
+- Updated pre-wave offline classification so stable zero-command Trotting can
+  be marked `EXPECTED_NO_STEP_TRIGGER` instead of a missing wave-start failure.
+- Ran P0 FixedStand-only. The valid P0 run failed before FixedStand with no
+  foot-contact samples, final FSM `PASSIVE`, and minimum model height
+  `0.05698662028992169 m`.
+- Published `G2_FAST_EXIT_SHARED_BASE_FAILURE`; P1/P2 and active RL were not
+  run. RL is limited to shadow/static validation until P0 is recovered.
+
 ## 2026-07-19 — G2-D1 fall validator semantics gate
 
 - Added Gate V validator-semantics evidence and tests for G2-D1.

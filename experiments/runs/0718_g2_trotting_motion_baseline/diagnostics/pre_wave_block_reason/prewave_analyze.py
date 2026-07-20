@@ -94,6 +94,7 @@ PY_BLOCK_REASONS = {
     414: "NUMERICAL_GUARD_BEFORE_WAVE",
     415: "SAFETY_GUARD_BEFORE_WAVE",
     416: "PHYSICAL_FALL_BEFORE_WAVE",
+    417: "EXPECTED_NO_STEP_TRIGGER",
     500: "UNKNOWN",
 }
 
@@ -133,6 +134,8 @@ class PreWaveTrialSummary:
     """Aggregated pre-WAVE diagnostic summary for one trial."""
     trial_id: str = ""
     command_vx: float = 0.0
+    step_required: bool = False
+    step_not_required_reason: str = ""
     valid: bool = False
     invalid_reasons: List[str] = field(default_factory=list)
 
@@ -273,6 +276,14 @@ def analyze_controller_csv(csv_path: str) -> PreWaveTrialSummary:
 
     # Populate summary
     summary.command_vx = float(rows[-1].get("resolved_vx", 0)) if rows else 0.0
+
+    # Determine if step is required from resolved_vx
+    abs_vx = abs(summary.command_vx)
+    summary.step_required = abs_vx > 0.03
+    if not summary.step_required:
+        summary.step_not_required_reason = (
+            f"resolved_vx={summary.command_vx:.4f} below threshold 0.03"
+        )
 
     # FixedStand analysis
     if fixedstand_rows:
@@ -421,6 +432,8 @@ def determine_first_failing_checkpoint(summary: PreWaveTrialSummary) -> str:
         return "P7_FAIL_HOLD_NOT_COMPLETED"
 
     if not summary.wave_all_entered:
+        if not summary.step_required:
+            return "P8_PASS_EXPECTED_NO_STEP_TRIGGER"
         return "P8_FAIL_START_NOT_REQUESTED"
 
     if summary.wave_cancelled:
@@ -439,6 +452,8 @@ def write_summary_json(summary: PreWaveTrialSummary, path: str) -> None:
     data = {
         "trial_id": summary.trial_id,
         "command_vx": summary.command_vx,
+        "step_required": summary.step_required,
+        "step_not_required_reason": summary.step_not_required_reason,
         "valid": summary.valid,
         "invalid_reasons": summary.invalid_reasons,
         "fixedstand_stable": summary.fixedstand_stable,

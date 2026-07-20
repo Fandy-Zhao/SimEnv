@@ -37,6 +37,11 @@
 > still marks all four trials fallen. D0 FixedStand pose probes remain upright
 > and above the threshold. Gate P remains required to locate the first
 > Pre-WAVE blocker; no locomotion behavior was changed.
+> **2026-07-20 G2 Fast Exit Gate A**:
+> Minimal P0 FixedStand-only evidence failed before FixedStand. No foot-contact
+> samples were captured, final FSM remained PASSIVE, and model height reached
+> `0.05698662028992169 m`. Verdict:
+> `G2_FAST_EXIT_SHARED_BASE_FAILURE`; P1/P2 and active RL are blocked.
 
 ## Overview
 

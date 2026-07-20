@@ -136,3 +136,35 @@ with zero velocity command. This is expected behavior — not a defect.
 - Event timeline alignment and first failing checkpoint determination
 - Gate P verdict
 - G2-R authorization decision
+
+## 2026-07-20: Gate A G2 Fast Exit
+
+### Branch
+`diagnose/0719-g2-pre-wave-block-reason` at
+`d24924702aaadc828a1690f2690c19d329554d9b` before this task's local edits.
+
+### Added
+- Fast-exit P0/P1/P2 diagnostic runner under
+  `experiments/runs/0718_g2_trotting_motion_baseline/`.
+- Zero-command offline classification:
+  `EXPECTED_NO_STEP_TRIGGER` when `resolved_vx <= 0.03` and no wave start is
+  expected.
+- ADR-011 and `g2-fast-exit-report.md`.
+
+### Runtime Evidence
+- `p0_fixedstand_run_01`: probe bug evidence only; CSV parser failed on an
+  empty timing field and no Gate verdict is claimed from this run.
+- `p0_fixedstand_run_02`: valid P0 evidence. Result `FAIL` with
+  `CONTACT_NOT_READY`, `FIXEDSTAND_NOT_ENTERED`, and `FALL_DETECTED`;
+  `min_model_height=0.05698662028992169 m`, `foot_samples=0`, final FSM
+  remained `PASSIVE`.
+
+### Gate A Verdict
+`G2_FAST_EXIT_SHARED_BASE_FAILURE`.
+
+### RL Authorization
+- `RL_SHADOW_ONLY_AUTHORIZED`
+- `RL_ACTIVE_NOT_AUTHORIZED`
+
+P1/P2 and active RL were not run because P0 did not establish the shared
+FixedStand/contact base.
