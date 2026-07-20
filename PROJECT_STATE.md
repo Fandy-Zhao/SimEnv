@@ -34,12 +34,22 @@
 
 ## Snapshot
 - Date: 2026-07-20
-- Branch: `diagnose/0719-g2-pre-wave-block-reason` at `d2492470`
+- Branch: `test/0720-earth-rl-motion` at `84ff02d7` plus task changes
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: G2 Fast Exit Gate A; P0 shared-base failure blocks Trotting
-  attribution and active RL validation
+- Current focus: isolated `earth.world` launch and RL-motion precondition
+  validation
 
 ## Active Work
+- **2026-07-20 Earth RL motion benchmark（当前分支
+  `test/0720-earth-rl-motion`）**：新增 `WORLD_MODE=earth` 接入和 tracked
+  `earth.world`，competition 默认路径保持不变。world/topic smoke 证明
+  `/clock` 与 `/gazebo/model_states` 发布，模型包含 `ground_plane`、
+  `platform_1`、`platform_2`、`a1_gazebo`。E0 FixedStand 成功进入 FSM state
+  2 并运行 15.174 s 仿真时间，但 `max_roll_deg=91.911513`，判定
+  `FAIL_ATTITUDE`；E1+ RL trial 因 E0 失败未运行。Torch-enabled build 仍被
+  CUDA `cc1plus` 探测失败阻塞，Torch-off/full workspace build 被
+  `move_base_msgs` 和无关 UAV/SDK 示例目标阻塞。当前结论：先修
+  earth spawn/contact pose，再进入 RL recovery。
 - **2026-07-20 G2 Fast Exit Gate A（当前分支
   `diagnose/0719-g2-pre-wave-block-reason`）**：新增只读/诊断型
   fast-exit probe 和 runner，先执行 P0 FixedStand-only。有效运行

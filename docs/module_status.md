@@ -42,6 +42,13 @@
 > samples were captured, final FSM remained PASSIVE, and model height reached
 > `0.05698662028992169 m`. Verdict:
 > `G2_FAST_EXIT_SHARED_BASE_FAILURE`; P1/P2 and active RL are blocked.
+> **2026-07-20 Earth world benchmark**:
+> `auto.sh` now supports isolated `WORLD_MODE=earth` launch against the tracked
+> Unitree Gazebo `earth.world`. World/topic smoke passed with `/clock` and
+> `/gazebo/model_states`; E0 FixedStand entered FSM state 2 for 15.174 s sim
+> time but failed attitude validation (`max_roll_deg=91.911513`). RL runtime
+> trials remain blocked until earth spawn/contact pose is repaired. No
+> locomotion/control behavior changed.
 
 ## Overview
 

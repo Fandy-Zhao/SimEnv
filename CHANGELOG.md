@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-20 — Earth RL motion benchmark
+
+- Added `WORLD_MODE=earth` as an isolated launch mode that resolves the tracked
+  `earth.world`, skips competition scene generation, and defaults optional
+  mapping/competition nodes off while preserving explicit environment
+  overrides.
+- Added earth-world benchmark capture helpers and static tests under
+  `experiments/runs/0720_earth-rl-motion/`.
+- Ran earth world/topic smoke and E0 FixedStand. Earth launches independently,
+  but E0 fails at body attitude (`max_roll_deg=91.911513`), so active RL trials
+  are blocked before policy attribution.
+
 ## 2026-07-18 — FAST-LIO2 runtime point-cloud orientation
 
 - Added startup diagnostics to `auto.sh` so branch, HEAD, ROS overlay paths,
