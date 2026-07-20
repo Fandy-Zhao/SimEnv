@@ -20,6 +20,44 @@
 - Added adapter frame-semantics regression coverage and documented the
   LiDAR-plugin to FAST-LIO2 coordinate responsibility boundary.
 
+## 2026-07-20 — G2 Fast Exit Gate A
+
+- Added diagnostic-only G2 fast-exit P0/P1/P2 probe tooling with private ROS
+  master orchestration and scoped cleanup.
+- Updated pre-wave offline classification so stable zero-command Trotting can
+  be marked `EXPECTED_NO_STEP_TRIGGER` instead of a missing wave-start failure.
+- Ran P0 FixedStand-only. The valid P0 run failed before FixedStand with no
+  foot-contact samples, final FSM `PASSIVE`, and minimum model height
+  `0.05698662028992169 m`.
+- Published `G2_FAST_EXIT_SHARED_BASE_FAILURE`; P1/P2 and active RL were not
+  run. RL is limited to shadow/static validation until P0 is recovered.
+
+## 2026-07-19 — G2-D1 fall validator semantics gate
+
+- Added Gate V validator-semantics evidence and tests for G2-D1.
+- Audited `/gazebo/model_states` pose semantics, quaternion order, body tilt,
+  and the existing height-only fall predicate.
+- Reclassified the four existing G2-B smoke trials offline without modifying
+  raw trial files; all four remain invalid with `FALL_DETECTED`,
+  `WAVE_ALL_NOT_REACHED`, and `GAIT_NOT_ADVANCING`.
+- Published ADR-009 and `g2-validator-semantics-report.md` with verdict
+  `G2_VALIDATOR_NO_DEFECT` for the suspected frame/pose false positive.
+
+## 2026-07-19 — G2 Trotting baseline tooling
+
+- Added the G2-B governance scaffold for Trotting motion baseline testing,
+  including runtime-configuration, valid-trial, motion-acceptance, and
+  root-cause-classification ADRs.
+- Added G2-B-only trial tooling under
+  `experiments/runs/0718_g2_trotting_motion_baseline/` for isolated ROS master
+  trials, Gazebo truth capture, controller timing CSV capture, foot-force
+  logging, metric aggregation, and pure metric tests.
+- Recorded one smoke trial at each G2 speed point. All four were invalid before
+  WAVE_ALL/gait execution, so the current baseline verdict is
+  `G2_BASELINE_INCONCLUSIVE` and no recovery fix was applied.
+- No controller, model, or Gazebo physics parameters were changed; no G2
+  baseline pass/fail claim is made.
+
 ## 2026-07-17 — Single-floor Trotting/RL speed profile
 
 - Added reproducible, isolated ROS-master speed trials for Trotting and RL at

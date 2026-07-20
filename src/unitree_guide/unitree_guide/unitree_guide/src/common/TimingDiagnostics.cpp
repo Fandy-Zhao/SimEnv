@@ -65,7 +65,7 @@ void TimingDiagnostics::configure(const ros::NodeHandle &nh) {
                "policy_wait_wall_elapsed_us,history_oldest_stamp_us,"
                "history_newest_stamp_us,history_span_us,history_duplicate_count,"
                "action_sequence,action_source_state_sequence,lowcmd_sequence,"
-               "lowcmd_action_sequence,lowcmd_sim_time_us,torn_action\n";
+               "lowcmd_action_sequence,lowcmd_sim_time_us,torn_action," "prewave_readiness_flags,prewave_readiness_hold_elapsed," "prewave_first_block_reason,prewave_model_height," "prewave_numerical_guard_stage,prewave_wave_cancel_reason\n";
     enabled_.store(true, std::memory_order_release);
     ROS_INFO("Timing diagnostics enabled: %s", path.c_str());
 }
@@ -105,7 +105,7 @@ void TimingDiagnostics::record(const TimingRecord &r) {
             << r.history_span_us << ',' << r.history_duplicate_count << ','
             << r.action_sequence << ',' << r.action_source_state_sequence << ','
             << r.lowcmd_sequence << ',' << r.lowcmd_action_sequence << ','
-            << r.lowcmd_sim_time_us << ',' << (r.torn_action ? 1 : 0) << '\n';
+            << r.lowcmd_sim_time_us << ',' << (r.torn_action ? 1 : 0) << ',' << r.prewave_readiness_flags << ',' << std::setprecision(6) << r.prewave_readiness_hold_elapsed << ',' << r.prewave_first_block_reason << ',' << r.prewave_model_height << ',' << r.prewave_numerical_guard_stage << ',' << r.prewave_wave_cancel_reason << '\n';
 }
 
 std::uint64_t TimingDiagnostics::beginActionWrite() {

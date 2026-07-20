@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "trials": [
+    {
+      "new_fall_result": true,
+      "old_fall_result": true,
+      "reclassified_status": "INVALID",
+      "remaining_invalid_reasons": "FALL_DETECTED;GAIT_NOT_ADVANCING;WAVE_ALL_NOT_REACHED",
+      "trial": "vx_000_run_01"
+    },
+    {
+      "new_fall_result": true,
+      "old_fall_result": true,
+      "reclassified_status": "INVALID",
+      "remaining_invalid_reasons": "FALL_DETECTED;GAIT_NOT_ADVANCING;WAVE_ALL_NOT_REACHED",
+      "trial": "vx_010_run_01"
+    },
+    {
+      "new_fall_result": true,
+      "old_fall_result": true,
+      "reclassified_status": "INVALID",
+      "remaining_invalid_reasons": "FALL_DETECTED;GAIT_NOT_ADVANCING;WAVE_ALL_NOT_REACHED",
+      "trial": "vx_030_run_01"
+    },
+    {
+      "new_fall_result": true,
+      "old_fall_result": true,
+      "reclassified_status": "INVALID",
+      "remaining_invalid_reasons": "FALL_DETECTED;GAIT_NOT_ADVANCING;WAVE_ALL_NOT_REACHED",
+      "trial": "vx_050_run_01"
+    }
+  ]
+}

@@ -128,6 +128,37 @@ void State_Trotting::enter(){
     _ctrlComp->ioInter->zeroCmdPanel();
     _ctrlComp->setAllStanceNow();
     _gait->restart();
+
+    // ---- G2-D1: initialize pre-WAVE diagnostics ----
+    auto &d = _ctrlComp->preWave;
+    d.height_ready = false;
+    d.stance_ready = false;
+    d.contact_ready = false;
+    for(int i=0; i<4; ++i){ d.contact_fresh[i] = false; d.contact_force[i] = 0.0f; }
+    d.linear_speed_ready = false;
+    d.angular_speed_ready = false;
+    d.tilt_ready = false;
+    d.readiness_met = false;
+    d.readiness_hold_complete = false;
+    d.readiness_hold_elapsed = 0.0;
+    d.wave_start_requested = false;
+    d.wave_start_sequence = 0;
+    d.wave_all_entered_sequence = 0;
+    d.wave_cancel_requested = false;
+    d.wave_cancel_sequence = 0;
+    d.wave_cancel_reason = 0;
+    if(d.first_block_reason == 0){
+        d.first_block_reason = 0;
+        d.first_block_sim_time_us = 0;
+        d.first_block_control_sequence = 0;
+    }
+    d.numerical_guard_triggered = false;
+    d.numerical_guard_stage = 0;
+    d.safety_guard_triggered = false;
+    d.trotting_entered = true;
+    d.trotting_enter_sequence = _ctrlComp->fsmSequence;
+    d.trotting_exit_sequence = 0;
+
     ROS_INFO("Trotting entry: inherited body height %.3f m and foot positions; transitioning to %.3f m over %.2f s.",
              _heightTransitionStart, _heightTransitionTarget, _heightTransitionDuration);
 
@@ -266,6 +297,12 @@ void State_Trotting::run(){
         }
         _ctrlComp->setStartWave();
         _waveStarted = true;
+        // ---- G2-D1: record wave start ----
+        auto &d = _ctrlComp->preWave;
+        if(!d.wave_start_requested){
+            d.wave_start_requested = true;
+            d.wave_start_sequence = _ctrlComp->waveSequence;
+        }
     }else{
         _ctrlComp->setAllStance();
         if(_waveStarted && !stepRequested){
@@ -483,7 +520,8 @@ void State_Trotting::updateWaveReadiness(){
         ROS_WARN("Trotting readiness was lost before wave start; returning to all-stance hold.");
     }
 
-    if(readinessConditionsMet()){
+    const bool condMet = readinessConditionsMet();
+    if(condMet){
         _readinessStableElapsed += _ctrlComp->getControlDt();
     }else{
         _readinessStableElapsed = 0.0;
@@ -496,57 +534,44 @@ void State_Trotting::updateWaveReadiness(){
                  _lowState->getGyroGlobal().norm(),
                  _lowState->footForce[0], _lowState->footForce[1],
                  _lowState->footForce[2], _lowState->footForce[3]);
-        return;
     }
 
-    const Vec3 rpy = rotMatToRPY(_B2G_RotMat);
-    // Build reason code for contact failure diagnostics
-    const char* contactReason = "READY";
-    if(!_lowState->footForceValid[0] && !_lowState->footForceValid[1] &&
-       !_lowState->footForceValid[2] && !_lowState->footForceValid[3]){
-        if(_lowState->footForceCallbackSequence[0] == 0 &&
-           _lowState->footForceCallbackSequence[1] == 0 &&
-           _lowState->footForceCallbackSequence[2] == 0 &&
-           _lowState->footForceCallbackSequence[3] == 0){
-            contactReason = "NO_CONTACT_CALLBACK";
-        }else{
-            contactReason = "CONTACT_STALE";
+    // ---- G2-D1: populate readiness diagnostics (write-only) ----
+    auto &d = _ctrlComp->preWave;
+    d.height_ready = _heightTransitionComplete;
+    d.stance_ready = expectedAllStance();
+    d.contact_ready = _lowState->hasAllFeetContact(static_cast<float>(_minimumContactForce));
+    for(int i=0; i<4; ++i){
+        d.contact_fresh[i] = _lowState->footForceValid[i];
+        d.contact_force[i] = _lowState->footForce[i];
+    }
+    const Vec3 rpyDiag = rotMatToRPY(_B2G_RotMat);
+    d.linear_speed_ready = _velBody.norm() < _readyLinearVelocity;
+    d.angular_speed_ready = _lowState->getGyroGlobal().norm() < _readyAngularVelocity;
+    d.tilt_ready = std::abs(rpyDiag(0)) < _readyTilt && std::abs(rpyDiag(1)) < _readyTilt;
+    d.readiness_met = condMet;
+    d.readiness_hold_complete = _waveReady;
+    d.readiness_hold_elapsed = _readinessStableElapsed;
+    d.linear_speed = _velBody.norm();
+    d.angular_speed = _lowState->getGyroGlobal().norm();
+    d.roll_deg = rpyDiag(0) * 180.0 / M_PI;
+    d.pitch_deg = rpyDiag(1) * 180.0 / M_PI;
+    d.model_height = _posBody(2);
+
+    // First block latch: set once on first detected failure condition
+    if(d.first_block_reason == 0 && !_waveReady){
+        if(!_heightTransitionComplete){
+            d.first_block_reason = 101;  // READINESS_HEIGHT_FALSE
+        }else if(!expectedAllStance()){
+            d.first_block_reason = 102;  // READINESS_STANCE_FALSE
+        }else if(!_lowState->hasAllFeetContact(static_cast<float>(_minimumContactForce))){
+            d.first_block_reason = 103;  // READINESS_CONTACT_FALSE
         }
-    }else{
-        for(int i=0; i<4; ++i){
-            if(!_lowState->footForceValid[i]){
-                contactReason = "CONTACT_STALE";
-                break;
-            }
-            if(!std::isfinite(_lowState->footForce[i])){
-                contactReason = "CONTACT_NONFINITE";
-                break;
-            }
-            if(_lowState->footForce[i] < static_cast<float>(_minimumContactForce)){
-                contactReason = "CONTACT_BELOW_THRESHOLD";
-                break;
-            }
+        if(d.first_block_reason != 0){
+            d.first_block_sim_time_us = _ctrlComp->controlTime.toNSec() / 1000ULL;
+            d.first_block_control_sequence = _ctrlComp->acceptedStateSequence;
         }
     }
-    ROS_INFO_THROTTLE(1.0,
-        "Trotting waiting for wave readiness: height=%d stance=%d contact=%d reason=%s "
-        "|v|=%.3f |w|=%.3f roll=%.1fdeg pitch=%.1fdeg "
-        "force=[%.1f %.1f %.1f %.1f]N seq=[%lu %lu %lu %lu] sim_us=[%lu %lu %lu %lu].",
-        _heightTransitionComplete, expectedAllStance(),
-        _lowState->hasAllFeetContact(static_cast<float>(_minimumContactForce)),
-        contactReason,
-        _velBody.norm(), _lowState->getGyroGlobal().norm(),
-        rpy(0) * 180.0 / M_PI, rpy(1) * 180.0 / M_PI,
-        _lowState->footForce[0], _lowState->footForce[1],
-        _lowState->footForce[2], _lowState->footForce[3],
-        static_cast<unsigned long>(_lowState->footForceCallbackSequence[0]),
-        static_cast<unsigned long>(_lowState->footForceCallbackSequence[1]),
-        static_cast<unsigned long>(_lowState->footForceCallbackSequence[2]),
-        static_cast<unsigned long>(_lowState->footForceCallbackSequence[3]),
-        static_cast<unsigned long>(_lowState->footForceSimTimeUs[0]),
-        static_cast<unsigned long>(_lowState->footForceSimTimeUs[1]),
-        static_cast<unsigned long>(_lowState->footForceSimTimeUs[2]),
-        static_cast<unsigned long>(_lowState->footForceSimTimeUs[3]));
 }
 
 bool State_Trotting::expectedStanceFeetHaveContact() const{
@@ -607,6 +632,32 @@ void State_Trotting::abortWave(const char *reason, bool latchAbort){
     _waveAbortLatched = latchAbort;
     resetCommandState();
     _ctrlComp->ioInter->zeroCmdPanel();
+
+    // ---- G2-D1: record wave cancel ----
+    auto &d = _ctrlComp->preWave;
+    d.wave_cancel_requested = true;
+    d.wave_cancel_sequence = _ctrlComp->waveSequence;
+    if(d.wave_cancel_reason == 0){
+        if(std::strcmp(reason, "non-finite state estimate") == 0) d.wave_cancel_reason = 1;
+        else if(std::strcmp(reason, "non-finite command state") == 0) d.wave_cancel_reason = 2;
+        else if(std::strcmp(reason, "non-finite control output") == 0) d.wave_cancel_reason = 3;
+        else if(std::strcmp(reason, "unsafe body attitude") == 0) d.wave_cancel_reason = 4;
+        else if(std::strcmp(reason, "stance-foot contact loss") == 0) d.wave_cancel_reason = 5;
+        else if(std::strcmp(reason, "control-time reset") == 0) d.wave_cancel_reason = 6;
+        else d.wave_cancel_reason = 7;  // unknown
+    }
+    // Latch first block reason for numerical/safety guards
+    if(d.first_block_reason == 0){
+        if(d.wave_cancel_reason == 1) d.first_block_reason = 201;  // NUMERICAL_GUARD_STATE
+        else if(d.wave_cancel_reason == 2) d.first_block_reason = 202;  // NUMERICAL_GUARD_COMMAND
+        else if(d.wave_cancel_reason == 3) d.first_block_reason = 203;  // NUMERICAL_GUARD_OUTPUT
+        else if(d.wave_cancel_reason == 4) d.first_block_reason = 301;  // SAFETY_GUARD_ATTITUDE
+        else if(d.wave_cancel_reason == 5) d.first_block_reason = 302;  // SAFETY_GUARD_CONTACT
+        if(d.first_block_reason != 0){
+            d.first_block_sim_time_us = _ctrlComp->controlTime.toNSec() / 1000ULL;
+            d.first_block_control_sequence = _ctrlComp->acceptedStateSequence;
+        }
+    }
 
     if(_posBody.allFinite()){
         _pcd = _posBody;

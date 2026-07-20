@@ -33,13 +33,43 @@
 > succeeded 1197/1501 times including the pre-bridge startup interval.
 
 ## Snapshot
-- Date: 2026-07-16
-- Branch: master (merged `fix/0715-trotting-safety` at `9ded5269`)
+- Date: 2026-07-20
+- Branch: `diagnose/0719-g2-pre-wave-block-reason` at `d2492470`
 - Project type: ROS1 Noetic + Gazebo Classic (robotics competition simulation)
-- Current focus: simulation-time-synchronized, contact-gated A1 Trotting
-  `/cmd_vel` locomotion
+- Current focus: G2 Fast Exit Gate A; P0 shared-base failure blocks Trotting
+  attribution and active RL validation
 
 ## Active Work
+- **2026-07-20 G2 Fast Exit Gate A（当前分支
+  `diagnose/0719-g2-pre-wave-block-reason`）**：新增只读/诊断型
+  fast-exit probe 和 runner，先执行 P0 FixedStand-only。有效运行
+  `p0_fixedstand_run_02` 失败：`CONTACT_NOT_READY`、
+  `FIXEDSTAND_NOT_ENTERED`、`FALL_DETECTED`，最终 FSM 仍为 PASSIVE，最低
+  model height 为 `0.05698662028992169 m`。Gate A verdict:
+  `G2_FAST_EXIT_SHARED_BASE_FAILURE`。P1/P2 未运行，active RL 未授权；只允许
+  后续做 RL shadow/static validation。
+- **2026-07-19 G2-D1 Gate V validator semantics（完成于分支
+  `fix/0719-g2-fall-validator-frame-semantics`）**：已冻结四个旧 G2-B smoke
+  trial 的 pose/fall timeline，并用显式 tilt+height 语义离线重判。旧
+  validator 的 `FALL_DETECTED` 来源是 `/gazebo/model_states` 的 height-only
+  predicate（`min(z)<0.12m`），不是 roll 阈值；D0 FixedStand probe 显示
+  正常站立时 model/link/base_w 高度约 0.326m、roll/pitch 近零；四个旧
+  trial 在新语义下仍为 FALL。Gate V verdict:
+  `G2_VALIDATOR_NO_DEFECT`（针对疑似 frame/pose false positive），未修改
+  locomotion/control/physics，G2-R 仍未授权。下一步进入 Gate P：定位
+  Pre-WAVE 首个阻塞原因。
+- **2026-07-19 G2-B Trotting baseline tooling（in progress）**：已建立
+  `docs/active/0718-g2-trotting-motion-baseline/` 的 test plan、acceptance
+  criteria、risk register、evidence index、baseline/root-cause/recovery report
+  占位和 4 个 ADR。新增
+  `experiments/runs/0718_g2_trotting_motion_baseline/` 运行器、ROS trial
+  capture、metric helpers、aggregator 和 6 个纯函数单测。已对
+  `vx=0.00/0.10/0.30/0.50` 各跑 1 个 smoke trial，4/4 均为 INVALID：
+  `WAVE_ALL_NOT_REACHED`、`GAIT_NOT_ADVANCING`、`FALL_DETECTED`。非零速度的
+  resolved command 到达 controller，但 wave/gait 未启动；`vx=0.50` controller
+  pane 捕获到 Trotting output non-finite (`q=0`) 后 wave cancelled。当前 G2
+  verdict 为 `G2_BASELINE_INCONCLUSIVE`，未进入 G2-R。G2-B 阶段未修改
+  controller、URDF/SDF 或 Gazebo physics。
 - **2026-07-17 单层 Trotting/RL 速度短窗验证（完成）**：在六个全新、独立 ROS
   master epoch 中，对 `0.1/0.5/1.0 m/s` `/cmd_vel` 指令采集了 Gazebo 真值轨迹。
   当前 RTF 为 0.065--0.151，实际速度并不随 RTF 单调变化；RL 的 0.5/1.0 m/s

@@ -68,6 +68,13 @@ struct TimingRecord {
     std::uint64_t lowcmd_action_sequence = 0;
     std::uint64_t lowcmd_sim_time_us = 0;
     bool torn_action = false;
+    // ---- G2-D1 Pre-WAVE diagnostics ----
+    int prewave_readiness_flags = 0;    // bitmask: height=1 stance=2 contact=4 linspeed=8 angspeed=16 tilt=32 met=64 hold=128
+    double prewave_readiness_hold_elapsed = 0.0;
+    int prewave_first_block_reason = 0; // 0=none, enumeration per PreWaveBlockReason
+    double prewave_model_height = 0.0;
+    int prewave_numerical_guard_stage = 0; // 0=none, 1=state, 2=command, 3=output
+    int prewave_wave_cancel_reason = 0; // 0=none, 1=nonfinite_state, 2=nonfinite_cmd, 3=nonfinite_output, 4=attitude, 5=contact_loss, 6=time_reset
 };
 
 class TimingDiagnostics {
