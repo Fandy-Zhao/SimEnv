@@ -1,0 +1,17 @@
+2026-07-20T13:39:34+08:00
+WORKSPACE=/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion
+TRIAL_ID=E0_fixedstand
+TRIAL_STATE=fixedstand
+COMMAND_VX=0.0
+COMMAND_VY=0.0
+COMMAND_YAW_RATE=0.0
+TRIAL_DURATION=15.0
+STOP_DURATION=0.0
+ROS_MASTER_URI=http://127.0.0.1:13190
+ M auto.sh
+ M logs/competition_gazebo.log
+ M logs/competition_gazebo.pid
+?? experiments/runs/0720_earth-rl-motion/
+?? src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world
+test/0720-earth-rl-motion
+84ff02d7022c11dbb26fdbb2ff37322bf4aaf814

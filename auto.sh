@@ -24,6 +24,27 @@ as_ros_bool() {
   esac
 }
 
+WORLD_MODE="${WORLD_MODE:-competition}"
+if [ "$WORLD_MODE" != "competition" ] && [ "$WORLD_MODE" != "earth" ]; then
+  echo "ERROR: WORLD_MODE must be 'competition' or 'earth', got '$WORLD_MODE'" >&2
+  exit 1
+fi
+
+if [ "$WORLD_MODE" = "earth" ]; then
+  START_BUILDING_CONTROL="${START_BUILDING_CONTROL:-0}"
+  ENABLE_FAST_LIO2="${ENABLE_FAST_LIO2:-0}"
+  ENABLE_RVIZ="${ENABLE_RVIZ:-0}"
+  ENABLE_SENSOR_DATA="${ENABLE_SENSOR_DATA:-0}"
+  ENABLE_POINTCLOUD_CONVERTER="${ENABLE_POINTCLOUD_CONVERTER:-0}"
+  ENABLE_REFEREE_ODOM="${ENABLE_REFEREE_ODOM:-0}"
+  ENABLE_GROUND_TRUTH="${ENABLE_GROUND_TRUTH:-0}"
+  WRITE_GENERATED_TRUTH_COPY="${WRITE_GENERATED_TRUTH_COPY:-0}"
+  ROBOT_X="${ROBOT_X:-0.0}"
+  ROBOT_Y="${ROBOT_Y:-0.0}"
+  ROBOT_Z="${ROBOT_Z:-0.6}"
+  ROBOT_YAW="${ROBOT_YAW:-0.0}"
+fi
+
 SEED="${SEED:-}"
 FLOOR_COUNT="${FLOOR_COUNT:-1}"
 ROOMS_PER_FLOOR="${ROOMS_PER_FLOOR:-4}"
@@ -318,37 +339,47 @@ BUILDING_CONTROL_SCRIPT="$WORKSPACE_DIR/src/building_generator_classic/scripts/b
 UNITREE_GAZEBO_MODELS="$WORKSPACE_DIR/src/unitree_guide/unitree_ros/unitree_gazebo/models"
 SCENE_OUTPUT_DIR="$WORKSPACE_DIR/generated_building"
 RESULTS_DIR="$WORKSPACE_DIR/results"
-mkdir -p "$SCENE_OUTPUT_DIR" "$RESULTS_DIR" "$WORKSPACE_DIR/logs"
+EARTH_WORLD_FILE="$WORKSPACE_DIR/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world"
+mkdir -p "$WORKSPACE_DIR/logs"
 
-echo "Generating competition scene..."
-GENERATOR_ARGS=(
-  --output-dir "$SCENE_OUTPUT_DIR"
-  --results-dir "$RESULTS_DIR"
-  --floor-count "$FLOOR_COUNT"
-  --rooms-per-floor "$ROOMS_PER_FLOOR"
-  --width "$BUILDING_WIDTH"
-  --length "$BUILDING_LENGTH"
-  --danger-count "$DANGER_COUNT"
-  --distractor-count "$DISTRACTOR_COUNT"
-  --robot-x "$ROBOT_X"
-  --robot-y "$ROBOT_Y"
-  --robot-z "$ROBOT_Z"
-  --robot-yaw "$ROBOT_YAW"
-)
-if [ -n "$SEED" ]; then
-  GENERATOR_ARGS+=(--seed "$SEED")
+if [ "$WORLD_MODE" = "competition" ]; then
+  mkdir -p "$SCENE_OUTPUT_DIR" "$RESULTS_DIR"
+  echo "Generating competition scene..."
+  GENERATOR_ARGS=(
+    --output-dir "$SCENE_OUTPUT_DIR"
+    --results-dir "$RESULTS_DIR"
+    --floor-count "$FLOOR_COUNT"
+    --rooms-per-floor "$ROOMS_PER_FLOOR"
+    --width "$BUILDING_WIDTH"
+    --length "$BUILDING_LENGTH"
+    --danger-count "$DANGER_COUNT"
+    --distractor-count "$DISTRACTOR_COUNT"
+    --robot-x "$ROBOT_X"
+    --robot-y "$ROBOT_Y"
+    --robot-z "$ROBOT_Z"
+    --robot-yaw "$ROBOT_YAW"
+  )
+  if [ -n "$SEED" ]; then
+    GENERATOR_ARGS+=(--seed "$SEED")
+  fi
+  GENERATOR_ARGS+=(--physics-max-step-size "$GAZEBO_PHYSICS_MAX_STEP_SIZE")
+  GENERATOR_ARGS+=(--physics-real-time-update-rate "$GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE")
+  GENERATOR_ARGS+=(--physics-ode-iters "$GAZEBO_PHYSICS_ODE_ITERS")
+  GENERATOR_ARGS+=(--physics-contact-max-correcting-vel "$GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL")
+  if [ "$WRITE_GENERATED_TRUTH_COPY" = "false" ]; then
+    GENERATOR_ARGS+=(--no-generated-truth-copy)
+  fi
+  python3 "$GENERATOR_SCRIPT" "${GENERATOR_ARGS[@]}" \
+    > "$SCENE_OUTPUT_DIR/scene_manifest.stdout.json"
+  export BUILDING_WORLD_FILE="$SCENE_OUTPUT_DIR/competition_scene.world"
+else
+  export BUILDING_WORLD_FILE="$EARTH_WORLD_FILE"
+  if [ ! -f "$BUILDING_WORLD_FILE" ]; then
+    echo "ERROR: Earth world file not found: $BUILDING_WORLD_FILE" >&2
+    exit 1
+  fi
+  echo "Skipping competition scene generation for WORLD_MODE=earth."
 fi
-GENERATOR_ARGS+=(--physics-max-step-size "$GAZEBO_PHYSICS_MAX_STEP_SIZE")
-GENERATOR_ARGS+=(--physics-real-time-update-rate "$GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE")
-GENERATOR_ARGS+=(--physics-ode-iters "$GAZEBO_PHYSICS_ODE_ITERS")
-GENERATOR_ARGS+=(--physics-contact-max-correcting-vel "$GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL")
-if [ "$WRITE_GENERATED_TRUTH_COPY" = "false" ]; then
-  GENERATOR_ARGS+=(--no-generated-truth-copy)
-fi
-python3 "$GENERATOR_SCRIPT" "${GENERATOR_ARGS[@]}" \
-  > "$SCENE_OUTPUT_DIR/scene_manifest.stdout.json"
-
-export BUILDING_WORLD_FILE="$SCENE_OUTPUT_DIR/competition_scene.world"
 export COMPETITION_ROBOT_X="$ROBOT_X"
 export COMPETITION_ROBOT_Y="$ROBOT_Y"
 export COMPETITION_ROBOT_Z="$ROBOT_Z"
@@ -358,20 +389,32 @@ export GAZEBO_MODEL_PATH="${GAZEBO_MODEL_PATH:-}:$SCENE_OUTPUT_DIR:$UNITREE_GAZE
 export GAZEBO_PLUGIN_PATH="$WORKSPACE_DIR/devel/lib:${GAZEBO_PLUGIN_PATH:-}"
 
 echo "=========================================="
-echo "Competition scene is ready"
+echo "Startup summary"
+echo "  World mode: $WORLD_MODE"
 echo "  Workspace: $WORKSPACE_DIR"
 echo "  World:   $BUILDING_WORLD_FILE"
-echo "  Truth:   $RESULTS_DIR/danger_truth.json"
-echo "  Manifest:$SCENE_OUTPUT_DIR/scene_manifest.json"
-echo "  Result:  $RESULTS_DIR/detected_danger.json"
+echo "  Robot spawn pose: x=$ROBOT_X y=$ROBOT_Y z=$ROBOT_Z yaw=$ROBOT_YAW"
+echo "  GUI: $GUI"
+if [ "$WORLD_MODE" = "competition" ]; then
+  echo "  Truth:   $RESULTS_DIR/danger_truth.json"
+  echo "  Manifest:$SCENE_OUTPUT_DIR/scene_manifest.json"
+  echo "  Result:  $RESULTS_DIR/detected_danger.json"
+else
+  echo "  Truth:   disabled"
+  echo "  Manifest:disabled"
+  echo "  Result:  disabled"
+fi
 echo "  Sensor data: $ENABLE_SENSOR_DATA"
 echo "  PointCloud2 converter: $ENABLE_POINTCLOUD_CONVERTER"
 echo "  Ground truth topics: $ENABLE_GROUND_TRUTH"
 echo "  Referee odom: $ENABLE_REFEREE_ODOM"
 echo "  FAST-LIO2 mapping: $ENABLE_FAST_LIO2"
+echo "  RViz: $ENABLE_RVIZ"
+echo "  Building controller: $START_BUILDING_CONTROL"
+echo "  Virtual joystick: $START_VIRTUAL_JOY"
 echo "  Gazebo starts paused: $PAUSED"
 echo "  Auto unpause: $AUTO_UNPAUSE after ${AUTO_UNPAUSE_DELAY}s"
-echo "  Gazebo physics: max_step=$GAZEBO_PHYSICS_MAX_STEP_SIZE update_rate=$GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE ode_iters=$GAZEBO_PHYSICS_ODE_ITERS"
+echo "  Gazebo physics env: max_step=$GAZEBO_PHYSICS_MAX_STEP_SIZE update_rate=$GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE ode_iters=$GAZEBO_PHYSICS_ODE_ITERS contact_max_correcting_vel=$GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL"
 echo "  Gazebo plugin path: $GAZEBO_PLUGIN_PATH"
 echo "=========================================="
 
