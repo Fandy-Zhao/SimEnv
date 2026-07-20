@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-20 — Earth flat-ground fix
+
+- Removed the raised `platform_1` and `platform_2` models from
+  `unitree_gazebo/worlds/earth.world`, including their visual and collision box
+  geometry.
+- Preserved the `sun` include, single `ground_plane` include, physics settings,
+  `WORLD_MODE=competition` default, and `WORLD_MODE=earth` spawn pose
+  (`x=0.0 y=0.0 z=0.6 yaw=0.0`).
+- Added governed issue, notes, and report evidence for static XML/SDF checks
+  and the remaining built-worktree runtime validation gap.
+
 ## 2026-07-20 — Earth RL motion benchmark
 
 - Added `WORLD_MODE=earth` as an isolated launch mode that resolves the tracked

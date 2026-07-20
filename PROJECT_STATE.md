@@ -1,5 +1,14 @@
 # Project State
 
+> **2026-07-20 earth.world flat-ground fix**: branch
+> `fix/0720-earth-flat-ground` removes the inline `platform_1` and
+> `platform_2` models from `unitree_gazebo/worlds/earth.world`, including
+> their box visual and collision geometry. `WORLD_MODE=earth` still spawns A1
+> at `x=0.0 y=0.0 z=0.6 yaw=0.0`, matching the existing Unitree A1 earth launch
+> height while placing the robot over the Gazebo `ground_plane` include instead
+> of a raised platform. XML/SDF/static checks pass; full A1 runtime validation
+> remains pending in a worktree with a built `devel/setup.bash`.
+
 > **2026-07-18 FAST-LIO2 runtime point-cloud orientation**: isolated runtime
 > validation from `fix/0718-runtime-pointcloud-orientation` confirms the active
 > adapter comes from a worktree containing `69ff34e7`, has no rotation params,
@@ -40,6 +49,13 @@
   validation
 
 ## Active Work
+- **2026-07-20 earth.world flat-ground fix（当前分支
+  `fix/0720-earth-flat-ground`）**：删除 `earth.world` 中覆盖出生点的
+  `platform_1` 和前方 `platform_2` 完整 model，保留 `sun`、单个
+  `ground_plane` include、physics 和 scene。该任务不修改 FSM、RL policy、
+  控制器、URDF/xacro、spawn z 或 competition 生成路径。静态检查通过；
+  隔离 worktree 缺少 `devel/setup.bash`，因此带 A1 spawn/controller 的
+  runtime smoke 待在已构建 overlay 中执行。
 - **2026-07-20 Earth RL motion benchmark（当前分支
   `test/0720-earth-rl-motion`）**：新增 `WORLD_MODE=earth` 接入和 tracked
   `earth.world`，competition 默认路径保持不变。world/topic smoke 证明
