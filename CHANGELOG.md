@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-20 — Earth flat-ground runtime validation
+
+- Cherry-picked `5f5f9045` into the runnable earth RL benchmark worktree and
+  added governed runtime validation scripts, metrics, tests, and reports under
+  `experiments/runs/0720_earth-flat-ground-runtime/`.
+- Confirmed at runtime that `platform_1` and `platform_2` are absent from the
+  Earth world model list; G0 passed with median RTF about `0.983`.
+- Stopped before Earth E0 and all RL cases because G1 initial-contact gating
+  failed and C0 competition FixedStand also failed in the selected runtime
+  artifact environment. No controller, policy, URDF/xacro, spawn, world, or
+  physics behavior was changed by this validation task.
+
 ## 2026-07-20 — Earth flat-ground fix
 
 - Removed the raised `platform_1` and `platform_2` models from

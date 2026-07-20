@@ -1,0 +1,8 @@
+[WARN] [1784562234.135948472]: Shutdown request received.
+[WARN] [1784562234.136030956]: Reason given for shutdown: [user request]
+[ERROR] [1784562234.281826957]: [registerService] Failed to contact master at [zzf-Legion-Y9000P-IRX9:14323].  Retrying...
+[31m================================================================================REQUIRED process [master] has died!
+process has died [pid 204465, exit code -9, cmd rosmaster --core -p 14323 -w 3 __log:=/home/zzf/.ros/log/c9b50094-8451-11f1-aca5-b9af01646ad9/master.log].
+log file: /home/zzf/.ros/log/c9b50094-8451-11f1-aca5-b9af01646ad9/master*.log
+Initiating shutdown!
+================================================================================[0m

@@ -1,0 +1,108 @@
+=== junior_ctrl (tmux session: simenv-runtime-C0_competition_fixedstand_rerun-ju
+nior_ctrl) ===
+Command: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel/lib/unitree_
+guide/junior_ctrl
+
+[INFO] Realtime scheduler disabled. Set UNITREE_ENABLE_REALTIME=1 to request SCH
+ED_FIFO.
+The control interface for ROS Gazebo simulation
+robot_name: a1
+controller dt source: UNITREE_CTRL_DT, resolved: 0.002 s (2000 us), frequency: 5
+00.000 Hz
+[INFO] [1784562995.635184364]: Timing diagnostics enabled: /home/zzf/search_ws/S
+imEnv_worktrees/earth-rl-motion/experiments/runs/0720_earth-flat-ground-runtime/
+raw/C0_competition_fixedstand_rerun/controller_state.csv
+[INFO] Waiting for Gazebo joint state feedback before accepting stand command.
+[INFO] Gazebo joint state feedback is ready.
+Switched from passive to fixed stand
+[INFO] [1784563006.095803575, 0.022000000]: [FSM-CMD] TRANSITION seq=1 from=1 to
+=2 cmd=2 source=1 : ACCEPTED
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2264us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2071us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2209us.
+[INFO] [1784563008.665073977, 2.000000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=2 resolved=0 source=1 state=2
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2069us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2023us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2368us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2140us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2083us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2281us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2456us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2173us.
+[INFO] [1784563021.489958511, 4.000000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=2 resolved=0 source=1 state=2
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2169us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2153us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2020us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2262us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2090us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2527us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2066us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2001us.
+[INFO] [1784563041.799040768, 6.000000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=2 resolved=0 source=1 state=2
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3471us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2177us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2694us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2121us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2159us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2038us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3621us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2060us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2692us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2130us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2021us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2030us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2056us.
+[INFO] [1784563062.044544470, 8.000000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=2 resolved=0 source=1 state=2
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2007us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2069us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2009us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2723us.
+[INFO] [1784563071.753559142, 10.000000000]: [FSM-CMD] apply: keyboard=0 pending
+_mapped=2 resolved=0 source=1 state=2
+[INFO] [1784563075.017440690, 12.002000000]: [FSM-CMD] apply: keyboard=0 pending
+_mapped=2 resolved=0 source=1 state=2
+[INFO] [1784563077.945687135, 14.002000000]: [FSM-CMD] apply: keyboard=0 pending
+_mapped=2 resolved=0 source=1 state=2
+[INFO] [1784563080.850740872, 16.004000000]: [FSM-CMD] apply: keyboard=0 pending
+_mapped=2 resolved=0 source=1 state=2
+

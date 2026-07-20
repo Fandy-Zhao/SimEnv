@@ -1,0 +1,23 @@
+=== junior_ctrl (tmux session: simenv-runtime-G1_spawn_contact_controller-junior
+_ctrl) ===
+Command: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel/lib/unitree_
+guide/junior_ctrl
+
+[INFO] Realtime scheduler disabled. Set UNITREE_ENABLE_REALTIME=1 to request SCH
+ED_FIFO.
+The control interface for ROS Gazebo simulation
+robot_name: a1
+controller dt source: UNITREE_CTRL_DT, resolved: 0.002 s (2000 us), frequency: 5
+00.000 Hz
+[INFO] [1784562633.010161776]: Timing diagnostics enabled: /home/zzf/search_ws/S
+imEnv_worktrees/earth-rl-motion/experiments/runs/0720_earth-flat-ground-runtime/
+raw/G1_spawn_contact_controller/controller_state.csv
+[INFO] Waiting for Gazebo joint state feedback before accepting stand command.
+[INFO] Gazebo joint state feedback is ready.
+[INFO] [1784562643.135166489, 2.001000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=0 resolved=0 source=0 state=1
+[INFO] [1784562645.284982466, 4.002000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=0 resolved=0 source=0 state=1
+
+
+

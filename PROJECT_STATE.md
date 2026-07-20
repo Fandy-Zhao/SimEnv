@@ -1,5 +1,15 @@
 # Project State
 
+> **2026-07-20 Earth flat-ground runtime validation**: branch
+> `test/0720-earth-flat-ground-runtime` cherry-picks `5f5f9045` into the
+> runnable `earth-rl-motion` worktree. G0 confirms the platform models are
+> absent at runtime (`ground_plane` only, RTF median `0.983`). Validation stops
+> at G1: with the controller epoch active but no FixedStand command, A1 settles
+> to `min_base_height=0.05044 m` before FixedStand. C0 competition FixedStand
+> rerun also fails (`max_tilt_deg=170.68`, final FSM state `2`), so the current
+> artifact/entry chain cannot establish the platform root-cause closure. E0 and
+> all RL cases are blocked by gate policy; no RL performance conclusion is made.
+
 > **2026-07-20 earth.world flat-ground fix**: branch
 > `fix/0720-earth-flat-ground` removes the inline `platform_1` and
 > `platform_2` models from `unitree_gazebo/worlds/earth.world`, including
@@ -49,6 +59,12 @@
   validation
 
 ## Active Work
+- **2026-07-20 earth flat-ground runtime gate（当前分支
+  `test/0720-earth-flat-ground-runtime`）**：已接入 `5f5f9045` 并复用
+  `earth-rl-motion` 的可运行 `devel` artifact。G0 通过并证明
+  `platform_1/platform_2` 运行时消失；G1 未通过，C0 competition 对照也未复现
+  旧的稳定 FixedStand。因此 E0/E1/E2/E3/E5 均按门控阻塞。用户要求的
+  stair policy 后续测试已记录，但未在本轮切换或运行。
 - **2026-07-20 earth.world flat-ground fix（当前分支
   `fix/0720-earth-flat-ground`）**：删除 `earth.world` 中覆盖出生点的
   `platform_1` 和前方 `platform_2` 完整 model，保留 `sun`、单个

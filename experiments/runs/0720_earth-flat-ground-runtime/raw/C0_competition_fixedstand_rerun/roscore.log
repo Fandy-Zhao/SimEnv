@@ -1,0 +1,35 @@
+[31m================================================================================REQUIRED process [master] has died!
+process has died [pid 219104, exit code -9, cmd rosmaster --core -p 14592 -w 3 __log:=/home/zzf/.ros/log/8447b522-8453-11f1-aca5-b9af01646ad9/master.log].
+log file: /home/zzf/.ros/log/8447b522-8453-11f1-aca5-b9af01646ad9/master*.log
+Initiating shutdown!
+================================================================================[0m
+... logging to /home/zzf/.ros/log/8447b522-8453-11f1-aca5-b9af01646ad9/roslaunch-zzf-Legion-Y9000P-IRX9-219031.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://zzf-Legion-Y9000P-IRX9:42871/[0m
+ros_comm version 1.16.0
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: noetic
+ * /rosversion: 1.16.0
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [219104][0m
+[1mROS_MASTER_URI=http://zzf-Legion-Y9000P-IRX9:14592/[0m
+]2;roscore http://zzf-Legion-Y9000P-IRX9:14592/
+[1msetting /run_id to 8447b522-8453-11f1-aca5-b9af01646ad9[0m
+[1mprocess[rosout-1]: started with pid [219144][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

@@ -1,0 +1,27 @@
+xacro: in-order processing became default in ROS Melodic. You can drop the option.
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/xacro/xacro", line 33, in <module>
+    xacro.main()
+    ~~~~~~~~~~^^
+  File "/opt/ros/noetic/lib/python3/dist-packages/xacro/__init__.py", line 1176, in main
+    out.write(doc.toprettyxml(indent='  ', **encoding))
+              ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zzf/miniconda3/lib/python3.13/xml/dom/minidom.py", line 60, in toprettyxml
+    self.writexml(writer, "", indent, newl, encoding, standalone)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zzf/miniconda3/lib/python3.13/xml/dom/minidom.py", line 1839, in writexml
+    node.writexml(writer, indent, addindent, newl)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/noetic/lib/python3/dist-packages/xacro/xmlutils.py", line 123, in fixed_writexml
+    xml.dom.minidom._write_data(writer, attrs[a_name].value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _write_data() missing 1 required positional argument: 'attr'
+[31mRLException: Invalid <param> tag: Cannot load command parameter [robot_description]: command [['/opt/ros/noetic/lib/xacro/xacro', '--inorder', '/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_ros/robots/a1_description/xacro/robot.xacro', 'DEBUG:=False', 'ENABLE_SENSOR_DATA:=false', 'ENABLE_FRONT_CAMERA:=false', 'ENABLE_GROUND_TRUTH:=false', 'ENABLE_FOOT_FORCE_VISUAL:=false']] returned with code [1]. 
+
+Param xml is <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg dollar)$(arg robot_path)/xacro/robot.xacro'            DEBUG:=$(arg user_debug)            ENABLE_SENSOR_DATA:=$(arg enable_sensor_data)            ENABLE_FRONT_CAMERA:=$(arg enable_front_camera)            ENABLE_GROUND_TRUTH:=$(arg enable_ground_truth)            ENABLE_FOOT_FORCE_VISUAL:=$(arg enable_foot_force_visual)"/>[0m
+[31mThe traceback for the exception was written to the log file[0m
+... logging to /home/zzf/.ros/log/dbc1ced4-8451-11f1-aca5-b9af01646ad9/roslaunch-zzf-Legion-Y9000P-IRX9-205419.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_guide/unitree_guide/launch/multi_floor_gazeboSim.launch

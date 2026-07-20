@@ -1,0 +1,8 @@
+214973 /usr/bin/python3.10 /opt/ros/noetic/bin/roscore -p 14453
+215051 /usr/bin/python3.10 /opt/ros/noetic/bin/rosmaster --core -p 14453 -w 3 __log:=/home/zzf/.ros/log/cd7d4776-8452-11f1-aca5-b9af01646ad9/master.log
+215430 /bin/sh /opt/ros/noetic/lib/gazebo_ros/gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/generated_building/competition_scene.world __name:=gazebo __log:=/home/zzf/.ros/log/cd7d4776-8452-11f1-aca5-b9af01646ad9/gazebo-1.log
+215542 gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/generated_building/competition_scene.world -s /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so -s /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so __name:=gazebo __log:=/home/zzf/.ros/log/cd7d4776-8452-11f1-aca5-b9af01646ad9/gazebo-1.log
+215951 tmux new-session -d -s simenv-runtime-C0_competition_fixedstand-junior_ctrl bash '/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/logs/junior_ctrl.tmux.sh'
+215952 bash /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/logs/junior_ctrl.tmux.sh
+216011 /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel/lib/unitree_guide/junior_ctrl
+216040 tmux attach-session -t simenv-runtime-C0_competition_fixedstand-junior_ctrl

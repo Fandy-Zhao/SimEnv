@@ -1,0 +1,28 @@
+{
+  "case_id": "G0_world_flat",
+  "case_kind": "g0",
+  "final_fsm_state": 0,
+  "ground_plane_present": true,
+  "invalid_reasons": [],
+  "model_names": [
+    "ground_plane"
+  ],
+  "platform_1_present": false,
+  "platform_2_present": false,
+  "requested_duration": 3.0,
+  "requested_vx": 0.0,
+  "requested_vy": 0.0,
+  "requested_yaw_rate": 0.0,
+  "rtf_max": 15.77908124635311,
+  "rtf_mean": 1.0153563487379256,
+  "rtf_median": 0.9833421436430887,
+  "rtf_min": 0.2841793117953071,
+  "rtf_sample_count": 15340,
+  "schema_version": 1,
+  "stop_duration": 0.0,
+  "sun_present": false,
+  "timing_rows": 0,
+  "valid": true,
+  "verdict": "G0_PASS",
+  "world_mode": "earth"
+}
