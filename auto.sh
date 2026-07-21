@@ -48,14 +48,30 @@ fi
 # ---------------------------------------------------------------------------
 # Physics profile: selects the Gazebo physics parameter preset.
 #
-#   PHYSICS_PROFILE=normal    Validated balance of performance and contact fidelity.
+#   PHYSICS_PROFILE=normal    Balance of performance and contact fidelity.
 #                             Earth A1 average RTF >= 0.8 with reliable contact.
 #   PHYSICS_PROFILE=fidelity  Original high-resolution configuration (0.0002 s /
 #                             5000 Hz / ODE 50).  Low RTF; for special verification.
 #
 # Explicit single-parameter overrides (GAZEBO_PHYSICS_MAX_STEP_SIZE, etc.)
 # take precedence over the profile default.  Unknown profile values are rejected.
+#
+# Default scope:
+#   WORLD_MODE=earth       -> PHYSICS_PROFILE=normal (0.001 / 1000 / 20)
+#   WORLD_MODE=competition -> Legacy defaults (0.002 / 500 / 40)
+#                             until competition-mode regression is completed.
+#   Explicit PHYSICS_PROFILE or GAZEBO_PHYSICS_* overrides always take effect.
 # ---------------------------------------------------------------------------
+
+# Detect whether the user explicitly configured physics (profile or individual
+# parameters).  When nothing is set, competition mode preserves its pre-profile
+# defaults.
+_PHYSICS_USER_CONFIGURED=0
+if [ -n "${PHYSICS_PROFILE+x}" ]; then _PHYSICS_USER_CONFIGURED=1; fi
+if [ -n "${GAZEBO_PHYSICS_MAX_STEP_SIZE+x}" ]; then _PHYSICS_USER_CONFIGURED=1; fi
+if [ -n "${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE+x}" ]; then _PHYSICS_USER_CONFIGURED=1; fi
+if [ -n "${GAZEBO_PHYSICS_ODE_ITERS+x}" ]; then _PHYSICS_USER_CONFIGURED=1; fi
+
 PHYSICS_PROFILE="${PHYSICS_PROFILE:-normal}"
 case "$PHYSICS_PROFILE" in
   normal)
@@ -112,6 +128,22 @@ GAZEBO_PHYSICS_ODE_ITERS="${GAZEBO_PHYSICS_ODE_ITERS:-$_PHYSICS_PROFILE_DEFAULT_
 GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL="${GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL:-5.0}"
 # Compute theoretical RTF target (max_step_size * real_time_update_rate)
 _GAZEBO_PHYSICS_RTF_PRODUCT="$(echo "${GAZEBO_PHYSICS_MAX_STEP_SIZE} * ${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE}" | bc -l 2>/dev/null || echo '1.0')"
+
+# Competition mode: preserve legacy defaults (0.002 / 500 / ODE 40) when the
+# user has not explicitly set PHYSICS_PROFILE or any GAZEBO_PHYSICS_* variable.
+# This avoids silently applying earth-normal parameters to an unvalidated mode.
+# Explicit overrides (PHYSICS_PROFILE=fidelity, GAZEBO_PHYSICS_ODE_ITERS=30,
+# etc.) are always honoured and logged.
+if [ "$WORLD_MODE" = "competition" ] && [ "$_PHYSICS_USER_CONFIGURED" = "0" ]; then
+  GAZEBO_PHYSICS_MAX_STEP_SIZE="0.002"
+  GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="500"
+  GAZEBO_PHYSICS_ODE_ITERS="40"
+  _GAZEBO_PHYSICS_RTF_PRODUCT="$(echo "${GAZEBO_PHYSICS_MAX_STEP_SIZE} * ${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE}" | bc -l 2>/dev/null || echo '1.0')"
+  _PHYSICS_EFFECTIVE_SOURCE="competition_legacy_default"
+else
+  _PHYSICS_EFFECTIVE_SOURCE="${PHYSICS_PROFILE}"
+fi
+
 ROBOT_X="${ROBOT_X:-0.0}"
 ROBOT_Y="${ROBOT_Y:-2.3}"
 ROBOT_Z="${ROBOT_Z:-0.6}"
@@ -438,7 +470,12 @@ export GAZEBO_PLUGIN_PATH="$WORKSPACE_DIR/devel/lib:${GAZEBO_PLUGIN_PATH:-}"
 echo "=========================================="
 echo "Startup summary"
 echo "  World mode: $WORLD_MODE"
-echo "  Physics profile: $PHYSICS_PROFILE"
+echo "  Physics profile: ${_PHYSICS_EFFECTIVE_SOURCE:-$PHYSICS_PROFILE}"
+if [ "$_PHYSICS_USER_CONFIGURED" = "1" ]; then
+  echo "  Physics source:  explicit user configuration"
+elif [ "$WORLD_MODE" = "competition" ] && [ "${_PHYSICS_EFFECTIVE_SOURCE:-}" = "competition_legacy_default" ]; then
+  echo "  Physics source:  competition legacy default (0.002/500/40)"
+fi
 echo "  Workspace: $WORKSPACE_DIR"
 echo "  World:   $BUILDING_WORLD_FILE"
 echo "  Robot spawn pose: x=$ROBOT_X y=$ROBOT_Y z=$ROBOT_Z yaw=$ROBOT_YAW"
