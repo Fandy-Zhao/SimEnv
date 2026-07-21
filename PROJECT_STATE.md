@@ -1,5 +1,17 @@
 # Project State
 
+> **2026-07-21 Unitree runtime rebuild and retest**: branch
+> `fix/0721-unitree-runtime-rebuild-and-retest` rebuilt the Unitree/Torch/Gazebo
+> runtime chain with GCC/G++ 11 and the project `tools/build_with_venv.sh`
+> profile. The original CUDA failure is traced to `/usr/bin/gcc` selecting GCC
+> 12 while GCC 12 `cc1plus` is missing; `nvcc -ccbin /usr/bin/g++-11` passes.
+> Target artifacts resolve to the current worktree `devel`. Full un-whitelisted
+> catkin remains blocked by missing `move_base_msgs` in `unitree_move_base`.
+> Runtime validation stops at C0-A native FixedStand: run 01 entered FSM state 2
+> but failed the base-height threshold (`min_base_height=0.110049 m`), and run
+> 02 stalled `/clock`. C0-B/C0-C/Earth RL were not entered; the requested stair
+> policy was only hashed for provenance.
+
 > **2026-07-20 Earth flat-ground runtime validation**: branch
 > `test/0720-earth-flat-ground-runtime` cherry-picks `5f5f9045` into the
 > runnable `earth-rl-motion` worktree. G0 confirms the platform models are

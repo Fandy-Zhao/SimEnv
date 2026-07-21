@@ -1,0 +1,25 @@
+2026-07-21T00:33:25+08:00
+CASE_ID=C0A_native_fixedstand_01
+CASE_KIND=fixedstand
+LAUNCH_MODE=native
+WORLD_MODE_CASE=earth
+ROS_MASTER_URI=http://127.0.0.1:15101
+GAZEBO_MASTER_URI=http://127.0.0.1:16101
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64
+COMMAND_VX=0.0 COMMAND_VY=0.0 COMMAND_YAW_RATE=0.0
+DURATION=5.0 STOP_DURATION=0.0
+branch=fix/0721-unitree-runtime-rebuild-and-retest
+head=1cd32e0cc9a0e88ce3f294a78536455b7a40714a
+unitree_guide=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide
+unitree_gazebo=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_gazebo
+unitree_legged_control=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_legged_control
+junior_ctrl=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide/junior_ctrl
+state_from_gazebo=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide/state_from_gazebo
+07c4c698232f4b4542c8e99662468c72416c647f596da8dbe3eb7ff14e63ea89  /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide/junior_ctrl
+7f942da1e9d16e77d1562c448b341f78fb2d2228496e806501c898fc5df22787  /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide/state_from_gazebo
+e886847fe266e3c2f7c08825fceeaecfa75c7eac5f780b25b6d4dca173ff8bef  /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/logs/policy_act_inference_plane.pt
+2d5aa72511c0c6609c02f4105845eee6974d3d73431497f8f35306da9588fe14  /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/logs/policy_act_inference_stair.pt
+2d5aa72511c0c6609c02f4105845eee6974d3d73431497f8f35306da9588fe14  /home/zzf/search_ws/SimEnv/src/unitree_guide/logs/policy_act_inference_stair.pt
+3118a640680307e6437b171f0102832d311f51141090846019ad560178460291  /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world

@@ -1,0 +1,9 @@
+2026-07-21T00:27:00+08:00 artifact_manifest.sh hashes devel/setup.bash
+2026-07-21T00:27:00+08:00 sha256sum requested stair policy
+2026-07-21T00:29:03+08:00 bash -n, py_compile, unittest, git diff --check
+2026-07-21T00:29:22+08:00 XML parse and gz sdf -k earth.world
+2026-07-21T00:29:50+08:00 full un-whitelisted catkin_make failed on missing move_base_msgs
+2026-07-21T00:33:08+08:00 tools/build_with_venv.sh Unitree profile passed
+2026-07-21T00:33:15+08:00 artifact_manifest.sh hashes_after_build_with_venv devel/setup.bash
+2026-07-21T00:33:00+08:00 C0A_native_fixedstand_01 failed FixedStand threshold
+2026-07-21T00:38:00+08:00 C0A_native_fixedstand_02 terminated after clock stall

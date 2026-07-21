@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-07-21 — Unitree runtime rebuild and retest
+
+- Added governed rebuild/retest evidence under
+  `experiments/runs/0721_unitree-runtime-rebuild/`, including toolchain probes,
+  build logs, artifact manifests, runtime capture scripts, metrics helpers,
+  and C0-A raw runtime logs.
+- Confirmed the Torch/CUDA build blocker is the host GCC 12 `cc1plus` gap; the
+  Unitree runtime profile builds successfully with GCC/G++ 11 via
+  `tools/build_with_venv.sh`.
+- Stopped runtime validation at C0-A native FixedStand because it did not pass
+  3/3. No world, controller, policy, spawn, physics, URDF, gain, estimator,
+  gait, IK, or fall-validator code was changed.
+
 ## 2026-07-20 — Earth flat-ground runtime validation
 
 - Cherry-picked `5f5f9045` into the runnable earth RL benchmark worktree and

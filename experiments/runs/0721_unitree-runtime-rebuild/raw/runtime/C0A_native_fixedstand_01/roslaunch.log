@@ -1,0 +1,30 @@
+xacro: in-order processing became default in ROS Melodic. You can drop the option.
+[INFO] [1784565208.659942, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1784565208.672083, 0.000000]: Waiting for service /gazebo/spawn_urdf_model
+[INFO] [1784565209.878955, 0.000000]: Calling service /gazebo/spawn_urdf_model
+[INFO] [1784565216.207932, 0.000000]: Spawn status: SpawnModel: Successfully spawned entity
+[INFO] [1784565216.209174, 0.000000]: Unpausing physics
+[WARN] [1784565232.084377193, 7.064200000]: Shutdown request received.
+[WARN] [1784565232.084597614, 7.064200000]: Reason given for shutdown: [user request]
+[WARN] [1784565232.209741, 7.064200]: Controller Spawner error while taking down controllers: transport error completing service call: unable to receive data from sender, check sender's logs for details
+[INFO] [1784565208.626574, 0.000000]: Controller Spawner: Waiting for service controller_manager/load_controller
+[INFO] [1784565217.661889, 0.111800]: Controller Spawner: Waiting for service controller_manager/switch_controller
+[INFO] [1784565217.664441, 0.111800]: Controller Spawner: Waiting for service controller_manager/unload_controller
+[INFO] [1784565217.666730, 0.111800]: Loading controller: joint_state_controller
+[INFO] [1784565217.691620, 0.111800]: Loading controller: FL_hip_controller
+[INFO] [1784565217.706184, 0.127000]: Loading controller: FL_thigh_controller
+[INFO] [1784565217.716895, 0.137600]: Loading controller: FL_calf_controller
+[INFO] [1784565217.726820, 0.147400]: Loading controller: FR_hip_controller
+[INFO] [1784565217.735920, 0.155800]: Loading controller: FR_thigh_controller
+[INFO] [1784565217.745667, 0.165200]: Loading controller: FR_calf_controller
+[INFO] [1784565217.754924, 0.173600]: Loading controller: RL_hip_controller
+[INFO] [1784565217.765712, 0.183000]: Loading controller: RL_thigh_controller
+[INFO] [1784565217.776338, 0.192600]: Loading controller: RL_calf_controller
+[INFO] [1784565217.786711, 0.202400]: Loading controller: RR_hip_controller
+[INFO] [1784565217.873291, 0.208400]: Loading controller: RR_thigh_controller
+[INFO] [1784565217.885137, 0.220400]: Loading controller: RR_calf_controller
+[INFO] [1784565217.897143, 0.232400]: Controller Spawner: Loaded controllers: joint_state_controller, FL_hip_controller, FL_thigh_controller, FL_calf_controller, FR_hip_controller, FR_thigh_controller, FR_calf_controller, RL_hip_controller, RL_thigh_controller, RL_calf_controller, RR_hip_controller, RR_thigh_controller, RR_calf_controller
+[INFO] [1784565217.901398, 0.236000]: Started controllers: joint_state_controller, FL_hip_controller, FL_thigh_controller, FL_calf_controller, FR_hip_controller, FR_thigh_controller, FR_calf_controller, RL_hip_controller, RL_thigh_controller, RL_calf_controller, RR_hip_controller, RR_thigh_controller, RR_calf_controller
+[INFO] [1784565230.908386, 7.063200]: Shutting down spawner. Stopping and unloading controllers...
+[INFO] [1784565230.909784, 7.064200]: Stopping all controllers...
+shutdown request: user request

@@ -1,0 +1,874 @@
+start=2026-07-21T00:22:04+08:00
+command=catkin_make Unitree/Gazebo Torch runtime whitelist with gcc/g++-11 and CMAKE_CUDA_HOST_COMPILER
+PWD=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild
+CC=/usr/bin/gcc-11
+CXX=/usr/bin/g++-11
+CUDA_HOME=/usr/local/cuda-11.8
+CMAKE_PREFIX_PATH=/opt/ros/noetic
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc-11 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-11 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Using CATKIN_DEVEL_PREFIX: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel
+-- Using CMAKE_PREFIX_PATH: /opt/ros/noetic
+-- This workspace overlays: /opt/ros/noetic
+-- Found PythonInterp: /home/zzf/miniconda3/bin/python3 (found suitable version "3.13.13", minimum required is "3") 
+-- Using PYTHON_EXECUTABLE: /home/zzf/miniconda3/bin/python3
+-- Using Debian Python package layout
+-- Using empy: /usr/bin/empy
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/build/test_results
+-- Forcing gtest/gmock from source, though one was otherwise available.
+-- Found gtest sources under '/usr/src/googletest': gtests will be built
+-- Found gmock sources under '/usr/src/googletest': gmock will be built
+-- Found Python: /usr/bin/python3.10 (found version "3.10.12") found components: Interpreter 
+-- Found Threads: TRUE  
+-- Using Python nosetests: /usr/bin/nosetests3
+-- catkin 0.8.10
+-- BUILD_SHARED_LIBS is on
+-- BUILD_SHARED_LIBS is on
+-- Using CATKIN_WHITELIST_PACKAGES: unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- ~~  traversing 4 packages in topological order:
+-- ~~  - unitree_legged_msgs
+-- ~~  - unitree_legged_control
+-- ~~  - unitree_gazebo
+-- ~~  - unitree_guide
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- +++ processing catkin package: 'unitree_legged_msgs'
+-- ==> add_subdirectory(unitree_guide/unitree_ros_to_real/unitree_legged_msgs)
+CMake Deprecation Warning at unitree_guide/unitree_ros_to_real/unitree_legged_msgs/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- unitree_legged_msgs: 11 messages, 0 services
+-- +++ processing catkin package: 'unitree_legged_control'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/unitree_legged_control)
+CMake Deprecation Warning at unitree_guide/unitree_ros/unitree_legged_control/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'unitree_gazebo'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/unitree_gazebo)
+CMake Deprecation Warning at unitree_guide/unitree_ros/unitree_gazebo/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PkgConfig)
+  does not match the name of the calling package (gazebo).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
+  unitree_guide/unitree_ros/unitree_gazebo/CMakeLists.txt:17 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+-- Checking for module 'bullet>=2.82'
+--   Found bullet, version 3.05
+-- Found fcl: /usr/include (found suitable version "0.7.0", minimum required is "0.5.0") 
+-- Found assimp: /usr/include (found version "5.2.0") 
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.40.0") found components: thread system filesystem program_options regex iostreams date_time 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4") 
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- OGRE_PREFIX_WATCH changed.
+-- Checking for module 'OGRE'
+--   Found OGRE, version 1.9.0
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-transport8 -- found version 8.2.1
+-- Searching for dependencies of ignition-transport8
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3") 
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.4
+-- Found ZeroMQ: TRUE (Required is at least version "4") 
+-- Checking for module 'uuid'
+--   Found uuid, version 2.37.2
+-- Found UUID: TRUE  
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Searching for dependencies of ignition-msgs5
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 9.0.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Found DL: TRUE  
+-- Found tinyobjloader: /usr/lib/x86_64-linux-gnu/cmake/tinyobjloader/tinyobjloader-config.cmake (found version "2.0.0") 
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.14.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-fuel_tools4 -- found version 4.4.0
+-- Searching for dependencies of ignition-fuel_tools4
+-- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found version "7.81.0")  
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.9.5
+-- Found JSONCPP: TRUE  
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Found YAML: TRUE  
+-- Checking for module 'libzip'
+--   Found libzip, version 1.7.3
+-- Found ZIP: TRUE  
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- +++ processing catkin package: 'unitree_guide'
+-- ==> add_subdirectory(unitree_guide/unitree_guide/unitree_guide)
+-- UNITREE_ENABLE_TORCH_POLICY=ON
+-- Found CUDA: /usr/local/cuda-11.8 (found version "11.8") 
+-- The CUDA compiler identification is NVIDIA 11.8.89
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /usr/local/cuda-11.8/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Caffe2: CUDA detected: 11.8
+-- Caffe2: CUDA nvcc is: /usr/local/cuda-11.8/bin/nvcc
+-- Caffe2: CUDA toolkit directory: /usr/local/cuda-11.8
+-- Caffe2: Header version is: 11.8
+-- /usr/local/cuda-11.8/lib64/libnvrtc.so shorthash is 672ee683
+-- USE_CUDNN is set to 0. Compiling without cuDNN support
+-- Added CUDA NVCC flags for: -gencode;arch=compute_52,code=sm_52
+-- Found Torch: /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libtorch.so  
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0")  
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- unitree_guide: 2 messages, 0 services
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/scripts/virtual_joy.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/scripts/keyboard_teleop.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/scripts/pointcloud2livox.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/build
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target geometry_msgs_generate_messages_py
+[  0%] Built target sensor_msgs_generate_messages_py
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_HighState
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_MotorCmd
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_MotorState
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_BmsCmd
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_BmsState
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_Cartesian
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_IMU
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_LED
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_LowCmd
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_LowState
+[  0%] Built target _unitree_legged_msgs_generate_messages_check_deps_HighCmd
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target geometry_msgs_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target geometry_msgs_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target geometry_msgs_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target geometry_msgs_generate_messages_nodejs
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[  1%] Building CXX object unitree_guide/unitree_ros/unitree_gazebo/CMakeFiles/unitreeFootContactPlugin.dir/plugin/foot_contact_plugin.cc.o
+[  2%] Building CXX object unitree_guide/unitree_ros/unitree_gazebo/CMakeFiles/unitreeDrawForcePlugin.dir/plugin/draw_force_plugin.cc.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/include/boost/date_time/time_clock.hpp:17,
+                 from /usr/include/boost/thread/thread_time.hpp:9,
+                 from /usr/include/boost/thread/lock_types.hpp:18,
+                 from /usr/include/boost/thread/pthread/thread_data.hpp:12,
+                 from /usr/include/boost/thread/thread_only.hpp:17,
+                 from /usr/include/boost/thread/thread.hpp:12,
+                 from /usr/include/boost/thread.hpp:13,
+                 from /usr/include/gazebo-11/gazebo/common/Console.hh:27,
+                 from /usr/include/gazebo-11/gazebo/common/Events.hh:23,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_gazebo/plugin/foot_contact_plugin.cc:7:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[  2%] Linking CXX shared library /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/libunitreeFootContactPlugin.so
+[  2%] Built target unitreeFootContactPlugin
+[  2%] Built target _unitree_guide_generate_messages_check_deps_CustomMsg
+[  2%] Built target _unitree_guide_generate_messages_check_deps_CustomPoint
+[  3%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/state_from_gazebo.dir/src/state_from_gazebo.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/smart_ptr/shared_array.hpp:24,
+                 from /usr/include/boost/shared_array.hpp:17,
+                 from /opt/ros/noetic/include/ros/serialized_message.h:33,
+                 from /opt/ros/noetic/include/ros/serialization.h:36,
+                 from /opt/ros/noetic/include/gazebo_msgs/LinkStates.h:14,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/state_from_gazebo.cpp:1:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[  4%] Linking CXX shared library /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/libunitreeDrawForcePlugin.so
+[  4%] Built target unitreeDrawForcePlugin
+[  4%] Built target roscpp_generate_messages_cpp
+[  4%] Built target roscpp_generate_messages_eus
+[  4%] Built target roscpp_generate_messages_lisp
+[  4%] Built target roscpp_generate_messages_nodejs
+[  4%] Built target roscpp_generate_messages_py
+[  4%] Built target rosgraph_msgs_generate_messages_cpp
+[  4%] Built target rosgraph_msgs_generate_messages_eus
+[  4%] Built target rosgraph_msgs_generate_messages_lisp
+[  4%] Built target rosgraph_msgs_generate_messages_nodejs
+[  4%] Built target rosgraph_msgs_generate_messages_py
+[  4%] Built target actionlib_generate_messages_cpp
+[  4%] Built target actionlib_generate_messages_eus
+[  4%] Built target actionlib_generate_messages_lisp
+[  4%] Built target actionlib_generate_messages_nodejs
+[  4%] Built target actionlib_generate_messages_py
+[  4%] Built target actionlib_msgs_generate_messages_cpp
+[  4%] Built target actionlib_msgs_generate_messages_eus
+[  4%] Built target actionlib_msgs_generate_messages_lisp
+[  4%] Built target actionlib_msgs_generate_messages_nodejs
+[  4%] Built target actionlib_msgs_generate_messages_py
+[  4%] Built target tf2_msgs_generate_messages_cpp
+[  4%] Built target tf2_msgs_generate_messages_eus
+[  4%] Built target tf2_msgs_generate_messages_lisp
+[  4%] Built target tf2_msgs_generate_messages_nodejs
+[  4%] Built target tf2_msgs_generate_messages_py
+[  4%] Built target tf_generate_messages_cpp
+[  4%] Built target tf_generate_messages_eus
+[  4%] Built target tf_generate_messages_lisp
+[  4%] Built target tf_generate_messages_nodejs
+[  4%] Built target tf_generate_messages_py
+[  5%] Generating Python from MSG unitree_legged_msgs/MotorCmd
+[  6%] Generating Python from MSG unitree_legged_msgs/MotorState
+[  6%] Generating Python from MSG unitree_legged_msgs/BmsCmd
+[  7%] Generating Python from MSG unitree_legged_msgs/BmsState
+[  8%] Generating Python from MSG unitree_legged_msgs/Cartesian
+[  9%] Generating Python from MSG unitree_legged_msgs/IMU
+[  9%] Generating Python from MSG unitree_legged_msgs/LED
+[ 10%] Generating Python from MSG unitree_legged_msgs/LowCmd
+[ 11%] Linking CXX executable /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide/state_from_gazebo
+[ 12%] Generating Python from MSG unitree_legged_msgs/LowState
+[ 12%] Built target state_from_gazebo
+[ 13%] Generating C++ code from unitree_legged_msgs/MotorCmd.msg
+[ 15%] Generating Python from MSG unitree_legged_msgs/HighCmd
+[ 16%] Generating C++ code from unitree_legged_msgs/MotorState.msg
+[ 17%] Generating C++ code from unitree_legged_msgs/BmsCmd.msg
+[ 18%] Generating Python from MSG unitree_legged_msgs/HighState
+[ 18%] Generating C++ code from unitree_legged_msgs/BmsState.msg
+[ 19%] Generating C++ code from unitree_legged_msgs/Cartesian.msg
+[ 20%] Generating Python msg __init__.py for unitree_legged_msgs
+[ 21%] Generating C++ code from unitree_legged_msgs/IMU.msg
+[ 21%] Built target unitree_legged_msgs_generate_messages_py
+[ 22%] Generating C++ code from unitree_legged_msgs/LED.msg
+[ 22%] Generating C++ code from unitree_legged_msgs/LowCmd.msg
+[ 23%] Generating C++ code from unitree_legged_msgs/LowState.msg
+[ 24%] Generating C++ code from unitree_legged_msgs/HighCmd.msg
+[ 25%] Generating C++ code from unitree_legged_msgs/HighState.msg
+[ 26%] Generating EusLisp code from unitree_legged_msgs/MotorCmd.msg
+[ 26%] Built target unitree_legged_msgs_generate_messages_cpp
+[ 27%] Generating Lisp code from unitree_legged_msgs/MotorCmd.msg
+[ 29%] Generating EusLisp code from unitree_legged_msgs/MotorState.msg
+[ 30%] Generating Lisp code from unitree_legged_msgs/MotorState.msg
+[ 30%] Generating Lisp code from unitree_legged_msgs/BmsCmd.msg
+[ 30%] Generating EusLisp code from unitree_legged_msgs/BmsCmd.msg
+[ 31%] Generating Lisp code from unitree_legged_msgs/BmsState.msg
+[ 32%] Generating EusLisp code from unitree_legged_msgs/BmsState.msg
+[ 33%] Generating Lisp code from unitree_legged_msgs/Cartesian.msg
+[ 34%] Generating Lisp code from unitree_legged_msgs/IMU.msg
+[ 35%] Generating EusLisp code from unitree_legged_msgs/Cartesian.msg
+[ 35%] Generating Lisp code from unitree_legged_msgs/LED.msg
+[ 36%] Generating Lisp code from unitree_legged_msgs/LowCmd.msg
+[ 37%] Generating EusLisp code from unitree_legged_msgs/IMU.msg
+[ 38%] Generating Lisp code from unitree_legged_msgs/LowState.msg
+[ 39%] Generating Lisp code from unitree_legged_msgs/HighCmd.msg
+[ 39%] Generating EusLisp code from unitree_legged_msgs/LED.msg
+[ 40%] Generating Lisp code from unitree_legged_msgs/HighState.msg
+[ 41%] Generating EusLisp code from unitree_legged_msgs/LowCmd.msg
+[ 41%] Built target unitree_legged_msgs_generate_messages_lisp
+[ 43%] Generating Javascript code from unitree_legged_msgs/MotorCmd.msg
+[ 44%] Generating Javascript code from unitree_legged_msgs/MotorState.msg
+[ 45%] Generating EusLisp code from unitree_legged_msgs/LowState.msg
+[ 45%] Generating Javascript code from unitree_legged_msgs/BmsCmd.msg
+[ 46%] Generating EusLisp code from unitree_legged_msgs/HighCmd.msg
+[ 47%] Generating Javascript code from unitree_legged_msgs/BmsState.msg
+[ 48%] Generating Javascript code from unitree_legged_msgs/Cartesian.msg
+[ 49%] Generating EusLisp code from unitree_legged_msgs/HighState.msg
+[ 50%] Generating Javascript code from unitree_legged_msgs/IMU.msg
+[ 51%] Generating Javascript code from unitree_legged_msgs/LED.msg
+[ 51%] Generating EusLisp manifest code for unitree_legged_msgs
+[ 52%] Generating Javascript code from unitree_legged_msgs/LowCmd.msg
+[ 53%] Generating Javascript code from unitree_legged_msgs/LowState.msg
+[ 54%] Generating Javascript code from unitree_legged_msgs/HighCmd.msg
+[ 55%] Generating Javascript code from unitree_legged_msgs/HighState.msg
+[ 55%] Built target unitree_legged_msgs_generate_messages_eus
+[ 55%] Built target unitree_legged_msgs_gencpp
+[ 56%] Generating Python from MSG unitree_guide/CustomPoint
+[ 56%] Built target unitree_legged_msgs_generate_messages_nodejs
+[ 58%] Generating C++ code from unitree_guide/CustomPoint.msg
+[ 59%] Generating C++ code from unitree_guide/CustomMsg.msg
+[ 60%] Generating Python from MSG unitree_guide/CustomMsg
+[ 60%] Built target unitree_guide_generate_messages_cpp
+[ 61%] Generating EusLisp code from unitree_guide/CustomPoint.msg
+[ 61%] Generating Python msg __init__.py for unitree_guide
+[ 62%] Generating EusLisp code from unitree_guide/CustomMsg.msg
+[ 63%] Generating EusLisp manifest code for unitree_guide
+[ 63%] Built target unitree_guide_generate_messages_py
+[ 64%] Generating Lisp code from unitree_guide/CustomPoint.msg
+[ 64%] Generating Lisp code from unitree_guide/CustomMsg.msg
+[ 64%] Built target unitree_guide_generate_messages_lisp
+[ 65%] Generating Javascript code from unitree_guide/CustomPoint.msg
+[ 66%] Generating Javascript code from unitree_guide/CustomMsg.msg
+[ 66%] Built target unitree_guide_generate_messages_nodejs
+[ 66%] Built target unitree_guide_generate_messages_eus
+[ 66%] Built target unitree_legged_msgs_generate_messages
+[ 67%] Building CXX object unitree_guide/unitree_ros/unitree_legged_control/CMakeFiles/unitree_legged_control.dir/src/joint_controller.cpp.o
+[ 67%] Built target unitree_guide_generate_messages
+[ 68%] Building CXX object unitree_guide/unitree_ros/unitree_legged_control/CMakeFiles/unitree_legged_control.dir/src/unitree_joint_control_tool.cpp.o
+[ 69%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/main.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/node_handle.h:31,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_legged_control/include/joint_controller.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_legged_control/src/joint_controller.cpp:7:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/smart_ptr/shared_array.hpp:24,
+                 from /usr/include/boost/shared_array.hpp:17,
+                 from /opt/ros/noetic/include/ros/serialized_message.h:33,
+                 from /opt/ros/noetic/include/ros/serialization.h:36,
+                 from /opt/ros/noetic/include/std_msgs/Int8.h:14,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/main.cpp:17:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 70%] Linking CXX shared library /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/libunitree_legged_control.so
+[ 70%] Built target unitree_legged_control
+[ 72%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/FSM.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSM.h:8,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSM.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 73%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/FSMState.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 73%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/State_BalanceTest.cpp.o
+[ 74%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/State_FixedStand.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_BalanceTest.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_BalanceTest.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_FixedStand.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_FixedStand.cpp:8:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 75%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/State_FreeStand.cpp.o
+[ 76%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/State_Passive.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_FreeStand.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_FreeStand.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_Passive.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Passive.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 77%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/State_RL_test.cpp.o
+[ 77%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/State_StepTest.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_StepTest.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_StepTest.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:5:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 78%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/State_SwingTest.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_SwingTest.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_SwingTest.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 79%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/State_Trotting.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_Trotting.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 80%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/FSM/State_move_base.cpp.o
+[ 81%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/Gait/FeetEndCal.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/Gait/FeetEndCal.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/Gait/FeetEndCal.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 82%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/Gait/GaitGenerator.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/Gait/FeetEndCal.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/Gait/GaitGenerator.h:8,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/Gait/GaitGenerator.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 82%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/Gait/WaveGenerator.cpp.o
+[ 83%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/common/LowPassFilter.cpp.o
+[ 84%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/common/TimingDiagnostics.cpp.o
+[ 86%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/common/unitreeLeg.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/common/TimingDiagnostics.h:11,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/common/TimingDiagnostics.cpp:1:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 87%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/common/unitreeRobot.cpp.o
+[ 87%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/control/BalanceCtrl.cpp.o
+[ 88%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/control/ControlFrame.cpp.o
+[ 89%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/control/Estimator.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOInterface.h:15,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:10,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSM.h:8,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/control/ControlFrame.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/control/ControlFrame.cpp:4:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 90%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/free_dog_sdk_cpp/common.cpp.o
+[ 91%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/free_dog_sdk_cpp/lowCmd.cpp.o
+[ 92%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/free_dog_sdk_cpp/lowState.cpp.o
+[ 92%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/free_dog_sdk_cpp/unitreeConnectBoost.cpp.o
+[ 93%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/interface/IOFREEDOGSDK.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/include/boost/date_time/time_clock.hpp:17,
+                 from /usr/include/boost/date_time/posix_time/posix_time_types.hpp:10,
+                 from /usr/include/boost/asio/time_traits.hpp:23,
+                 from /usr/include/boost/asio/detail/timer_queue_ptime.hpp:22,
+                 from /usr/include/boost/asio/detail/deadline_timer_service.hpp:29,
+                 from /usr/include/boost/asio/basic_deadline_timer.hpp:25,
+                 from /usr/include/boost/asio.hpp:25,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/free_dog_sdk_cpp/unitreeConnectBoost.hpp:14,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/free_dog_sdk_cpp/unitreeConnectBoost.cpp:1:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOFREEDOGSDK.h:7,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/interface/IOFREEDOGSDK.cpp:5:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 94%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/interface/IOROS.cpp.o
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/include/interface/IOROS.h:9,
+                 from /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/interface/IOROS.cpp:6:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 95%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/interface/IOSDK.cpp.o
+[ 96%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/interface/KeyBoard.cpp.o
+[ 96%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/interface/WirelessHandle.cpp.o
+[ 97%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/quadProgpp/Array.cc.o
+[ 98%] Building CXX object unitree_guide/unitree_guide/unitree_guide/CMakeFiles/junior_ctrl.dir/src/quadProgpp/QuadProg++.cc.o
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘double quadprogpp::solve_quadprog(quadprogpp::Matrix<double>&, quadprogpp::Vector<double>&, const quadprogpp::Matrix<double>&, const quadprogpp::Vector<double>&, const quadprogpp::Matrix<double>&, const quadprogpp::Vector<double>&, quadprogpp::Vector<double>&)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:84:25: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+   84 |   register unsigned int i, j, k, l; /* indices */
+      |                         ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:84:28: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+   84 |   register unsigned int i, j, k, l; /* indices */
+      |                            ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:84:31: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+   84 |   register unsigned int i, j, k, l; /* indices */
+      |                               ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:84:34: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+   84 |   register unsigned int i, j, k, l; /* indices */
+      |                                  ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘void quadprogpp::compute_d(quadprogpp::Vector<double>&, const quadprogpp::Matrix<double>&, const quadprogpp::Vector<double>&)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:449:16: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  449 |   register int i, j, n = d.size();
+      |                ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:449:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  449 |   register int i, j, n = d.size();
+      |                   ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:449:22: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  449 |   register int i, j, n = d.size();
+      |                      ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:450:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  450 |   register double sum;
+      |                   ^~~
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘void quadprogpp::update_z(quadprogpp::Vector<double>&, const quadprogpp::Matrix<double>&, const quadprogpp::Vector<double>&, int)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:464:16: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  464 |   register int i, j, n = z.size();
+      |                ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:464:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  464 |   register int i, j, n = z.size();
+      |                   ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:464:22: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  464 |   register int i, j, n = z.size();
+      |                      ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘void quadprogpp::update_r(const quadprogpp::Matrix<double>&, quadprogpp::Vector<double>&, const quadprogpp::Vector<double>&, int)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:477:16: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  477 |   register int i, j;
+      |                ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:477:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  477 |   register int i, j;
+      |                   ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:478:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  478 |   register double sum;
+      |                   ^~~
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘bool quadprogpp::add_constraint(quadprogpp::Matrix<double>&, quadprogpp::Matrix<double>&, quadprogpp::Vector<double>&, unsigned int&, double&)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:496:25: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  496 |   register unsigned int i, j, k;
+      |                         ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:496:28: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  496 |   register unsigned int i, j, k;
+      |                            ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:496:31: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  496 |   register unsigned int i, j, k;
+      |                               ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘void quadprogpp::delete_constraint(quadprogpp::Matrix<double>&, quadprogpp::Matrix<double>&, quadprogpp::Vector<int>&, quadprogpp::Vector<double>&, unsigned int, int, unsigned int&, int)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:566:25: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  566 |   register unsigned int i, j, k, qq = 0; // just to prevent warnings from smart compilers
+      |                         ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:566:28: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  566 |   register unsigned int i, j, k, qq = 0; // just to prevent warnings from smart compilers
+      |                            ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:566:31: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  566 |   register unsigned int i, j, k, qq = 0; // just to prevent warnings from smart compilers
+      |                               ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:566:34: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  566 |   register unsigned int i, j, k, qq = 0; // just to prevent warnings from smart compilers
+      |                                  ^~
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘double quadprogpp::distance(double, double)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:648:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  648 |   register double a1, b1, t;
+      |                   ^~
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:648:23: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  648 |   register double a1, b1, t;
+      |                       ^~
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:648:27: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  648 |   register double a1, b1, t;
+      |                           ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘double quadprogpp::scalar_product(const quadprogpp::Vector<double>&, const quadprogpp::Vector<double>&)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:668:16: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  668 |   register int i, n = x.size();
+      |                ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:668:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  668 |   register int i, n = x.size();
+      |                   ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:669:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  669 |   register double sum;
+      |                   ^~~
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘void quadprogpp::cholesky_decomposition(quadprogpp::Matrix<double>&)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:679:16: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  679 |   register int i, j, k, n = A.nrows();
+      |                ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:679:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  679 |   register int i, j, k, n = A.nrows();
+      |                   ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:679:22: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  679 |   register int i, j, k, n = A.nrows();
+      |                      ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:679:25: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  679 |   register int i, j, k, n = A.nrows();
+      |                         ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:680:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  680 |   register double sum;
+      |                   ^~~
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘void quadprogpp::forward_elimination(const quadprogpp::Matrix<double>&, quadprogpp::Vector<double>&, const quadprogpp::Vector<double>&)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:723:16: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  723 |   register int i, j, n = L.nrows();
+      |                ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:723:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  723 |   register int i, j, n = L.nrows();
+      |                   ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:723:22: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  723 |   register int i, j, n = L.nrows();
+      |                      ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc: In function ‘void quadprogpp::backward_elimination(const quadprogpp::Matrix<double>&, quadprogpp::Vector<double>&, const quadprogpp::Vector<double>&)’:
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:737:16: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  737 |   register int i, j, n = U.nrows();
+      |                ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:737:19: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  737 |   register int i, j, n = U.nrows();
+      |                   ^
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/src/quadProgpp/QuadProg++.cc:737:22: warning: ISO C++17 does not allow ‘register’ storage class specifier [-Wregister]
+  737 |   register int i, j, n = U.nrows();
+      |                      ^
+[100%] Linking CXX executable /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide/junior_ctrl
+[100%] Built target junior_ctrl
+Base path: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild
+Source space: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src
+Build space: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/build
+Devel space: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel
+Install space: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/install
+####
+#### Running command: "cmake /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src -DCATKIN_WHITELIST_PACKAGES=unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo -DUNITREE_ENABLE_TORCH_POLICY=ON -DCMAKE_C_COMPILER=/usr/bin/gcc-11 -DCMAKE_CXX_COMPILER=/usr/bin/g++-11 -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-11 -DCMAKE_CUDA_FLAGS=-ccbin=/usr/bin/g++-11 -arch=sm_52 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.8 -DCUDAToolkit_ROOT=/usr/local/cuda-11.8 -DCMAKE_BUILD_TYPE=Release -DCATKIN_DEVEL_PREFIX=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel -DCMAKE_INSTALL_PREFIX=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/install -G Unix Makefiles" in "/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/build"
+####
+####
+#### Running command: "make -j2" in "/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/build"
+####
+exit_code=0
+end=2026-07-21T00:25:03+08:00

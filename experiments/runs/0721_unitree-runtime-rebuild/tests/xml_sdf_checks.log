@@ -1,0 +1,5 @@
+2026-07-21T00:29:22+08:00
+$ /usr/bin/python3 XML parse launch/world/package files
+XML_PARSE_FAIL src/unitree_guide/unitree_guide/generated_building/multi_floor_building.world: mismatched tag: line 37, column 10
+$ gz sdf -k earth.world
+Check complete
