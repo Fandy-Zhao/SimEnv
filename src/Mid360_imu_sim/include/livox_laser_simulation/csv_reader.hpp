@@ -18,16 +18,15 @@ class CsvReader {
         if (file_stream.is_open()) {
             std::string header;
             std::getline(file_stream, header, '\n');
-            while (!file_stream.eof()) {
-                std::string line_str;
-                std::getline(file_stream, line_str, '\n');
+            std::string line_str;
+            while (std::getline(file_stream, line_str)) {
+                if (line_str.empty()) continue;
                 std::stringstream line_stream;
                 line_stream << line_str;
                 std::vector<double> data;
                 try {
-                    while (!line_stream.eof()) {
-                        std::string value;
-                        std::getline(line_stream, value, ',');
+                    std::string value;
+                    while (std::getline(line_stream, value, ',')) {
                         data.push_back(std::stod(value));
                     }
                 } catch (...) {
@@ -36,10 +35,10 @@ class CsvReader {
                 }
                 datas.push_back(data);
             }
-            std::cerr << "data size:" << datas.size() << "\n";
+            std::cout << "data size:" << datas.size() << "\n";
             return true;
         } else {
-            std::cerr << "cannot read csv file!" << file_name << "\n";
+            std::cerr << "cannot read csv file:" << file_name << "\n";
         }
         return false;
     }
