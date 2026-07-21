@@ -1,0 +1,67 @@
+Skipping global process cleanup (SKIP_GLOBAL_PROCESS_CLEANUP=true).
+Checking ROS Python environment for Conda contamination...
+ROS Python environment:
+/usr/bin/python3
+/usr/lib/python3.10/xml/dom/minidom.py
+Sourcing ROS environment...
+Runtime source diagnostics:
+  Workspace: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion
+  Git branch: test/0720-earth-flat-ground-runtime
+  Git HEAD:   2478e8cb
+  Contains FAST-LIO2 pointcloud semantics fix 69ff34e7: yes
+  ROS_PACKAGE_PATH: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src:/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src:/opt/ros/noetic/share
+  CMAKE_PREFIX_PATH: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel:/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel:/opt/ros/noetic
+  simenv_fast_lio2_integration: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/simenv_fast_lio2_integration
+  a1_description: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_ros/robots/a1_description
+  fast_lio: NOT_FOUND
+  scan_to_pointcloud2.py: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py
+Generating competition scene...
+==========================================
+Startup summary
+  World mode: competition
+  Workspace: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion
+  World:   /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/generated_building/competition_scene.world
+  Robot spawn pose: x=0.0 y=2.3 z=0.6 yaw=1.5708
+  GUI: false
+  Truth:   /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/results/danger_truth.json
+  Manifest:/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/generated_building/scene_manifest.json
+  Result:  /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/results/detected_danger.json
+  Sensor data: false
+  PointCloud2 converter: false
+  Ground truth topics: false
+  Referee odom: false
+  FAST-LIO2 mapping: false
+  RViz: false
+  Building controller: 0
+  Virtual joystick: 0
+  Gazebo starts paused: true
+  Auto unpause: true after 6s
+  Gazebo physics env: max_step=0.002 update_rate=500 ode_iters=40 contact_max_correcting_vel=5.0
+  Gazebo plugin path: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel/lib:
+==========================================
+Launching Gazebo, Unitree A1 model, sensors, and ROS interfaces...
+Starting junior_ctrl in a dedicated terminal...
+UNITREE_CTRL_DT=0.002 seconds.
+Keyboard input in the controller terminal: 2=stand (4=trot, 6=RL need Torch build).
+tmux session ready: simenv-runtime-C0_competition_fixedstand-junior_ctrl
+  Reattach from any terminal: tmux attach-session -t simenv-runtime-C0_competition_fixedstand-junior_ctrl
+Simulation startup command completed.
+Publish geometry_msgs/Twist to /cmd_vel for velocity control (Trotting/RL mode only;
+  Trotting and RL require a Torch-enabled build: set UNITREE_ENABLE_TORCH_POLICY=ON).
+Use rostopic to switch FSM states:
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 2"  # FixedStand
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 4"  # Trotting   (needs Torch)
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 6"  # RL         (needs Torch)
+
+==============================================
+  auto.sh startup complete.
+  The controller and rviz are in separate tmux sessions.
+  Reattach if a GUI terminal closes: tmux attach-session -t simenv-runtime-C0_competition_fixedstand-junior_ctrl
+                                 tmux attach-session -t simenv-runtime-C0_competition_fixedstand-rviz
+  Press Ctrl-C in THIS terminal to stop all ROS processes.
+==============================================
+已终止
+
+Shutting down...
+./auto.sh: 第 579 行： 215317 已杀死               roslaunch unitree_guide multi_floor_gazeboSim.launch gui:="$GUI" paused:="$PAUSED" user_debug:=False rname:=a1 robot_x:="$ROBOT_X" robot_y:="$ROBOT_Y" robot_z:="$ROBOT_Z" robot_yaw:="$ROBOT_YAW" enable_sensor_data:="$ENABLE_SENSOR_DATA" enable_referee_odom:="$ENABLE_REFEREE_ODOM" enable_ground_truth:="$ENABLE_GROUND_TRUTH" enable_foot_force_visual:="$ENABLE_FOOT_FORCE_VISUAL" enable_joy_node:="$ENABLE_JOY_NODE" enable_pointcloud_converter:="$ENABLE_POINTCLOUD_CONVERTER" pointcloud_use_ground_truth_odom:="$POINTCLOUD_USE_GROUND_TRUTH_ODOM" > "$WORKSPACE_DIR/logs/competition_gazebo.log" 2>&1
+Cleanup complete.

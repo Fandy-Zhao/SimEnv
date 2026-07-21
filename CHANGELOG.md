@@ -1,5 +1,41 @@
 # Changelog
 
+## 2026-07-21 — Unitree runtime rebuild and retest
+
+- Added governed rebuild/retest evidence under
+  `experiments/runs/0721_unitree-runtime-rebuild/`, including toolchain probes,
+  build logs, artifact manifests, runtime capture scripts, metrics helpers,
+  and C0-A raw runtime logs.
+- Confirmed the Torch/CUDA build blocker is the host GCC 12 `cc1plus` gap; the
+  Unitree runtime profile builds successfully with GCC/G++ 11 via
+  `tools/build_with_venv.sh`.
+- Stopped runtime validation at C0-A native FixedStand because it did not pass
+  3/3. No world, controller, policy, spawn, physics, URDF, gain, estimator,
+  gait, IK, or fall-validator code was changed.
+
+## 2026-07-20 — Earth flat-ground runtime validation
+
+- Cherry-picked `5f5f9045` into the runnable earth RL benchmark worktree and
+  added governed runtime validation scripts, metrics, tests, and reports under
+  `experiments/runs/0720_earth-flat-ground-runtime/`.
+- Confirmed at runtime that `platform_1` and `platform_2` are absent from the
+  Earth world model list; G0 passed with median RTF about `0.983`.
+- Stopped before Earth E0 and all RL cases because G1 initial-contact gating
+  failed and C0 competition FixedStand also failed in the selected runtime
+  artifact environment. No controller, policy, URDF/xacro, spawn, world, or
+  physics behavior was changed by this validation task.
+
+## 2026-07-20 — Earth flat-ground fix
+
+- Removed the raised `platform_1` and `platform_2` models from
+  `unitree_gazebo/worlds/earth.world`, including their visual and collision box
+  geometry.
+- Preserved the `sun` include, single `ground_plane` include, physics settings,
+  `WORLD_MODE=competition` default, and `WORLD_MODE=earth` spawn pose
+  (`x=0.0 y=0.0 z=0.6 yaw=0.0`).
+- Added governed issue, notes, and report evidence for static XML/SDF checks
+  and the remaining built-worktree runtime validation gap.
+
 ## 2026-07-20 — Earth RL motion benchmark
 
 - Added `WORLD_MODE=earth` as an isolated launch mode that resolves the tracked

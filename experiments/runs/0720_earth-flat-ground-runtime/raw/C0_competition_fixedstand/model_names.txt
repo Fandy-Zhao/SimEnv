@@ -1,0 +1,17 @@
+a1_gazebo
+danger_red_sphere_00
+danger_red_sphere_01
+danger_red_sphere_02
+danger_red_sphere_03
+danger_red_sphere_04
+distractor_green_sphere_00
+distractor_green_sphere_01
+distractor_green_sphere_04
+distractor_green_sphere_05
+distractor_red_box_02
+distractor_red_box_03
+dynamic_elevator_floor_0
+dynamic_elevator_main
+dynamic_main_entrance
+generated_building
+ground_plane

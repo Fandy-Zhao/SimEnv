@@ -1,0 +1,49 @@
+2026-07-21T00:21:24+08:00
+which gcc=/usr/bin/gcc
+which g++=/usr/bin/g++
+which gcc-11=/usr/bin/gcc-11
+which g++-11=/usr/bin/g++-11
+ls: 无法访问 '/usr/lib/gcc/x86_64-linux-gnu/12/cc1plus': 没有那个文件或目录
+-rwxr-xr-x 1 root root 28004992 Dec 18  2025 /usr/lib/gcc/x86_64-linux-gnu/11/cc1plus
+--- nvcc default ---
+gcc: fatal error: cannot execute ‘cc1plus’: execvp: 没有那个文件或目录
+compilation terminated.
+nvcc fatal   : Failed to preprocess host compiler properties.
+default_rc=1
+--- nvcc -ccbin /usr/bin/g++-11 ---
+#$ _NVVM_BRANCH_=nvvm
+#$ _SPACE_= 
+#$ _CUDART_=cudart
+#$ _HERE_=/usr/local/cuda-11.8/bin
+#$ _THERE_=/usr/local/cuda-11.8/bin
+#$ _TARGET_SIZE_=
+#$ _TARGET_DIR_=
+#$ _TARGET_DIR_=targets/x86_64-linux
+#$ TOP=/usr/local/cuda-11.8/bin/..
+#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-11.8/bin/../nvvm/libdevice
+#$ LD_LIBRARY_PATH=/usr/local/cuda-11.8/bin/../lib:/usr/local/cuda-11.8/lib64:/opt/ros/noetic/lib
+#$ PATH=/usr/local/cuda-11.8/bin/../nvvm/bin:/usr/local/cuda-11.8/bin:/home/zzf/.local/bin:/home/zzf/.codex/tmp/arg0/codex-arg0GBr56h:/home/zzf/.local/bin:/usr/local/cuda-11.8/bin:/home/zzf/.nvm/versions/node/v22.23.1/bin:/opt/ros/noetic/bin:/home/zzf/miniconda3/bin:/home/zzf/miniconda3/condabin:/home/zzf/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/zzf/.vscode/extensions/openai.chatgpt-26.715.31925-linux-x64/bin/linux-x86_64
+#$ INCLUDES="-I/usr/local/cuda-11.8/bin/../targets/x86_64-linux/include"  
+#$ LIBRARIES=  "-L/usr/local/cuda-11.8/bin/../targets/x86_64-linux/lib/stubs" "-L/usr/local/cuda-11.8/bin/../targets/x86_64-linux/lib"
+#$ CUDAFE_FLAGS=
+#$ PTXAS_FLAGS=
+#$ "/usr/bin"/g++-11 -D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-11.8/bin/../targets/x86_64-linux/include"    -D__CUDACC_VER_MAJOR__=11 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=89 -D__CUDA_API_VER_MAJOR__=11 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -include "cuda_runtime.h" -m64 "/tmp/nvcc_probe.cu" -o "/tmp/tmpxft_00036b5c_00000000-9_nvcc_probe.cpp1.ii" 
+#$ cicc --c++17 --gnu_version=110400 --display_error_number --orig_src_file_name "/tmp/nvcc_probe.cu" --orig_src_path_name "/tmp/nvcc_probe.cu" --allow_managed   -arch compute_52 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "tmpxft_00036b5c_00000000-3_nvcc_probe.fatbin.c" -tused --gen_module_id_file --module_id_file_name "/tmp/tmpxft_00036b5c_00000000-4_nvcc_probe.module_id" --gen_c_file_name "/tmp/tmpxft_00036b5c_00000000-6_nvcc_probe.cudafe1.c" --stub_file_name "/tmp/tmpxft_00036b5c_00000000-6_nvcc_probe.cudafe1.stub.c" --gen_device_file_name "/tmp/tmpxft_00036b5c_00000000-6_nvcc_probe.cudafe1.gpu"  "/tmp/tmpxft_00036b5c_00000000-9_nvcc_probe.cpp1.ii" -o "/tmp/tmpxft_00036b5c_00000000-6_nvcc_probe.ptx"
+#$ ptxas -arch=sm_52 -m64  "/tmp/tmpxft_00036b5c_00000000-6_nvcc_probe.ptx"  -o "/tmp/tmpxft_00036b5c_00000000-10_nvcc_probe.sm_52.cubin" 
+#$ fatbinary -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " "--image3=kind=elf,sm=52,file=/tmp/tmpxft_00036b5c_00000000-10_nvcc_probe.sm_52.cubin" "--image3=kind=ptx,sm=52,file=/tmp/tmpxft_00036b5c_00000000-6_nvcc_probe.ptx" --embedded-fatbin="/tmp/tmpxft_00036b5c_00000000-3_nvcc_probe.fatbin.c" 
+#$ rm /tmp/tmpxft_00036b5c_00000000-3_nvcc_probe.fatbin
+#$ "/usr/bin"/g++-11 -D__CUDA_ARCH_LIST__=520 -E -x c++ -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-11.8/bin/../targets/x86_64-linux/include"    -D__CUDACC_VER_MAJOR__=11 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=89 -D__CUDA_API_VER_MAJOR__=11 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -include "cuda_runtime.h" -m64 "/tmp/nvcc_probe.cu" -o "/tmp/tmpxft_00036b5c_00000000-5_nvcc_probe.cpp4.ii" 
+#$ cudafe++ --c++17 --gnu_version=110400 --display_error_number --orig_src_file_name "/tmp/nvcc_probe.cu" --orig_src_path_name "/tmp/nvcc_probe.cu" --allow_managed  --m64 --parse_templates --gen_c_file_name "/tmp/tmpxft_00036b5c_00000000-6_nvcc_probe.cudafe1.cpp" --stub_file_name "tmpxft_00036b5c_00000000-6_nvcc_probe.cudafe1.stub.c" --module_id_file_name "/tmp/tmpxft_00036b5c_00000000-4_nvcc_probe.module_id" "/tmp/tmpxft_00036b5c_00000000-5_nvcc_probe.cpp4.ii" 
+#$ "/usr/bin"/g++-11 -D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -c -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS "-I/usr/local/cuda-11.8/bin/../targets/x86_64-linux/include"   -m64 "/tmp/tmpxft_00036b5c_00000000-6_nvcc_probe.cudafe1.cpp" -o "/tmp/tmpxft_00036b5c_00000000-11_nvcc_probe.o" 
+#$ nvlink -m64 --arch=sm_52 --register-link-binaries="/tmp/tmpxft_00036b5c_00000000-7_nvcc_probe_gpp11_dlink.reg.c"    "-L/usr/local/cuda-11.8/bin/../targets/x86_64-linux/lib/stubs" "-L/usr/local/cuda-11.8/bin/../targets/x86_64-linux/lib" -cpu-arch=X86_64 "/tmp/tmpxft_00036b5c_00000000-11_nvcc_probe.o"  -lcudadevrt  -o "/tmp/tmpxft_00036b5c_00000000-12_nvcc_probe_gpp11_dlink.sm_52.cubin" --host-ccbin "/usr/bin/g++-11"
+#$ fatbinary -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -link "--image3=kind=elf,sm=52,file=/tmp/tmpxft_00036b5c_00000000-12_nvcc_probe_gpp11_dlink.sm_52.cubin" --embedded-fatbin="/tmp/tmpxft_00036b5c_00000000-8_nvcc_probe_gpp11_dlink.fatbin.c" 
+#$ rm /tmp/tmpxft_00036b5c_00000000-8_nvcc_probe_gpp11_dlink.fatbin
+#$ "/usr/bin"/g++-11 -D__CUDA_ARCH_LIST__=520 -c -x c++ -DFATBINFILE="\"/tmp/tmpxft_00036b5c_00000000-8_nvcc_probe_gpp11_dlink.fatbin.c\"" -DREGISTERLINKBINARYFILE="\"/tmp/tmpxft_00036b5c_00000000-7_nvcc_probe_gpp11_dlink.reg.c\"" -I. -D__NV_EXTRA_INITIALIZATION= -D__NV_EXTRA_FINALIZATION= -D__CUDA_INCLUDE_COMPILER_INTERNAL_HEADERS__  "-I/usr/local/cuda-11.8/bin/../targets/x86_64-linux/include"    -D__CUDACC_VER_MAJOR__=11 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=89 -D__CUDA_API_VER_MAJOR__=11 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -m64 "/usr/local/cuda-11.8/bin/crt/link.stub" -o "/tmp/tmpxft_00036b5c_00000000-13_nvcc_probe_gpp11_dlink.o" 
+#$ "/usr/bin"/g++-11 -D__CUDA_ARCH_LIST__=520 -m64 -Wl,--start-group "/tmp/tmpxft_00036b5c_00000000-13_nvcc_probe_gpp11_dlink.o" "/tmp/tmpxft_00036b5c_00000000-11_nvcc_probe.o"   "-L/usr/local/cuda-11.8/bin/../targets/x86_64-linux/lib/stubs" "-L/usr/local/cuda-11.8/bin/../targets/x86_64-linux/lib"  -lcudadevrt  -lcudart_static  -lrt -lpthread  -ldl  -Wl,--end-group -o "/tmp/nvcc_probe_gpp11" 
+gpp11_rc=0
+nvcc probe
+--- CUDAHOSTCXX=/usr/bin/g++-11 nvcc ---
+gcc: fatal error: cannot execute ‘cc1plus’: execvp: 没有那个文件或目录
+compilation terminated.
+nvcc fatal   : Failed to preprocess host compiler properties.
+cudahostcxx_rc=1

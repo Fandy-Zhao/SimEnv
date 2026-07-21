@@ -1,0 +1,21 @@
+2026-07-20T23:43:43+08:00
+CASE_ID=G0_world_flat
+CASE_KIND=g0
+WORLD_MODE_CASE=earth
+ROS_MASTER_URI=http://127.0.0.1:14323
+GAZEBO_MASTER_URI=http://127.0.0.1:15323
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel:/opt/ros/noetic
+COMMAND_VX=0.0 COMMAND_VY=0.0 COMMAND_YAW_RATE=0.0
+DURATION=3.0 STOP_DURATION=0.0
+branch=test/0720-earth-flat-ground-runtime
+head=2478e8cbc72e7decba8d78a3e598f58495c2037c
+unitree_guide=/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_guide/unitree_guide
+unitree_gazebo=/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_ros/unitree_gazebo
+roslaunch=/opt/ros/noetic/bin/roslaunch
+gzserver=/usr/bin/gzserver
+997538cf0c0cf3faa9c38e88a29cee5694a26b5f35541897c0d521707149ab1a  /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel/lib/unitree_guide/junior_ctrl
+4ff3ac9efb36f48ca8b0752f819a7704219868558378c11f9c144972a743813e  /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel/lib/unitree_guide/state_from_gazebo
+e886847fe266e3c2f7c08825fceeaecfa75c7eac5f780b25b6d4dca173ff8bef  /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/logs/policy_act_inference_plane.pt
+2d5aa72511c0c6609c02f4105845eee6974d3d73431497f8f35306da9588fe14  /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/logs/policy_act_inference_stair.pt
+3118a640680307e6437b171f0102832d311f51141090846019ad560178460291  /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world

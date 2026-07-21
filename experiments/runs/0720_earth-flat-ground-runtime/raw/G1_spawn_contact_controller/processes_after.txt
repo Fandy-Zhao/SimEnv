@@ -1,0 +1,8 @@
+213624 /usr/bin/python3.10 /opt/ros/noetic/bin/roscore -p 14557
+213697 /usr/bin/python3.10 /opt/ros/noetic/bin/rosmaster --core -p 14557 -w 3 __log:=/home/zzf/.ros/log/abfc899a-8452-11f1-aca5-b9af01646ad9/master.log
+214068 /bin/sh /opt/ros/noetic/lib/gazebo_ros/gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world __name:=gazebo __log:=/home/zzf/.ros/log/abfc899a-8452-11f1-aca5-b9af01646ad9/gazebo-1.log
+214180 gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world -s /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so -s /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so __name:=gazebo __log:=/home/zzf/.ros/log/abfc899a-8452-11f1-aca5-b9af01646ad9/gazebo-1.log
+214588 tmux new-session -d -s simenv-runtime-G1_spawn_contact_controller-junior_ctrl bash '/home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/logs/junior_ctrl.tmux.sh'
+214589 bash /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/logs/junior_ctrl.tmux.sh
+214634 /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/devel/lib/unitree_guide/junior_ctrl
+214668 tmux attach-session -t simenv-runtime-G1_spawn_contact_controller-junior_ctrl

@@ -1,0 +1,4 @@
+211772 /usr/bin/python3.10 /opt/ros/noetic/bin/roscore -p 14501
+211852 /usr/bin/python3.10 /opt/ros/noetic/bin/rosmaster --core -p 14501 -w 3 __log:=/home/zzf/.ros/log/8025ad4c-8452-11f1-aca5-b9af01646ad9/master.log
+212154 /bin/sh /opt/ros/noetic/lib/gazebo_ros/gzserver -e ode /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world __name:=gazebo __log:=/home/zzf/.ros/log/8025ad4c-8452-11f1-aca5-b9af01646ad9/gazebo-1.log
+212296 gzserver -e ode /home/zzf/search_ws/SimEnv_worktrees/earth-rl-motion/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world -s /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so -s /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so __name:=gazebo __log:=/home/zzf/.ros/log/8025ad4c-8452-11f1-aca5-b9af01646ad9/gazebo-1.log

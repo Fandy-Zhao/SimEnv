@@ -1,0 +1,695 @@
+start=2026-07-21T00:29:37+08:00
+command=catkin_make -j2 -DCATKIN_WHITELIST_PACKAGES= -DUNITREE_ENABLE_TORCH_POLICY=ON -DCMAKE_C_COMPILER=/usr/bin/gcc-11 -DCMAKE_CXX_COMPILER=/usr/bin/g++-11 -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-11 -DCMAKE_CUDA_FLAGS=-ccbin=/usr/bin/g++-11 -arch=sm_52 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.8 -DCUDAToolkit_ROOT=/usr/local/cuda-11.8 -DCMAKE_BUILD_TYPE=Release
+-- Using CATKIN_DEVEL_PREFIX: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel
+-- Using CMAKE_PREFIX_PATH: /opt/ros/noetic
+-- This workspace overlays: /opt/ros/noetic
+-- Using PYTHON_EXECUTABLE: /home/zzf/miniconda3/bin/python3
+-- Using Debian Python package layout
+-- Using empy: /usr/bin/empy
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/build/test_results
+-- Forcing gtest/gmock from source, though one was otherwise available.
+-- Found gtest sources under '/usr/src/googletest': gtests will be built
+-- Found gmock sources under '/usr/src/googletest': gmock will be built
+-- Using Python nosetests: /usr/bin/nosetests3
+-- catkin 0.8.10
+-- BUILD_SHARED_LIBS is on
+-- BUILD_SHARED_LIBS is on
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- ~~  traversing 29 packages in topological order:
+-- ~~  - building_generator_core
+-- ~~  - building_generator_interfaces
+-- ~~  - quadrotor_msgs
+-- ~~  - unitree_legged_sdk
+-- ~~  - a1_description
+-- ~~  - cmake_utils
+-- ~~  - map_generator
+-- ~~  - pose_utils
+-- ~~  - building_obstacles
+-- ~~  - building_generator_classic
+-- ~~  - livox_laser_simulation
+-- ~~  - odom_visualization
+-- ~~  - local_sensing_node
+-- ~~  - mockamap
+-- ~~  - simenv_fast_lio2_integration
+-- ~~  - so3_control
+-- ~~  - multi_map_server
+-- ~~  - uav_utils
+-- ~~  - so3_quadrotor_simulator
+-- ~~  - unitree_legged_msgs
+-- ~~  - unitree_legged_control
+-- ~~  - unitree_legged_real
+-- ~~  - unitree_motor_ctrl
+-- ~~  - rviz_plugins
+-- ~~  - unitree_controller
+-- ~~  - unitree_gazebo
+-- ~~  - unitree_guide
+-- ~~  - unitree_move_base
+-- ~~  - waypoint_generator
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- +++ processing catkin package: 'building_generator_core'
+-- ==> add_subdirectory(building_generator_core)
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/building_generator_core/scripts/building_generator_cli to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/building_generator_core
+-- +++ processing catkin package: 'building_generator_interfaces'
+-- ==> add_subdirectory(building_generator_interfaces)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- building_generator_interfaces: 0 messages, 2 services
+-- +++ processing catkin package: 'quadrotor_msgs'
+-- ==> add_subdirectory(uav_simulator/Utils/quadrotor_msgs)
+CMake Deprecation Warning at uav_simulator/Utils/quadrotor_msgs/CMakeLists.txt:43 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- quadrotor_msgs: 13 messages, 0 services
+-- Found Eigen3: /usr/include/eigen3 (Required is at least version "2.91.0") 
+-- +++ processing catkin package: 'unitree_legged_sdk'
+-- ==> add_subdirectory(unitree_guide/unitree_ros_to_real/unitree_legged_sdk)
+CMake Deprecation Warning at unitree_guide/unitree_ros_to_real/unitree_legged_sdk/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- CMAKE_SYSTEM_PROCESSOR: x86_64
+-- +++ processing catkin package: 'a1_description'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/robots/a1_description)
+CMake Deprecation Warning at unitree_guide/unitree_ros/robots/a1_description/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'cmake_utils'
+-- ==> add_subdirectory(uav_simulator/Utils/cmake_utils)
+CMake Deprecation Warning at uav_simulator/Utils/cmake_utils/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'map_generator'
+-- ==> add_subdirectory(uav_simulator/map_generator)
+CMake Deprecation Warning at uav_simulator/map_generator/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Checking for module 'eigen3'
+--   Found eigen3, version 3.4.0
+-- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.65.0") found components: system filesystem date_time iostreams serialization 
+-- Checking for module 'flann'
+--   Found flann, version 1.9.1
+-- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  
+-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+-- Found GLEW: /usr/lib/x86_64-linux-gnu/libGLEW.so  
+-- Found OpenGL: /usr/lib/x86_64-linux-gnu/libOpenGL.so  found components: OpenGL GLX 
+-- Found MPI_C: /usr/lib/x86_64-linux-gnu/libmpi.so (found version "3.1") 
+-- Found MPI: TRUE (found version "3.1") found components: C 
+-- Found JsonCpp: /usr/lib/x86_64-linux-gnu/libjsoncpp.so (found suitable version "1.9.5", minimum required is "0.7.0") 
+-- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.2.11") 
+-- Found PNG: /usr/lib/x86_64-linux-gnu/libpng.so (found version "1.6.37") 
+-- Found Eigen3: /usr/include/eigen3 (found version "3.4.0") 
+-- Found X11: /usr/include   
+-- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so
+-- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so - found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for connect
+-- Looking for connect - found
+-- Looking for remove
+-- Looking for remove - found
+-- Looking for shmat
+-- Looking for shmat - found
+-- Looking for IceConnectionNumber in ICE
+-- Looking for IceConnectionNumber in ICE - found
+-- Found EXPAT: /usr/lib/x86_64-linux-gnu/libexpat.so (found version "2.4.7") 
+-- Found double-conversion: /usr/lib/x86_64-linux-gnu/libdouble-conversion.so  
+-- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found version "1.9.3") 
+-- Found LZMA: /usr/lib/x86_64-linux-gnu/liblzma.so (found version "5.2.5") 
+-- Found JPEG: /usr/lib/x86_64-linux-gnu/libjpeg.so (found version "80") 
+-- Found TIFF: /usr/lib/x86_64-linux-gnu/libtiff.so (found version "4.3.0")  
+-- Found Freetype: /usr/lib/x86_64-linux-gnu/libfreetype.so (found version "2.11.1") 
+-- Found utf8cpp: /usr/include/utf8cpp  
+-- Checking for module 'libusb-1.0'
+--   Found libusb-1.0, version 1.0.25
+-- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  
+-- Found OpenNI: /usr/lib/libOpenNI.so;libusb::libusb (found version "1.5.4.0") 
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- Found OpenNI2: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb (found version "2.2.0.33") 
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+** WARNING ** io features related to pcap will be disabled
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+-- Found Qhull version 8.0.2
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- looking for PCL_COMMON
+-- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  
+-- looking for PCL_KDTREE
+-- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  
+-- looking for PCL_OCTREE
+-- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  
+-- looking for PCL_SEARCH
+-- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  
+-- looking for PCL_SAMPLE_CONSENSUS
+-- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  
+-- looking for PCL_FILTERS
+-- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  
+-- looking for PCL_2D
+-- Found PCL_2D: /usr/include/pcl-1.12  
+-- looking for PCL_GEOMETRY
+-- Found PCL_GEOMETRY: /usr/include/pcl-1.12  
+-- looking for PCL_IO
+-- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  
+-- looking for PCL_FEATURES
+-- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  
+-- looking for PCL_ML
+-- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  
+-- looking for PCL_SEGMENTATION
+-- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  
+-- looking for PCL_VISUALIZATION
+-- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  
+-- looking for PCL_SURFACE
+-- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  
+-- looking for PCL_REGISTRATION
+-- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  
+-- looking for PCL_KEYPOINTS
+-- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  
+-- looking for PCL_TRACKING
+-- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  
+-- looking for PCL_RECOGNITION
+-- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  
+-- looking for PCL_STEREO
+-- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  
+-- looking for PCL_APPS
+-- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  
+-- looking for PCL_IN_HAND_SCANNER
+-- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  
+-- looking for PCL_MODELER
+-- Found PCL_MODELER: /usr/include/pcl-1.12  
+-- looking for PCL_POINT_CLOUD_EDITOR
+-- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  
+-- looking for PCL_OUTOFCORE
+-- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  
+-- looking for PCL_PEOPLE
+-- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  
+-- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_visualization;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_recognition;pcl_stereo;pcl_apps;pcl_outofcore;pcl_people;Boost::system;Boost::filesystem;Boost::date_time;Boost::iostreams;Boost::serialization;/usr/lib/libOpenNI.so;libusb::libusb;/usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb;VTK::ChartsCore;VTK::CommonColor;VTK::CommonComputationalGeometry;VTK::CommonCore;VTK::CommonDataModel;VTK::CommonExecutionModel;VTK::CommonMath;VTK::CommonMisc;VTK::CommonTransforms;VTK::FiltersCore;VTK::FiltersExtraction;VTK::FiltersGeneral;VTK::FiltersGeometry;VTK::FiltersModeling;VTK::FiltersSources;VTK::ImagingCore;VTK::ImagingSources;VTK::InteractionImage;VTK::InteractionStyle;VTK::InteractionWidgets;VTK::IOCore;VTK::IOGeometry;VTK::IOImage;VTK::IOLegacy;VTK::IOPLY;VTK::RenderingAnnotation;VTK::RenderingCore;VTK::RenderingContext2D;VTK::RenderingLOD;VTK::RenderingFreeType;VTK::ViewsCore;VTK::ViewsContext2D;VTK::RenderingOpenGL2;VTK::GUISupportQt;FLANN::FLANN;QHULL::QHULL  
+-- +++ processing catkin package: 'pose_utils'
+-- ==> add_subdirectory(uav_simulator/Utils/pose_utils)
+CMake Deprecation Warning at uav_simulator/Utils/pose_utils/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Found Armadillo: /usr/include (found version "10.8.2") 
+-- +++ processing catkin package: 'building_obstacles'
+-- ==> add_subdirectory(building_obstacles)
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/building_obstacles/scripts/generate_competition_scene.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/building_obstacles
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/building_obstacles/scripts/generate_multi_floor_building.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/building_obstacles
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/building_obstacles/scripts/spawn_red_spheres.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/building_obstacles
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/building_obstacles/scripts/evaluate_danger.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/building_obstacles
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/building_obstacles/scripts/evaulate_danger.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/building_obstacles
+-- +++ processing catkin package: 'building_generator_classic'
+-- ==> add_subdirectory(building_generator_classic)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/building_generator_classic/scripts/building_generator_classic_control to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/building_generator_classic
+-- +++ processing catkin package: 'livox_laser_simulation'
+-- ==> add_subdirectory(Mid360_imu_sim)
+CMake Deprecation Warning at Mid360_imu_sim/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PkgConfig)
+  does not match the name of the calling package (gazebo).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
+  Mid360_imu_sim/CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.40.0") found components: thread system filesystem program_options regex iostreams date_time 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4") 
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-transport8 -- found version 8.2.1
+-- Searching for dependencies of ignition-transport8
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3") 
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.4
+-- Checking for module 'uuid'
+--   Found uuid, version 2.37.2
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Searching for dependencies of ignition-msgs5
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 9.0.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.14.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-fuel_tools4 -- found version 4.4.0
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.9.5
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.7.3
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- +++ processing catkin package: 'odom_visualization'
+-- ==> add_subdirectory(uav_simulator/Utils/odom_visualization)
+CMake Deprecation Warning at uav_simulator/Utils/odom_visualization/CMakeLists.txt:36 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'local_sensing_node'
+-- ==> add_subdirectory(uav_simulator/local_sensing)
+CMake Deprecation Warning at uav_simulator/local_sensing/CMakeLists.txt:2 (CMAKE_MINIMUM_REQUIRED):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning at /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:166 (message):
+  catkin_package() DEPENDS on 'Eigen' but neither 'Eigen_INCLUDE_DIRS' nor
+  'Eigen_LIBRARIES' is defined.
+Call Stack (most recent call first):
+  /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
+  uav_simulator/local_sensing/CMakeLists.txt:72 (catkin_package)
+
+
+-- +++ processing catkin package: 'mockamap'
+-- ==> add_subdirectory(uav_simulator/mockamap)
+CMake Deprecation Warning at uav_simulator/mockamap/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'simenv_fast_lio2_integration'
+-- ==> add_subdirectory(simenv_fast_lio2_integration)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/simenv_fast_lio2_integration/scripts/map_to_camera_init_bridge.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/simenv_fast_lio2_integration/scripts/odometry_tf_bridge.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/simenv_fast_lio2_integration/scripts/runtime_pointcloud_smoke_check.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/simenv_fast_lio2_integration
+-- +++ processing catkin package: 'so3_control'
+-- ==> add_subdirectory(uav_simulator/so3_control)
+CMake Deprecation Warning at uav_simulator/so3_control/CMakeLists.txt:45 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'multi_map_server'
+-- ==> add_subdirectory(uav_simulator/Utils/multi_map_server)
+CMake Deprecation Warning at uav_simulator/Utils/multi_map_server/CMakeLists.txt:39 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- multi_map_server: 4 messages, 0 services
+-- +++ processing catkin package: 'uav_utils'
+-- ==> add_subdirectory(uav_simulator/Utils/uav_utils)
+CMake Deprecation Warning at uav_simulator/Utils/uav_utils/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Performing Test COMPILER_SUPPORTS_CXX11
+-- Performing Test COMPILER_SUPPORTS_CXX11 - Success
+-- Performing Test COMPILER_SUPPORTS_CXX0X
+-- Performing Test COMPILER_SUPPORTS_CXX0X - Success
+-- Found Eigen: /usr/include/eigen3 (found version "3.4.0") 
+-- +++ processing catkin package: 'so3_quadrotor_simulator'
+-- ==> add_subdirectory(uav_simulator/so3_quadrotor_simulator)
+CMake Deprecation Warning at uav_simulator/so3_quadrotor_simulator/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Warning at /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:166 (message):
+  catkin_package() DEPENDS on 'Eigen3' but neither 'Eigen3_INCLUDE_DIRS' nor
+  'Eigen3_LIBRARIES' is defined.
+Call Stack (most recent call first):
+  /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
+  uav_simulator/so3_quadrotor_simulator/CMakeLists.txt:29 (catkin_package)
+
+
+CMake Warning at /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:166 (message):
+  catkin_package() DEPENDS on 'system_lib' but neither
+  'system_lib_INCLUDE_DIRS' nor 'system_lib_LIBRARIES' is defined.
+Call Stack (most recent call first):
+  /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
+  uav_simulator/so3_quadrotor_simulator/CMakeLists.txt:29 (catkin_package)
+
+
+-- +++ processing catkin package: 'unitree_legged_msgs'
+-- ==> add_subdirectory(unitree_guide/unitree_ros_to_real/unitree_legged_msgs)
+CMake Deprecation Warning at unitree_guide/unitree_ros_to_real/unitree_legged_msgs/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- unitree_legged_msgs: 11 messages, 0 services
+-- +++ processing catkin package: 'unitree_legged_control'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/unitree_legged_control)
+CMake Deprecation Warning at unitree_guide/unitree_ros/unitree_legged_control/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'unitree_legged_real'
+-- ==> add_subdirectory(unitree_guide/unitree_ros_to_real/unitree_legged_real)
+CMake Deprecation Warning at unitree_guide/unitree_ros_to_real/unitree_legged_real/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- CMAKE_SYSTEM_PROCESSOR: x86_64
+-- +++ processing catkin package: 'unitree_motor_ctrl'
+-- ==> add_subdirectory(unitree_guide/unitree_guide/unitree_actuator_sdk/unitree_motor_ctrl)
+CMake Deprecation Warning at unitree_guide/unitree_guide/unitree_actuator_sdk/unitree_motor_ctrl/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'rviz_plugins'
+-- ==> add_subdirectory(uav_simulator/Utils/rviz_plugins)
+CMake Deprecation Warning at uav_simulator/Utils/rviz_plugins/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning at /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:166 (message):
+  catkin_package() DEPENDS on 'system_lib' but neither
+  'system_lib_INCLUDE_DIRS' nor 'system_lib_LIBRARIES' is defined.
+Call Stack (most recent call first):
+  /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
+  uav_simulator/Utils/rviz_plugins/CMakeLists.txt:12 (catkin_package)
+
+
+-- Using Qt5 based on the rviz_QT_VERSION: 5.15.3
+-- +++ processing catkin package: 'unitree_controller'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/unitree_controller)
+CMake Deprecation Warning at unitree_guide/unitree_ros/unitree_controller/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PkgConfig)
+  does not match the name of the calling package (gazebo).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
+  unitree_guide/unitree_ros/unitree_controller/CMakeLists.txt:17 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4") 
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-transport8 -- found version 8.2.1
+-- Searching for dependencies of ignition-transport8
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3") 
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.4
+-- Checking for module 'uuid'
+--   Found uuid, version 2.37.2
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Searching for dependencies of ignition-msgs5
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 9.0.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.14.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-fuel_tools4 -- found version 4.4.0
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.9.5
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.7.3
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- +++ processing catkin package: 'unitree_gazebo'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/unitree_gazebo)
+CMake Deprecation Warning at unitree_guide/unitree_ros/unitree_gazebo/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PkgConfig)
+  does not match the name of the calling package (gazebo).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
+  unitree_guide/unitree_ros/unitree_gazebo/CMakeLists.txt:17 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4") 
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-transport8 -- found version 8.2.1
+-- Searching for dependencies of ignition-transport8
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3") 
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.4
+-- Checking for module 'uuid'
+--   Found uuid, version 2.37.2
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Searching for dependencies of ignition-msgs5
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 9.0.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.14.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-fuel_tools4 -- found version 4.4.0
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.9.5
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.7.3
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- +++ processing catkin package: 'unitree_guide'
+-- ==> add_subdirectory(unitree_guide/unitree_guide/unitree_guide)
+-- UNITREE_ENABLE_TORCH_POLICY=ON
+-- Caffe2: CUDA detected: 11.8
+-- Caffe2: CUDA nvcc is: /usr/local/cuda-11.8/bin/nvcc
+-- Caffe2: CUDA toolkit directory: /usr/local/cuda-11.8
+-- Caffe2: Header version is: 11.8
+-- /usr/local/cuda-11.8/lib64/libnvrtc.so shorthash is 672ee683
+-- USE_CUDNN is set to 0. Compiling without cuDNN support
+-- Added CUDA NVCC flags for: -gencode;arch=compute_52,code=sm_52
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0")  
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- unitree_guide: 2 messages, 0 services
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/scripts/virtual_joy.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/scripts/keyboard_teleop.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_guide/unitree_guide/scripts/pointcloud2livox.py to /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide
+-- +++ processing catkin package: 'unitree_move_base'
+-- ==> add_subdirectory(unitree_guide/unitree_guide/unitree_move_base)
+CMake Deprecation Warning at unitree_guide/unitree_guide/unitree_move_base/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Could NOT find move_base_msgs (missing: move_base_msgs_DIR)
+-- Could not find the required component 'move_base_msgs'. The following CMake error indicates that you either need to install the package with the same name or change your environment so that it can be found.
+CMake Error at /opt/ros/noetic/share/catkin/cmake/catkinConfig.cmake:83 (find_package):
+  Could not find a package configuration file provided by "move_base_msgs"
+  with any of the following names:
+
+    move_base_msgsConfig.cmake
+    move_base_msgs-config.cmake
+
+  Add the installation prefix of "move_base_msgs" to CMAKE_PREFIX_PATH or set
+  "move_base_msgs_DIR" to a directory containing one of the above files.  If
+  "move_base_msgs" provides a separate development package or SDK, be sure it
+  has been installed.
+Call Stack (most recent call first):
+  unitree_guide/unitree_guide/unitree_move_base/CMakeLists.txt:4 (find_package)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/build/CMakeFiles/CMakeOutput.log".
+Base path: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild
+Source space: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src
+Build space: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/build
+Devel space: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel
+Install space: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/install
+####
+#### Running command: "cmake /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src -DCATKIN_WHITELIST_PACKAGES= -DUNITREE_ENABLE_TORCH_POLICY=ON -DCMAKE_C_COMPILER=/usr/bin/gcc-11 -DCMAKE_CXX_COMPILER=/usr/bin/g++-11 -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-11 -DCMAKE_CUDA_FLAGS=-ccbin=/usr/bin/g++-11 -arch=sm_52 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.8 -DCUDAToolkit_ROOT=/usr/local/cuda-11.8 -DCMAKE_BUILD_TYPE=Release -DCATKIN_DEVEL_PREFIX=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel -DCMAKE_INSTALL_PREFIX=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/install -G Unix Makefiles" in "/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/build"
+####
+Invoking "cmake" failed
+exit_code=1
+end=2026-07-21T00:29:50+08:00

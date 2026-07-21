@@ -1,0 +1,10 @@
+2026-07-21T00:29:03+08:00
+$ bash -n auto.sh experiments/runs/0721_unitree-runtime-rebuild/scripts/*.sh
+$ python3 -m py_compile runtime scripts/tests
+$ python3 -m unittest discover -s experiments/runs/0721_unitree-runtime-rebuild/tests
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+$ git diff --check

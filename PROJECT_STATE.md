@@ -1,5 +1,36 @@
 # Project State
 
+> **2026-07-21 Unitree runtime rebuild and retest**: branch
+> `fix/0721-unitree-runtime-rebuild-and-retest` rebuilt the Unitree/Torch/Gazebo
+> runtime chain with GCC/G++ 11 and the project `tools/build_with_venv.sh`
+> profile. The original CUDA failure is traced to `/usr/bin/gcc` selecting GCC
+> 12 while GCC 12 `cc1plus` is missing; `nvcc -ccbin /usr/bin/g++-11` passes.
+> Target artifacts resolve to the current worktree `devel`. Full un-whitelisted
+> catkin remains blocked by missing `move_base_msgs` in `unitree_move_base`.
+> Runtime validation stops at C0-A native FixedStand: run 01 entered FSM state 2
+> but failed the base-height threshold (`min_base_height=0.110049 m`), and run
+> 02 stalled `/clock`. C0-B/C0-C/Earth RL were not entered; the requested stair
+> policy was only hashed for provenance.
+
+> **2026-07-20 Earth flat-ground runtime validation**: branch
+> `test/0720-earth-flat-ground-runtime` cherry-picks `5f5f9045` into the
+> runnable `earth-rl-motion` worktree. G0 confirms the platform models are
+> absent at runtime (`ground_plane` only, RTF median `0.983`). Validation stops
+> at G1: with the controller epoch active but no FixedStand command, A1 settles
+> to `min_base_height=0.05044 m` before FixedStand. C0 competition FixedStand
+> rerun also fails (`max_tilt_deg=170.68`, final FSM state `2`), so the current
+> artifact/entry chain cannot establish the platform root-cause closure. E0 and
+> all RL cases are blocked by gate policy; no RL performance conclusion is made.
+
+> **2026-07-20 earth.world flat-ground fix**: branch
+> `fix/0720-earth-flat-ground` removes the inline `platform_1` and
+> `platform_2` models from `unitree_gazebo/worlds/earth.world`, including
+> their box visual and collision geometry. `WORLD_MODE=earth` still spawns A1
+> at `x=0.0 y=0.0 z=0.6 yaw=0.0`, matching the existing Unitree A1 earth launch
+> height while placing the robot over the Gazebo `ground_plane` include instead
+> of a raised platform. XML/SDF/static checks pass; full A1 runtime validation
+> remains pending in a worktree with a built `devel/setup.bash`.
+
 > **2026-07-18 FAST-LIO2 runtime point-cloud orientation**: isolated runtime
 > validation from `fix/0718-runtime-pointcloud-orientation` confirms the active
 > adapter comes from a worktree containing `69ff34e7`, has no rotation params,
@@ -40,6 +71,19 @@
   validation
 
 ## Active Work
+- **2026-07-20 earth flat-ground runtime gate（当前分支
+  `test/0720-earth-flat-ground-runtime`）**：已接入 `5f5f9045` 并复用
+  `earth-rl-motion` 的可运行 `devel` artifact。G0 通过并证明
+  `platform_1/platform_2` 运行时消失；G1 未通过，C0 competition 对照也未复现
+  旧的稳定 FixedStand。因此 E0/E1/E2/E3/E5 均按门控阻塞。用户要求的
+  stair policy 后续测试已记录，但未在本轮切换或运行。
+- **2026-07-20 earth.world flat-ground fix（当前分支
+  `fix/0720-earth-flat-ground`）**：删除 `earth.world` 中覆盖出生点的
+  `platform_1` 和前方 `platform_2` 完整 model，保留 `sun`、单个
+  `ground_plane` include、physics 和 scene。该任务不修改 FSM、RL policy、
+  控制器、URDF/xacro、spawn z 或 competition 生成路径。静态检查通过；
+  隔离 worktree 缺少 `devel/setup.bash`，因此带 A1 spawn/controller 的
+  runtime smoke 待在已构建 overlay 中执行。
 - **2026-07-20 Earth RL motion benchmark（当前分支
   `test/0720-earth-rl-motion`）**：新增 `WORLD_MODE=earth` 接入和 tracked
   `earth.world`，competition 默认路径保持不变。world/topic smoke 证明

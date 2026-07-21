@@ -1,0 +1,49 @@
+timestamp=2026-07-21T00:34:12+08:00
+233987 /usr/bin/python3.10 /opt/ros/noetic/bin/roscore -p 15102
+234060 /usr/bin/python3.10 /opt/ros/noetic/bin/rosmaster --core -p 15102 -w 3 __log:=/home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/master.log
+234179 /usr/bin/python3.10 /opt/ros/noetic/bin/roslaunch unitree_gazebo normal.launch rname:=a1 gui:=false paused:=true use_sim_time:=true
+234292 /bin/sh /opt/ros/noetic/lib/gazebo_ros/gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world __name:=gazebo __log:=/home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/gazebo-1.log
+234404 gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world -s /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so -s /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so __name:=gazebo __log:=/home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/gazebo-1.log
+234699 /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide/junior_ctrl
+--- pid=233987 ---
+    PID    PPID    PGID     ELAPSED CMD
+ 233987  233899  233897       00:07 /usr/bin/python3.10 /opt/ros/noetic/bin/roscore -p 15102
+/usr/bin/python3.10
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64
+--- pid=234060 ---
+    PID    PPID    PGID     ELAPSED CMD
+ 234060  233987  234060       00:07 /usr/bin/python3.10 /opt/ros/noetic/bin/rosmaster --core -p 15102 -w 3 __log:=/home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/master.log
+/usr/bin/python3.10
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64
+--- pid=234179 ---
+    PID    PPID    PGID     ELAPSED CMD
+ 234179  233899  234179       00:05 /usr/bin/python3.10 /opt/ros/noetic/bin/roslaunch unitree_gazebo normal.launch rname:=a1 gui:=false paused:=true use_sim_time:=true
+/usr/bin/python3.10
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64
+--- pid=234292 ---
+    PID    PPID    PGID     ELAPSED CMD
+ 234292  234179  234292       00:04 /bin/sh /opt/ros/noetic/lib/gazebo_ros/gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world __name:=gazebo __log:=/home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/gazebo-1.log
+/usr/bin/dash
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64
+--- pid=234404 ---
+    PID    PPID    PGID     ELAPSED CMD
+ 234404  234292  234292       00:04 gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world -s /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so -s /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so __name:=gazebo __log:=/home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/gazebo-1.log
+/usr/bin/gzserver-11.10.2
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src:/opt/ros/noetic/share
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+--- pid=234699 ---
+    PID    PPID    PGID     ELAPSED CMD
+ 234699  233899  234699       00:02 /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide/junior_ctrl
+/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib/unitree_guide/junior_ctrl
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64

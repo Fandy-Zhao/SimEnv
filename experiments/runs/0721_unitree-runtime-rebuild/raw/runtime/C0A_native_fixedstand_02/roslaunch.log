@@ -1,0 +1,46 @@
+xacro: in-order processing became default in ROS Melodic. You can drop the option.
+[INFO] [1784565248.212075, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1784565248.224825, 0.000000]: Waiting for service /gazebo/spawn_urdf_model
+[INFO] [1784565249.431998, 0.000000]: Calling service /gazebo/spawn_urdf_model
+[INFO] [1784565257.741947, 0.000000]: Spawn status: SpawnModel: Successfully spawned entity
+[INFO] [1784565257.745250, 0.000000]: Unpausing physics
+[31m[gazebo-1] process has died [pid 234292, exit code -15, cmd /opt/ros/noetic/lib/gazebo_ros/gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world __name:=gazebo __log:=/home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/gazebo-1.log].
+log file: /home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/gazebo-1*.log[0m
+[INFO] [1784565248.179686, 0.000000]: Controller Spawner: Waiting for service controller_manager/load_controller
+[INFO] [1784565260.537155, 0.000000]: Controller Spawner: Waiting for service controller_manager/switch_controller
+[INFO] [1784565260.541631, 0.000000]: Controller Spawner: Waiting for service controller_manager/unload_controller
+[INFO] [1784565260.546265, 0.000000]: Loading controller: joint_state_controller
+[INFO] [1784565260.567942, 0.000000]: Loading controller: FL_hip_controller
+[INFO] [1784565260.598327, 0.007200]: Loading controller: FL_thigh_controller
+[INFO] [1784565260.619512, 0.017800]: Loading controller: FL_calf_controller
+[INFO] [1784565260.643347, 0.029800]: Loading controller: FR_hip_controller
+[INFO] [1784565260.669248, 0.042000]: Loading controller: FR_thigh_controller
+[INFO] [1784565260.693466, 0.052400]: Loading controller: FR_calf_controller
+[INFO] [1784565260.722457, 0.064200]: Loading controller: RL_hip_controller
+[INFO] [1784565260.749967, 0.075000]: Loading controller: RL_thigh_controller
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 523, in call
+    responses = transport.receive_once()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_base.py", line 744, in receive_once
+    self.stat_bytes += recv_buff(sock, b, p.buff_size)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_base.py", line 111, in recv_buff
+    raise TransportTerminated("unable to receive data from sender, check sender's logs for details")
+rospy.exceptions.TransportTerminated: unable to receive data from sender, check sender's logs for details
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/controller_manager/spawner", line 220, in <module>
+    if __name__ == '__main__': main()
+  File "/opt/ros/noetic/lib/controller_manager/spawner", line 198, in main
+    resp = load_controller(name)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 442, in __call__
+    return self.call(*args, **kwds)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 533, in call
+    raise ServiceException("transport error completing service call: %s"%(str(e)))
+rospy.service.ServiceException: transport error completing service call: unable to receive data from sender, check sender's logs for details
+[WARN] [1784565512.675870, 0.078200]: Controller Spawner error while taking down controllers: unable to contact master
+[INFO] [1784565512.673287, 0.078200]: Shutting down spawner. Stopping and unloading controllers...
+[INFO] [1784565512.675089, 0.078200]: Stopping all controllers...
+[31m[a1_gazebo/controller_spawner-3] process has died [pid 234298, exit code 1, cmd /opt/ros/noetic/lib/controller_manager/spawner joint_state_controller FL_hip_controller FL_thigh_controller FL_calf_controller FR_hip_controller FR_thigh_controller FR_calf_controller RL_hip_controller RL_thigh_controller RL_calf_controller RR_hip_controller RR_thigh_controller RR_calf_controller __name:=controller_spawner __log:=/home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/a1_gazebo-controller_spawner-3.log].
+log file: /home/zzf/.ros/log/d2b67bf8-8458-11f1-aca5-b9af01646ad9/a1_gazebo-controller_spawner-3*.log[0m

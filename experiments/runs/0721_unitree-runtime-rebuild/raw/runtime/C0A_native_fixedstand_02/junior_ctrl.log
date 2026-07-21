@@ -1,0 +1,44 @@
+[INFO] Realtime scheduler disabled. Set UNITREE_ENABLE_REALTIME=1 to request SCHED_FIFO.
+The control interface for ROS Gazebo simulation
+robot_name: a1
+controller dt source: UNITREE_CTRL_DT, resolved: 0.002 s (2000 us), frequency: 500.000 Hz
+[INFO] [1784565251.308790745]: Timing diagnostics enabled: /home/zzf/search_ws/SimEnv_worktrees/unitree-runtime-rebuild/experiments/runs/0721_unitree-runtime-rebuild/raw/runtime/C0A_native_fixedstand_02/controller_state.csv
+src/unitree_guide/logs/policy_act_inference_plane.pt
+cuda::is_available():1
+load model is successed!
+load model to device!
+[INFO] Waiting for Gazebo joint state feedback before accepting stand command.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3687us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3308us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3387us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2044us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2945us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2786us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2671us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3259us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3232us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2178us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3565us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3831us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2823us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3858us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3086us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3286us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3797us.

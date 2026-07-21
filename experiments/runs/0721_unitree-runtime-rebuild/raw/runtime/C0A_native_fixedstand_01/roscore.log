@@ -1,0 +1,7 @@
+[WARN] [1784565232.095489206]: Shutdown request received.
+[WARN] [1784565232.095541909]: Reason given for shutdown: [user request]
+[31m================================================================================REQUIRED process [master] has died!
+process has died [pid 232961, exit code -9, cmd rosmaster --core -p 15101 -w 3 __log:=/home/zzf/.ros/log/bb3f1c46-8458-11f1-aca5-b9af01646ad9/master.log].
+log file: /home/zzf/.ros/log/bb3f1c46-8458-11f1-aca5-b9af01646ad9/master*.log
+Initiating shutdown!
+================================================================================[0m

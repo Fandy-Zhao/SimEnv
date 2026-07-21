@@ -1,0 +1,31 @@
+[INFO] [1784562226.220143499]: Finished loading Gazebo ROS API Plugin.
+[INFO] [1784562226.221936817]: waitForService: Service [/gazebo/set_physics_properties] has not been advertised, waiting...
+[INFO] [1784562227.106363508, 0.006600000]: waitForService: Service [/gazebo/set_physics_properties] is now available.
+[INFO] [1784562227.115430358, 0.014400000]: Physics dynamic reconfigure ready.
+... logging to /home/zzf/.ros/log/c9b50094-8451-11f1-aca5-b9af01646ad9/roslaunch-zzf-Legion-Y9000P-IRX9-204584.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/opt/ros/noetic/share/gazebo_ros/launch/empty_world.launch
+[1mstarted roslaunch server http://zzf-Legion-Y9000P-IRX9:37765/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /gazebo/enable_ros_network: True
+ * /rosdistro: noetic
+ * /rosversion: 1.16.0
+ * /use_sim_time: True
+
+NODES
+  /
+    gazebo (gazebo_ros/gzserver)
+
+[1mROS_MASTER_URI=http://127.0.0.1:14323[0m
+]2;/opt/ros/noetic/share/gazebo_ros/launch/empty_world.launch http://127.0.0.1:14323
+[1mprocess[gazebo-1]: started with pid [204665][0m
+[gazebo-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
