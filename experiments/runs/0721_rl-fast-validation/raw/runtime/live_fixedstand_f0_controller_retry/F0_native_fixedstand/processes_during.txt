@@ -1,0 +1,49 @@
+timestamp=2026-07-21T17:02:14+08:00
+16283 /usr/bin/python3.10 /opt/ros/noetic/bin/roscore -p 12111
+16361 /usr/bin/python3.10 /opt/ros/noetic/bin/rosmaster --core -p 12111 -w 3 __log:=/home/zzf/.ros/log/d233be2c-84e2-11f1-a82a-13bbe2fcb04b/master.log
+16480 /usr/bin/python3.10 /opt/ros/noetic/bin/roslaunch unitree_gazebo normal.launch rname:=a1 gui:=false paused:=false use_sim_time:=true
+16593 /bin/sh /opt/ros/noetic/lib/gazebo_ros/gzserver -e ode /home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world __name:=gazebo __log:=/home/zzf/.ros/log/d233be2c-84e2-11f1-a82a-13bbe2fcb04b/gazebo-1.log
+16704 gzserver -e ode /home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world -s /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so -s /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so __name:=gazebo __log:=/home/zzf/.ros/log/d233be2c-84e2-11f1-a82a-13bbe2fcb04b/gazebo-1.log
+17392 /home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib/unitree_guide/junior_ctrl
+--- pid=16283 ---
+    PID    PPID    PGID     ELAPSED CMD
+  16283   16222   16283       00:20 /usr/bin/python3.10 /opt/ros/noetic/bin/roscore -p 12111
+/usr/bin/python3.10
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64
+--- pid=16361 ---
+    PID    PPID    PGID     ELAPSED CMD
+  16361   16283   16361       00:20 /usr/bin/python3.10 /opt/ros/noetic/bin/rosmaster --core -p 12111 -w 3 __log:=/home/zzf/.ros/log/d233be2c-84e2-11f1-a82a-13bbe2fcb04b/master.log
+/usr/bin/python3.10
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64
+--- pid=16480 ---
+    PID    PPID    PGID     ELAPSED CMD
+  16480   16222   16480       00:19 /usr/bin/python3.10 /opt/ros/noetic/bin/roslaunch unitree_gazebo normal.launch rname:=a1 gui:=false paused:=false use_sim_time:=true
+/usr/bin/python3.10
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64
+--- pid=16593 ---
+    PID    PPID    PGID     ELAPSED CMD
+  16593   16480   16593       00:18 /bin/sh /opt/ros/noetic/lib/gazebo_ros/gzserver -e ode /home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world __name:=gazebo __log:=/home/zzf/.ros/log/d233be2c-84e2-11f1-a82a-13bbe2fcb04b/gazebo-1.log
+/usr/bin/dash
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64
+--- pid=16704 ---
+    PID    PPID    PGID     ELAPSED CMD
+  16704   16593   16593       00:18 gzserver -e ode /home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world -s /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so -s /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so __name:=gazebo __log:=/home/zzf/.ros/log/d233be2c-84e2-11f1-a82a-13bbe2fcb04b/gazebo-1.log
+/usr/bin/gzserver-11.10.2
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src:/opt/ros/noetic/share
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+--- pid=17392 ---
+    PID    PPID    PGID     ELAPSED CMD
+  17392   16222   17392       00:02 /home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib/unitree_guide/junior_ctrl
+/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib/unitree_guide/junior_ctrl
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib:/opt/ros/noetic/lib:/home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib:/usr/local/cuda-11.8/lib64:/usr/local/cuda-11.8/lib64

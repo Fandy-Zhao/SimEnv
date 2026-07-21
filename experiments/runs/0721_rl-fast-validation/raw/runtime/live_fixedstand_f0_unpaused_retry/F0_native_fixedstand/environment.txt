@@ -1,0 +1,21 @@
+2026-07-21T14:07:46+08:00
+CASE_ID=F0_native_fixedstand
+CASE_KIND=fixedstand
+LAUNCH_MODE=native
+WORLD_MODE_CASE=earth
+ROS_MASTER_URI=http://127.0.0.1:12111
+GAZEBO_MASTER_URI=http://127.0.0.1:12145
+TEST_PROFILE=rl_fixedstand_fast
+POLICY_PATH=/home/zzf/search_ws/SimEnv/src/unitree_guide/logs/policy_act_inference_stair.pt
+TRANSITION_GRACE=1.0
+EVALUATION_DURATION=3.0
+branch=test/0721-rl-fast-validation
+head=daa859f866206fab65f42525ea7633054b4b8bd9
+repo_root=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation
+unitree_guide=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_guide/unitree_guide
+unitree_gazebo=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_gazebo
+unitree_legged_control=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_legged_control
+junior_ctrl=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib/unitree_guide/junior_ctrl
+0715f15fb1c80da697a318f495d1ff9fd9df6b61fd13c4cf7454713976e274a2  /home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel/lib/unitree_guide/junior_ctrl
+3118a640680307e6437b171f0102832d311f51141090846019ad560178460291  /home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world
+2d5aa72511c0c6609c02f4105845eee6974d3d73431497f8f35306da9588fe14  /home/zzf/search_ws/SimEnv/src/unitree_guide/logs/policy_act_inference_stair.pt

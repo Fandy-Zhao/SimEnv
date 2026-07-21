@@ -1,0 +1,16 @@
+{
+  "status": "OFFLINE_REPLAY_SCAFFOLD_ONLY",
+  "timestamp": "2026-07-21T03:42:23.709995+00:00",
+  "fixture_policy_path": "/home/zzf/search_ws/SimEnv/src/unitree_guide/logs/policy_act_inference_stair.pt",
+  "policy_hash_match": true,
+  "metadata_valid": true,
+  "warnings": [],
+  "dimensions": {
+    "observation_dim": 45,
+    "action_dim": 12,
+    "privileged_dim": 0,
+    "history_length": 5,
+    "num_envs": 1
+  },
+  "reason": "C++ observation/action reuse is not implemented."
+}

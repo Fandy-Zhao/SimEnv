@@ -1,0 +1,23 @@
+{
+  "case_id": "F0_native_fixedstand",
+  "case_kind": "fixedstand",
+  "clock_sample_count": 0,
+  "final_fsm_state": 1,
+  "invalid_reasons": [
+    "NO_CLOCK"
+  ],
+  "model_names": [],
+  "reason": "ROS clock did not publish advancing sim time",
+  "rtf_max": null,
+  "rtf_mean": null,
+  "rtf_median": null,
+  "rtf_min": null,
+  "rtf_sample_count": 0,
+  "sample_count": 0,
+  "schema_version": 1,
+  "secondary": [],
+  "timestamp": "2026-07-21T06:05:22.245923+00:00",
+  "timing_rows": 29689,
+  "verdict": "FAIL_GAZEBO_SIM_STALL",
+  "world_mode": "earth"
+}

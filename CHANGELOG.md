@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-21 — RL fast validation infrastructure
+
+- Added `tools/build_rl_fast.sh` as a thin Unitree runtime-profile wrapper over
+  the tracked `tools/build_with_venv.sh`.
+- Added governed RL fast-validation scaffold under
+  `experiments/runs/0721_rl-fast-validation/`, including metrics helpers,
+  F0/F1/F2 FixedStand smoke runner, live capture, replay scaffold, tests, build
+  logs, provenance, and summary evidence.
+- Added `docs/reports/0721_rl-fast-validation.md` documenting the current
+  `FAIL_BASE_HEIGHT` F0 native FixedStand result. No RL/controller/world/physics
+  semantics changed.
+
 ## 2026-07-21 — Unitree runtime rebuild and retest
 
 - Added governed rebuild/retest evidence under

@@ -1,0 +1,15 @@
+2026-07-21T00:00:00+08:00 scaffold created: dirs, issue.md, notes.md, summary.md
+2026-07-21T00:00:00+08:00 scripts/rl_fast_metrics.py created
+2026-07-21T00:00:00+08:00 scripts/run_rl_fast_smoke.sh created
+2026-07-21T00:00:00+08:00 scripts/rl_fast_capture.py created
+2026-07-21T00:00:00+08:00 scripts/replay_rl_state.py created
+2026-07-21T00:00:00+08:00 tests/test_rl_fast_metrics.py created
+2026-07-21T00:00:00+08:00 tools/build_rl_fast.sh created
+2026-07-21T00:00:00+08:00 bash -n, py_compile, unittest passed
+2026-07-21T11:40:00+08:00 main executor fixed worker scaffold semantics and runner argument passing
+2026-07-21T11:40:58+08:00 ./tools/build_rl_fast.sh PASS exit_code=0
+2026-07-21T11:41:15+08:00 placeholder fast smoke v2 PASS as TASK_PARTIAL
+2026-07-21T11:42:23+08:00 replay scaffold PASS as OFFLINE_REPLAY_SCAFFOLD_ONLY
+2026-07-21T11:42:52+08:00 ./tools/build_with_venv.sh runtime profile PASS exit_code=0
+2026-07-21T11:43:16+08:00 SIMENV_CATKIN_WHITELIST="" ./tools/build_with_venv.sh PASS exit_code=0
+2026-07-21T11:44:00+08:00 bash -n, py_compile, unittest discover, git diff --check PASS

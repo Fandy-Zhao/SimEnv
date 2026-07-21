@@ -1,0 +1,14 @@
+{
+  "cases": [
+    {
+      "case_id": "F0_native_fixedstand",
+      "gazebo_port": 12145,
+      "reason": "requested ROS/Gazebo port already has a listener",
+      "ros_port": 12111,
+      "schema_version": 1,
+      "verdict": "FAIL_MASTER_MISMATCH"
+    }
+  ],
+  "schema_version": 1,
+  "verdict": "FAIL_MASTER_MISMATCH"
+}

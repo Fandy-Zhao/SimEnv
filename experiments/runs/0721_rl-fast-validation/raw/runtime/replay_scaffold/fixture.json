@@ -1,0 +1,13 @@
+{
+  "policy_path": "/home/zzf/search_ws/SimEnv/src/unitree_guide/logs/policy_act_inference_stair.pt",
+  "observation_dim": 45,
+  "action_dim": 12,
+  "timestamp": "2026-07-21T00:00:00Z",
+  "metadata": {
+    "observation_dim": 45,
+    "action_dim": 12,
+    "privileged_dim": 0,
+    "history_length": 5,
+    "num_envs": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "cases": [
+    {
+      "case_id": "F0_native_fixedstand",
+      "invalid_reasons": [],
+      "reason": "EVALUATION_BASE_HEIGHT_SUSTAINED_LOW,LOW_RTF_RISK",
+      "schema_version": 1,
+      "secondary": [
+        "EVALUATION_BASE_HEIGHT_SUSTAINED_LOW",
+        "LOW_RTF_RISK"
+      ],
+      "verdict": "FAIL_BASE_HEIGHT"
+    }
+  ],
+  "schema_version": 1,
+  "verdict": "FAIL_BASE_HEIGHT"
+}

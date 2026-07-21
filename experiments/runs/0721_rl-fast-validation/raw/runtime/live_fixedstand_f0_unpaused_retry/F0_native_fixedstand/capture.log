@@ -1,0 +1,26 @@
+{
+  "case_id": "F0_native_fixedstand",
+  "case_kind": "fixedstand",
+  "clock_sample_count": 95169,
+  "final_fsm_state": 1,
+  "invalid_reasons": [
+    "FIXEDSTAND_NOT_ENTERED"
+  ],
+  "model_names": [
+    "a1_gazebo",
+    "ground_plane"
+  ],
+  "reason": "controller did not enter FixedStand",
+  "rtf_max": 59.01296624019244,
+  "rtf_mean": 23.681969571965585,
+  "rtf_median": 22.165571089011266,
+  "rtf_min": 0.0011382508951634594,
+  "rtf_sample_count": 95141,
+  "sample_count": 80906,
+  "schema_version": 1,
+  "secondary": [],
+  "timestamp": "2026-07-21T06:09:32.569620+00:00",
+  "timing_rows": 36239,
+  "verdict": "FAIL_FSM_ENTRY",
+  "world_mode": "earth"
+}

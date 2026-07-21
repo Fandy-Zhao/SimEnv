@@ -1,0 +1,65 @@
+2026-07-21T11:41:13+08:00
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src:/opt/ros/noetic/share
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/devel:/opt/ros/noetic:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/.venv/lib/python3.10/site-packages/torch/share/cmake:/usr/local/cuda-11.8
+/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_guide/unitree_guide
+/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_gazebo
+/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_legged_control
+devel/lib/libunitreeDrawForcePlugin.so
+devel/lib/libunitreeFootContactPlugin.so
+devel/lib/libunitree_legged_control.so
+devel/lib/unitree_guide/junior_ctrl
+devel/lib/unitree_guide/state_from_gazebo
+0715f15fb1c80da697a318f495d1ff9fd9df6b61fd13c4cf7454713976e274a2  devel/lib/unitree_guide/junior_ctrl
+70eb63e1b83aa05b21e9ede2905fe5b7866e3d648dc46c96f0728d182978fc1b  devel/lib/unitree_guide/state_from_gazebo
+b8a946a89b271b54123651eb7c990bffb2b38b27e758b3be3fd577e4441e767d  devel/lib/libunitreeFootContactPlugin.so
+b4ae92dc99af53945e4a2d5a825f2a43e8677f265b5e92e4f3d9350df9e9ce92  devel/lib/libunitreeDrawForcePlugin.so
+cf06fcf8049b7716cb10eb352ddd06fd4144836dc387c209728b3c3a3856a876  devel/lib/libunitree_legged_control.so
+fc25fc0fd38c3f9f652475f45e1926bde8e622db40c11ea38b116ceaf0949d48  tools/build_with_venv.sh
+ace9bc718d1071592457d32392e790f7967424f374fce5d8327b94ddd10b361e  tools/build_rl_fast.sh
+3118a640680307e6437b171f0102832d311f51141090846019ad560178460291  src/unitree_guide/unitree_ros/unitree_gazebo/worlds/earth.world
+2d5aa72511c0c6609c02f4105845eee6974d3d73431497f8f35306da9588fe14  /home/zzf/search_ws/SimEnv/src/unitree_guide/logs/policy_act_inference_stair.pt
+	linux-vdso.so.1 (0x00007ffe43b82000)
+	libc10.so => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libc10.so (0x00007b7917a00000)
+	libc10_cuda.so => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libc10_cuda.so (0x00007b7917600000)
+	libroscpp.so => /opt/ros/noetic/lib/libroscpp.so (0x00007b7917cc3000)
+	librosconsole.so => /opt/ros/noetic/lib/librosconsole.so (0x00007b79179c2000)
+	libroscpp_serialization.so => /opt/ros/noetic/lib/libroscpp_serialization.so (0x00007b7917cbc000)
+	librostime.so => /opt/ros/noetic/lib/librostime.so (0x00007b79179a7000)
+	libtorch_cpu.so => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libtorch_cpu.so (0x00007b78ff200000)
+	libtorch_cuda.so => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libtorch_cuda.so (0x00007b78a8800000)
+	libcublas.so.11 => /usr/local/cuda-11.8/lib64/libcublas.so.11 (0x00007b78a2a00000)
+	libtorch.so => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libtorch.so (0x00007b78a2600000)
+	libnvToolsExt.so.1 => /usr/local/cuda-11.8/lib64/libnvToolsExt.so.1 (0x00007b78a2200000)
+	libcudart.so.11.0 => /usr/local/cuda-11.8/lib64/libcudart.so.11.0 (0x00007b78a1e00000)
+	libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007b78a1a00000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007b78ff119000)
+	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007b791795f000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007b78a1600000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007b7917dde000)
+	librt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x00007b7917cb3000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007b7917cae000)
+	libxmlrpcpp.so => /opt/ros/noetic/lib/libxmlrpcpp.so (0x00007b791793e000)
+	libcpp_common.so => /opt/ros/noetic/lib/libcpp_common.so (0x00007b7917ca3000)
+	libboost_thread.so.1.74.0 => /lib/x86_64-linux-gnu/libboost_thread.so.1.74.0 (0x00007b791791c000)
+	libboost_chrono.so.1.74.0 => /lib/x86_64-linux-gnu/libboost_chrono.so.1.74.0 (0x00007b7917911000)
+	libboost_filesystem.so.1.74.0 => /lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0 (0x00007b79175e0000)
+	librosconsole_log4cxx.so => /opt/ros/noetic/lib/librosconsole_log4cxx.so (0x00007b79175c9000)
+	librosconsole_backend_interface.so => /opt/ros/noetic/lib/librosconsole_backend_interface.so (0x00007b79175c4000)
+	liblog4cxx.so.12 => /lib/x86_64-linux-gnu/liblog4cxx.so.12 (0x00007b78a86a1000)
+	libboost_regex.so.1.74.0 => /lib/x86_64-linux-gnu/libboost_regex.so.1.74.0 (0x00007b78a290d000)
+	libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007b79175bf000)
+	libgomp-52f2fd74.so.1 => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libgomp-52f2fd74.so.1 (0x00007b78a1200000)
+	libcudart-d0da41ae.so.11.0 => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libcudart-d0da41ae.so.11.0 (0x00007b78a0e00000)
+	libnvToolsExt-847d78f2.so.1 => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libnvToolsExt-847d78f2.so.1 (0x00007b78a0a00000)
+	libcudnn.so.8 => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libcudnn.so.8 (0x00007b78a0600000)
+	libcublas-3b81d170.so.11 => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libcublas-3b81d170.so.11 (0x00007b789a800000)
+	libcublasLt-b6d14a74.so.11 => /home/zzf/third_party/libtorch-2.0.1-cu118-cxx11-abi/lib/libcublasLt-b6d14a74.so.11 (0x00007b7876200000)
+	libconsole_bridge.so.1.0 => /lib/x86_64-linux-gnu/libconsole_bridge.so.1.0 (0x00007b79175b7000)
+	libaprutil-1.so.0 => /lib/x86_64-linux-gnu/libaprutil-1.so.0 (0x00007b7917589000)
+	libapr-1.so.0 => /lib/x86_64-linux-gnu/libapr-1.so.0 (0x00007b791754a000)
+	libicui18n.so.70 => /lib/x86_64-linux-gnu/libicui18n.so.70 (0x00007b7875e00000)
+	libicuuc.so.70 => /lib/x86_64-linux-gnu/libicuuc.so.70 (0x00007b7875c05000)
+	libcrypt.so.1 => /lib/x86_64-linux-gnu/libcrypt.so.1 (0x00007b78ff0df000)
+	libexpat.so.1 => /lib/x86_64-linux-gnu/libexpat.so.1 (0x00007b78ff0ae000)
+	libuuid.so.1 => /lib/x86_64-linux-gnu/libuuid.so.1 (0x00007b791753f000)
+	libicudata.so.70 => /lib/x86_64-linux-gnu/libicudata.so.70 (0x00007b7873e00000)

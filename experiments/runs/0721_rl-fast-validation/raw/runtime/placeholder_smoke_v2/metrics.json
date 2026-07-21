@@ -1,0 +1,16 @@
+{
+  "capture_label": "rl_fast_smoke",
+  "timestamp": "2026-07-21T03:41:45.296429+00:00",
+  "timestamp_epoch": 1784605305.296505,
+  "world_mode": "earth",
+  "test_profile": "rl_fast_smoke",
+  "policy_path": "/home/zzf/search_ws/SimEnv/src/unitree_guide/logs/policy_act_inference_stair.pt",
+  "task_partial": true,
+  "metrics_available": true,
+  "sample_count": 0,
+  "verdict": "TASK_PARTIAL",
+  "notes": "Preflight-only capture. Live ROS data collection is not implemented.",
+  "policy_valid": true,
+  "policy_validation_reason": null,
+  "policy_sha256": "2d5aa72511c0c6609c02f4105845eee6974d3d73431497f8f35306da9588fe14"
+}

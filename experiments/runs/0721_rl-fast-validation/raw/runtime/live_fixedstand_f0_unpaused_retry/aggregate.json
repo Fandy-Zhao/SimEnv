@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "case_id": "F0_native_fixedstand",
+      "invalid_reasons": [
+        "FIXEDSTAND_NOT_ENTERED"
+      ],
+      "reason": "controller did not enter FixedStand",
+      "schema_version": 1,
+      "secondary": [],
+      "verdict": "FAIL_FSM_ENTRY"
+    }
+  ],
+  "schema_version": 1,
+  "verdict": "FAIL_FSM_ENTRY"
+}

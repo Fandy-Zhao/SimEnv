@@ -1,0 +1,92 @@
+xacro: in-order processing became default in ROS Melodic. You can drop the option.
+[INFO] [1784613853.093295922]: Finished loading Gazebo ROS API Plugin.
+[INFO] [1784613853.094975285]: waitForService: Service [/gazebo/set_physics_properties] has not been advertised, waiting...
+[INFO] [1784613854.017314076]: waitForService: Service [/gazebo/set_physics_properties] is now available.
+[INFO] [1784613854.045664807]: Physics dynamic reconfigure ready.
+[INFO] [1784613854.762489158]: <initialOrientationAsReference> is unset, using default value of false to comply with REP 145 (world as orientation reference)
+[INFO] [1784613854.762619104]: <robotNamespace> set to: //
+[INFO] [1784613854.762652318]: <topicName> set to: trunk_imu
+[INFO] [1784613854.762673837]: <frameName> set to: imu_link
+[INFO] [1784613854.762734054]: <updateRateHZ> set to: 1000
+[INFO] [1784613854.762764223]: <gaussianNoise> set to: 0
+[INFO] [1784613854.762809704]: <xyzOffset> set to: 0 0 0
+[INFO] [1784613854.762864387]: <rpyOffset> set to: 0 -0 0
+[INFO] [1784613902.398710626]: load csv file name:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/robots/a1_description/scan_mode/mid360.csv
+cannot convert str:
+data size:800000
+[INFO] [1784613852.567255, 0.000000]: Controller Spawner: Waiting for service controller_manager/load_controller
+[INFO] [1784613882.724917, 0.000000]: Waiting for /clock to be available...
+[INFO] [1784613882.735008, 0.000000]: Controller Spawner: Waiting for service controller_manager/load_controller
+[INFO] [1784613912.966911, 0.000000]: Waiting for /clock to be available...
+[INFO] [1784613912.976668, 0.000000]: Controller Spawner: Waiting for service controller_manager/load_controller
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/controller_manager/spawner", line 124, in main
+    rospy.wait_for_service(load_controller_service, timeout=timeout)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 146, in wait_for_service
+    raise ROSInterruptException("rospy shutdown")
+rospy.exceptions.ROSInterruptException: rospy shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/controller_manager/spawner", line 220, in <module>
+    if __name__ == '__main__': main()
+  File "/opt/ros/noetic/lib/controller_manager/spawner", line 140, in main
+    if rospy.get_param('/use_sim_time', False) and rospy.get_rostime() == rospy.Time(0):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 467, in get_param
+    return _param_server[param_name] #MasterProxy does all the magic for us
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/msproxy.py", line 121, in __getitem__
+    code, msg, value = self.target.getParam(rospy.names.get_caller_id(), resolved_key)
+  File "/usr/lib/python3.10/xmlrpc/client.py", line 1122, in __call__
+    return self.__send(self.__name, args)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/core.py", line 669, in _ServerProxy__request
+    return xmlrpcclient.ServerProxy._ServerProxy__request(
+  File "/usr/lib/python3.10/xmlrpc/client.py", line 1464, in __request
+    response = self.__transport.request(
+  File "/usr/lib/python3.10/xmlrpc/client.py", line 1166, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/lib/python3.10/xmlrpc/client.py", line 1178, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/lib/python3.10/xmlrpc/client.py", line 1291, in send_request
+    self.send_content(connection, request_body)
+  File "/usr/lib/python3.10/xmlrpc/client.py", line 1321, in send_content
+    connection.endheaders(request_body)
+  File "/usr/lib/python3.10/http/client.py", line 1307, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1067, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 1005, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 971, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+[INFO] [1784613852.645716, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1784613852.683705, 0.000000]: Waiting for service /gazebo/spawn_urdf_model
+[INFO] [1784613854.196783, 0.000000]: Calling service /gazebo/spawn_urdf_model
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 523, in call
+    responses = transport.receive_once()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_base.py", line 744, in receive_once
+    self.stat_bytes += recv_buff(sock, b, p.buff_size)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_base.py", line 111, in recv_buff
+    raise TransportTerminated("unable to receive data from sender, check sender's logs for details")
+rospy.exceptions.TransportTerminated: unable to receive data from sender, check sender's logs for details
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 239, in <module>
+    exit_code = sm.run()
+  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 183, in run
+    success = gazebo_interface.spawn_urdf_model_client(self.args.model, model_xml, self.args.robot_namespace,
+  File "/opt/ros/noetic/lib/python3/dist-packages/gazebo_ros/gazebo_interface.py", line 32, in spawn_urdf_model_client
+    resp = spawn_urdf_model(model_name, model_xml, robot_namespace, initial_pose, reference_frame)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 442, in __call__
+    return self.call(*args, **kwds)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 531, in call
+    raise rospy.exceptions.ROSInterruptException("node shutdown interrupted service call")
+rospy.exceptions.ROSInterruptException: node shutdown interrupted service call

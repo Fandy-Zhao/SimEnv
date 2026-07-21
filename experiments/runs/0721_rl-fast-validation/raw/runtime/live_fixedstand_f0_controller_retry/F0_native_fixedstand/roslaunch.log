@@ -1,0 +1,42 @@
+xacro: in-order processing became default in ROS Melodic. You can drop the option.
+[INFO] [1784624518.007438130]: Finished loading Gazebo ROS API Plugin.
+[INFO] [1784624518.009503405]: waitForService: Service [/gazebo/set_physics_properties] has not been advertised, waiting...
+[INFO] [1784624518.625743837]: waitForService: Service [/gazebo/set_physics_properties] is now available.
+[INFO] [1784624518.638489189, 0.004200000]: Physics dynamic reconfigure ready.
+[INFO] [1784624519.023458856, 0.289400000]: <initialOrientationAsReference> is unset, using default value of false to comply with REP 145 (world as orientation reference)
+[INFO] [1784624519.023494099, 0.289400000]: <robotNamespace> set to: //
+[INFO] [1784624519.023501933, 0.289400000]: <topicName> set to: trunk_imu
+[INFO] [1784624519.023507000, 0.289400000]: <frameName> set to: imu_link
+[INFO] [1784624519.023519667, 0.289400000]: <updateRateHZ> set to: 1000
+[INFO] [1784624519.023526562, 0.289400000]: <gaussianNoise> set to: 0
+[INFO] [1784624519.023536300, 0.289400000]: <xyzOffset> set to: 0 0 0
+[INFO] [1784624519.023545789, 0.289400000]: <rpyOffset> set to: 0 -0 0
+[INFO] [1784624525.863171453, 0.289400000]: load csv file name:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/robots/a1_description/scan_mode/mid360.csv
+cannot convert str:
+data size:800000
+[INFO] [1784624517.641783, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1784624517.648690, 0.000000]: Waiting for service /gazebo/spawn_urdf_model
+[INFO] [1784624518.855536, 0.217000]: Calling service /gazebo/spawn_urdf_model
+[INFO] [1784624530.476398, 0.289400]: Spawn status: SpawnModel: Successfully spawned entity
+[INFO] [1784624530.477531, 0.289400]: Unpausing physics
+[WARN] [1784624550.900345, 6.689400]: Controller Spawner error while taking down controllers: transport error completing service call: unable to receive data from sender, check sender's logs for details
+[INFO] [1784624517.588597, 0.000000]: Controller Spawner: Waiting for service controller_manager/load_controller
+[INFO] [1784624532.051854, 0.384400]: Controller Spawner: Waiting for service controller_manager/switch_controller
+[INFO] [1784624532.054217, 0.386800]: Controller Spawner: Waiting for service controller_manager/unload_controller
+[INFO] [1784624532.056330, 0.388800]: Loading controller: joint_state_controller
+[INFO] [1784624532.062502, 0.395200]: Loading controller: FL_hip_controller
+[INFO] [1784624532.116168, 0.397400]: Loading controller: FL_thigh_controller
+[INFO] [1784624532.126181, 0.407400]: Loading controller: FL_calf_controller
+[INFO] [1784624532.163754, 0.409200]: Loading controller: FR_hip_controller
+[INFO] [1784624532.173697, 0.419400]: Loading controller: FR_thigh_controller
+[INFO] [1784624532.182840, 0.427800]: Loading controller: FR_calf_controller
+[INFO] [1784624532.192217, 0.436600]: Loading controller: RL_hip_controller
+[INFO] [1784624532.199454, 0.443600]: Loading controller: RL_thigh_controller
+[INFO] [1784624532.208606, 0.452600]: Loading controller: RL_calf_controller
+[INFO] [1784624532.217913, 0.461600]: Loading controller: RR_hip_controller
+[INFO] [1784624532.228003, 0.471400]: Loading controller: RR_thigh_controller
+[INFO] [1784624532.238193, 0.481000]: Loading controller: RR_calf_controller
+[INFO] [1784624532.247833, 0.489600]: Controller Spawner: Loaded controllers: joint_state_controller, FL_hip_controller, FL_thigh_controller, FL_calf_controller, FR_hip_controller, FR_thigh_controller, FR_calf_controller, RL_hip_controller, RL_thigh_controller, RL_calf_controller, RR_hip_controller, RR_thigh_controller, RR_calf_controller
+[INFO] [1784624532.251075, 0.492600]: Started controllers: joint_state_controller, FL_hip_controller, FL_thigh_controller, FL_calf_controller, FR_hip_controller, FR_thigh_controller, FR_calf_controller, RL_hip_controller, RL_thigh_controller, RL_calf_controller, RR_hip_controller, RR_thigh_controller, RR_calf_controller
+[INFO] [1784624549.617374, 6.689200]: Shutting down spawner. Stopping and unloading controllers...
+[INFO] [1784624549.619075, 6.689400]: Stopping all controllers...

@@ -1,0 +1,24 @@
+[INFO] Realtime scheduler disabled. Set UNITREE_ENABLE_REALTIME=1 to request SCHED_FIFO.
+The control interface for ROS Gazebo simulation
+robot_name: a1
+controller dt source: UNITREE_CTRL_DT, resolved: 0.002 s (2000 us), frequency: 500.000 Hz
+[INFO] [1784613857.397506537]: Timing diagnostics enabled: experiments/runs/0721_rl-fast-validation/raw/runtime/live_fixedstand_f0_retry/F0_native_fixedstand/controller_state.csv
+src/unitree_guide/logs/policy_act_inference_plane.pt
+cuda::is_available():1
+load model is successed!
+load model to device!
+[INFO] Waiting for Gazebo joint state feedback before accepting stand command.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3517us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 4129us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2095us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3646us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 4061us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3808us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 3710us.

@@ -1,5 +1,14 @@
 # Module Status
 
+> **2026-07-21 `unitree_guide` RL fast validation infrastructure**:
+> `test/0721-rl-fast-validation` adds a build wrapper, pure metric helpers,
+> offline replay scaffold, F0/F1/F2 FixedStand runner, and live ROS/Gazebo
+> capture for fast RL-state iteration. Fast/runtime/full build entries via
+> `tools/build_with_venv.sh` pass in the isolated worktree. F0 native
+> FixedStand executes and fails as `FAIL_BASE_HEIGHT` after entering
+> FixedStand; F1/F2 are gated by that failure. No controller, policy,
+> observation/action, model, spawn, physics, or `earth.world` behavior changed.
+
 > **2026-07-20 `unitree_guide` Earth runtime validation**:
 > `test/0720-earth-flat-ground-runtime` verifies that the flattened
 > `earth.world` no longer publishes `platform_1` or `platform_2` at runtime.

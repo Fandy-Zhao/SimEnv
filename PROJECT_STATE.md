@@ -1,5 +1,16 @@
 # Project State
 
+> **2026-07-21 RL fast validation infrastructure**: branch
+> `test/0721-rl-fast-validation` adds fast RL-state iteration infrastructure:
+> `tools/build_rl_fast.sh`, ROS-free metrics/window helpers, a F0/F1/F2
+> FixedStand smoke runner, live capture, offline replay scaffold, tests, and
+> build/provenance evidence. The tracked worktree copy of
+> `tools/build_with_venv.sh` matches the root script SHA256 and is the effective
+> build entry. Fast Unitree build, runtime profile build, and full build attempt
+> all return exit code 0. Live F0 native FixedStand now executes and fails as
+> `FAIL_BASE_HEIGHT` after entering FixedStand; F1/F2 remain gated by the F0
+> failure, and RL state/action diagnostics remain future work.
+
 > **2026-07-21 Unitree runtime rebuild and retest**: branch
 > `fix/0721-unitree-runtime-rebuild-and-retest` rebuilt the Unitree/Torch/Gazebo
 > runtime chain with GCC/G++ 11 and the project `tools/build_with_venv.sh`

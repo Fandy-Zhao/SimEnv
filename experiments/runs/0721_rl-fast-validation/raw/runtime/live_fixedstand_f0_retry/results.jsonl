@@ -1,0 +1,10 @@
+{
+  "case_id": "F0_native_fixedstand",
+  "invalid_reasons": [
+    "NO_CLOCK"
+  ],
+  "reason": "ROS clock did not publish advancing sim time",
+  "schema_version": 1,
+  "secondary": [],
+  "verdict": "FAIL_GAZEBO_SIM_STALL"
+}

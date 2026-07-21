@@ -1,0 +1,727 @@
+xacro: in-order processing became default in ROS Melodic. You can drop the option.
+[WARN] [1784614113.184720, 0.181400]: Controller Spawner couldn't find the expected controller_manager ROS interface.
+[INFO] [1784614082.955141, 0.000000]: Controller Spawner: Waiting for service controller_manager/load_controller
+[INFO] [1784614085.054826190]: Finished loading Gazebo ROS API Plugin.
+[INFO] [1784614085.065652263]: waitForService: Service [/gazebo/set_physics_properties] has not been advertised, waiting...
+[INFO] [1784614088.353099063]: waitForService: Service [/gazebo/set_physics_properties] is now available.
+[INFO] [1784614088.587167972, 0.100000000]: Physics dynamic reconfigure ready.
+[INFO] [1784614089.522079138, 0.181400000]: <initialOrientationAsReference> is unset, using default value of false to comply with REP 145 (world as orientation reference)
+[INFO] [1784614089.522465950, 0.181400000]: <robotNamespace> set to: //
+[INFO] [1784614089.522584078, 0.181400000]: <topicName> set to: trunk_imu
+[INFO] [1784614089.522671006, 0.181400000]: <frameName> set to: imu_link
+[INFO] [1784614089.522838796, 0.181400000]: <updateRateHZ> set to: 1000
+[INFO] [1784614089.522998616, 0.181400000]: <gaussianNoise> set to: 0
+[INFO] [1784614089.523138099, 0.181400000]: <xyzOffset> set to: 0 0 0
+[INFO] [1784614089.523302438, 0.181400000]: <rpyOffset> set to: 0 -0 0
+[INFO] [1784614120.138232148, 0.181400000]: load csv file name:/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/robots/a1_description/scan_mode/mid360.csv
+cannot convert str:
+data size:800000
+[INFO] [1784614083.263378, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1784614083.326023, 0.000000]: Waiting for service /gazebo/spawn_urdf_model
+[INFO] [1784614088.531058, 0.045000]: Calling service /gazebo/spawn_urdf_model
+[INFO] [1784614125.587647, 0.181400]: Spawn status: SpawnModel: Successfully spawned entity
+[INFO] [1784614125.588552, 0.181400]: Unpausing physics
+[INFO] [1784614120.716812980, 0.181400000]: ros topic name:/scan
+[INFO] [1784614120.726915311, 0.181400000]: scan info size:800000
+[INFO] [1784614120.727365425, 0.181400000]: sample:24000
+[INFO] [1784614120.727374823, 0.181400000]: downsample:1
+[INFO] [1784614125.403530251, 0.181400000]: <initialOrientationAsReference> is unset, using default value of false to comply with REP 145 (world as orientation reference)
+[INFO] [1784614125.403563784, 0.181400000]: <robotNamespace> set to: //
+[INFO] [1784614125.403574702, 0.181400000]: <topicName> set to: /livox/imu
+[INFO] [1784614125.403584581, 0.181400000]: <frameName> set to: livox_imu_link
+[INFO] [1784614125.403599272, 0.181400000]: <updateRateHZ> set to: 1000
+[INFO] [1784614125.403609561, 0.181400000]: <gaussianNoise> set to: 0
+[INFO] [1784614125.403624797, 0.181400000]: <xyzOffset> set to: 0 0 0
+[INFO] [1784614125.403639843, 0.181400000]: <rpyOffset> set to: 0 -0 0
+[INFO] [1784614125.541154494, 0.181400000]: Camera Plugin: Using the 'robotNamespace' param: '/'
+[INFO] [1784614125.542958651, 0.181400000]: Camera Plugin (ns = /)  <tf_prefix_>, set to ""
+[INFO] [1784614125.576793413, 0.181400000]: Load FL_foot_contact plugin.
+[INFO] [1784614125.579709478, 0.181400000]: Load FR_foot_contact plugin.
+[INFO] [1784614126.873180954, 0.181400000]: Load RL_foot_contact plugin.
+[INFO] [1784614126.873838403, 0.181400000]: Load RR_foot_contact plugin.
+[INFO] [1784614126.935809111, 0.181400000]: Loading gazebo_ros_control plugin
+[INFO] [1784614126.935881643, 0.181400000]: Starting gazebo_ros_control plugin in namespace: /a1_gazebo
+[INFO] [1784614126.936400907, 0.181400000]: gazebo_ros_control plugin is waiting for model URDF in parameter [/robot_description] on the ROS param server.
+[INFO] [1784614127.047923772, 0.181400000]: Loaded gazebo_ros_control.
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+Exception sending a multicast message:Network is unreachable
+... logging to /home/zzf/.ros/log/7f86482e-84ca-11f1-aca5-b9af01646ad9/roslaunch-zzf-Legion-Y9000P-IRX9-331501.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_gazebo/launch/normal.launch
+[1mstarted roslaunch server http://zzf-Legion-Y9000P-IRX9:42779/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /a1_gazebo/FL_calf_controller/joint: FL_calf_joint
+ * /a1_gazebo/FL_calf_controller/pid/d: 8.0
+ * /a1_gazebo/FL_calf_controller/pid/i: 0.0
+ * /a1_gazebo/FL_calf_controller/pid/p: 300.0
+ * /a1_gazebo/FL_calf_controller/type: unitree_legged_co...
+ * /a1_gazebo/FL_hip_controller/joint: FL_hip_joint
+ * /a1_gazebo/FL_hip_controller/pid/d: 5.0
+ * /a1_gazebo/FL_hip_controller/pid/i: 0.0
+ * /a1_gazebo/FL_hip_controller/pid/p: 100.0
+ * /a1_gazebo/FL_hip_controller/type: unitree_legged_co...
+ * /a1_gazebo/FL_thigh_controller/joint: FL_thigh_joint
+ * /a1_gazebo/FL_thigh_controller/pid/d: 8.0
+ * /a1_gazebo/FL_thigh_controller/pid/i: 0.0
+ * /a1_gazebo/FL_thigh_controller/pid/p: 300.0
+ * /a1_gazebo/FL_thigh_controller/type: unitree_legged_co...
+ * /a1_gazebo/FR_calf_controller/joint: FR_calf_joint
+ * /a1_gazebo/FR_calf_controller/pid/d: 8.0
+ * /a1_gazebo/FR_calf_controller/pid/i: 0.0
+ * /a1_gazebo/FR_calf_controller/pid/p: 300.0
+ * /a1_gazebo/FR_calf_controller/type: unitree_legged_co...
+ * /a1_gazebo/FR_hip_controller/joint: FR_hip_joint
+ * /a1_gazebo/FR_hip_controller/pid/d: 5.0
+ * /a1_gazebo/FR_hip_controller/pid/i: 0.0
+ * /a1_gazebo/FR_hip_controller/pid/p: 100.0
+ * /a1_gazebo/FR_hip_controller/type: unitree_legged_co...
+ * /a1_gazebo/FR_thigh_controller/joint: FR_thigh_joint
+ * /a1_gazebo/FR_thigh_controller/pid/d: 8.0
+ * /a1_gazebo/FR_thigh_controller/pid/i: 0.0
+ * /a1_gazebo/FR_thigh_controller/pid/p: 300.0
+ * /a1_gazebo/FR_thigh_controller/type: unitree_legged_co...
+ * /a1_gazebo/RL_calf_controller/joint: RL_calf_joint
+ * /a1_gazebo/RL_calf_controller/pid/d: 8.0
+ * /a1_gazebo/RL_calf_controller/pid/i: 0.0
+ * /a1_gazebo/RL_calf_controller/pid/p: 300.0
+ * /a1_gazebo/RL_calf_controller/type: unitree_legged_co...
+ * /a1_gazebo/RL_hip_controller/joint: RL_hip_joint
+ * /a1_gazebo/RL_hip_controller/pid/d: 5.0
+ * /a1_gazebo/RL_hip_controller/pid/i: 0.0
+ * /a1_gazebo/RL_hip_controller/pid/p: 100.0
+ * /a1_gazebo/RL_hip_controller/type: unitree_legged_co...
+ * /a1_gazebo/RL_thigh_controller/joint: RL_thigh_joint
+ * /a1_gazebo/RL_thigh_controller/pid/d: 8.0
+ * /a1_gazebo/RL_thigh_controller/pid/i: 0.0
+ * /a1_gazebo/RL_thigh_controller/pid/p: 300.0
+ * /a1_gazebo/RL_thigh_controller/type: unitree_legged_co...
+ * /a1_gazebo/RR_calf_controller/joint: RR_calf_joint
+ * /a1_gazebo/RR_calf_controller/pid/d: 8.0
+ * /a1_gazebo/RR_calf_controller/pid/i: 0.0
+ * /a1_gazebo/RR_calf_controller/pid/p: 300.0
+ * /a1_gazebo/RR_calf_controller/type: unitree_legged_co...
+ * /a1_gazebo/RR_hip_controller/joint: RR_hip_joint
+ * /a1_gazebo/RR_hip_controller/pid/d: 5.0
+ * /a1_gazebo/RR_hip_controller/pid/i: 0.0
+ * /a1_gazebo/RR_hip_controller/pid/p: 100.0
+ * /a1_gazebo/RR_hip_controller/type: unitree_legged_co...
+ * /a1_gazebo/RR_thigh_controller/joint: RR_thigh_joint
+ * /a1_gazebo/RR_thigh_controller/pid/d: 8.0
+ * /a1_gazebo/RR_thigh_controller/pid/i: 0.0
+ * /a1_gazebo/RR_thigh_controller/pid/p: 300.0
+ * /a1_gazebo/RR_thigh_controller/type: unitree_legged_co...
+ * /a1_gazebo/joint_state_controller/publish_rate: 1000
+ * /a1_gazebo/joint_state_controller/type: joint_state_contr...
+ * /gazebo/enable_ros_network: True
+ * /robot_description: <?xml version="1....
+ * /robot_name: a1
+ * /rosdistro: noetic
+ * /rosversion: 1.16.0
+ * /use_sim_time: True
+
+NODES
+  /
+    gazebo (gazebo_ros/gzserver)
+    robot_state_publisher (robot_state_publisher/robot_state_publisher)
+    urdf_spawner (gazebo_ros/spawn_model)
+  /a1_gazebo/
+    controller_spawner (controller_manager/spawner)
+
+[1mROS_MASTER_URI=http://127.0.0.1:12111[0m
+]2;/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/src/unitree_guide/unitree_ros/unitree_gazebo/launch/normal.launch http://127.0.0.1:12111
+[1mprocess[gazebo-1]: started with pid [331652][0m
+[1mprocess[urdf_spawner-2]: started with pid [331655][0m
+[1mprocess[a1_gazebo/controller_spawner-3]: started with pid [331658][0m
+[1mprocess[robot_state_publisher-4]: started with pid [331659][0m
+[1m[a1_gazebo/controller_spawner-3] process has finished cleanly
+log file: /home/zzf/.ros/log/7f86482e-84ca-11f1-aca5-b9af01646ad9/a1_gazebo-controller_spawner-3*.log[0m
+[1m[urdf_spawner-2] process has finished cleanly
+log file: /home/zzf/.ros/log/7f86482e-84ca-11f1-aca5-b9af01646ad9/urdf_spawner-2*.log[0m
+[robot_state_publisher-4] killing on exit
+[gazebo-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

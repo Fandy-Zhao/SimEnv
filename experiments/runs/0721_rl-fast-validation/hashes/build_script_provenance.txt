@@ -1,0 +1,9 @@
+2026-07-21T11:40:07+08:00
+requested_build_script=/home/zzf/search_ws/SimEnv/tools/build_with_venv.sh
+effective_build_script=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation/tools/build_with_venv.sh
+fc25fc0fd38c3f9f652475f45e1926bde8e622db40c11ea38b116ceaf0949d48  /home/zzf/search_ws/SimEnv/tools/build_with_venv.sh
+fc25fc0fd38c3f9f652475f45e1926bde8e622db40c11ea38b116ceaf0949d48  tools/build_with_venv.sh
+ace9bc718d1071592457d32392e790f7967424f374fce5d8327b94ddd10b361e  tools/build_rl_fast.sh
+worktree=/home/zzf/search_ws/SimEnv_worktrees/rl-fast-validation
+branch=test/0721-rl-fast-validation
+head=daa859f866206fab65f42525ea7633054b4b8bd9
