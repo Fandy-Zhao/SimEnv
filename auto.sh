@@ -45,6 +45,36 @@ if [ "$WORLD_MODE" = "earth" ]; then
   ROBOT_YAW="${ROBOT_YAW:-0.0}"
 fi
 
+# ---------------------------------------------------------------------------
+# Physics profile: selects the Gazebo physics parameter preset.
+#
+#   PHYSICS_PROFILE=normal    Validated balance of performance and contact fidelity.
+#                             Earth A1 average RTF >= 0.8 with reliable contact.
+#   PHYSICS_PROFILE=fidelity  Original high-resolution configuration (0.0002 s /
+#                             5000 Hz / ODE 50).  Low RTF; for special verification.
+#
+# Explicit single-parameter overrides (GAZEBO_PHYSICS_MAX_STEP_SIZE, etc.)
+# take precedence over the profile default.  Unknown profile values are rejected.
+# ---------------------------------------------------------------------------
+PHYSICS_PROFILE="${PHYSICS_PROFILE:-normal}"
+case "$PHYSICS_PROFILE" in
+  normal)
+    _PHYSICS_PROFILE_DEFAULT_STEP="0.001"
+    _PHYSICS_PROFILE_DEFAULT_RATE="1000"
+    _PHYSICS_PROFILE_DEFAULT_ITERS="20"
+    ;;
+  fidelity)
+    _PHYSICS_PROFILE_DEFAULT_STEP="0.0002"
+    _PHYSICS_PROFILE_DEFAULT_RATE="5000"
+    _PHYSICS_PROFILE_DEFAULT_ITERS="50"
+    ;;
+  *)
+    echo "[ERROR] Unsupported PHYSICS_PROFILE='${PHYSICS_PROFILE}'" >&2
+    echo "Allowed values: normal, fidelity" >&2
+    exit 1
+    ;;
+esac
+
 SEED="${SEED:-}"
 FLOOR_COUNT="${FLOOR_COUNT:-1}"
 ROOMS_PER_FLOOR="${ROOMS_PER_FLOOR:-4}"
@@ -75,10 +105,13 @@ TERMINAL_BACKEND="${TERMINAL_BACKEND:-tmux}"
 TMUX_SESSION_PREFIX="${TMUX_SESSION_PREFIX:-simenv}"
 SKIP_GLOBAL_PROCESS_CLEANUP="$(as_ros_bool "${SKIP_GLOBAL_PROCESS_CLEANUP:-0}")"
 UNITREE_CTRL_DT="${UNITREE_CTRL_DT:-0.002}"
-GAZEBO_PHYSICS_MAX_STEP_SIZE="${GAZEBO_PHYSICS_MAX_STEP_SIZE:-0.002}"
-GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE:-500}"
-GAZEBO_PHYSICS_ODE_ITERS="${GAZEBO_PHYSICS_ODE_ITERS:-40}"
+# Physics parameters: explicit env var override > PHYSICS_PROFILE default
+GAZEBO_PHYSICS_MAX_STEP_SIZE="${GAZEBO_PHYSICS_MAX_STEP_SIZE:-$_PHYSICS_PROFILE_DEFAULT_STEP}"
+GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE="${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE:-$_PHYSICS_PROFILE_DEFAULT_RATE}"
+GAZEBO_PHYSICS_ODE_ITERS="${GAZEBO_PHYSICS_ODE_ITERS:-$_PHYSICS_PROFILE_DEFAULT_ITERS}"
 GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL="${GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL:-5.0}"
+# Compute theoretical RTF target (max_step_size * real_time_update_rate)
+_GAZEBO_PHYSICS_RTF_PRODUCT="$(echo "${GAZEBO_PHYSICS_MAX_STEP_SIZE} * ${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE}" | bc -l 2>/dev/null || echo '1.0')"
 ROBOT_X="${ROBOT_X:-0.0}"
 ROBOT_Y="${ROBOT_Y:-2.3}"
 ROBOT_Z="${ROBOT_Z:-0.6}"
@@ -373,7 +406,21 @@ if [ "$WORLD_MODE" = "competition" ]; then
     > "$SCENE_OUTPUT_DIR/scene_manifest.stdout.json"
   export BUILDING_WORLD_FILE="$SCENE_OUTPUT_DIR/competition_scene.world"
 else
-  export BUILDING_WORLD_FILE="$EARTH_WORLD_FILE"
+  # Earth mode: for 'normal' profile, generate a temp world with substituted
+  # physics parameters.  For 'fidelity', use earth.world directly since it
+  # already contains the required 0.0002 / 5000 / ODE 50 configuration.
+  if [ "$PHYSICS_PROFILE" = "normal" ]; then
+    mkdir -p "$SCENE_OUTPUT_DIR"
+    _EARTH_PHYSICS_WORLD="$SCENE_OUTPUT_DIR/earth_physics.world"
+    cp "$EARTH_WORLD_FILE" "$_EARTH_PHYSICS_WORLD"
+    sed -i "s|<max_step_size>[0-9.]*</max_step_size>|<max_step_size>${GAZEBO_PHYSICS_MAX_STEP_SIZE}</max_step_size>|" "$_EARTH_PHYSICS_WORLD"
+    sed -i "s|<real_time_update_rate>[0-9]*</real_time_update_rate>|<real_time_update_rate>${GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE}</real_time_update_rate>|" "$_EARTH_PHYSICS_WORLD"
+    sed -i "s|<iters>[0-9]*</iters>|<iters>${GAZEBO_PHYSICS_ODE_ITERS}</iters>|" "$_EARTH_PHYSICS_WORLD"
+    export BUILDING_WORLD_FILE="$_EARTH_PHYSICS_WORLD"
+    echo "Generated earth physics world: $_EARTH_PHYSICS_WORLD"
+  else
+    export BUILDING_WORLD_FILE="$EARTH_WORLD_FILE"
+  fi
   if [ ! -f "$BUILDING_WORLD_FILE" ]; then
     echo "ERROR: Earth world file not found: $BUILDING_WORLD_FILE" >&2
     exit 1
@@ -391,6 +438,7 @@ export GAZEBO_PLUGIN_PATH="$WORKSPACE_DIR/devel/lib:${GAZEBO_PLUGIN_PATH:-}"
 echo "=========================================="
 echo "Startup summary"
 echo "  World mode: $WORLD_MODE"
+echo "  Physics profile: $PHYSICS_PROFILE"
 echo "  Workspace: $WORKSPACE_DIR"
 echo "  World:   $BUILDING_WORLD_FILE"
 echo "  Robot spawn pose: x=$ROBOT_X y=$ROBOT_Y z=$ROBOT_Z yaw=$ROBOT_YAW"
@@ -414,7 +462,12 @@ echo "  Building controller: $START_BUILDING_CONTROL"
 echo "  Virtual joystick: $START_VIRTUAL_JOY"
 echo "  Gazebo starts paused: $PAUSED"
 echo "  Auto unpause: $AUTO_UNPAUSE after ${AUTO_UNPAUSE_DELAY}s"
-echo "  Gazebo physics env: max_step=$GAZEBO_PHYSICS_MAX_STEP_SIZE update_rate=$GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE ode_iters=$GAZEBO_PHYSICS_ODE_ITERS contact_max_correcting_vel=$GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL"
+echo "  Gazebo physics:"
+echo "    max_step_size:            $GAZEBO_PHYSICS_MAX_STEP_SIZE"
+echo "    real_time_update_rate:    $GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE"
+echo "    ode_iters:                $GAZEBO_PHYSICS_ODE_ITERS"
+echo "    contact_max_correcting_vel: $GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL"
+echo "    theoretical target RTF:   $_GAZEBO_PHYSICS_RTF_PRODUCT"
 echo "  Gazebo plugin path: $GAZEBO_PLUGIN_PATH"
 echo "=========================================="
 
