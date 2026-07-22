@@ -6,6 +6,8 @@
   can drive RL mode when no fresh `/cmd_vel` is available.
 - Preserved `/cmd_vel` as the primary command source for navigation and added a
   non-finite `/cmd_vel` guard that commands zero.
+- Set the controller default RL policy to the Earth flat-ground recommended
+  `policy_act_inference_plane.pt`; runtime policy overrides remain available.
 
 ## 2026-07-22 — quick-start auto.sh parameter docs
 

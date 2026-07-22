@@ -11,7 +11,7 @@
 #include "FSM/State_RL_test.h"
 
 namespace {
-const char *kDefaultPolicyPath = "src/unitree_guide/logs/policy_act_inference_stair.pt";
+const char *kDefaultPolicyPath = "src/unitree_guide/logs/policy_act_inference_plane.pt";
 
 std::string shellQuote(const std::string &value)
 {

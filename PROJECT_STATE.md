@@ -5,7 +5,9 @@
 > available and otherwise derive a command snapshot from keyboard `userValue`
 > (`w/s`, `a/d`, `j/l`) with the same mapping convention as Trotting. This
 > preserves navigation-facing `/cmd_vel` behavior while restoring interactive
-> keyboard driving in RL mode.
+> keyboard driving in RL mode. The default RL policy is now the Earth
+> flat-ground recommended `policy_act_inference_plane.pt`; `/rl_policy_path`
+> and `RL_POLICY_PATH` still provide runtime overrides.
 
 > **2026-07-22 auto.sh RL policy override visibility**: branch
 > `fix/0722-auto-rl-policy-env` makes the existing controller-side

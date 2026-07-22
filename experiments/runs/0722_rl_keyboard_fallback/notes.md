@@ -7,6 +7,9 @@
 - If `/cmd_vel` is missing or older than 0.5 s, RL maps keyboard `userValue`
   into the same command axes used by Trotting.
 - Non-finite `/cmd_vel` values are rejected and converted to a stop command.
+- The default RL policy path is set to the Earth flat-ground recommended
+  `src/unitree_guide/logs/policy_act_inference_plane.pt`; runtime policy
+  override priority is unchanged.
 
 ## Validation
 
@@ -16,6 +19,5 @@
 
 ## Notes
 
-- A pre-existing uncommitted change in `State_RL_test.cpp` changes the default
-  policy path from stair to plane. It was preserved in the worktree and is not
-  part of this keyboard-fallback change.
+- The default policy change was present before the keyboard fallback commit and
+  is intentionally preserved in this branch before merging back to `master`.
