@@ -1,0 +1,89 @@
+{
+  "fixed_last5": {
+    "cmd_apply_new": {
+      "count": 1437,
+      "duration_rate_hz": 287.4874874874875,
+      "duration_us": 4995000,
+      "max_gap_us": 10000,
+      "median_dt_us": 3000.0,
+      "median_rate_hz": 333.3333333333333
+    },
+    "cmd_apply_sequence_jumps": {
+      "jump_count": 223,
+      "max_jump": 3
+    },
+    "cmd_receive": {
+      "count": 1661,
+      "duration_rate_hz": 332.3323323323323,
+      "duration_us": 4995000,
+      "max_gap_us": 11000,
+      "median_dt_us": 3000,
+      "median_rate_hz": 333.3333333333333
+    },
+    "fsm_accepted": {
+      "count": 1823,
+      "duration_rate_hz": 364.83780536643974,
+      "duration_us": 4994000,
+      "max_gap_us": 11000,
+      "median_dt_us": 4000,
+      "median_rate_hz": 250.0
+    },
+    "lowcmd_published": {
+      "count": 1822,
+      "duration_rate_hz": 364.6375650780937,
+      "duration_us": 4994000,
+      "max_gap_us": 8000,
+      "median_dt_us": 3000,
+      "median_rate_hz": 333.3333333333333
+    },
+    "lowcmd_vs_apply_rate_diff_ratio": 0.0,
+    "window_us": [
+      304119000,
+      309119000
+    ]
+  },
+  "rl_zero_8p5": {
+    "cmd_apply_new": {
+      "count": 2448,
+      "duration_rate_hz": 288.1535562882713,
+      "duration_us": 8492000,
+      "max_gap_us": 43000,
+      "median_dt_us": 3000,
+      "median_rate_hz": 333.3333333333333
+    },
+    "cmd_apply_sequence_jumps": {
+      "jump_count": 433,
+      "max_jump": 3
+    },
+    "cmd_receive": {
+      "count": 2883,
+      "duration_rate_hz": 339.1386208519652,
+      "duration_us": 8498000,
+      "max_gap_us": 42000,
+      "median_dt_us": 3000,
+      "median_rate_hz": 333.3333333333333
+    },
+    "fsm_accepted": {
+      "count": 3152,
+      "duration_rate_hz": 370.8804143126177,
+      "duration_us": 8496000,
+      "max_gap_us": 44000,
+      "median_dt_us": 4000.0,
+      "median_rate_hz": 250.0
+    },
+    "lowcmd_published": {
+      "count": 3152,
+      "duration_rate_hz": 370.8367659173826,
+      "duration_us": 8497000,
+      "max_gap_us": 44000,
+      "median_dt_us": 2000,
+      "median_rate_hz": 500.0
+    },
+    "lowcmd_vs_apply_rate_diff_ratio": 0.33333333333333337,
+    "window_us": [
+      309119000,
+      317619000
+    ]
+  },
+  "switch_sim_time_s": 309.119
+}
