@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-23 — competition RL RTF collapse diagnostics
+
+- Added governed competition RL RTF collapse diagnostic artifacts: static
+  audit, M0-M8 dry-run-first matrix harness, runtime metrics sampler, and
+  mapping-pipeline checker.
+- Left simulation launch defaults, controller logic, mapping logic, generated
+  scenes, logs, and results unchanged.
+
 ## 2026-07-22 — RL keyboard command fallback
 
 - Added a `State_RL` command fallback so keyboard `w/a/s/d` and `j/l` input

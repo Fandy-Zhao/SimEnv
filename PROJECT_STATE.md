@@ -1,5 +1,13 @@
 # Project State
 
+> **2026-07-23 competition RL RTF collapse diagnostics**: branch
+> `diagnose/0723-competition-rl-rtf-collapse` creates a governed diagnostic
+> issue, static audit, and dry-run-first M0-M8 harness for isolating
+> competition scene, LiDAR, PointCloud2, FAST-LIO2, RL load/inference, Torch
+> threading, and GUI/RViz contributions to low RTF. Runtime behavior and launch
+> defaults are unchanged; causal claims remain pending controlled runtime
+> sampling.
+
 > **2026-07-22 RL keyboard command fallback**: branch
 > `fix/0722-rl-keyboard-fallback` makes RL mode use fresh `/cmd_vel` when
 > available and otherwise derive a command snapshot from keyboard `userValue`
