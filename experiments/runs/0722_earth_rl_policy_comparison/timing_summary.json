@@ -1,0 +1,40 @@
+{
+  "stair": {
+    "lowcmd": {
+      "count": 32229,
+      "median_hz": 500.0,
+      "mean_hz": 456.410655594595,
+      "p10_hz": 250.0,
+      "p90_hz": 1000.0
+    },
+    "fsm": {
+      "count": 222622,
+      "median_hz": 500.0,
+      "mean_hz": 597.9811509234213,
+      "p10_hz": 250.0,
+      "p90_hz": 1000.0
+    },
+    "fsm_accepted_count": 32229,
+    "rtf_median": 0.0,
+    "rtf_mean": 0.0
+  },
+  "plane": {
+    "lowcmd": {
+      "count": 44658,
+      "median_hz": 500.0,
+      "mean_hz": 493.4174588170602,
+      "p10_hz": 333.3333333333333,
+      "p90_hz": 500.0
+    },
+    "fsm": {
+      "count": 396048,
+      "median_hz": 1000.0,
+      "mean_hz": 928.6462817497863,
+      "p10_hz": 500.0,
+      "p90_hz": 1000.0
+    },
+    "fsm_accepted_count": 44658,
+    "rtf_median": 0.0,
+    "rtf_mean": 0.0
+  }
+}

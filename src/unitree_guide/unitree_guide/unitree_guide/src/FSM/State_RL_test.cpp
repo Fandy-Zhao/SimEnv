@@ -3,8 +3,82 @@
 ***********************************************************************/
 #include <iostream>
 #include <cstdlib>
+#include <cstdio>
 #include <iomanip>
+#include <sstream>
+#include <sys/stat.h>
 #include "FSM/State_RL_test.h"
+
+namespace {
+const char *kDefaultPolicyPath = "src/unitree_guide/logs/policy_act_inference_stair.pt";
+
+std::string shellQuote(const std::string &value)
+{
+    std::string quoted = "'";
+    for(char c : value){
+        if(c == '\''){
+            quoted += "'\\''";
+        }else{
+            quoted += c;
+        }
+    }
+    quoted += "'";
+    return quoted;
+}
+
+std::string resolvedPath(const std::string &path)
+{
+    char *resolved = realpath(path.c_str(), nullptr);
+    if(resolved == nullptr){
+        return "";
+    }
+    std::string out(resolved);
+    std::free(resolved);
+    return out;
+}
+
+bool fileExists(const std::string &path)
+{
+    struct stat st;
+    return stat(path.c_str(), &st) == 0 && S_ISREG(st.st_mode);
+}
+
+std::string sha256sumForFile(const std::string &path)
+{
+    if(!fileExists(path)){
+        return "";
+    }
+    const std::string command = "sha256sum " + shellQuote(path);
+    FILE *pipe = popen(command.c_str(), "r");
+    if(pipe == nullptr){
+        return "";
+    }
+    char buffer[256];
+    std::string line;
+    if(fgets(buffer, sizeof(buffer), pipe) != nullptr){
+        line = buffer;
+    }
+    pclose(pipe);
+    std::istringstream input(line);
+    std::string sha;
+    input >> sha;
+    return sha;
+}
+
+std::string configuredPolicyPath()
+{
+    std::string path = kDefaultPolicyPath;
+    std::string rosPath;
+    if(ros::param::get("/rl_policy_path", rosPath) && !rosPath.empty()){
+        return rosPath;
+    }
+    const char *envPath = std::getenv("RL_POLICY_PATH");
+    if(envPath != nullptr && envPath[0] != '\0'){
+        path = envPath;
+    }
+    return path;
+}
+}
 
 State_RL::State_RL(CtrlComponents *ctrlComp)
                 :FSMState(ctrlComp, FSMStateName::RL, "RL")
@@ -762,8 +836,16 @@ torch::Tensor State_RL::quat_rotate_inverse(const torch::Tensor& q, const torch:
 
 void State_RL::load_policy()
 {
-    model_path = "src/unitree_guide/logs/policy_act_inference_stair.pt";
-    std::cout << model_path << std::endl;
+    model_path = configuredPolicyPath();
+    const std::string realPath = resolvedPath(model_path);
+    const bool exists = fileExists(model_path);
+    const std::string sha256 = sha256sumForFile(model_path);
+    std::cout << "[RL-POLICY] configured policy path: " << model_path << std::endl;
+    std::cout << "[RL-POLICY] resolved realpath: "
+              << (realPath.empty() ? "UNRESOLVED" : realPath) << std::endl;
+    std::cout << "[RL-POLICY] SHA256: "
+              << (sha256.empty() ? "UNAVAILABLE" : sha256) << std::endl;
+    std::cout << "[RL-POLICY] file exists: " << (exists ? "true" : "false") << std::endl;
     // load model from check point
     std::cout << "cuda::is_available():" << torch::cuda::is_available() << std::endl;
     device= torch::kCPU;
@@ -771,7 +853,7 @@ void State_RL::load_policy()
         device = torch::kCUDA;
     }
     model = torch::jit::load(model_path);
-    std::cout << "load model is successed!" << std::endl;
+    std::cout << "[RL-POLICY] load success: true" << std::endl;
     model.to(device);
     std::cout << "load model to device!" << std::endl;
     model.eval();

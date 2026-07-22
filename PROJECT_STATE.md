@@ -1,5 +1,17 @@
 # Project State
 
+> **2026-07-22 Earth RL policy comparison**: branch
+> `test/0722-earth-rl-policy-comparison` builds from
+> `fix/0722-earth-rl-timebase-fast-validation` and adds a minimal runtime
+> `State_RL` policy override (`/rl_policy_path` -> `RL_POLICY_PATH` -> stair
+> default) with loader path/SHA/existence/load-success logs. Earth flat-ground
+> sweeps used identical launch/control parameters and body-frame metrics for
+> stair and plane policies over `vx=0.00..0.40 m/s`. Plane is recommended for
+> the master short regression: it tracks `0.20..0.40 m/s` better and keeps yaw
+> drift lower, while both policies still have no effective motion at
+> `vx=0.10 m/s`. Median LowCmd cadence is 500 Hz in both runs. No control
+> parameters were tuned.
+
 > **2026-07-22 Earth RL LowCmd/IMU merge validation**: branch
 > `fix/0722-earth-rl-timebase-fast-validation` now includes the validated
 > `fix/0722-earth-rl-lowcmd-publisher-stall` merge

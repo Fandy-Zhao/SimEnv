@@ -1,0 +1,11 @@
+{
+  "policy_name": "stair",
+  "policy_sha": "2d5aa72511c0c6609c02f4105845eee6974d3d73431497f8f35306da9588fe14",
+  "speeds_attempted": [
+    0.0,
+    0.1,
+    0.2,
+    0.3,
+    0.4
+  ]
+}
