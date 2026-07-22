@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-22 — Earth RL stair vs plane policy comparison
+
+- Added a runtime RL policy path override to `State_RL` with priority
+  `/rl_policy_path`, `RL_POLICY_PATH`, then the existing stair default.
+- Logged policy configured path, resolved realpath, SHA256, existence, and load
+  success so runtime comparisons prove the actual TorchScript artifact used.
+- Compared stair and plane policies on Earth flat ground from `vx=0.00` through
+  `0.40 m/s` without control-parameter tuning. Plane is recommended for the
+  master short regression because it tracks `0.20` to `0.40 m/s` more closely
+  and with lower yaw drift; both policies still show no effective motion at
+  `vx=0.10 m/s`.
+
 ## 2026-07-22 — Earth RL LowCmd and IMU merge validation
 
 - Merged the validated `fix/0722-earth-rl-lowcmd-publisher-stall` branch into

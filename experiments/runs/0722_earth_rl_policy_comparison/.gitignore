@@ -1,0 +1,6 @@
+*.csv
+*.log
+*.pid
+*.bag
+raw/
+scripts/__pycache__/

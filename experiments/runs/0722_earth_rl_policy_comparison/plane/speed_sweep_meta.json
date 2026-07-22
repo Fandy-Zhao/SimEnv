@@ -1,0 +1,11 @@
+{
+  "policy_name": "plane",
+  "policy_sha": "e886847fe266e3c2f7c08825fceeaecfa75c7eac5f780b25b6d4dca173ff8bef",
+  "speeds_attempted": [
+    0.0,
+    0.1,
+    0.2,
+    0.3,
+    0.4
+  ]
+}
