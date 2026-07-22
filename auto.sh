@@ -24,6 +24,10 @@ as_ros_bool() {
   esac
 }
 
+shell_quote() {
+  printf "%q" "$1"
+}
+
 WORLD_MODE="${WORLD_MODE:-competition}"
 if [ "$WORLD_MODE" != "competition" ] && [ "$WORLD_MODE" != "earth" ]; then
   echo "ERROR: WORLD_MODE must be 'competition' or 'earth', got '$WORLD_MODE'" >&2
@@ -199,6 +203,9 @@ launch_in_terminal() {
   env_block="${env_block} export ROS_PACKAGE_PATH='${ROS_PACKAGE_PATH:-}';"
   env_block="${env_block} export CMAKE_PREFIX_PATH='${CMAKE_PREFIX_PATH:-}';"
   env_block="${env_block} export PYTHONPATH='${PYTHONPATH:-}';"
+  if [ -n "${RL_POLICY_PATH:-}" ]; then
+    env_block="${env_block} export RL_POLICY_PATH=$(shell_quote "$RL_POLICY_PATH");"
+  fi
 
   terminal_env=(
     env -i
@@ -497,6 +504,11 @@ echo "  FAST-LIO2 mapping: $ENABLE_FAST_LIO2"
 echo "  RViz: $ENABLE_RVIZ"
 echo "  Building controller: $START_BUILDING_CONTROL"
 echo "  Virtual joystick: $START_VIRTUAL_JOY"
+if [ -n "${RL_POLICY_PATH:-}" ]; then
+  echo "  RL policy override: $RL_POLICY_PATH"
+else
+  echo "  RL policy override: unset (controller default; /rl_policy_path ROS param still has priority)"
+fi
 echo "  Gazebo starts paused: $PAUSED"
 echo "  Auto unpause: $AUTO_UNPAUSE after ${AUTO_UNPAUSE_DELAY}s"
 echo "  Gazebo physics:"

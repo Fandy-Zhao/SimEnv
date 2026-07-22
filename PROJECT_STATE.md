@@ -1,5 +1,12 @@
 # Project State
 
+> **2026-07-22 auto.sh RL policy override visibility**: branch
+> `fix/0722-auto-rl-policy-env` makes the existing controller-side
+> `RL_POLICY_PATH` support explicit in startup: `auto.sh` now prints whether an
+> RL policy override is set and exports it into the dedicated `junior_ctrl`
+> terminal environment. The controller-side priority remains `/rl_policy_path`
+> -> `RL_POLICY_PATH` -> stair default.
+
 > **2026-07-22 Navigation integration baseline**: branch `master`, HEAD
 > `4eeae260b452a296b17f30afaea3b7b2edb7c636`, workspace
 > `/home/zzf/search_ws/SimEnv`, status clean, build PASS. Earth RL

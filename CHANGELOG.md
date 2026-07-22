@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-22 — auto.sh RL policy override visibility
+
+- Added explicit `auto.sh` startup-summary reporting for `RL_POLICY_PATH`.
+- Exported `RL_POLICY_PATH` into the dedicated `junior_ctrl` terminal
+  environment when set, while preserving controller-side priority
+  `/rl_policy_path` -> `RL_POLICY_PATH` -> stair default.
+
 ## 2026-07-22 — Earth RL navigation baseline
 
 - Audited local `master` and confirmed the validated Earth RL fixes are present
