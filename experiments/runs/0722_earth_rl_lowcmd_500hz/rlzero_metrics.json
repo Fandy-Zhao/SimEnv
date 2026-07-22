@@ -1,0 +1,39 @@
+{
+  "applied_new": {
+    "count": 13855,
+    "duplicate_timestamp_ratio": 0.0,
+    "duration_rate_hz": 282.59627937336813,
+    "duration_us": 49024000,
+    "has_sustained_gt_10ms_gap": true,
+    "max_gap_us": 57000,
+    "median_dt_us": 3000.0,
+    "median_rate_hz": 333.3333333333333
+  },
+  "apply_csv": "experiments/runs/0722_earth_rl_lowcmd_500hz/rlzero_apply.csv",
+  "apply_rows_total": 13875,
+  "callback_burst_apply_sequence_jump_count": 2822,
+  "callback_burst_max_apply_sequence_jump": 3,
+  "published": {
+    "count": 18352,
+    "duplicate_timestamp_ratio": 0.0,
+    "duration_rate_hz": 379.1763952311094,
+    "duration_us": 48397000,
+    "has_sustained_gt_10ms_gap": true,
+    "max_gap_us": 61000,
+    "median_dt_us": 2000,
+    "median_rate_hz": 500.0
+  },
+  "published_applied_rate_diff_ratio": 0.33333333333333337,
+  "publisher_csv": "experiments/runs/0722_earth_rl_lowcmd_500hz/rlzero_publisher.csv",
+  "receive_rows_total": 16857,
+  "received": {
+    "count": 16857,
+    "duplicate_timestamp_ratio": 0.1874110109159943,
+    "duration_rate_hz": 339.84556140244763,
+    "duration_us": 49599000,
+    "has_sustained_gt_10ms_gap": true,
+    "max_gap_us": 57000,
+    "median_dt_us": 3000,
+    "median_rate_hz": 333.3333333333333
+  }
+}

@@ -3,8 +3,10 @@
 ***********************************************************************/
 #include "FSM/FSM.h"
 #include "common/TimingDiagnostics.h"
+#include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <unistd.h>
 
 FSM::FSM(CtrlComponents *ctrlComp)
     :_ctrlComp(ctrlComp),
@@ -70,7 +72,7 @@ void FSM::run(){
             std::cout << "[INFO] Waiting for Gazebo joint state feedback before accepting stand command." << std::endl;
             _waitingForStateFeedback = true;
         }
-        absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
+        waitForNextLoop();
         recordTiming(false, false);
         return;
     }
@@ -80,7 +82,7 @@ void FSM::run(){
     }
     if(!_ctrlComp->lowState->isFinite()){
         std::cout << "[WARNING] Gazebo state feedback is not finite; skipping control update." << std::endl;
-        absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
+        waitForNextLoop();
         recordTiming(false, false);
         return;
     }
@@ -89,7 +91,7 @@ void FSM::run(){
         _lastAcceptedStateSequence != 0 && acceptedStateSequence == _lastAcceptedStateSequence;
     _lastAcceptedStateSequence = acceptedStateSequence;
     if(!updateControlTime()){
-        absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
+        waitForNextLoop();
         recordTiming(false, repeatedStateConsumed);
         return;
     }
@@ -167,6 +169,19 @@ void FSM::run(){
         _ctrlComp->publishCmdOnly();
     }
     recordTiming(true, repeatedStateConsumed);
+    waitForNextLoop();
+}
+
+void FSM::waitForNextLoop(){
+    if(_ctrlComp->ctrlPlatform == CtrlPlatform::GAZEBO){
+        static const int pollWaitUs = [](){
+            int value = 100;
+            ros::param::param<int>("/unitree_gazebo_poll_wait_us", value, value);
+            return std::max(0, value);
+        }();
+        usleep(static_cast<useconds_t>(pollWaitUs));
+        return;
+    }
     absoluteWait(_startTime, (long long)(_ctrlComp->dt * 1000000));
 }
 

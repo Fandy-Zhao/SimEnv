@@ -18,6 +18,7 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 #include <realtime_tools/realtime_buffer.h>
 #include <controller_interface/controller.h>
 #include <hardware_interface/joint_command_interface.h>
+#include <cstdint>
 #include "unitree_legged_msgs/MotorCmd.h"
 #include "unitree_legged_msgs/MotorState.h"
 #include <geometry_msgs/WrenchStamped.h>
@@ -30,6 +31,14 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 
 namespace unitree_legged_control
 {
+    struct StampedMotorCmd
+    {
+        unitree_legged_msgs::MotorCmd cmd;
+        std::uint64_t sequence = 0;
+        std::uint64_t receive_wall_time_ns = 0;
+        std::uint64_t receive_sim_time_us = 0;
+    };
+
     class UnitreeJointController: public controller_interface::Controller<hardware_interface::EffortJointInterface>
     {
 private:
@@ -46,10 +55,17 @@ public:
         float sensor_torque;
         bool isHip, isThigh, isCalf, rqtTune;
         urdf::JointConstSharedPtr joint_urdf;
-        realtime_tools::RealtimeBuffer<unitree_legged_msgs::MotorCmd> command;
+        realtime_tools::RealtimeBuffer<StampedMotorCmd> command;
         unitree_legged_msgs::MotorCmd lastCmd;
+        StampedMotorCmd lastStampedCmd;
         unitree_legged_msgs::MotorState lastState;
         ServoCmd servoCmd;
+        bool diagnostics_enabled;
+        bool diagnostics_target_joint;
+        std::uint64_t received_command_sequence;
+        std::uint64_t applied_command_sequence;
+        std::uint64_t controller_update_sequence;
+        std::uint64_t diagnostic_buffer_write_sequence;
 
         UnitreeJointController();
         ~UnitreeJointController();
@@ -62,6 +78,12 @@ public:
         void positionLimits(double &position);
         void velocityLimits(double &velocity);
         void effortLimits(double &effort);
+        void writeCommandDiagnostics(const char *stage,
+                                     const StampedMotorCmd &cmd,
+                                     const ros::Time &time,
+                                     const ros::Duration &period,
+                                     bool newCommand,
+                                     bool effectiveApplication);
 
         void setGains(const double &p, const double &i, const double &d, const double &i_max, const double &i_min, const bool &antiwindup = false);
         void getGains(double &p, double &i, double &d, double &i_max, double &i_min, bool &antiwindup);

@@ -13,6 +13,7 @@ struct PolicyInputSnapshot {
     LowlevelState low_state;
     std::array<double, 4> base_w_orientation{{0.0, 0.0, 0.0, 1.0}};
     std::array<double, 3> base_w_angular_velocity{{0.0, 0.0, 0.0}};
+    bool base_world_valid = false;
     std::uint64_t sim_time_us = 0;
     std::uint64_t state_sequence = 0;
     bool valid = false;

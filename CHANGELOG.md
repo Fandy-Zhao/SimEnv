@@ -1,5 +1,42 @@
 # Changelog
 
+## 2026-07-22 — Earth RL stair vs plane policy comparison
+
+- Added a runtime RL policy path override to `State_RL` with priority
+  `/rl_policy_path`, `RL_POLICY_PATH`, then the existing stair default.
+- Logged policy configured path, resolved realpath, SHA256, existence, and load
+  success so runtime comparisons prove the actual TorchScript artifact used.
+- Compared stair and plane policies on Earth flat ground from `vx=0.00` through
+  `0.40 m/s` without control-parameter tuning. Plane is recommended for the
+  master short regression because it tracks `0.20` to `0.40 m/s` more closely
+  and with lower yaw drift; both policies still show no effective motion at
+  `vx=0.10 m/s`.
+
+## 2026-07-22 — Earth RL LowCmd and IMU merge validation
+
+- Merged the validated `fix/0722-earth-rl-lowcmd-publisher-stall` branch into
+  `fix/0722-earth-rl-timebase-fast-validation` with a no-ff merge commit.
+- Preserved the stair policy path while bringing in LowCmd queue depth 1,
+  `tcpNoDelay()`, persistent ROS callback spinners, simulation-time LowCmd
+  cadence scheduling, staged T1-T4 diagnostics, and Earth IMU policy-input
+  fallback.
+- Validated the task worktree build and short Earth RL regression:
+  FixedStand/RL zero T0-T2 median cadence is 500 Hz, T3/T4 are 1000 Hz,
+  `using_imu_policy_input=1`, policy inputs are finite, and RL zero does not
+  fall over 9 sim-s.
+
+## 2026-07-22 — Earth RL timebase fastcheck
+
+- Added governed evidence under `experiments/runs/0722_earth_rl_fastcheck/`
+  for Earth `PHYSICS_PROFILE=normal` RL timing, RTF, policy-path, and first
+  speed-smoke validation.
+- Fixed the RL default policy path so runtime `State_RL` loads
+  `src/unitree_guide/logs/policy_act_inference_stair.pt` instead of the older
+  plane policy.
+- Validation result: build passes and policy path passes after the fix, but
+  RTF stability fails (`median=0.750945`, `p10=0.407949`) and the first
+  `vx=0.10 m/s` RL smoke is unstable.
+
 ## 2026-07-21 — RL fast validation infrastructure
 
 - Added `tools/build_rl_fast.sh` as a thin Unitree runtime-profile wrapper over

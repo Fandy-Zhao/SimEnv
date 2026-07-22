@@ -1,0 +1,16 @@
+{
+  "commanded_vx": 0.1,
+  "fell": false,
+  "first_10_sample_abs_target_max": 1.3436187505722046,
+  "post_delta_x": 0.008148532055020363,
+  "post_duration_sim": 8.98,
+  "post_grace_max_tilt_deg": 3.4626373465308444,
+  "post_grace_min_base_height": 0.31323231246953115,
+  "post_max_tilt_deg": 3.854863558780253,
+  "post_mean_base_vx": 0.000805547891062702,
+  "post_min_base_height": 0.31323231246953115,
+  "post_sample_count": 451,
+  "rtf_median": 1.003330049406963,
+  "sample_count": 501,
+  "switch_sim_time": 7.027
+}

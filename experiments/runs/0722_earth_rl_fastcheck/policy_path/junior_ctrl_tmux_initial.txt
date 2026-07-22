@@ -1,0 +1,49 @@
+=== junior_ctrl (tmux session: simenv-junior_ctrl) ===
+Command: /home/zzf/search_ws/SimEnv_worktrees/earth-rl-fastcheck/devel/lib/unitr
+ee_guide/junior_ctrl
+
+[INFO] Realtime scheduler disabled. Set UNITREE_ENABLE_REALTIME=1 to request SCH
+ED_FIFO.
+The control interface for ROS Gazebo simulation
+robot_name: a1
+controller dt source: UNITREE_CTRL_DT, resolved: 0.002 s (2000 us), frequency: 5
+00.000 Hz
+[INFO] [1784696074.555047793]: Timing diagnostics enabled: /home/zzf/search_ws/S
+imEnv_worktrees/earth-rl-fastcheck/experiments/runs/0722_earth_rl_fastcheck/time
+base/unitree_timing.csv
+src/unitree_guide/logs/policy_act_inference_stair.pt
+cuda::is_available():1
+load model is successed!
+load model to device!
+[INFO] Waiting for Gazebo joint state feedback before accepting stand command.
+[INFO] Gazebo joint state feedback is ready.
+[INFO] [1784696084.344926084, 2.000000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=0 resolved=0 source=0 state=1
+[INFO] [1784696086.347605261, 4.001000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=0 resolved=0 source=0 state=1
+[INFO] [1784696088.350410416, 6.002000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=0 resolved=0 source=0 state=1
+[INFO] [1784696090.352522302, 8.003000000]: [FSM-CMD] apply: keyboard=0 pending_
+mapped=0 resolved=0 source=0 state=1
+[INFO] [1784696092.354490303, 10.003000000]: [FSM-CMD] apply: keyboard=0 pending
+_mapped=0 resolved=0 source=0 state=1
+[INFO] [1784696094.357247173, 12.004000000]: [FSM-CMD] apply: keyboard=0 pending
+_mapped=0 resolved=0 source=0 state=1
+[INFO] [1784696096.362724644, 14.004000000]: [FSM-CMD] apply: keyboard=0 pending
+_mapped=0 resolved=0 source=0 state=1
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2166us.
+[INFO] [1784696098.517283565, 16.009000000]: [FSM-CMD] apply: keyboard=0 pending
+_mapped=0 resolved=0 source=0 state=1
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2110us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2151us.
+[INFO] [1784696101.418878684, 18.009000000]: [FSM-CMD] apply: keyboard=0 pending
+_mapped=0 resolved=0 source=0 state=1
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2185us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2204us.
+[WARNING] The waitTime=2000 of function absoluteWait is not enough!
+The program has already cost 2217us.

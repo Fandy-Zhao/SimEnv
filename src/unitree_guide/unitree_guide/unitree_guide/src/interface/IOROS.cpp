@@ -8,7 +8,11 @@
 #include "common/TimingDiagnostics.h"
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
+#include <exception>
 #include <iostream>
+#include <memory>
+#include <string>
 #include <unistd.h>
 #include <csignal>
 
@@ -35,6 +39,21 @@ UserCommand joyCommandFromButtons(const std::vector<int>& buttons){
     if(buttonAt(buttons, 9)) return UserCommand::L1_Y;      // step test
     return UserCommand::NONE;
 }
+
+int callbackSpinnerThreadCount(){
+    int threads = 2;
+    ros::param::param<int>("/unitree_ros_callback_spinner_threads", threads, threads);
+    const char *env = std::getenv("UNITREE_ROS_CALLBACK_SPINNER_THREADS");
+    if(env != nullptr && env[0] != '\0'){
+        try {
+            threads = std::stoi(env);
+        } catch (const std::exception&) {
+            ROS_WARN("Invalid UNITREE_ROS_CALLBACK_SPINNER_THREADS='%s'; using %d",
+                     env, threads);
+        }
+    }
+    return std::max(1, threads);
+}
 }
 
 void RosShutDown(int sig){
@@ -56,11 +75,14 @@ IOROS::IOROS():IOInterface(){
         _foot_force_sim_time_us[i].store(0);
     }
     _imu_received.store(false);
+    _base_world_received.store(false);
 
     // start subscriber
     initRecv();
-    ros::AsyncSpinner subSpinner(1); // one threads
-    subSpinner.start();
+    const int callbackThreads = callbackSpinnerThreadCount();
+    _callback_spinner.reset(new ros::AsyncSpinner(callbackThreads));
+    _callback_spinner->start();
+    ROS_INFO("IOROS callback spinner started with %d thread(s).", callbackThreads);
     usleep(300000);     //wait for subscribers start
     // initialize publisher
     initSend();   
@@ -71,6 +93,9 @@ IOROS::IOROS():IOInterface(){
 }
 
 IOROS::~IOROS(){
+    if(_callback_spinner){
+        _callback_spinner->stop();
+    }
     ros::shutdown();
 }
 
@@ -86,7 +111,6 @@ void IOROS::recvStateOnly(LowlevelState *state){
     recvState(state);
     state->userCmd = cmdPanel->getUserCmd();
     state->userValue = cmdPanel->getUserValue();
-    ros::spinOnce();
 }
 
 void IOROS::publishCmdOnly(const LowlevelCmd *cmd){
@@ -148,7 +172,6 @@ void IOROS::sendCmd(const LowlevelCmd *lowCmd){
     timing.torn_action = actionGenerationBefore != actionGenerationAfter ||
         (actionGenerationBefore & 1U) != 0U || (actionGenerationAfter & 1U) != 0U;
     diagnostics.record(timing);
-    ros::spinOnce();
 }
 
 void IOROS::recvState(LowlevelState *state){
@@ -185,6 +208,7 @@ void IOROS::recvState(LowlevelState *state){
     snapshot.low_state = *state;
     snapshot.base_w_orientation = _base_w_ori;
     snapshot.base_w_angular_velocity = _base_w_angular_vel;
+    snapshot.base_world_valid = _base_world_received.load(std::memory_order_acquire);
     snapshot.sim_time_us = stampUs;
     snapshot.state_sequence = _state_sequence.load(std::memory_order_acquire);
     snapshot.valid = stampUs != 0 && snapshot.state_sequence != 0;
@@ -342,6 +366,7 @@ void IOROS::baseWorldCallback(const nav_msgs::Odometry& msg) {
     _base_w_angular_vel[0] = msg.twist.twist.angular.x;
     _base_w_angular_vel[1] = msg.twist.twist.angular.y;
     _base_w_angular_vel[2] = msg.twist.twist.angular.z;
+    _base_world_received.store(true, std::memory_order_release);
     // std::cout << "_base_w_angular_vel" << _base_w_angular_vel[0] << " " << _base_w_angular_vel[1] << " " << _base_w_angular_vel[2] << std::endl;
 }
 

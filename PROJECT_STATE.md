@@ -1,5 +1,46 @@
 # Project State
 
+> **2026-07-22 Earth RL policy comparison**: branch
+> `test/0722-earth-rl-policy-comparison` builds from
+> `fix/0722-earth-rl-timebase-fast-validation` and adds a minimal runtime
+> `State_RL` policy override (`/rl_policy_path` -> `RL_POLICY_PATH` -> stair
+> default) with loader path/SHA/existence/load-success logs. Earth flat-ground
+> sweeps used identical launch/control parameters and body-frame metrics for
+> stair and plane policies over `vx=0.00..0.40 m/s`. Plane is recommended for
+> the master short regression: it tracks `0.20..0.40 m/s` better and keeps yaw
+> drift lower, while both policies still have no effective motion at
+> `vx=0.10 m/s`. Median LowCmd cadence is 500 Hz in both runs. No control
+> parameters were tuned.
+
+> **2026-07-22 Earth RL LowCmd/IMU merge validation**: branch
+> `fix/0722-earth-rl-timebase-fast-validation` now includes the validated
+> `fix/0722-earth-rl-lowcmd-publisher-stall` merge
+> (`39bbb6cfef8fdcccbef4990919e6bf8579414caf`). The merged chain preserves
+> the stair policy path and brings in LowCmd queue depth 1, `tcpNoDelay()`,
+> persistent callback spinners, simulation-time LowCmd cadence scheduling,
+> staged T1-T4 diagnostics, and Earth IMU policy-input fallback. The task
+> worktree build passes. Short Earth regression passes for FixedStand and RL
+> zero: T0/T1/T2 median cadence is 500 Hz, T3/T4 are 1000 Hz,
+> `using_imu_policy_input=1`, policy input/action output finite checks pass,
+> and RL zero remains upright for 9 sim-s (`min_base_height=0.311336 m`,
+> `max_tilt=3.04993 deg`, median RTF `1.00864`). Remaining active task:
+> isolate and minimally fix the `vx=0.10 m/s` command-response issue on
+> `fix/0722-earth-rl-command-response`. No merge to `master`.
+
+> **2026-07-22 Earth RL timebase fastcheck**: branch
+> `fix/0722-earth-rl-timebase-fast-validation` runs the requested isolated
+> Earth `PHYSICS_PROFILE=normal` RL validation from a separate worktree. The
+> Unitree runtime build passes after pinning the local worktree venv `empy` to
+> ROS-compatible `3.3.4`. `State_RL` now loads the requested stair policy
+> (`policy_act_inference_stair.pt`, SHA256
+> `2d5aa72511c0c6609c02f4105845eee6974d3d73431497f8f35306da9588fe14`).
+> Runtime timing shows policy inference near 48 Hz simulation time, but low-level
+> command publication is about 414 Hz against the 500 Hz target with deadline
+> misses. Earth normal RTF fails the requested stability gate (`median=0.750945`,
+> `p10=0.407949`), and the first RL `vx=0.10 m/s` smoke falls
+> (`min_base_height=0.078849 m`). Overall verdict:
+> `EARTH_RL_RTF_BLOCKED`; no merge to `master`.
+
 > **2026-07-21 RL fast validation infrastructure**: branch
 > `test/0721-rl-fast-validation` adds fast RL-state iteration infrastructure:
 > `tools/build_rl_fast.sh`, ROS-free metrics/window helpers, a F0/F1/F2
