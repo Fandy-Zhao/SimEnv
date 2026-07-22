@@ -2,6 +2,8 @@
  Copyright (c) 2020-2023, Unitree Robotics.Co.Ltd. All rights reserved.
 ***********************************************************************/
 #include <iostream>
+#include <cstdlib>
+#include <iomanip>
 #include "FSM/State_RL_test.h"
 
 State_RL::State_RL(CtrlComponents *ctrlComp)
@@ -61,6 +63,7 @@ void State_RL::enter(){
     last_applied_action_sequence_ = 0;
     handled_reset_generation_ = reset_generation_.load(std::memory_order_acquire);
     action_buffer_.invalidate();
+    openDeploymentDiagnostics();
     for (int i = 0; i < HISTORY_LEN; i++)
     {
         PolicyInputSnapshot stateSnapshot;
@@ -173,6 +176,7 @@ void State_RL::exit(){
         outfile.close();
         std::cout << "文件关闭成功!" << std::endl;
     }
+    closeDeploymentDiagnostics();
 }
 
 FSMStateName State_RL::checkChange(){
@@ -285,6 +289,9 @@ void State_RL::infer_thread_callback()
             }
             if (debug == true) std::cout << actions[reindex[i]]  + default_dof_pos_tensor[reindex[i]].item<float>() << " ";
         }
+        recordDeploymentDiagnostics(policySequence, sourceStateSequence,
+                                    sourceSimTimeUs, commandSnapshot,
+                                    outputSnapshot);
         action_buffer_.publish(outputSnapshot);
         const std::uint64_t actionSequence = outputSnapshot.action_sequence;
         TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
@@ -405,15 +412,28 @@ bool State_RL::refresh_rl_obs(const PolicyInputSnapshot *stateSnapshot,
                stateSnapshot->state_sequence, stateSnapshot->sim_time_us)){
             return false;
         }
-        for (int i=0; i<4; i++) {
-            base_w_orientation[i] = stateSnapshot->base_w_orientation[i];
-        }
-        for (int i=0; i<3; i++) {
-            base_w_angular_vel[i] = stateSnapshot->base_w_angular_velocity[i];
+        using_imu_policy_input_ = !stateSnapshot->base_world_valid;
+        if(using_imu_policy_input_){
+            base_w_orientation[0] = stateSnapshot->low_state.imu.quaternion[1];
+            base_w_orientation[1] = stateSnapshot->low_state.imu.quaternion[2];
+            base_w_orientation[2] = stateSnapshot->low_state.imu.quaternion[3];
+            base_w_orientation[3] = stateSnapshot->low_state.imu.quaternion[0];
+            for (int i=0; i<3; i++) {
+                base_w_angular_vel[i] = stateSnapshot->low_state.imu.gyroscope[i];
+                base_ang_vel_tensor[i] = base_w_angular_vel[i];
+            }
+        } else {
+            for (int i=0; i<4; i++) {
+                base_w_orientation[i] = stateSnapshot->base_w_orientation[i];
+            }
+            for (int i=0; i<3; i++) {
+                base_w_angular_vel[i] = stateSnapshot->base_w_angular_velocity[i];
+            }
+            torch::Tensor w_angular_vel_tensor = torch::from_blob(base_w_angular_vel.data(), {int64_t(base_w_angular_vel.size())}, opts).unsqueeze(0).clone();
+            torch::Tensor orientation_tensor = torch::from_blob(base_w_orientation.data(), {int64_t(base_w_orientation.size())}, opts).unsqueeze(0).clone();
+            base_ang_vel_tensor = quat_rotate_inverse(orientation_tensor, w_angular_vel_tensor).squeeze().clone();
         }
         torch::Tensor orientation_tensor = torch::from_blob(base_w_orientation.data(), {int64_t(base_w_orientation.size())}, opts).unsqueeze(0).clone();
-        torch::Tensor w_angular_vel_tensor = torch::from_blob(base_w_angular_vel.data(), {int64_t(base_w_angular_vel.size())}, opts).unsqueeze(0).clone();
-        base_ang_vel_tensor = quat_rotate_inverse(orientation_tensor, w_angular_vel_tensor).squeeze().clone();
         projected_gravity_tensor = quat_rotate_inverse(orientation_tensor, gravity_tensor.unsqueeze(0)).squeeze().clone();
         
         //订阅cmd_vel
@@ -634,6 +654,84 @@ void State_RL::close_amp_save_file()
         outfile.close();
         // std::cout << "文件关闭保存成功!" << std::endl;
     }
+}
+
+void State_RL::openDeploymentDiagnostics()
+{
+    closeDeploymentDiagnostics();
+    const char *path = std::getenv("UNITREE_RL_DIAG_PATH");
+    if(path == nullptr || path[0] == '\0'){
+        deployment_diag_enabled_ = false;
+        return;
+    }
+    deployment_diag_.open(path, std::ios::out | std::ios::trunc);
+    if(!deployment_diag_.is_open()){
+        std::cerr << "[RL-DIAG] Unable to open " << path << std::endl;
+        deployment_diag_enabled_ = false;
+        return;
+    }
+    deployment_diag_enabled_ = true;
+    deployment_diag_ << "policy_sequence,source_state_sequence,source_sim_time_us,"
+                     << "using_imu_policy_input,"
+                     << "cmd_vx,cmd_vy,cmd_yaw,history_oldest_stamp_us,"
+                     << "history_newest_stamp_us,history_span_us,history_duplicate_count";
+    for(int i=0; i<3; ++i){ deployment_diag_ << ",base_ang_vel_" << i; }
+    for(int i=0; i<3; ++i){ deployment_diag_ << ",projected_gravity_" << i; }
+    for(int i=0; i<3; ++i){ deployment_diag_ << ",commands_scaled_" << i; }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ",joint_pos_policy_" << i; }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ",joint_vel_policy_" << i; }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ",prev_action_obs_" << i; }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ",raw_action_model_" << i; }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ",scaled_action_policy_" << i; }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ",q_target_gazebo_" << i; }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ",default_policy_" << i; }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ",reindex_" << i; }
+    deployment_diag_ << '\n';
+}
+
+void State_RL::closeDeploymentDiagnostics()
+{
+    if(deployment_diag_.is_open()){
+        deployment_diag_.flush();
+        deployment_diag_.close();
+    }
+    deployment_diag_enabled_ = false;
+}
+
+void State_RL::recordDeploymentDiagnostics(std::uint64_t policySequence,
+                                           std::uint64_t sourceStateSequence,
+                                           std::uint64_t sourceSimTimeUs,
+                                           const PolicyCommandSnapshot &commandSnapshot,
+                                           const PolicyOutputSnapshot &outputSnapshot)
+{
+    if(!deployment_diag_enabled_ || !deployment_diag_.is_open()){
+        return;
+    }
+    torch::Tensor rawActions = actions_tensor.to(torch::kCPU).contiguous();
+    torch::Tensor scaledActions = actions_tensor_scaled.to(torch::kCPU).contiguous();
+    torch::Tensor defaultPos = default_dof_pos_tensor.to(torch::kCPU).contiguous();
+    torch::Tensor obsCpu = obs_tensor.to(torch::kCPU).contiguous();
+    deployment_diag_ << policySequence << ',' << sourceStateSequence << ','
+                     << sourceSimTimeUs << ',' << (using_imu_policy_input_ ? 1 : 0) << ','
+                     << commandSnapshot.linear_x << ','
+                     << commandSnapshot.linear_y << ',' << commandSnapshot.angular_z << ','
+                     << history_stamps_us_.front() << ',' << history_stamps_us_.back() << ','
+                     << (history_stamps_us_.back() >= history_stamps_us_.front() ?
+                         history_stamps_us_.back() - history_stamps_us_.front() : 0) << ','
+                     << history_duplicate_count_;
+    deployment_diag_ << std::setprecision(9);
+    for(int i=0; i<3; ++i){ deployment_diag_ << ',' << base_ang_vel_tensor[i].item<float>(); }
+    for(int i=0; i<3; ++i){ deployment_diag_ << ',' << projected_gravity_tensor[i].item<float>(); }
+    for(int i=0; i<3; ++i){ deployment_diag_ << ',' << (commands_tensor[i] * commands_scale[i]).item<float>(); }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ',' << dof_pos_tensor[i].item<float>(); }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ',' << dof_vel_tensor[i].item<float>(); }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ',' << obsCpu[33 + i].item<float>(); }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ',' << rawActions[i].item<float>(); }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ',' << scaledActions[i].item<float>(); }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ',' << outputSnapshot.q_target[i]; }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ',' << defaultPos[i].item<float>(); }
+    for(int i=0; i<12; ++i){ deployment_diag_ << ',' << reindex[i]; }
+    deployment_diag_ << '\n';
 }
 
 torch::Tensor State_RL::quat_rotate_inverse(const torch::Tensor& q, const torch::Tensor& v) {

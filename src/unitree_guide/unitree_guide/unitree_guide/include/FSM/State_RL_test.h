@@ -116,7 +116,17 @@ private:
     PolicyHistoryGate history_gate_{20000};
     std::atomic<std::uint64_t> reset_generation_{0};
     std::uint64_t handled_reset_generation_ = 0;
+    bool using_imu_policy_input_ = false;
     void resetPolicyStateForTimeDiscontinuity();
+    std::ofstream deployment_diag_;
+    bool deployment_diag_enabled_ = false;
+    void openDeploymentDiagnostics();
+    void closeDeploymentDiagnostics();
+    void recordDeploymentDiagnostics(std::uint64_t policySequence,
+                                     std::uint64_t sourceStateSequence,
+                                     std::uint64_t sourceSimTimeUs,
+                                     const PolicyCommandSnapshot &commandSnapshot,
+                                     const PolicyOutputSnapshot &outputSnapshot);
 };
 
 #endif

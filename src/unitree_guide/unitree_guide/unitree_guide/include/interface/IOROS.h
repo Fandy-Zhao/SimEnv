@@ -48,6 +48,7 @@ unitree_legged_msgs::LowState _lowState;
 std::string _robot_name;
 std::array<std::atomic_bool, 12> _joint_state_received;
 std::atomic_bool _imu_received;
+std::atomic_bool _base_world_received;
 std::array<std::atomic<float>, 4> _foot_force;
 std::array<std::atomic<std::uint64_t>, 4> _foot_force_wall_stamp_ns;
 	std::array<std::atomic<std::uint64_t>, 4> _foot_force_callback_sequence;

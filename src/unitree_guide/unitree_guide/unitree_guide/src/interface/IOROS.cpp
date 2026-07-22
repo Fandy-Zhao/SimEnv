@@ -56,6 +56,7 @@ IOROS::IOROS():IOInterface(){
         _foot_force_sim_time_us[i].store(0);
     }
     _imu_received.store(false);
+    _base_world_received.store(false);
 
     // start subscriber
     initRecv();
@@ -185,6 +186,7 @@ void IOROS::recvState(LowlevelState *state){
     snapshot.low_state = *state;
     snapshot.base_w_orientation = _base_w_ori;
     snapshot.base_w_angular_velocity = _base_w_angular_vel;
+    snapshot.base_world_valid = _base_world_received.load(std::memory_order_acquire);
     snapshot.sim_time_us = stampUs;
     snapshot.state_sequence = _state_sequence.load(std::memory_order_acquire);
     snapshot.valid = stampUs != 0 && snapshot.state_sequence != 0;
@@ -342,6 +344,7 @@ void IOROS::baseWorldCallback(const nav_msgs::Odometry& msg) {
     _base_w_angular_vel[0] = msg.twist.twist.angular.x;
     _base_w_angular_vel[1] = msg.twist.twist.angular.y;
     _base_w_angular_vel[2] = msg.twist.twist.angular.z;
+    _base_world_received.store(true, std::memory_order_release);
     // std::cout << "_base_w_angular_vel" << _base_w_angular_vel[0] << " " << _base_w_angular_vel[1] << " " << _base_w_angular_vel[2] << std::endl;
 }
 
