@@ -7,6 +7,12 @@
   mapping-pipeline checker.
 - Left simulation launch defaults, controller logic, mapping logic, generated
   scenes, logs, and results unchanged.
+- Added a core runtime matrix runner and recorded partial runtime evidence:
+  M0/M1/M6 complete, RL policy inference measured at about 50 Hz, and full
+  mapping cases blocked by missing external `fast_lio`.
+- Propagated diagnostic and thread-limit environment variables into the
+  dedicated `junior_ctrl` launch environment so M8-style thread-limit tests can
+  be valid once FAST-LIO2 is available.
 
 ## 2026-07-22 — RL keyboard command fallback
 

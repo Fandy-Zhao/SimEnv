@@ -1,0 +1,37 @@
+{
+  "case": "M0",
+  "verdict": "CASE_COMPLETE",
+  "competition": false,
+  "mapping": false,
+  "policy_loaded": false,
+  "rl_active": false,
+  "torch_limit": false,
+  "rl_enter_wall_elapsed": null,
+  "rl_enter_sim_time": null,
+  "rtf": {
+    "count": 5,
+    "mean": 0.640748880110604,
+    "median": 0.6400014872585188,
+    "p10": 0.6366910227131284,
+    "p90": 0.646095498202034,
+    "min": 0.6366910227131284,
+    "max": 0.646095498202034,
+    "sample_sim_duration": 30.940000000000005
+  },
+  "topic_rates": {
+    "/clock": null,
+    "/scan": null,
+    "/scan_pointcloud2": null,
+    "/livox/imu": null,
+    "/Odometry": null,
+    "/cloud_registered": null,
+    "/state_estimation": null,
+    "/registered_scan": null
+  },
+  "timing": {
+    "exists": true,
+    "rows": 114265,
+    "action_rows": 0,
+    "policy_wait_rows": 0
+  }
+}

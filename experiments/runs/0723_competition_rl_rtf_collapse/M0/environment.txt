@@ -1,0 +1,8 @@
+AUTO_UNPAUSE=1
+GUI=false
+PHYSICS_PROFILE=normal
+SKIP_GLOBAL_PROCESS_CLEANUP=true
+TERMINAL_BACKEND=direct
+TIMING_DIAGNOSTICS_ENABLED=0
+TIMING_DIAGNOSTICS_PATH=/home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/experiments/runs/0723_competition_rl_rtf_collapse/M0/timing.csv
+WORLD_MODE=earth

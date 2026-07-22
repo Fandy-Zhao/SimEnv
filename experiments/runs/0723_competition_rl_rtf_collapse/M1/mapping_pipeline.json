@@ -1,0 +1,178 @@
+{
+  "ros_available": true,
+  "topics": [
+    "/a1_gazebo/FL_calf_controller/command",
+    "/a1_gazebo/FL_calf_controller/joint_wrench",
+    "/a1_gazebo/FL_calf_controller/state",
+    "/a1_gazebo/FL_hip_controller/command",
+    "/a1_gazebo/FL_hip_controller/joint_wrench",
+    "/a1_gazebo/FL_hip_controller/state",
+    "/a1_gazebo/FL_thigh_controller/command",
+    "/a1_gazebo/FL_thigh_controller/joint_wrench",
+    "/a1_gazebo/FL_thigh_controller/state",
+    "/a1_gazebo/FR_calf_controller/command",
+    "/a1_gazebo/FR_calf_controller/joint_wrench",
+    "/a1_gazebo/FR_calf_controller/state",
+    "/a1_gazebo/FR_hip_controller/command",
+    "/a1_gazebo/FR_hip_controller/joint_wrench",
+    "/a1_gazebo/FR_hip_controller/state",
+    "/a1_gazebo/FR_thigh_controller/command",
+    "/a1_gazebo/FR_thigh_controller/joint_wrench",
+    "/a1_gazebo/FR_thigh_controller/state",
+    "/a1_gazebo/RL_calf_controller/command",
+    "/a1_gazebo/RL_calf_controller/joint_wrench",
+    "/a1_gazebo/RL_calf_controller/state",
+    "/a1_gazebo/RL_hip_controller/command",
+    "/a1_gazebo/RL_hip_controller/joint_wrench",
+    "/a1_gazebo/RL_hip_controller/state",
+    "/a1_gazebo/RL_thigh_controller/command",
+    "/a1_gazebo/RL_thigh_controller/joint_wrench",
+    "/a1_gazebo/RL_thigh_controller/state",
+    "/a1_gazebo/RR_calf_controller/command",
+    "/a1_gazebo/RR_calf_controller/joint_wrench",
+    "/a1_gazebo/RR_calf_controller/state",
+    "/a1_gazebo/RR_hip_controller/command",
+    "/a1_gazebo/RR_hip_controller/joint_wrench",
+    "/a1_gazebo/RR_hip_controller/state",
+    "/a1_gazebo/RR_thigh_controller/command",
+    "/a1_gazebo/RR_thigh_controller/joint_wrench",
+    "/a1_gazebo/RR_thigh_controller/state",
+    "/a1_gazebo/joint_states",
+    "/apply_force/trunk",
+    "/clock",
+    "/cmd_vel",
+    "/fsm/state_cmd",
+    "/gazebo/link_states",
+    "/gazebo/model_states",
+    "/gazebo/parameter_descriptions",
+    "/gazebo/parameter_updates",
+    "/gazebo/performance_metrics",
+    "/gazebo/set_link_state",
+    "/gazebo/set_model_state",
+    "/ground_truth/FL_foot",
+    "/ground_truth/FR_foot",
+    "/ground_truth/RL_foot",
+    "/ground_truth/RR_foot",
+    "/ground_truth/base_trunk",
+    "/ground_truth/base_w",
+    "/joy",
+    "/rosout",
+    "/rosout_agg",
+    "/tf",
+    "/tf_static",
+    "/trunk_imu",
+    "/visual/FL_foot_contact/the_force",
+    "/visual/FR_foot_contact/the_force",
+    "/visual/RL_foot_contact/the_force",
+    "/visual/RR_foot_contact/the_force"
+  ],
+  "nodes": [
+    "/a1_gazebo/controller_spawner",
+    "/gazebo",
+    "/robot_state_publisher",
+    "/rosout",
+    "/rostopic_256781_1784740092228",
+    "/rostopic_257023_1784740097137",
+    "/rostopic_257115_1784740101755",
+    "/rostopic_257159_1784740106817",
+    "/rostopic_257263_1784740111925",
+    "/rostopic_258249_1784740169355",
+    "/rostopic_258338_1784740180733",
+    "/rostopic_258462_1784740190749",
+    "/rostopic_258583_1784740200742",
+    "/rostopic_258702_1784740210843",
+    "/rostopic_258821_1784740220994",
+    "/rostopic_258939_1784740230958",
+    "/rostopic_259059_1784740241031",
+    "/unitree_gazebo_servo"
+  ],
+  "topic_status": {
+    "/scan": {
+      "present": false,
+      "type": null,
+      "info": null
+    },
+    "/scan_pointcloud2": {
+      "present": false,
+      "type": null,
+      "info": null
+    },
+    "/Odometry": {
+      "present": false,
+      "type": null,
+      "info": null
+    },
+    "/cloud_registered": {
+      "present": false,
+      "type": null,
+      "info": null
+    },
+    "/state_estimation": {
+      "present": false,
+      "type": null,
+      "info": null
+    },
+    "/registered_scan": {
+      "present": false,
+      "type": null,
+      "info": null
+    }
+  },
+  "node_status": {
+    "scan_to_pointcloud2": {
+      "present": false,
+      "description": "converter node for /scan -> /scan_pointcloud2"
+    },
+    "fastlio_mapping": {
+      "present": false,
+      "description": "FAST-LIO2 odometry and mapping node"
+    },
+    "laserMapping": {
+      "present": false,
+      "description": "alternative FAST-LIO2 node name"
+    }
+  },
+  "topic_rates": {},
+  "issues": [
+    "Missing topic: /scan",
+    "Missing topic: /scan_pointcloud2",
+    "Missing topic: /Odometry",
+    "Missing topic: /cloud_registered",
+    "Missing topic: /state_estimation",
+    "Missing topic: /registered_scan",
+    "Node not running: scan_to_pointcloud2 (converter node for /scan -> /scan_pointcloud2)",
+    "Node not running: fastlio_mapping (FAST-LIO2 odometry and mapping node)",
+    "Node not running: laserMapping (alternative FAST-LIO2 node name)"
+  ]
+}
+
+---
+
+## Mapping Pipeline Check
+
+### Expected Topics
+
+- :x: `/scan`
+- :x: `/scan_pointcloud2`
+- :x: `/Odometry`
+- :x: `/cloud_registered`
+- :x: `/state_estimation`
+- :x: `/registered_scan`
+
+### Expected Nodes
+
+- :x: `scan_to_pointcloud2`
+- :x: `fastlio_mapping`
+- :x: `laserMapping`
+
+### Issues
+
+- Missing topic: /scan
+- Missing topic: /scan_pointcloud2
+- Missing topic: /Odometry
+- Missing topic: /cloud_registered
+- Missing topic: /state_estimation
+- Missing topic: /registered_scan
+- Node not running: scan_to_pointcloud2 (converter node for /scan -> /scan_pointcloud2)
+- Node not running: fastlio_mapping (FAST-LIO2 odometry and mapping node)
+- Node not running: laserMapping (alternative FAST-LIO2 node name)

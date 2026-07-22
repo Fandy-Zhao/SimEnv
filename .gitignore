@@ -27,3 +27,7 @@ Thumbs.db
 
 # Gazebo
 *.log
+
+# Large per-run diagnostics
+experiments/runs/*/M*/timing.csv
+experiments/runs/*/M*/rl_deploy.csv

@@ -1,0 +1,4 @@
+[rospack] Error: package 'fast_lio' not found
+rospack_fast_lio_exit=1
+/home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch
+roslaunch_files_exit=0

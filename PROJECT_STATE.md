@@ -1,5 +1,13 @@
 # Project State
 
+> **2026-07-23 competition RL partial runtime**: the task worktree now builds
+> successfully after fixing only the local venv `empy` version (`3.3.4`).
+> M0 earth baseline mean RTF is `0.640749`; M1 competition minimal baseline
+> mean RTF is `0.989895`; M6 competition RL-active/no-mapping mean RTF is
+> `0.989091` with policy inference at `50.0085 Hz`. Full mapping cases
+> M4/M5/M7/M8 are blocked because the external `fast_lio` package is absent
+> from the hermetic worktree, so root cause remains partial.
+
 > **2026-07-23 competition RL RTF collapse diagnostics**: branch
 > `diagnose/0723-competition-rl-rtf-collapse` creates a governed diagnostic
 > issue, static audit, and dry-run-first M0-M8 harness for isolating

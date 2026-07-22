@@ -121,6 +121,8 @@ WRITE_GENERATED_TRUTH_COPY="$(as_ros_bool "${WRITE_GENERATED_TRUTH_COPY:-1}")"
 ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-1}")"
 FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-5}"
 ENABLE_RVIZ="$(as_ros_bool "${ENABLE_RVIZ:-1}")"
+TIMING_DIAGNOSTICS_ENABLED="$(as_ros_bool "${TIMING_DIAGNOSTICS_ENABLED:-0}")"
+TIMING_DIAGNOSTICS_PATH="${TIMING_DIAGNOSTICS_PATH:-$WORKSPACE_DIR/logs/unitree_timing.csv}"
 TERMINAL_BACKEND="${TERMINAL_BACKEND:-tmux}"
 TMUX_SESSION_PREFIX="${TMUX_SESSION_PREFIX:-simenv}"
 SKIP_GLOBAL_PROCESS_CLEANUP="$(as_ros_bool "${SKIP_GLOBAL_PROCESS_CLEANUP:-0}")"
@@ -206,6 +208,14 @@ launch_in_terminal() {
   if [ -n "${RL_POLICY_PATH:-}" ]; then
     env_block="${env_block} export RL_POLICY_PATH=$(shell_quote "$RL_POLICY_PATH");"
   fi
+  if [ -n "${UNITREE_RL_DIAG_PATH:-}" ]; then
+    env_block="${env_block} export UNITREE_RL_DIAG_PATH=$(shell_quote "$UNITREE_RL_DIAG_PATH");"
+  fi
+  for thread_env_name in OMP_NUM_THREADS MKL_NUM_THREADS OPENBLAS_NUM_THREADS NUMEXPR_NUM_THREADS; do
+    if [ -n "${!thread_env_name:-}" ]; then
+      env_block="${env_block} export ${thread_env_name}=$(shell_quote "${!thread_env_name}");"
+    fi
+  done
 
   terminal_env=(
     env -i
@@ -504,11 +514,23 @@ echo "  FAST-LIO2 mapping: $ENABLE_FAST_LIO2"
 echo "  RViz: $ENABLE_RVIZ"
 echo "  Building controller: $START_BUILDING_CONTROL"
 echo "  Virtual joystick: $START_VIRTUAL_JOY"
+echo "  Timing diagnostics: $TIMING_DIAGNOSTICS_ENABLED"
+if [ "$TIMING_DIAGNOSTICS_ENABLED" = "true" ]; then
+  echo "  Timing diagnostics path: $TIMING_DIAGNOSTICS_PATH"
+fi
 if [ -n "${RL_POLICY_PATH:-}" ]; then
   echo "  RL policy override: $RL_POLICY_PATH"
 else
   echo "  RL policy override: unset (controller default; /rl_policy_path ROS param still has priority)"
 fi
+if [ -n "${UNITREE_RL_DIAG_PATH:-}" ]; then
+  echo "  RL deployment diagnostics path: $UNITREE_RL_DIAG_PATH"
+fi
+for thread_env_name in OMP_NUM_THREADS MKL_NUM_THREADS OPENBLAS_NUM_THREADS NUMEXPR_NUM_THREADS; do
+  if [ -n "${!thread_env_name:-}" ]; then
+    echo "  ${thread_env_name}: ${!thread_env_name}"
+  fi
+done
 echo "  Gazebo starts paused: $PAUSED"
 echo "  Auto unpause: $AUTO_UNPAUSE after ${AUTO_UNPAUSE_DELAY}s"
 echo "  Gazebo physics:"
@@ -569,6 +591,10 @@ if [ "$START_CONTROLLER" = "1" ]; then
   echo "Starting junior_ctrl in a dedicated terminal..."
   echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
   echo "Keyboard input in the controller terminal: 2=stand (4=trot, 6=RL need Torch build)."
+  if [ "$TIMING_DIAGNOSTICS_ENABLED" = "true" ]; then
+    rosparam set /timing_diagnostics_enabled true
+    rosparam set /timing_diagnostics_path "$TIMING_DIAGNOSTICS_PATH"
+  fi
   launch_in_terminal "junior_ctrl" "$CONTROLLER_BIN"
   sleep 2
   schedule_unpause_physics
