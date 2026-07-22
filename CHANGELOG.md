@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-07-22 — quick-start auto.sh parameter docs
+
+- Updated `docs/quick-start.md` with current `auto.sh` environment parameters,
+  including Earth mode, physics profiles, RL policy override, tmux backend,
+  auto-unpause, sensor toggles, and Gazebo physics overrides.
+
 ## 2026-07-22 — auto.sh RL policy override visibility
 
 - Added explicit `auto.sh` startup-summary reporting for `RL_POLICY_PATH`.

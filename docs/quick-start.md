@@ -76,34 +76,90 @@ SEED=20260507 FLOOR_COUNT=4 ROOMS_PER_FLOOR=5 DANGER_COUNT=5 DISTRACTOR_COUNT=8 
 START_CONTROLLER=0 ./auto.sh
 ```
 
+启动 Earth 平地模式并使用推荐的 plane RL policy：
+
+```bash
+RL_POLICY_PATH=/home/zzf/search_ws/SimEnv/src/unitree_guide/logs/policy_act_inference_plane.pt \
+WORLD_MODE=earth \
+PHYSICS_PROFILE=normal \
+GUI=False \
+./auto.sh
+```
+
+`WORLD_MODE=earth` 会跳过比赛场景随机生成，使用 `earth.world` 平地世界，
+并默认关闭楼栋控制、FAST-LIO2、RViz、传感器数据、裁判里程计和 ground truth
+话题，适合做 Unitree A1/RL 控制链路的短回归。
+
 ## 启动参数
 
 | 环境变量 | 默认值 | 说明 |
 |----------|--------|------|
+| `WORLD_MODE` | `competition` | 启动模式。`competition` 生成比赛楼栋；`earth` 使用平地 `earth.world` |
+| `PHYSICS_PROFILE` | `normal` | Gazebo 物理预设。支持 `normal`、`fidelity`；competition 未显式配置时保留 legacy `0.002/500/40` |
 | `SEED` | 空 | 场景随机种子。为空时自动生成随机种子并写入 manifest |
-| `FLOOR_COUNT` | `3` | 楼层数，支持单值 |
+| `FLOOR_COUNT` | `1` | 楼层数，支持单值 |
 | `ROOMS_PER_FLOOR` | `4` | 每层房间数，支持单值 |
 | `BUILDING_WIDTH` | `20.0` | 楼栋宽度，单位 m |
 | `BUILDING_LENGTH` | `36.0` | 楼栋长度，单位 m |
 | `DANGER_COUNT` | `3:6` | 危险源数量，支持 `min:max` |
 | `DISTRACTOR_COUNT` | `4:8` | 干扰源数量，支持 `min:max` |
-| `GUI` | `true` | 是否启动 Gazebo GUI |
-| `PAUSED` | `false` | Gazebo 启动后是否暂停 |
+| `GUI` | `false` | 是否启动 Gazebo GUI |
+| `PAUSED` | `true` | Gazebo 启动后是否暂停 |
+| `AUTO_UNPAUSE` | `1` | 是否在启动后自动调用 `/gazebo/unpause_physics` |
+| `AUTO_UNPAUSE_DELAY` | `6` | 自动解除暂停前等待时间，单位 s |
 | `START_CONTROLLER` | `1` | 是否在独立终端启动 `junior_ctrl` |
 | `ENABLE_RVIZ` | `1` | 是否在独立终端启动 rviz |
 | `START_BUILDING_CONTROL` | `1` | 是否启动楼栋门/电梯控制服务 |
-| `UNITREE_CTRL_DT` | `0.004` | `junior_ctrl` 控制周期，单位 s |
+| `UNITREE_CTRL_DT` | `0.002` | `junior_ctrl` 控制周期，单位 s |
+| `RL_POLICY_PATH` | 空 | RL TorchScript policy 覆盖路径；传入 `junior_ctrl`，优先级低于 ROS 参数 `/rl_policy_path` |
 | `START_VIRTUAL_JOY` | `0` | 是否启动虚拟手柄，通常需要 `uinput` 权限 |
 | `ROBOT_X` | `0.0` | 机器人出生点 x |
 | `ROBOT_Y` | `2.3` | 机器人出生点 y |
 | `ROBOT_Z` | `0.6` | 机器人出生点 z |
 | `ROBOT_YAW` | `1.5708` | 机器人出生点 yaw |
-| `ENABLE_FAST_LIO2` | `0` | 是否启动 FAST-LIO2 建图（需编译 FAST_LIO） |
+| `ENABLE_FAST_LIO2` | `1` | 是否启动 FAST-LIO2 建图（需编译 FAST_LIO）；`WORLD_MODE=earth` 默认改为 `0` |
 | `ENABLE_POINTCLOUD_CONVERTER` | `1` | 是否启动 odom 系点云转换（FAST-LIO2 建图时建议设为 `0`） |
 | `ENABLE_SENSORS` | `1` | 是否启用传感器数据（LiDAR、IMU、RealSense） |
+| `ENABLE_SENSOR_DATA` | 同 `ENABLE_SENSORS` | 是否启用传感器数据；优先级高于兼容变量 `ENABLE_SENSORS` |
 | `ENABLE_REFEREE_ODOM` | `1` | 是否发布裁判真值里程计 |
 | `ENABLE_GROUND_TRUTH` | `1` | 是否发布 ground truth 话题 |
+| `ENABLE_FOOT_FORCE_VISUAL` | `0` | 是否启用足端接触力可视化 |
+| `ENABLE_JOY_NODE` | `0` | 是否启动 joystick ROS 节点 |
+| `POINTCLOUD_USE_GROUND_TRUTH_ODOM` | `1` | 点云转换节点是否使用 ground-truth odom |
 | `WRITE_GENERATED_TRUTH_COPY` | `1` | 是否写 `danger_truth.json` 到 `generated_building/` |
+| `TERMINAL_BACKEND` | `tmux` | 独立控制器/RViz 终端后端。可设为 `direct` 使用旧式终端启动 |
+| `TMUX_SESSION_PREFIX` | `simenv` | tmux 会话名前缀，默认会话为 `simenv-junior_ctrl`、`simenv-rviz` |
+| `SKIP_GLOBAL_PROCESS_CLEANUP` | `0` | 是否跳过启动前全局清理旧 Gazebo/ROS/controller 进程 |
+| `GAZEBO_PHYSICS_MAX_STEP_SIZE` | 随 profile | 覆盖 Gazebo `max_step_size` |
+| `GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE` | 随 profile | 覆盖 Gazebo `real_time_update_rate` |
+| `GAZEBO_PHYSICS_ODE_ITERS` | 随 profile | 覆盖 ODE solver iteration 数 |
+| `GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL` | `5.0` | 覆盖 Gazebo contact max correcting velocity |
+
+`WORLD_MODE=earth` 会覆盖一组默认值：`START_BUILDING_CONTROL=0`、
+`ENABLE_FAST_LIO2=0`、`ENABLE_RVIZ=0`、`ENABLE_SENSOR_DATA=0`、
+`ENABLE_POINTCLOUD_CONVERTER=0`、`ENABLE_REFEREE_ODOM=0`、
+`ENABLE_GROUND_TRUTH=0`、`WRITE_GENERATED_TRUTH_COPY=0`，并将机器人出生姿态
+设为 `x=0.0 y=0.0 z=0.6 yaw=0.0`。显式设置的环境变量仍会覆盖这些 earth
+模式默认值。
+
+RL policy 的运行时选择优先级为：
+
+1. ROS 参数 `/rl_policy_path`
+2. 环境变量 `RL_POLICY_PATH`
+3. 控制器默认 policy：`src/unitree_guide/logs/policy_act_inference_stair.pt`
+
+Earth 平地推荐使用：
+
+```bash
+RL_POLICY_PATH=/home/zzf/search_ws/SimEnv/src/unitree_guide/logs/policy_act_inference_plane.pt
+```
+
+启动摘要会打印 `RL policy override`，`junior_ctrl` 日志还会打印实际加载的
+policy path、realpath、SHA256 和 `load success`。可用以下命令确认：
+
+```bash
+tmux capture-pane -J -t simenv-junior_ctrl -p -S -300 | rg "RL-POLICY|SHA256|load success"
+```
 
 性能较弱时建议优先使用：
 
