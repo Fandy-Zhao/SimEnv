@@ -1,5 +1,20 @@
 # Project State
 
+> **2026-07-22 Earth RL LowCmd/IMU merge validation**: branch
+> `fix/0722-earth-rl-timebase-fast-validation` now includes the validated
+> `fix/0722-earth-rl-lowcmd-publisher-stall` merge
+> (`39bbb6cfef8fdcccbef4990919e6bf8579414caf`). The merged chain preserves
+> the stair policy path and brings in LowCmd queue depth 1, `tcpNoDelay()`,
+> persistent callback spinners, simulation-time LowCmd cadence scheduling,
+> staged T1-T4 diagnostics, and Earth IMU policy-input fallback. The task
+> worktree build passes. Short Earth regression passes for FixedStand and RL
+> zero: T0/T1/T2 median cadence is 500 Hz, T3/T4 are 1000 Hz,
+> `using_imu_policy_input=1`, policy input/action output finite checks pass,
+> and RL zero remains upright for 9 sim-s (`min_base_height=0.311336 m`,
+> `max_tilt=3.04993 deg`, median RTF `1.00864`). Remaining active task:
+> isolate and minimally fix the `vx=0.10 m/s` command-response issue on
+> `fix/0722-earth-rl-command-response`. No merge to `master`.
+
 > **2026-07-22 Earth RL timebase fastcheck**: branch
 > `fix/0722-earth-rl-timebase-fast-validation` runs the requested isolated
 > Earth `PHYSICS_PROFILE=normal` RL validation from a separate worktree. The

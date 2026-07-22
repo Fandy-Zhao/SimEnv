@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-07-22 — Earth RL LowCmd and IMU merge validation
+
+- Merged the validated `fix/0722-earth-rl-lowcmd-publisher-stall` branch into
+  `fix/0722-earth-rl-timebase-fast-validation` with a no-ff merge commit.
+- Preserved the stair policy path while bringing in LowCmd queue depth 1,
+  `tcpNoDelay()`, persistent ROS callback spinners, simulation-time LowCmd
+  cadence scheduling, staged T1-T4 diagnostics, and Earth IMU policy-input
+  fallback.
+- Validated the task worktree build and short Earth RL regression:
+  FixedStand/RL zero T0-T2 median cadence is 500 Hz, T3/T4 are 1000 Hz,
+  `using_imu_policy_input=1`, policy inputs are finite, and RL zero does not
+  fall over 9 sim-s.
+
 ## 2026-07-22 — Earth RL timebase fastcheck
 
 - Added governed evidence under `experiments/runs/0722_earth_rl_fastcheck/`
