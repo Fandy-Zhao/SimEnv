@@ -78,6 +78,7 @@ private:
     void resetForTimeDiscontinuity(const char *reason, const ros::Time &now,
                                    ControlTimeResetReason resetReason);
     void recordTiming(bool accepted, bool repeatedStateConsumed);
+    void waitForNextLoop();
     CtrlComponents *_ctrlComp;
     FSMState *_currentState;
     FSMState *_nextState;

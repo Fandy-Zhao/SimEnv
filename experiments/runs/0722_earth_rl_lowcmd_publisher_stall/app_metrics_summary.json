@@ -1,0 +1,173 @@
+{
+  "fixed_last5": {
+    "buffer": {
+      "count": 1809,
+      "duplicate_sequence_count": 0,
+      "duration_rate_hz": 362.03,
+      "max_gap_us": 12000,
+      "mean_rate_hz": 437.44,
+      "median_rate_hz": 333.33,
+      "out_of_order_count": 0,
+      "p10_rate_hz": 166.67,
+      "period_median_us": 3000.0,
+      "period_p90_us": 6000,
+      "period_p99_us": 8000,
+      "skipped_sequence_count": 0,
+      "unique_sequence_count": 1809
+    },
+    "fsm_accepted": {
+      "count": 1935,
+      "duration_rate_hz": 387.1871871871872,
+      "duration_us": 4995000,
+      "max_gap_us": 11000,
+      "median_dt_us": 4000.0,
+      "median_rate_hz": 250.0
+    },
+    "gazebo_controller": {
+      "count": 5000,
+      "duplicate_sequence_count": 3430,
+      "duration_rate_hz": 1000.0,
+      "max_gap_us": 1000,
+      "mean_rate_hz": 1000.0,
+      "median_rate_hz": 1000.0,
+      "new_payload_count": 1569,
+      "out_of_order_count": 0,
+      "p10_rate_hz": 1000.0,
+      "period_median_us": 1000,
+      "period_p90_us": 1000,
+      "period_p99_us": 1000,
+      "skipped_sequence_count": 240,
+      "unique_sequence_count": 1570
+    },
+    "joint_application": {
+      "count": 5000,
+      "duplicate_sequence_count": 3430,
+      "duration_rate_hz": 1000.0,
+      "max_gap_us": 1000,
+      "mean_rate_hz": 1000.0,
+      "median_rate_hz": 1000.0,
+      "new_payload_count": 1569,
+      "out_of_order_count": 0,
+      "p10_rate_hz": 1000.0,
+      "period_median_us": 1000,
+      "period_p90_us": 1000,
+      "period_p99_us": 1000,
+      "skipped_sequence_count": 240,
+      "unique_sequence_count": 1570
+    },
+    "lowcmd_published": {
+      "count": 1934,
+      "duration_rate_hz": 386.986986986987,
+      "duration_us": 4995000,
+      "max_gap_us": 8000,
+      "median_dt_us": 2000,
+      "median_rate_hz": 500.0
+    },
+    "lowcmd_receive_500hz": {
+      "count": 1809,
+      "duplicate_sequence_count": 0,
+      "duration_rate_hz": 362.03,
+      "max_gap_us": 12000,
+      "mean_rate_hz": 429.87,
+      "median_rate_hz": 333.33,
+      "out_of_order_count": 0,
+      "p10_rate_hz": 166.67,
+      "period_median_us": 3000.0,
+      "period_p90_us": 6000,
+      "period_p99_us": 8000,
+      "skipped_sequence_count": 0,
+      "unique_sequence_count": 1809
+    },
+    "lowcmd_vs_apply_rate_diff_ratio": 1.0,
+    "window_us": [
+      31195000,
+      36195000
+    ]
+  },
+  "rl_zero_8p5": {
+    "buffer": {
+      "count": 3076,
+      "duplicate_sequence_count": 0,
+      "duration_rate_hz": 361.85,
+      "max_gap_us": 31000,
+      "mean_rate_hz": 431.34,
+      "median_rate_hz": 333.33,
+      "out_of_order_count": 0,
+      "p10_rate_hz": 166.67,
+      "period_median_us": 3000.0,
+      "period_p90_us": 6000,
+      "period_p99_us": 8000,
+      "skipped_sequence_count": 0,
+      "unique_sequence_count": 3076
+    },
+    "fsm_accepted": {
+      "count": 3272,
+      "duration_rate_hz": 385.2314215051231,
+      "duration_us": 8491000,
+      "max_gap_us": 34000,
+      "median_dt_us": 4000.0,
+      "median_rate_hz": 250.0
+    },
+    "gazebo_controller": {
+      "count": 8500,
+      "duplicate_sequence_count": 5828,
+      "duration_rate_hz": 1000.0,
+      "max_gap_us": 1000,
+      "mean_rate_hz": 1000.0,
+      "median_rate_hz": 1000.0,
+      "new_payload_count": 2671,
+      "out_of_order_count": 0,
+      "p10_rate_hz": 1000.0,
+      "period_median_us": 1000,
+      "period_p90_us": 1000,
+      "period_p99_us": 1000,
+      "skipped_sequence_count": 405,
+      "unique_sequence_count": 2672
+    },
+    "joint_application": {
+      "count": 8500,
+      "duplicate_sequence_count": 5828,
+      "duration_rate_hz": 1000.0,
+      "max_gap_us": 1000,
+      "mean_rate_hz": 1000.0,
+      "median_rate_hz": 1000.0,
+      "new_payload_count": 2671,
+      "out_of_order_count": 0,
+      "p10_rate_hz": 1000.0,
+      "period_median_us": 1000,
+      "period_p90_us": 1000,
+      "period_p99_us": 1000,
+      "skipped_sequence_count": 405,
+      "unique_sequence_count": 2672
+    },
+    "lowcmd_published": {
+      "count": 3273,
+      "duration_rate_hz": 384.9864689963525,
+      "duration_us": 8499000,
+      "max_gap_us": 30000,
+      "median_dt_us": 2000.0,
+      "median_rate_hz": 500.0
+    },
+    "lowcmd_receive_500hz": {
+      "count": 3076,
+      "duplicate_sequence_count": 0,
+      "duration_rate_hz": 361.85,
+      "max_gap_us": 31000,
+      "mean_rate_hz": 430.19,
+      "median_rate_hz": 333.33,
+      "out_of_order_count": 0,
+      "p10_rate_hz": 166.67,
+      "period_median_us": 3000.0,
+      "period_p90_us": 6000,
+      "period_p99_us": 8000,
+      "skipped_sequence_count": 0,
+      "unique_sequence_count": 3076
+    },
+    "lowcmd_vs_apply_rate_diff_ratio": 1.0,
+    "window_us": [
+      36195000,
+      44695000
+    ]
+  },
+  "switch_sim_time_s": 36.195
+}

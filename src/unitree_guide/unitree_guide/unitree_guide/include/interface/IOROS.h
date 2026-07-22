@@ -21,6 +21,7 @@
 #include <array>
 #include <atomic>
 #include <cstdint>
+#include <memory>
 #include <mutex>
 
 class IOROS : public IOInterface{
@@ -43,11 +44,13 @@ ros::NodeHandle _nm;
 ros::Subscriber _servo_sub[12], _imu_sub, _foot_states_sub[4], _foot_force_sub[4],
                 _base_w_sub, _base_t_sub, _time_sub, joy_sub;
 ros::Publisher _servo_pub[12];
+std::unique_ptr<ros::AsyncSpinner> _callback_spinner;
 unitree_legged_msgs::LowCmd _lowCmd;
 unitree_legged_msgs::LowState _lowState;
 std::string _robot_name;
 std::array<std::atomic_bool, 12> _joint_state_received;
 std::atomic_bool _imu_received;
+std::atomic_bool _base_world_received;
 std::array<std::atomic<float>, 4> _foot_force;
 std::array<std::atomic<std::uint64_t>, 4> _foot_force_wall_stamp_ns;
 	std::array<std::atomic<std::uint64_t>, 4> _foot_force_callback_sequence;
