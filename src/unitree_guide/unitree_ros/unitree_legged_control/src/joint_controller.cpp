@@ -5,8 +5,13 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 
 // #include "unitree_legged_control/joint_controller.h"
 #include "joint_controller.h"
+#include <cstdlib>
 #include <cmath>
+#include <fstream>
+#include <mutex>
+#include <string>
 #include <pluginlib/class_list_macros.h>
+#include <ros/param.h>
 
 // #define rqtTune // use rqt or not
 
@@ -14,6 +19,55 @@ namespace unitree_legged_control
 {
     namespace
     {
+        std::mutex diagnosticsMutex;
+        std::ofstream diagnosticsStream;
+
+        std::uint64_t wallNowNs()
+        {
+            return ros::WallTime::now().toNSec();
+        }
+
+        std::uint64_t simTimeUs(const ros::Time& time)
+        {
+            return static_cast<std::uint64_t>(time.toNSec() / 1000ULL);
+        }
+
+        bool ensureDiagnosticsOpen(const std::string& path)
+        {
+            if(diagnosticsStream.is_open()){
+                return true;
+            }
+            diagnosticsStream.open(path, std::ios::out | std::ios::trunc);
+            if(!diagnosticsStream.is_open()){
+                ROS_ERROR("Unable to open LowCmd apply diagnostics CSV: %s", path.c_str());
+                return false;
+            }
+            diagnosticsStream
+                << "event,joint,wall_time_ns,sim_time_us,sim_dt_us,period_us,"
+                << "controller_update_sequence,command_sequence,previous_command_sequence,"
+                << "new_command,receive_wall_time_ns,receive_sim_time_us,"
+                << "mode,q,dq,tau,kp,kd\n";
+            return true;
+        }
+
+        bool envFlagEnabled(const char *name, bool fallback)
+        {
+            const char *value = std::getenv(name);
+            if(value == nullptr || value[0] == '\0'){
+                return fallback;
+            }
+            const std::string text(value);
+            return text == "1" || text == "true" || text == "TRUE" ||
+                   text == "yes" || text == "YES" || text == "on" ||
+                   text == "ON";
+        }
+
+        std::string envString(const char *name, const std::string &fallback)
+        {
+            const char *value = std::getenv(name);
+            return value == nullptr || value[0] == '\0' ? fallback : value;
+        }
+
         double normalizedJointPosition(double position, const urdf::JointConstSharedPtr& jointUrdf)
         {
             if(jointUrdf && jointUrdf->type == urdf::Joint::REVOLUTE){
@@ -27,6 +81,11 @@ namespace unitree_legged_control
         memset(&lastCmd, 0, sizeof(unitree_legged_msgs::MotorCmd));
         memset(&lastState, 0, sizeof(unitree_legged_msgs::MotorState));
         memset(&servoCmd, 0, sizeof(ServoCmd));
+        diagnostics_enabled = false;
+        diagnostics_target_joint = false;
+        received_command_sequence = 0;
+        applied_command_sequence = 0;
+        controller_update_sequence = 0;
     }
 
     UnitreeJointController::~UnitreeJointController(){
@@ -49,10 +108,17 @@ namespace unitree_legged_control
         lastCmd.dq = msg->dq;
         lastCmd.Kd = msg->Kd;
         lastCmd.tau = msg->tau;
+        StampedMotorCmd stampedCmd;
+        stampedCmd.cmd = lastCmd;
+        stampedCmd.sequence = ++received_command_sequence;
+        stampedCmd.receive_wall_time_ns = wallNowNs();
+        stampedCmd.receive_sim_time_us = simTimeUs(ros::Time::now());
         // the writeFromNonRT can be used in RT, if you have the guarantee that
         //  * no non-rt thread is calling the same function (we're not subscribing to ros callbacks)
         //  * there is only one single rt thread
-        command.writeFromNonRT(lastCmd);
+        command.writeFromNonRT(stampedCmd);
+        writeCommandDiagnostics("CMD_RECEIVE", stampedCmd, ros::Time::now(),
+                                ros::Duration(0.0), true);
     }
 
     // Controller initialization in non-realtime
@@ -67,6 +133,31 @@ namespace unitree_legged_control
         if (!n.getParam("joint", joint_name)){
             ROS_ERROR("No joint given in namespace: '%s')", n.getNamespace().c_str());
             return false;
+        }
+        std::string diagnosticsJoint = "FR_hip_joint";
+        std::string diagnosticsPath = "logs/lowcmd_apply_timing.csv";
+        ros::param::param<bool>("/lowcmd_apply_diagnostics_enabled",
+                                diagnostics_enabled, false);
+        ros::param::param<std::string>("/lowcmd_apply_diagnostics_joint",
+                                       diagnosticsJoint, diagnosticsJoint);
+        ros::param::param<std::string>("/lowcmd_apply_diagnostics_path",
+                                       diagnosticsPath, diagnosticsPath);
+        diagnostics_enabled = envFlagEnabled("LOWCMD_APPLY_DIAGNOSTICS_ENABLED",
+                                             diagnostics_enabled);
+        diagnosticsJoint = envString("LOWCMD_APPLY_DIAGNOSTICS_JOINT",
+                                     diagnosticsJoint);
+        diagnosticsPath = envString("LOWCMD_APPLY_DIAGNOSTICS_PATH",
+                                    diagnosticsPath);
+        diagnostics_target_joint = diagnostics_enabled &&
+            (diagnosticsJoint == joint_name || diagnosticsJoint == name_space);
+        if(diagnostics_target_joint){
+            std::lock_guard<std::mutex> lock(diagnosticsMutex);
+            if(ensureDiagnosticsOpen(diagnosticsPath)){
+                ROS_INFO("LowCmd apply diagnostics enabled for %s -> %s",
+                         joint_name.c_str(), diagnosticsPath.c_str());
+            }else{
+                diagnostics_target_joint = false;
+            }
         }
         
         // load pid param from ymal only if rqt need 
@@ -98,7 +189,8 @@ namespace unitree_legged_control
 
         // Start command subscriber
         sub_ft = n.subscribe(name_space + "/" +"joint_wrench", 1, &UnitreeJointController::setTorqueCB, this);
-        sub_cmd = n.subscribe("command", 20, &UnitreeJointController::setCommandCB, this);
+        sub_cmd = n.subscribe("command", 1, &UnitreeJointController::setCommandCB, this,
+                              ros::TransportHints().tcpNoDelay());
 
         // pub_state = n.advertise<unitree_legged_msgs::MotorState>(name_space + "/state", 20); 
         // Start realtime state publisher
@@ -136,7 +228,13 @@ namespace unitree_legged_control
         lastState.dq = 0;
         lastCmd.tau = 0;
         lastState.tauEst = 0;
-        command.initRT(lastCmd);
+        lastStampedCmd.cmd = lastCmd;
+        lastStampedCmd.sequence = 0;
+        lastStampedCmd.receive_wall_time_ns = wallNowNs();
+        lastStampedCmd.receive_sim_time_us = simTimeUs(time);
+        command.initRT(lastStampedCmd);
+        applied_command_sequence = 0;
+        controller_update_sequence = 0;
 
         pid_controller_.reset();
     }
@@ -145,7 +243,14 @@ namespace unitree_legged_control
     void UnitreeJointController::update(const ros::Time& time, const ros::Duration& period)
     {
         double currentPos, currentVel, calcTorque;
-        lastCmd = *(command.readFromRT());
+        ++controller_update_sequence;
+        lastStampedCmd = *(command.readFromRT());
+        lastCmd = lastStampedCmd.cmd;
+        const bool newCommand = lastStampedCmd.sequence != applied_command_sequence;
+        if(newCommand || lastStampedCmd.sequence == 0){
+            writeCommandDiagnostics("CMD_APPLY", lastStampedCmd, time, period, newCommand);
+        }
+        applied_command_sequence = lastStampedCmd.sequence;
 
         // set command data
         if(lastCmd.mode == PMSM) {
@@ -218,6 +323,31 @@ namespace unitree_legged_control
 
     // Controller stopping in realtime
     void UnitreeJointController::stopping(){}
+
+    void UnitreeJointController::writeCommandDiagnostics(const char *event,
+                                                         const StampedMotorCmd &cmd,
+                                                         const ros::Time &time,
+                                                         const ros::Duration &period,
+                                                         bool newCommand)
+    {
+        if(!diagnostics_target_joint){
+            return;
+        }
+        std::lock_guard<std::mutex> lock(diagnosticsMutex);
+        if(!diagnosticsStream.is_open()){
+            return;
+        }
+        diagnosticsStream << event << ',' << joint_name << ',' << wallNowNs() << ','
+                          << simTimeUs(time) << ','
+                          << static_cast<std::int64_t>(period.toSec() * 1000000.0) << ','
+                          << static_cast<std::uint64_t>(period.toSec() * 1000000.0) << ','
+                          << controller_update_sequence << ',' << cmd.sequence << ','
+                          << applied_command_sequence << ',' << (newCommand ? 1 : 0) << ','
+                          << cmd.receive_wall_time_ns << ',' << cmd.receive_sim_time_us << ','
+                          << static_cast<int>(cmd.cmd.mode) << ',' << cmd.cmd.q << ','
+                          << cmd.cmd.dq << ',' << cmd.cmd.tau << ',' << cmd.cmd.Kp << ','
+                          << cmd.cmd.Kd << '\n';
+    }
 
     void UnitreeJointController::positionLimits(double &position)
     {
