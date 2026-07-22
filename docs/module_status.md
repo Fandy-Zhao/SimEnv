@@ -1,5 +1,15 @@
 # Module Status
 
+> **2026-07-22 `unitree_guide` Earth RL navigation baseline**:
+> `master` at `4eeae260`, build PASS, `WORLD_MODE=earth`, `PHYSICS_PROFILE=normal`.
+> Plane policy recommended; RL zero and IMU fallback PASS; LowCmd ≈500 Hz;
+> validated speed range `0.20–0.40 m/s`; `vx=0.10 m/s` remains ineffective.
+> Stair policy has higher flat-ground start threshold and larger yaw drift;
+> obstacle/stair behavior is not validated here; RTF fluctuation is recorded but
+> non-blocking. **Preserved interfaces**: `/cmd_vel`, `/fsm/state_cmd`,
+> `/clock`, robot state / odometry source, IMU input, RL policy runtime
+> selection, LowCmd transport/application cadence.
+
 > **2026-07-22 `unitree_guide` Earth RL fastcheck**:
 > `fix/0722-earth-rl-timebase-fast-validation` builds the Torch-enabled Unitree
 > runtime in an isolated worktree and changes `State_RL` to load the requested

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-22 — Earth RL navigation baseline
+
+- Audited local `master` and confirmed the validated Earth RL fixes are present
+  at
+  `4eeae260b452a296b17f30afaea3b7b2edb7c636`.
+- Baseline build PASS with `WORLD_MODE=earth` and `PHYSICS_PROFILE=normal`.
+- Plane policy `policy_act_inference_plane.pt` confirmed as recommended
+  flat-ground policy; runtime policy selection preserved.
+- RL zero and IMU fallback pass; LowCmd median ≈500 Hz. `vx=0.10 m/s`
+  remains ineffective and obstacle/stair behavior remains outside this
+  flat-ground baseline.
+
 ## 2026-07-22 — Earth RL stair vs plane policy comparison
 
 - Added a runtime RL policy path override to `State_RL` with priority

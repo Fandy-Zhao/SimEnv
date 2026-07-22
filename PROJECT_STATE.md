@@ -1,5 +1,18 @@
 # Project State
 
+> **2026-07-22 Navigation integration baseline**: branch `master`, HEAD
+> `4eeae260b452a296b17f30afaea3b7b2edb7c636`, workspace
+> `/home/zzf/search_ws/SimEnv`, status clean, build PASS. Earth RL
+> `WORLD_MODE=earth`, `PHYSICS_PROFILE=normal`. Recommended flat-ground policy:
+> `policy_act_inference_plane.pt`; runtime policy selection is supported.
+> Validated speed range `0.20–0.40 m/s` (`vx=0.10` ineffective). RL zero PASS,
+> IMU fallback PASS, LowCmd ≈500 Hz. Preserved interfaces: `/cmd_vel`,
+> `/fsm/state_cmd`, `/clock`, robot state/odometry source, IMU input, RL policy
+> runtime selection, LowCmd transport/application cadence. Known limitations:
+> stair policy has a higher flat-ground start threshold and larger yaw drift,
+> obstacle/stair behavior has not been validated by this comparison, and RTF
+> fluctuation remains recorded but non-blocking.
+
 > **2026-07-22 Earth RL policy comparison**: branch
 > `test/0722-earth-rl-policy-comparison` builds from
 > `fix/0722-earth-rl-timebase-fast-validation` and adds a minimal runtime
