@@ -110,6 +110,9 @@ private:
     std::array<std::uint64_t, HISTORY_LEN> history_stamps_us_{};
     std::mutex command_mutex_;
     PolicyCommandSnapshot command_snapshot_;
+    PolicyCommandSnapshot resolveCommandSnapshot();
+    std::uint64_t keyboard_command_sequence_ = 0;
+    double cmd_vel_timeout_ = 0.5;
     PolicyOutputBuffer action_buffer_;
     std::uint64_t action_sequence_ = 0;
     std::uint64_t last_applied_action_sequence_ = 0;

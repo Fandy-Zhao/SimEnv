@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
+#include <cmath>
 #include <iomanip>
 #include <sstream>
 #include <sys/stat.h>
@@ -143,10 +144,7 @@ void State_RL::enter(){
         PolicyInputSnapshot stateSnapshot;
         PolicyCommandSnapshot commandSnapshot;
         _ctrlComp->ioInter->getPolicyInputSnapshot(stateSnapshot);
-        {
-            std::lock_guard<std::mutex> lock(command_mutex_);
-            commandSnapshot = command_snapshot_;
-        }
+        commandSnapshot = resolveCommandSnapshot();
         refresh_rl_obs(&stateSnapshot, &commandSnapshot, true);
     }
     infer_thread_runnning.store(State_RL::RUNNING, std::memory_order_release);
@@ -166,6 +164,7 @@ void State_RL::onControlTimeReset(ControlTimeResetReason resetReason){
         std::lock_guard<std::mutex> lock(command_mutex_);
         command_snapshot_ = PolicyCommandSnapshot{};
     }
+    keyboard_command_sequence_ = 0;
     TimingDiagnostics &diagnostics = TimingDiagnostics::instance();
     diagnostics.beginActionWrite();
     for(int i=0; i<12; ++i){
@@ -195,10 +194,7 @@ void State_RL::resetPolicyStateForTimeDiscontinuity(){
     if(!_ctrlComp->ioInter->getPolicyInputSnapshot(stateSnapshot)){
         return;
     }
-    {
-        std::lock_guard<std::mutex> lock(command_mutex_);
-        commandSnapshot = command_snapshot_;
-    }
+    commandSnapshot = resolveCommandSnapshot();
     for(int i=0; i<HISTORY_LEN; ++i){
         refresh_rl_obs(&stateSnapshot, &commandSnapshot, true);
     }
@@ -307,10 +303,7 @@ void State_RL::infer_thread_callback()
             wait(_start_time, (long long)(infer_duration * 1000000));
             continue;
         }
-        {
-            std::lock_guard<std::mutex> lock(command_mutex_);
-            commandSnapshot = command_snapshot_;
-        }
+        commandSnapshot = resolveCommandSnapshot();
         const std::uint64_t sourceStateSequence = stateSnapshot.state_sequence;
         const std::uint64_t sourceSimTimeUs = stateSnapshot.sim_time_us;
         // std::cout << "_start_time" << _start_time << std::endl;
@@ -596,14 +589,55 @@ void State_RL::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
         return;
     }
     PolicyCommandSnapshot snapshot;
-    snapshot.linear_x = msg->linear.x;
-    snapshot.linear_y = msg->linear.y;
-    snapshot.angular_z = msg->angular.z;
+    if(!std::isfinite(msg->linear.x) || !std::isfinite(msg->linear.y) ||
+       !std::isfinite(msg->angular.z)){
+        snapshot.linear_x = 0.0;
+        snapshot.linear_y = 0.0;
+        snapshot.angular_z = 0.0;
+        ROS_WARN_THROTTLE(1.0, "RL rejected a non-finite /cmd_vel and commanded a stop.");
+    }else{
+        snapshot.linear_x = msg->linear.x;
+        snapshot.linear_y = msg->linear.y;
+        snapshot.angular_z = msg->angular.z;
+    }
     snapshot.stamp = ros::Time::now();
     snapshot.valid = true;
     std::lock_guard<std::mutex> lock(command_mutex_);
     snapshot.sequence = command_snapshot_.sequence + 1;
     command_snapshot_ = snapshot;
+}
+
+PolicyCommandSnapshot State_RL::resolveCommandSnapshot(){
+    PolicyCommandSnapshot snapshot;
+    {
+        std::lock_guard<std::mutex> lock(command_mutex_);
+        snapshot = command_snapshot_;
+    }
+
+    const ros::Time now = _ctrlComp->controlTime.isZero() ? ros::Time::now() :
+        _ctrlComp->controlTime;
+    const double cmdAge = snapshot.stamp.isZero() ? -1.0 :
+        (now - snapshot.stamp).toSec();
+    const bool cmdVelFresh = snapshot.valid && cmdAge >= 0.0 &&
+        cmdAge <= cmd_vel_timeout_;
+    if(cmdVelFresh){
+        return snapshot;
+    }
+
+    const UserValue userValue = _lowState->userValue;
+    snapshot.linear_x = invNormalize(userValue.ly, -0.8, 0.8);
+    snapshot.linear_y = -invNormalize(userValue.lx, -0.6, 0.6);
+    snapshot.angular_z = -invNormalize(userValue.rx, -1.0, 1.0);
+    if(!std::isfinite(snapshot.linear_x) || !std::isfinite(snapshot.linear_y) ||
+       !std::isfinite(snapshot.angular_z)){
+        snapshot.linear_x = 0.0;
+        snapshot.linear_y = 0.0;
+        snapshot.angular_z = 0.0;
+    }
+    snapshot.stamp = now;
+    snapshot.valid = true;
+    snapshot.sequence = ++keyboard_command_sequence_;
+    return snapshot;
 }
 
 

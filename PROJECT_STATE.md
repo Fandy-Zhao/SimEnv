@@ -1,5 +1,12 @@
 # Project State
 
+> **2026-07-22 RL keyboard command fallback**: branch
+> `fix/0722-rl-keyboard-fallback` makes RL mode use fresh `/cmd_vel` when
+> available and otherwise derive a command snapshot from keyboard `userValue`
+> (`w/s`, `a/d`, `j/l`) with the same mapping convention as Trotting. This
+> preserves navigation-facing `/cmd_vel` behavior while restoring interactive
+> keyboard driving in RL mode.
+
 > **2026-07-22 auto.sh RL policy override visibility**: branch
 > `fix/0722-auto-rl-policy-env` makes the existing controller-side
 > `RL_POLICY_PATH` support explicit in startup: `auto.sh` now prints whether an

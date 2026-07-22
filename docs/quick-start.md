@@ -180,8 +180,9 @@ ENABLE_FAST_LIO2=1 GUI=false ./auto.sh
 ```
 
 `auto.sh` 会自动在独立终端中启动 `junior_ctrl` 和 rviz。控制器终端支持键盘输入：
-`2` 站立、`4` 小跑、`6` RL（`4`/`6` 需要 Torch 构建）。也可通过
-`/fsm/state_cmd` 与 `/cmd_vel` 以编程方式控制。
+`2` 站立、`4` 小跑、`6` RL（`4`/`6` 需要 Torch 构建）。Trotting 和 RL 都可用
+`w/a/s/d` 平移、`j/l` 转向；RL 会优先使用新鲜 `/cmd_vel`，没有 `/cmd_vel`
+时才回退到键盘输入。也可通过 `/fsm/state_cmd` 与 `/cmd_vel` 以编程方式控制。
 
 从 Snap 版 VS Code 的集成终端启动时，脚本会使用干净的桌面环境直接打开
 GNOME Terminal，避免 Snap 动态库污染阻止控制器和 RViz 窗口创建。

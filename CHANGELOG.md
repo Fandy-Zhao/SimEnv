@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-22 — RL keyboard command fallback
+
+- Added a `State_RL` command fallback so keyboard `w/a/s/d` and `j/l` input
+  can drive RL mode when no fresh `/cmd_vel` is available.
+- Preserved `/cmd_vel` as the primary command source for navigation and added a
+  non-finite `/cmd_vel` guard that commands zero.
+
 ## 2026-07-22 — quick-start auto.sh parameter docs
 
 - Updated `docs/quick-start.md` with current `auto.sh` environment parameters,
