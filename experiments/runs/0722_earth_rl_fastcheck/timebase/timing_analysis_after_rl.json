@@ -1,0 +1,60 @@
+{
+  "source": "unitree_timing.csv",
+  "total_rows": 118887,
+  "counts": {
+    "FSM": 70218,
+    "ACTION": 1733,
+    "POLICY_WAIT": 1732,
+    "LOWCMD": 45204
+  },
+  "frequencies": {
+    "FSM": {
+      "sim_hz": 643.602199816682,
+      "wall_hz": 473.26611465348685
+    },
+    "ACTION": {
+      "sim_hz": 48.10309392878965,
+      "wall_hz": 43.23863939537783
+    },
+    "POLICY_WAIT": {
+      "sim_hz": 48.07532077987002,
+      "wall_hz": 43.215246167238774
+    },
+    "LOWCMD": {
+      "sim_hz": 414.3414973967882,
+      "wall_hz": 320.96287362336545
+    }
+  },
+  "fsm_accepted_count": 45203,
+  "target_control_hz": 500.0,
+  "sim_period_us": {
+    "median": 2000.0,
+    "mean": 2413.477279766382,
+    "p10": 0.0,
+    "min": 0.0
+  },
+  "wall_period_ns": {
+    "median": 2070272.0,
+    "mean": 3115648.441750365
+  },
+  "jitter_wall_period_stdev_ns": 2079878.6692121995,
+  "repeated_state_consumed": 11970,
+  "new_state_consumed": 33233,
+  "repeated_state_rejected_total": 0,
+  "duplicate_total": 11970,
+  "history_duplicate_ratio": 0.002309,
+  "deadline_misses": {
+    "sum": 15252,
+    "max": 21
+  },
+  "inference_latency_ns": {
+    "samples": 1733,
+    "median": 1492480.0,
+    "mean": 3766890.5066358917
+  },
+  "rtf_control_period_correlation": {
+    "pearson_r": 0.2672938452306329,
+    "rtf_samples": 32300,
+    "note": "estimated_rtf vs accepted FSM simulation-time period"
+  }
+}

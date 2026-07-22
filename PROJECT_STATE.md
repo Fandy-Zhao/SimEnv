@@ -1,5 +1,19 @@
 # Project State
 
+> **2026-07-22 Earth RL timebase fastcheck**: branch
+> `fix/0722-earth-rl-timebase-fast-validation` runs the requested isolated
+> Earth `PHYSICS_PROFILE=normal` RL validation from a separate worktree. The
+> Unitree runtime build passes after pinning the local worktree venv `empy` to
+> ROS-compatible `3.3.4`. `State_RL` now loads the requested stair policy
+> (`policy_act_inference_stair.pt`, SHA256
+> `2d5aa72511c0c6609c02f4105845eee6974d3d73431497f8f35306da9588fe14`).
+> Runtime timing shows policy inference near 48 Hz simulation time, but low-level
+> command publication is about 414 Hz against the 500 Hz target with deadline
+> misses. Earth normal RTF fails the requested stability gate (`median=0.750945`,
+> `p10=0.407949`), and the first RL `vx=0.10 m/s` smoke falls
+> (`min_base_height=0.078849 m`). Overall verdict:
+> `EARTH_RL_RTF_BLOCKED`; no merge to `master`.
+
 > **2026-07-21 RL fast validation infrastructure**: branch
 > `test/0721-rl-fast-validation` adds fast RL-state iteration infrastructure:
 > `tools/build_rl_fast.sh`, ROS-free metrics/window helpers, a F0/F1/F2

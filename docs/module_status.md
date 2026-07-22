@@ -1,5 +1,15 @@
 # Module Status
 
+> **2026-07-22 `unitree_guide` Earth RL fastcheck**:
+> `fix/0722-earth-rl-timebase-fast-validation` builds the Torch-enabled Unitree
+> runtime in an isolated worktree and changes `State_RL` to load the requested
+> stair policy by default. Runtime confirms the policy path and SHA256 match.
+> The timebase evidence is mixed: policy ACTION/POLICY_WAIT rows remain near
+> 48 Hz simulation time, but LOWCMD publication is about 414 Hz versus the
+> 500 Hz target with deadline misses. Earth `normal` RTF fails the requested
+> p10 gate, and the first `vx=0.10 m/s` RL smoke is unstable, so speed range
+> validation remains blocked.
+
 > **2026-07-21 `unitree_guide` RL fast validation infrastructure**:
 > `test/0721-rl-fast-validation` adds a build wrapper, pure metric helpers,
 > offline replay scaffold, F0/F1/F2 FixedStand runner, and live ROS/Gazebo

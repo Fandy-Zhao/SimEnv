@@ -1,0 +1,23 @@
+{
+  "speeds": [
+    {
+      "cmd_vx": 0.1,
+      "lateral_drift": -0.26203595775456895,
+      "mae": 0.123207039397527,
+      "measured_vx_mean": 0.039304927708081513,
+      "measured_vx_median": 0.0033737777460729457,
+      "measured_vx_p10": -0.07228038506009767,
+      "measured_vx_p90": 0.1871490263961245,
+      "median_vy": 0.005811587546932258,
+      "median_yaw_rate": -0.012121111090536176,
+      "min_base_height": 0.07884903839374247,
+      "rtf_mean": 2.6539664954831785,
+      "rtf_median": 1.015004819398288,
+      "sample_count": 6998,
+      "stable": false,
+      "tracking_gain": 0.03373777746072946,
+      "verdict": "UNSTABLE",
+      "yaw_drift": 0.30912924858755986
+    }
+  ]
+}

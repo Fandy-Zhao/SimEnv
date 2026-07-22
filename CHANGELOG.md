@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-22 — Earth RL timebase fastcheck
+
+- Added governed evidence under `experiments/runs/0722_earth_rl_fastcheck/`
+  for Earth `PHYSICS_PROFILE=normal` RL timing, RTF, policy-path, and first
+  speed-smoke validation.
+- Fixed the RL default policy path so runtime `State_RL` loads
+  `src/unitree_guide/logs/policy_act_inference_stair.pt` instead of the older
+  plane policy.
+- Validation result: build passes and policy path passes after the fix, but
+  RTF stability fails (`median=0.750945`, `p10=0.407949`) and the first
+  `vx=0.10 m/s` RL smoke is unstable.
+
 ## 2026-07-21 — RL fast validation infrastructure
 
 - Added `tools/build_rl_fast.sh` as a thin Unitree runtime-profile wrapper over
