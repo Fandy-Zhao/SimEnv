@@ -1,0 +1,13 @@
+{
+  "fell": false,
+  "first_10_sample_abs_target_max": 1.3297042846679688,
+  "post_duration_sim": 9.110999999999997,
+  "post_grace_max_tilt_deg": 2.5626603663135277,
+  "post_grace_min_base_height": 0.31219459249887416,
+  "post_max_tilt_deg": 6.627903302355205,
+  "post_min_base_height": 0.31219459249887416,
+  "post_sample_count": 457,
+  "rtf_median": 13.515887727559138,
+  "sample_count": 506,
+  "switch_sim_time": 35.18
+}

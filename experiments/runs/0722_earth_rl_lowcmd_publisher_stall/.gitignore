@@ -1,0 +1,6 @@
+__pycache__/
+app*_lowcmd_trace.csv
+app*_unitree_timing.csv
+app*_rl_diag.csv
+app*_transition_*.csv
+app*_rl_vx*.csv

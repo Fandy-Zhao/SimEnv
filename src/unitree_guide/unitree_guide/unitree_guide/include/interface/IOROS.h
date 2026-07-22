@@ -21,6 +21,7 @@
 #include <array>
 #include <atomic>
 #include <cstdint>
+#include <memory>
 #include <mutex>
 
 class IOROS : public IOInterface{
@@ -43,6 +44,7 @@ ros::NodeHandle _nm;
 ros::Subscriber _servo_sub[12], _imu_sub, _foot_states_sub[4], _foot_force_sub[4],
                 _base_w_sub, _base_t_sub, _time_sub, joy_sub;
 ros::Publisher _servo_pub[12];
+std::unique_ptr<ros::AsyncSpinner> _callback_spinner;
 unitree_legged_msgs::LowCmd _lowCmd;
 unitree_legged_msgs::LowState _lowState;
 std::string _robot_name;

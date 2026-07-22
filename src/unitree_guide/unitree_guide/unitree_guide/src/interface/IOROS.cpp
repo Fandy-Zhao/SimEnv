@@ -8,7 +8,11 @@
 #include "common/TimingDiagnostics.h"
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
+#include <exception>
 #include <iostream>
+#include <memory>
+#include <string>
 #include <unistd.h>
 #include <csignal>
 
@@ -35,6 +39,21 @@ UserCommand joyCommandFromButtons(const std::vector<int>& buttons){
     if(buttonAt(buttons, 9)) return UserCommand::L1_Y;      // step test
     return UserCommand::NONE;
 }
+
+int callbackSpinnerThreadCount(){
+    int threads = 2;
+    ros::param::param<int>("/unitree_ros_callback_spinner_threads", threads, threads);
+    const char *env = std::getenv("UNITREE_ROS_CALLBACK_SPINNER_THREADS");
+    if(env != nullptr && env[0] != '\0'){
+        try {
+            threads = std::stoi(env);
+        } catch (const std::exception&) {
+            ROS_WARN("Invalid UNITREE_ROS_CALLBACK_SPINNER_THREADS='%s'; using %d",
+                     env, threads);
+        }
+    }
+    return std::max(1, threads);
+}
 }
 
 void RosShutDown(int sig){
@@ -60,8 +79,10 @@ IOROS::IOROS():IOInterface(){
 
     // start subscriber
     initRecv();
-    ros::AsyncSpinner subSpinner(1); // one threads
-    subSpinner.start();
+    const int callbackThreads = callbackSpinnerThreadCount();
+    _callback_spinner.reset(new ros::AsyncSpinner(callbackThreads));
+    _callback_spinner->start();
+    ROS_INFO("IOROS callback spinner started with %d thread(s).", callbackThreads);
     usleep(300000);     //wait for subscribers start
     // initialize publisher
     initSend();   
@@ -72,6 +93,9 @@ IOROS::IOROS():IOInterface(){
 }
 
 IOROS::~IOROS(){
+    if(_callback_spinner){
+        _callback_spinner->stop();
+    }
     ros::shutdown();
 }
 
@@ -87,7 +111,6 @@ void IOROS::recvStateOnly(LowlevelState *state){
     recvState(state);
     state->userCmd = cmdPanel->getUserCmd();
     state->userValue = cmdPanel->getUserValue();
-    ros::spinOnce();
 }
 
 void IOROS::publishCmdOnly(const LowlevelCmd *cmd){
@@ -149,7 +172,6 @@ void IOROS::sendCmd(const LowlevelCmd *lowCmd){
     timing.torn_action = actionGenerationBefore != actionGenerationAfter ||
         (actionGenerationBefore & 1U) != 0U || (actionGenerationAfter & 1U) != 0U;
     diagnostics.record(timing);
-    ros::spinOnce();
 }
 
 void IOROS::recvState(LowlevelState *state){

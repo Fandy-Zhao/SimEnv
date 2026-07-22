@@ -65,6 +65,7 @@ public:
         std::uint64_t received_command_sequence;
         std::uint64_t applied_command_sequence;
         std::uint64_t controller_update_sequence;
+        std::uint64_t diagnostic_buffer_write_sequence;
 
         UnitreeJointController();
         ~UnitreeJointController();
@@ -77,11 +78,12 @@ public:
         void positionLimits(double &position);
         void velocityLimits(double &velocity);
         void effortLimits(double &effort);
-        void writeCommandDiagnostics(const char *event,
+        void writeCommandDiagnostics(const char *stage,
                                      const StampedMotorCmd &cmd,
                                      const ros::Time &time,
                                      const ros::Duration &period,
-                                     bool newCommand);
+                                     bool newCommand,
+                                     bool effectiveApplication);
 
         void setGains(const double &p, const double &i, const double &d, const double &i_max, const double &i_min, const bool &antiwindup = false);
         void getGains(double &p, double &i, double &d, double &i_max, double &i_min, bool &antiwindup);
