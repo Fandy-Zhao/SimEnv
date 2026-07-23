@@ -1,5 +1,18 @@
 # Project State
 
+> **2026-07-23 competition RL sensor-layer root cause**: FAST-LIO2 provenance
+> is resolved as an external dependency (`hku-mars/FAST_LIO`
+> `7cc4175de6f8ba2edf34bab02a42195b141027e9`, `ikd-Tree`
+> `e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4`, `livox_ros_driver`
+> `3d240d5666129e1a3052e78ee8487a04b08fdda3`) and the task worktree rebuilds
+> with local validation-only external-source patches. The completed M0-M8
+> matrix shows the first RTF collapse at M2: competition sensor data enabled,
+> no PointCloud2 converter, no FAST-LIO2, no RL (`mean RTF=0.165125` versus
+> M1 `0.989895`). M4/M5 mapping runs are lower (`0.134005`/`0.138520`) but
+> secondary; M7/M8 add RL/thread-limit cost after the sensor-layer collapse
+> (`0.087573`/`0.058942`). Verdict: `ROOT_CAUSE_IDENTIFIED_SENSOR_LAYER`;
+> M3 `NO_CLOCK` flags converter-path startup instability for follow-up.
+
 > **2026-07-23 competition RL partial runtime**: the task worktree now builds
 > successfully after fixing only the local venv `empy` version (`3.3.4`).
 > M0 earth baseline mean RTF is `0.640749`; M1 competition minimal baseline

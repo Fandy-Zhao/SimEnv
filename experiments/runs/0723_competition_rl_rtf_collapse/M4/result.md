@@ -1,0 +1,7 @@
+# M4
+
+Verdict: `CASE_COMPLETE`
+
+Mean RTF: `0.13400468111683803`
+p10 RTF: `0.1106610555753711`
+Policy Hz wall: `NA`

@@ -1,0 +1,27 @@
+{
+  "case": "M3",
+  "verdict": "NO_CLOCK",
+  "competition": true,
+  "mapping": false,
+  "policy_loaded": false,
+  "rl_active": false,
+  "torch_limit": false,
+  "rl_enter_wall_elapsed": null,
+  "rl_enter_sim_time": null,
+  "rtf": {
+    "count": 0
+  },
+  "topic_rates": {
+    "/clock": null,
+    "/scan": null,
+    "/scan_pointcloud2": null,
+    "/livox/imu": null,
+    "/Odometry": null,
+    "/cloud_registered": null,
+    "/state_estimation": null,
+    "/registered_scan": null
+  },
+  "timing": {
+    "exists": false
+  }
+}

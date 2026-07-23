@@ -1,0 +1,74 @@
+### original find fast_lio
+d /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration -> 
+f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/config/fast_lio2.rviz -> 
+f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch -> 
+f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py -> 
+f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/scripts/__pycache__/check_fast_lio2_extrinsics.cpython-313.pyc -> 
+### worktree find fast_lio
+d /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration -> 
+f /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/config/fast_lio2.rviz -> 
+f /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch -> 
+f /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py -> 
+### tracked tree fast_lio
+docs/slam/fast_lio2_deployment_guide.md
+experiments/runs/0706_fast-lio2-deploy-guide/fast_lio_param_scan.txt
+src/simenv_fast_lio2_integration/CMakeLists.txt
+src/simenv_fast_lio2_integration/README.md
+src/simenv_fast_lio2_integration/config/fast_lio2.rviz
+src/simenv_fast_lio2_integration/config/simenv_mid360.yaml
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch
+src/simenv_fast_lio2_integration/package.xml
+src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py
+src/simenv_fast_lio2_integration/scripts/map_to_camera_init_bridge.py
+src/simenv_fast_lio2_integration/scripts/odometry_tf_bridge.py
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py
+src/simenv_fast_lio2_integration/scripts/runtime_pointcloud_smoke_check.py
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py
+src/simenv_fast_lio2_integration/test/test_scan_to_pointcloud2.py
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py
+### original submodules
+### worktree submodules
+### gitmodules
+### rg catkin fast_lio
+auto.sh:346:pkill -9 -f "roslaunch.*simenv_fast_lio2_mapping"    2>/dev/null || true
+auto.sh:413:  echo "  simenv_fast_lio2_integration: $(rospack find simenv_fast_lio2_integration 2>/dev/null || echo NOT_FOUND)"
+auto.sh:415:  echo "  fast_lio: $(rospack find fast_lio 2>/dev/null || echo NOT_FOUND)"
+auto.sh:417:echo "  scan_to_pointcloud2.py: $WORKSPACE_DIR/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py"
+auto.sh:660:  /usr/bin/python3 "$WORKSPACE_DIR/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py" \
+auto.sh:666:  roslaunch simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch \
+auto.sh:668:    > "$WORKSPACE_DIR/logs/fast_lio2.log" 2>&1 &
+auto.sh:669:  echo $! > "$WORKSPACE_DIR/logs/fast_lio2.pid"
+auto.sh:670:  echo "FAST-LIO2 mapping launched in background (logs: logs/fast_lio2.log)"
+auto.sh:673:  RVIZ_CONFIG="$WORKSPACE_DIR/src/simenv_fast_lio2_integration/config/fast_lio2.rviz"
+src/Mid360_imu_sim/README.md:57:之后用fast_lio订阅即可
+tools/build_with_venv.sh:173:#   SIMENV_CATKIN_WHITELIST="livox_ros_driver;fast_lio" ./tools/build_with_venv.sh
+tools/build_with_venv.sh:179:  SIMENV_CATKIN_WHITELIST="livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo"
+tools/build_with_venv.sh:183:  CATKIN_CMAKE_ARGS+=("-DCATKIN_WHITELIST_PACKAGES=$SIMENV_CATKIN_WHITELIST")
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:17:      roslaunch simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:31:  <arg name="fast_lio_config" default="$(find simenv_fast_lio2_integration)/config/simenv_mid360.yaml"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:39:  <node if="$(arg enable_adapter)" pkg="simenv_fast_lio2_integration"
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:48:  <rosparam file="$(arg fast_lio_config)" command="load"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:49:  <node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:59:  <node pkg="simenv_fast_lio2_integration" type="odometry_tf_bridge.py"
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:73:  <node pkg="simenv_fast_lio2_integration"
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:79:        args="-d $(find simenv_fast_lio2_integration)/config/fast_lio2.rviz"/>
+src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py:10:    rosrun simenv_fast_lio2_integration pointcloud_fields_check.py _topic:=/scan_pointcloud2
+src/simenv_fast_lio2_integration/scripts/runtime_pointcloud_smoke_check.py:27:    return _run(["rospack", "find", "simenv_fast_lio2_integration"])
+src/simenv_fast_lio2_integration/README.md:1:# simenv_fast_lio2_integration
+src/simenv_fast_lio2_integration/README.md:27:> ⚠️ 不要将 FAST_LIO 源码 vendor 到 SimEnv 仓库或 simenv_fast_lio2_integration 内。本包仅提供桥接配置和适配脚本。FAST_LIO 放在 `SimEnv/src/FAST_LIO` 即可被 catkin_make 构建。
+src/simenv_fast_lio2_integration/README.md:32:src/simenv_fast_lio2_integration/
+src/simenv_fast_lio2_integration/README.md:37:│   └── simenv_fast_lio2_mapping.launch        启动建图
+src/simenv_fast_lio2_integration/README.md:65:roslaunch simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch
+src/simenv_fast_lio2_integration/README.md:79:rosrun simenv_fast_lio2_integration pointcloud_fields_check.py _topic:=/scan_pointcloud2
+src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py:29:    rosrun simenv_fast_lio2_integration scan_to_pointcloud2.py _scan_topic:=/scan
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py:11:    PACKAGE_ROOT, "launch", "simenv_fast_lio2_mapping.launch")
+src/simenv_fast_lio2_integration/CMakeLists.txt:2:project(simenv_fast_lio2_integration)
+src/simenv_fast_lio2_integration/CMakeLists.txt:22:  scripts/check_fast_lio2_extrinsics.py
+src/simenv_fast_lio2_integration/package.xml:3:  <name>simenv_fast_lio2_integration</name>
+### catkin config
+### catkin tools config yaml
+### rospack
+[rospack] Error: package 'fast_lio' not found
+fast_lio_exit=1
+/home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration
+simenv_fast_lio2_exit=0

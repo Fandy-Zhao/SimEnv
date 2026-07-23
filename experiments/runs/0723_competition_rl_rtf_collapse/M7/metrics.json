@@ -1,0 +1,42 @@
+{
+  "case": "M7",
+  "verdict": "CASE_COMPLETE",
+  "competition": true,
+  "mapping": true,
+  "policy_loaded": true,
+  "rl_active": true,
+  "torch_limit": false,
+  "rl_enter_wall_elapsed": 55.74449657401419,
+  "rl_enter_sim_time": 2.23,
+  "rtf": {
+    "count": 11,
+    "mean": 0.08757275443863456,
+    "median": 0.08055517677653252,
+    "p10": 0.018262575049136618,
+    "p90": 0.12354517095165385,
+    "min": 0.018262575049136618,
+    "max": 0.14752823743259094,
+    "sample_sim_duration": 5.218
+  },
+  "topic_rates": {
+    "/clock": null,
+    "/scan": null,
+    "/scan_pointcloud2": null,
+    "/livox/imu": null,
+    "/Odometry": null,
+    "/cloud_registered": null,
+    "/state_estimation": null,
+    "/registered_scan": null
+  },
+  "timing": {
+    "exists": true,
+    "rows": 536632,
+    "action_rows": 31,
+    "policy_wait_rows": 38,
+    "policy_hz_wall": 48.49472612579173,
+    "policy_interval_median_s": 0.020620799000000002,
+    "policy_wait_wall_us_median": 65858.5,
+    "policy_wait_wall_us_p95": 424427,
+    "policy_wait_wall_us_max": 425173
+  }
+}

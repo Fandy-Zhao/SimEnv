@@ -1,0 +1,16 @@
+/a1_gazebo/controller_spawner
+/gazebo
+/robot_state_publisher
+/rosout
+/rosservice_299054_1784775401582
+/rostopic_298446_1784775375456
+/rostopic_298676_1784775381308
+/rostopic_298749_1784775387273
+/rostopic_298851_1784775393083
+/rostopic_298966_1784775399187
+/rostopic_299122_1784775404947
+/rostopic_299177_1784775411386
+/rostopic_299229_1784775417411
+/rostopic_299281_1784775423276
+/unitree_gazebo_servo
+/urdf_spawner

@@ -76,6 +76,22 @@ CORE_CASES = {
             "START_BUILDING_CONTROL": "0",
         },
     },
+    "M2": {
+        "competition": True,
+        "mapping": False,
+        "policy_loaded": False,
+        "rl_active": False,
+        "torch_limit": False,
+        "env": {},
+    },
+    "M3": {
+        "competition": True,
+        "mapping": False,
+        "policy_loaded": False,
+        "rl_active": False,
+        "torch_limit": False,
+        "env": {},
+    },
     "M5": {
         "competition": True,
         "mapping": True,
@@ -110,8 +126,11 @@ CORE_CASES = {
     },
 }
 
-for case_name in ("M5", "M7", "M8"):
+for case_name in ("M2", "M3", "M5", "M7", "M8"):
     CORE_CASES[case_name]["env"] = dict(CORE_CASES["M4"]["env"])
+CORE_CASES["M2"]["env"]["ENABLE_POINTCLOUD_CONVERTER"] = "0"
+CORE_CASES["M2"]["env"]["ENABLE_FAST_LIO2"] = "0"
+CORE_CASES["M3"]["env"]["ENABLE_FAST_LIO2"] = "0"
 for case_name in ("M6",):
     CORE_CASES[case_name]["env"] = dict(CORE_CASES["M1"]["env"])
 for case_name in ("M5", "M6", "M7", "M8"):
@@ -376,6 +395,9 @@ def run_case(repo: Path, out_root: Path, case: str, args: argparse.Namespace) ->
             wall = time.monotonic()
             if sim is not None and first_sim is None:
                 first_sim = sim
+            if first_sim is None and wall - start_wall >= args.startup_clock_timeout:
+                verdict = "NO_CLOCK"
+                break
             sim_elapsed = sim - first_sim if sim is not None and first_sim is not None else None
 
             if sim_elapsed is not None and sim_elapsed >= 2.0:
@@ -422,7 +444,7 @@ def run_case(repo: Path, out_root: Path, case: str, args: argparse.Namespace) ->
         nodes_text = run_text(["rosnode", "list"], env=env)
         topics_text = run_text(["rostopic", "list"], env=env)
         topic_rates = {topic: topic_hz(topic, env, args.hz_window) for topic in TOPICS}
-        mapping = run_text([sys.executable, str(repo / "tools/diagnostics/check_mapping_pipeline.py")], timeout=20, env=env)
+        mapping = run_text(["/usr/bin/python3", str(repo / "tools/diagnostics/check_mapping_pipeline.py")], timeout=20, env=env)
     finally:
         stdout.close()
         stderr.close()
@@ -516,6 +538,7 @@ def main() -> int:
     parser.add_argument("--rl-enter-after-sim", type=float, default=5.0)
     parser.add_argument("--rl-sample-sim", type=float, default=20.0)
     parser.add_argument("--wall-timeout", type=float, default=600.0)
+    parser.add_argument("--startup-clock-timeout", type=float, default=120.0)
     parser.add_argument("--interval", type=float, default=1.0)
     parser.add_argument("--hz-window", type=int, default=5)
     args = parser.parse_args()

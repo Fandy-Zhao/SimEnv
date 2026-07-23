@@ -13,6 +13,13 @@
 - Propagated diagnostic and thread-limit environment variables into the
   dedicated `junior_ctrl` launch environment so M8-style thread-limit tests can
   be valid once FAST-LIO2 is available.
+- Resolved FAST-LIO2 dependency provenance, restored source-only external
+  dependencies for validation, rebuilt successfully, and completed short-window
+  M2/M3/M4/M5/M7/M8 follow-up runs.
+- Identified the first confirmed RTF collapse at the competition sensor layer:
+  M2 mean RTF `0.165125` versus M1 `0.989895`, before PointCloud2 conversion,
+  FAST-LIO2, or RL inference are required. M3 produced `NO_CLOCK`; M4/M5/M7/M8
+  completed but are downstream/secondary costs.
 
 ## 2026-07-22 — RL keyboard command fallback
 

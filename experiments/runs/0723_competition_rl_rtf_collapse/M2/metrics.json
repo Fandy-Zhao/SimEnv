@@ -1,0 +1,34 @@
+{
+  "case": "M2",
+  "verdict": "CASE_COMPLETE",
+  "competition": true,
+  "mapping": false,
+  "policy_loaded": false,
+  "rl_active": false,
+  "torch_limit": false,
+  "rl_enter_wall_elapsed": null,
+  "rl_enter_sim_time": null,
+  "rtf": {
+    "count": 6,
+    "mean": 0.16512511945490438,
+    "median": 0.16502290521295154,
+    "p10": 0.1437402738921724,
+    "p90": 0.18257176181806023,
+    "min": 0.1437402738921724,
+    "max": 0.18257176181806023,
+    "sample_sim_duration": 4.013
+  },
+  "topic_rates": {
+    "/clock": null,
+    "/scan": null,
+    "/scan_pointcloud2": null,
+    "/livox/imu": null,
+    "/Odometry": null,
+    "/cloud_registered": null,
+    "/state_estimation": null,
+    "/registered_scan": null
+  },
+  "timing": {
+    "exists": false
+  }
+}

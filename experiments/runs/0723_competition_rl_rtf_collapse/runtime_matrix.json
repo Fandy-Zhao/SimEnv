@@ -71,28 +71,136 @@
     }
   },
   {
+    "case": "M2",
+    "verdict": "CASE_COMPLETE",
+    "competition": true,
+    "mapping": false,
+    "policy_loaded": false,
+    "rl_active": false,
+    "torch_limit": false,
+    "rl_enter_wall_elapsed": null,
+    "rl_enter_sim_time": null,
+    "rtf": {
+      "count": 6,
+      "mean": 0.16512511945490438,
+      "median": 0.16502290521295154,
+      "p10": 0.1437402738921724,
+      "p90": 0.18257176181806023,
+      "min": 0.1437402738921724,
+      "max": 0.18257176181806023,
+      "sample_sim_duration": 4.013
+    },
+    "topic_rates": {
+      "/clock": null,
+      "/scan": null,
+      "/scan_pointcloud2": null,
+      "/livox/imu": null,
+      "/Odometry": null,
+      "/cloud_registered": null,
+      "/state_estimation": null,
+      "/registered_scan": null
+    },
+    "timing": {
+      "exists": false
+    }
+  },
+  {
+    "case": "M3",
+    "verdict": "NO_CLOCK",
+    "competition": true,
+    "mapping": false,
+    "policy_loaded": false,
+    "rl_active": false,
+    "torch_limit": false,
+    "rl_enter_wall_elapsed": null,
+    "rl_enter_sim_time": null,
+    "rtf": {
+      "count": 0
+    },
+    "topic_rates": {
+      "/clock": null,
+      "/scan": null,
+      "/scan_pointcloud2": null,
+      "/livox/imu": null,
+      "/Odometry": null,
+      "/cloud_registered": null,
+      "/state_estimation": null,
+      "/registered_scan": null
+    },
+    "timing": {
+      "exists": false
+    }
+  },
+  {
     "case": "M4",
+    "verdict": "CASE_COMPLETE",
     "competition": true,
     "mapping": true,
     "policy_loaded": false,
     "rl_active": false,
     "torch_limit": false,
-    "rtf": {},
-    "timing": {},
-    "topic_rates": {},
-    "verdict": "CASE_NOT_RUN_FAST_LIO_MISSING"
+    "rl_enter_wall_elapsed": null,
+    "rl_enter_sim_time": null,
+    "rtf": {
+      "count": 8,
+      "mean": 0.13400468111683803,
+      "median": 0.13600790938156304,
+      "p10": 0.1106610555753711,
+      "p90": 0.1513001977769455,
+      "min": 0.1106610555753711,
+      "max": 0.1513001977769455,
+      "sample_sim_duration": 4.724
+    },
+    "topic_rates": {
+      "/clock": null,
+      "/scan": null,
+      "/scan_pointcloud2": null,
+      "/livox/imu": null,
+      "/Odometry": null,
+      "/cloud_registered": null,
+      "/state_estimation": null,
+      "/registered_scan": null
+    },
+    "timing": {
+      "exists": false
+    }
   },
   {
     "case": "M5",
+    "verdict": "CASE_COMPLETE",
     "competition": true,
     "mapping": true,
     "policy_loaded": true,
     "rl_active": false,
     "torch_limit": false,
-    "rtf": {},
-    "timing": {},
-    "topic_rates": {},
-    "verdict": "CASE_NOT_RUN_FAST_LIO_MISSING"
+    "rl_enter_wall_elapsed": null,
+    "rl_enter_sim_time": null,
+    "rtf": {
+      "count": 8,
+      "mean": 0.13852005738285914,
+      "median": 0.1360205196775734,
+      "p10": 0.11348636089013871,
+      "p90": 0.16226303944545406,
+      "min": 0.11348636089013871,
+      "max": 0.16226303944545406,
+      "sample_sim_duration": 4.725
+    },
+    "topic_rates": {
+      "/clock": null,
+      "/scan": null,
+      "/scan_pointcloud2": null,
+      "/livox/imu": null,
+      "/Odometry": null,
+      "/cloud_registered": null,
+      "/state_estimation": null,
+      "/registered_scan": null
+    },
+    "timing": {
+      "exists": true,
+      "rows": 463088,
+      "action_rows": 0,
+      "policy_wait_rows": 0
+    }
   },
   {
     "case": "M6",
@@ -138,26 +246,86 @@
   },
   {
     "case": "M7",
+    "verdict": "CASE_COMPLETE",
     "competition": true,
     "mapping": true,
     "policy_loaded": true,
     "rl_active": true,
     "torch_limit": false,
-    "rtf": {},
-    "timing": {},
-    "topic_rates": {},
-    "verdict": "CASE_NOT_RUN_FAST_LIO_MISSING"
+    "rl_enter_wall_elapsed": 55.74449657401419,
+    "rl_enter_sim_time": 2.23,
+    "rtf": {
+      "count": 11,
+      "mean": 0.08757275443863456,
+      "median": 0.08055517677653252,
+      "p10": 0.018262575049136618,
+      "p90": 0.12354517095165385,
+      "min": 0.018262575049136618,
+      "max": 0.14752823743259094,
+      "sample_sim_duration": 5.218
+    },
+    "topic_rates": {
+      "/clock": null,
+      "/scan": null,
+      "/scan_pointcloud2": null,
+      "/livox/imu": null,
+      "/Odometry": null,
+      "/cloud_registered": null,
+      "/state_estimation": null,
+      "/registered_scan": null
+    },
+    "timing": {
+      "exists": true,
+      "rows": 536632,
+      "action_rows": 31,
+      "policy_wait_rows": 38,
+      "policy_hz_wall": 48.49472612579173,
+      "policy_interval_median_s": 0.020620799000000002,
+      "policy_wait_wall_us_median": 65858.5,
+      "policy_wait_wall_us_p95": 424427,
+      "policy_wait_wall_us_max": 425173
+    }
   },
   {
     "case": "M8",
+    "verdict": "CASE_COMPLETE",
     "competition": true,
     "mapping": true,
     "policy_loaded": true,
     "rl_active": true,
     "torch_limit": true,
-    "rtf": {},
-    "timing": {},
-    "topic_rates": {},
-    "verdict": "CASE_NOT_RUN_FAST_LIO_MISSING"
+    "rl_enter_wall_elapsed": 54.41092232300434,
+    "rl_enter_sim_time": 2.121,
+    "rtf": {
+      "count": 14,
+      "mean": 0.05894160377529449,
+      "median": 0.028392762718401666,
+      "p10": 0.021544537316744352,
+      "p90": 0.11841792236337033,
+      "min": 0.021544537316744352,
+      "max": 0.12254769125884114,
+      "sample_sim_duration": 5.188000000000001
+    },
+    "topic_rates": {
+      "/clock": null,
+      "/scan": null,
+      "/scan_pointcloud2": null,
+      "/livox/imu": null,
+      "/Odometry": null,
+      "/cloud_registered": null,
+      "/state_estimation": null,
+      "/registered_scan": null
+    },
+    "timing": {
+      "exists": true,
+      "rows": 591859,
+      "action_rows": 27,
+      "policy_wait_rows": 39,
+      "policy_hz_wall": 22.553719803050093,
+      "policy_interval_median_s": 0.044338584,
+      "policy_wait_wall_us_median": 186135,
+      "policy_wait_wall_us_p95": 509267,
+      "policy_wait_wall_us_max": 532292
+    }
   }
 ]

@@ -31,3 +31,12 @@ Thumbs.db
 # Large per-run diagnostics
 experiments/runs/*/M*/timing.csv
 experiments/runs/*/M*/rl_deploy.csv
+experiments/runs/*/M*/processes*.txt
+experiments/runs/*/M*/stdout.log
+experiments/runs/*/M*/stderr.log
+experiments/runs/*/M*/cleanup_pids.txt
+
+# External source restored for local validation only
+src/FAST_LIO/
+src/livox_ros_driver/
+experiments/runs/*/external_src/

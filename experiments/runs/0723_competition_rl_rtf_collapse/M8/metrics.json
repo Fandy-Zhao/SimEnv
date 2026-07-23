@@ -1,0 +1,42 @@
+{
+  "case": "M8",
+  "verdict": "CASE_COMPLETE",
+  "competition": true,
+  "mapping": true,
+  "policy_loaded": true,
+  "rl_active": true,
+  "torch_limit": true,
+  "rl_enter_wall_elapsed": 54.41092232300434,
+  "rl_enter_sim_time": 2.121,
+  "rtf": {
+    "count": 14,
+    "mean": 0.05894160377529449,
+    "median": 0.028392762718401666,
+    "p10": 0.021544537316744352,
+    "p90": 0.11841792236337033,
+    "min": 0.021544537316744352,
+    "max": 0.12254769125884114,
+    "sample_sim_duration": 5.188000000000001
+  },
+  "topic_rates": {
+    "/clock": null,
+    "/scan": null,
+    "/scan_pointcloud2": null,
+    "/livox/imu": null,
+    "/Odometry": null,
+    "/cloud_registered": null,
+    "/state_estimation": null,
+    "/registered_scan": null
+  },
+  "timing": {
+    "exists": true,
+    "rows": 591859,
+    "action_rows": 27,
+    "policy_wait_rows": 39,
+    "policy_hz_wall": 22.553719803050093,
+    "policy_interval_median_s": 0.044338584,
+    "policy_wait_wall_us_median": 186135,
+    "policy_wait_wall_us_p95": 509267,
+    "policy_wait_wall_us_max": 532292
+  }
+}
