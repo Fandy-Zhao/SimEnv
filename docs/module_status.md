@@ -1,5 +1,15 @@
 # Module Status
 
+> **2026-07-23 `src/navigation` FALCO + DSV integration**: new navigation
+> subtree imports FALCO `local_planner`, DSV-Planner package closure, and
+> SimEnv-owned bridge/bringup packages. Interface adaptation uses launch
+> remaps and `cmd_vel_bridge.py`; no Gazebo, FAST-LIO2 core, Unitree
+> controller core, RL policy, physics, or scene generation files changed.
+> Build/static/runtime interface validation passes in the isolated worktree:
+> `tools/build_with_venv.sh`, launch parsing, FALCO command-path smoke, and DSV
+> service/waypoint smoke are recorded under
+> `experiments/runs/0723_falco_dsv_integration/`.
+
 > **2026-07-23 `simenv_fast_lio2_integration` external build staging**:
 > FAST-LIO2 dependencies are now prepared through a repeatable staging script
 > from fixed external source commits. Staged FAST_LIO uses C++17; staged

@@ -1,0 +1,43 @@
+<launch>
+  <arg name="ns" default="navigation"/>
+  <arg name="falco_config" default="$(find simenv_navigation_bringup)/config/falco_simenv.yaml"/>
+  <arg name="state_estimation_topic" default="/$(arg ns)/state_estimation"/>
+  <arg name="registered_scan_topic" default="/$(arg ns)/registered_scan"/>
+  <arg name="waypoint_topic" default="/$(arg ns)/way_point"/>
+  <arg name="path_topic" default="/$(arg ns)/path"/>
+  <arg name="cmd_vel_stamped_topic" default="/$(arg ns)/falco/cmd_vel_stamped"/>
+  <arg name="enable_bridge" default="true"/>
+
+  <node pkg="local_planner" type="localPlanner"
+        name="localPlanner" output="screen" required="true">
+    <rosparam command="load" file="$(arg falco_config)"/>
+    <param name="pathFolder" type="string" value="$(find local_planner)/paths"/>
+    <remap from="/state_estimation" to="$(arg state_estimation_topic)"/>
+    <remap from="/registered_scan" to="$(arg registered_scan_topic)"/>
+    <remap from="/way_point" to="$(arg waypoint_topic)"/>
+    <remap from="/path" to="$(arg path_topic)"/>
+    <remap from="/free_paths" to="/$(arg ns)/falco/free_paths"/>
+    <remap from="/terrain_map" to="/$(arg ns)/terrain_map"/>
+    <remap from="/joy" to="/$(arg ns)/disabled/joy"/>
+    <remap from="/speed" to="/$(arg ns)/disabled/speed"/>
+    <remap from="/navigation_boundary" to="/$(arg ns)/boundary"/>
+    <remap from="/added_obstacles" to="/$(arg ns)/added_obstacles"/>
+    <remap from="/check_obstacle" to="/$(arg ns)/check_obstacle"/>
+  </node>
+
+  <node pkg="local_planner" type="pathFollower"
+        name="pathFollower" output="screen" required="true">
+    <rosparam command="load" file="$(arg falco_config)"/>
+    <remap from="/state_estimation" to="$(arg state_estimation_topic)"/>
+    <remap from="/path" to="$(arg path_topic)"/>
+    <remap from="/cmd_vel" to="$(arg cmd_vel_stamped_topic)"/>
+    <remap from="/joy" to="/$(arg ns)/disabled/joy"/>
+    <remap from="/speed" to="/$(arg ns)/disabled/speed"/>
+    <remap from="/stop" to="/$(arg ns)/stop"/>
+  </node>
+
+  <include if="$(arg enable_bridge)"
+           file="$(find simenv_navigation_bringup)/launch/navigation_bridge.launch">
+    <arg name="ns" value="$(arg ns)"/>
+  </include>
+</launch>

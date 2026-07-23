@@ -1,5 +1,18 @@
 # Project State
 
+> **2026-07-23 FALCO + DSV navigation integration**: branch
+> `feat/0723-falco-dsv-navigation-integration` starts from local `master`
+> `5bc0f6fbfdd8333dccbb44c26f216ecfb2811548` in isolated worktree
+> `/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation`. Imported
+> FALCO `local_planner` and the minimum DSV-Planner package closure under
+> `src/navigation/vendor/`, added SimEnv bridge/bringup packages, and kept
+> Gazebo, FAST-LIO2, robot model, controller, RL, and physics code unchanged.
+> Validation passed through source package discovery, launch parsing,
+> `tools/build_with_venv.sh`, static ROS interface checks, FALCO command-path
+> smoke, and DSV service/waypoint smoke. Runtime startup remains intentionally
+> decoupled from Gazebo/FAST-LIO2/controller startup until the next integrated
+> simulation run.
+
 > **2026-07-23 FAST-LIO2 clean runtime validation**: branch
 > `fix/0723-fast-lio2-reproducible-build-pointcloud` now has clean runtime
 > evidence on private ROS master `http://127.0.0.1:12732`. The adapter owns

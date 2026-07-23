@@ -1,0 +1,15 @@
+input_topic: /navigation/falco/cmd_vel_stamped
+output_topic: /cmd_vel
+enabled_topic: /navigation/enabled
+stop_topic: /navigation/stop_exploring
+state_cmd_topic: /fsm/state_cmd
+max_linear_x: 0.20
+max_linear_y: 0.00
+max_angular_z: 0.30
+command_timeout: 0.5
+enable_lateral_velocity: false
+require_navigation_enabled: true
+require_trotting_state_cmd: true
+trotting_state_value: 4
+publish_zero_when_disabled: true
+publish_rate: 20.0

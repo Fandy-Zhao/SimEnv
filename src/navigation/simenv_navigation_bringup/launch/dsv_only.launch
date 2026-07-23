@@ -1,0 +1,30 @@
+<launch>
+  <arg name="ns" default="navigation"/>
+  <arg name="dsv_config" default="$(find simenv_navigation_bringup)/config/dsv_simenv.yaml"/>
+  <arg name="simulation" default="false"/>
+  <arg name="use_boundary" default="false"/>
+
+  <rosparam command="load" file="$(arg dsv_config)"/>
+
+  <group ns="$(arg ns)">
+    <node name="dsvplanner" pkg="dsvplanner" type="dsvplanner" output="screen"/>
+
+    <group if="$(arg use_boundary)">
+      <node pkg="dsvp_launch" type="navigationBoundary"
+            name="navigationBoundary" output="screen" required="true">
+        <param name="boundary_file_dir" type="string" value="$(find dsvp_launch)/data/boundary.ply"/>
+        <param name="sendBoundary" type="bool" value="true"/>
+        <param name="sendBoundaryInterval" type="int" value="2"/>
+        <remap from="/navigation_boundary" to="/$(arg ns)/boundary"/>
+      </node>
+    </group>
+
+    <node name="graph_planner" pkg="graph_planner" type="graph_planner" output="screen" respawn="true">
+      <rosparam command="load" file="$(arg dsv_config)"/>
+    </node>
+
+    <node name="exploration" pkg="dsvp_launch" type="exploration" output="screen">
+      <param name="simulation" type="bool" value="$(arg simulation)"/>
+    </node>
+  </group>
+</launch>

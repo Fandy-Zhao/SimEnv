@@ -1,0 +1,9 @@
+<launch>
+  <arg name="ns" default="navigation"/>
+  <arg name="config" default="$(find simenv_navigation_bringup)/config/navigation_safety.yaml"/>
+
+  <node pkg="simenv_navigation_bridge" type="cmd_vel_bridge.py"
+        name="cmd_vel_bridge" output="screen" launch-prefix="/usr/bin/python3">
+    <rosparam command="load" file="$(arg config)"/>
+  </node>
+</launch>

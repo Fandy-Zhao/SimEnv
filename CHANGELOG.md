@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-07-23 — FALCO + DSV-Planner source integration
+
+- Added minimum navigation vendor sources under `src/navigation/vendor/`:
+  FALCO `local_planner` plus the DSV-Planner package closure.
+- Added `simenv_navigation_bridge` with a gated, rate-limited
+  `TwistStamped -> Twist` command bridge for Trotting `/cmd_vel`.
+- Added `simenv_navigation_bringup` launch/config files for FALCO-only,
+  DSV-only, and combined DSV + FALCO startup without launching Gazebo,
+  FAST-LIO2, robot models, joystick, RViz, or rosbag recording by default.
+- Added source vendored ROS1 `octomap_msgs` and `octomap_ros` dependencies
+  because this host's apt sources do not provide Noetic binary packages.
+- Extended `tools/build_with_venv.sh` package whitelist for the navigation
+  packages while preserving the existing runtime whitelist entries.
+
 ## 2026-07-23 — FAST-LIO2 clean runtime validation
 
 - Added governed runtime evidence for the clean external FAST-LIO2 build under

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>simenv_navigation_bringup</name>
+  <version>0.1.0</version>
+  <description>SimEnv launch and configuration for FALCO and DSV-Planner integration.</description>
+  <maintainer email="zzf@example.com">SimEnv Maintainers</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>dsvplanner</exec_depend>
+  <exec_depend>dsvp_launch</exec_depend>
+  <exec_depend>graph_planner</exec_depend>
+  <exec_depend>local_planner</exec_depend>
+  <exec_depend>simenv_navigation_bridge</exec_depend>
+</package>
