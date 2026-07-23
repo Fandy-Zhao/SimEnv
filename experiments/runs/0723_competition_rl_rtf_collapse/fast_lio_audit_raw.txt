@@ -1,14 +1,14 @@
 ### original find fast_lio
-d /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration -> 
-f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/config/fast_lio2.rviz -> 
-f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch -> 
-f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py -> 
-f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/scripts/__pycache__/check_fast_lio2_extrinsics.cpython-313.pyc -> 
+d /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration ->
+f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/config/fast_lio2.rviz ->
+f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch ->
+f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py ->
+f /home/zzf/search_ws/SimEnv/src/simenv_fast_lio2_integration/scripts/__pycache__/check_fast_lio2_extrinsics.cpython-313.pyc ->
 ### worktree find fast_lio
-d /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration -> 
-f /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/config/fast_lio2.rviz -> 
-f /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch -> 
-f /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py -> 
+d /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration ->
+f /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/config/fast_lio2.rviz ->
+f /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch ->
+f /home/zzf/search_ws/SimEnv_worktrees/competition-rl-rtf-collapse/src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py ->
 ### tracked tree fast_lio
 docs/slam/fast_lio2_deployment_guide.md
 experiments/runs/0706_fast-lio2-deploy-guide/fast_lio_param_scan.txt

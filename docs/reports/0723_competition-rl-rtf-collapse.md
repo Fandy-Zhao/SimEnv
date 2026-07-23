@@ -1,6 +1,6 @@
 # Competition RL RTF Collapse Diagnostics
 
-This report records the governed setup and partial runtime validation for the
+This report records the governed setup and runtime validation for the
 competition-mode RL RTF collapse diagnosis. Runtime behavior, physics
 parameters, observation/action logic, and FAST-LIO2 parameters were not changed.
 
@@ -15,6 +15,11 @@ parameters, observation/action logic, and FAST-LIO2 parameters were not changed.
 - `experiments/runs/0723_competition_rl_rtf_collapse/mapping_pipeline.md`
 
 ## Validation Scope
+The master merge preserves diagnostic tools and evidence only. It intentionally
+excludes transient process snapshots and cleanup PID records from M0/M1/M6; the
+retained artifacts are metrics, topic rates, mapping pipeline snapshots,
+commands, environment records, summaries, and FAST-LIO2 provenance notes.
+
 ## Build Resolution
 `tools/build_with_venv.sh` is worktree-aware and built inside:
 
@@ -34,11 +39,13 @@ worktree.
 | ---- | ----------: | ------: | ------------: | --------: | ----------: | -------: | ------: | --------: | ------- |
 | M0 | 0 | 0 | 0 | 0 | 0 | 0.640749 | 0.636691 |  | `CASE_COMPLETE` |
 | M1 | 1 | 0 | 0 | 0 | 0 | 0.989895 | 0.987226 |  | `CASE_COMPLETE` |
-| M4 | 1 | 1 | 0 | 0 | 0 |  |  |  | `CASE_NOT_RUN_FAST_LIO_MISSING` |
-| M5 | 1 | 1 | 1 | 0 | 0 |  |  |  | `CASE_NOT_RUN_FAST_LIO_MISSING` |
+| M2 | 1 | 0 | 0 | 0 | 0 | 0.165125 | 0.143740 |  | `CASE_COMPLETE` |
+| M3 | 1 | 0 | 0 | 0 | 0 |  |  |  | `NO_CLOCK` |
+| M4 | 1 | 1 | 0 | 0 | 0 | 0.134005 | 0.110661 |  | `CASE_COMPLETE` |
+| M5 | 1 | 1 | 1 | 0 | 0 | 0.138520 | 0.113486 |  | `CASE_COMPLETE` |
 | M6 | 1 | 0 | 1 | 1 | 0 | 0.989091 | 0.986998 | 50.0085 | `CASE_COMPLETE` |
-| M7 | 1 | 1 | 1 | 1 | 0 |  |  |  | `CASE_NOT_RUN_FAST_LIO_MISSING` |
-| M8 | 1 | 1 | 1 | 1 | 1 |  |  |  | `CASE_NOT_RUN_FAST_LIO_MISSING` |
+| M7 | 1 | 1 | 1 | 1 | 0 | 0.087573 | 0.018263 | 48.4947 | `CASE_COMPLETE` |
+| M8 | 1 | 1 | 1 | 1 | 1 | 0.058942 | 0.021545 | 22.5537 | `CASE_COMPLETE` |
 
 ## Interpretation
 - Earth baseline remains above 0.6 in this run (`mean=0.640749`).
@@ -46,9 +53,15 @@ worktree.
   the collapse (`mean=0.989895`).
 - RL active without mapping did not reproduce the collapse (`mean=0.989091`).
 - Policy inference frequency is confirmed near 50 Hz (`50.0085 Hz` wall time).
-- Full mapping cases are blocked because `rospack find fast_lio` fails in this
-  hermetic worktree. Therefore the combined RL + FAST-LIO2 root cause remains
-  unverified.
+- Competition sensor data alone reproduces the first major RTF collapse:
+  M1 `0.989895` -> M2 `0.165125`, before PointCloud2 conversion, FAST-LIO2,
+  or RL inference is required.
+- FAST-LIO2 mapping adds a secondary cost after the sensor-layer collapse:
+  M4 mean RTF is `0.134005`.
+- M7/M8 show additional RL/thread-limit cost after the sensor/mapping path is
+  already slow, not the primary break.
+- M3 `NO_CLOCK` flags converter-path startup instability for follow-up.
 
-Final status for this stage: `RUNTIME_CORE_MATRIX_PARTIAL`,
-`MAPPING_PIPELINE_FAIL`, `ROOT_CAUSE_PARTIAL`.
+Final status for this stage: `RUNTIME_MATRIX_COMPLETE_SHORT_WINDOW`,
+`SENSOR_LAYER_RTF_COLLAPSE_CONFIRMED`,
+`ROOT_CAUSE_IDENTIFIED_SENSOR_LAYER`.

@@ -1,1 +1,0 @@
-251573 /opt/ros/noetic/lib/rosout/rosout __name:=rosout __log:=/home/zzf/.ros/log/d3501988-85ee-11f1-a82a-13bbe2fcb04b/rosout-1.log
