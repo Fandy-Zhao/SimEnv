@@ -1,5 +1,16 @@
 # Project State
 
+> **2026-07-23 FALCO + DSV real runtime validation**: branch
+> `feat/0723-falco-dsv-navigation-integration` now has staged runtime evidence
+> under `experiments/runs/0723_falco_dsv_runtime/`. R2 passed with real Gazebo,
+> LiDAR, FAST-LIO2 `/Odometry` and `/cloud_registered`, navigation relays, and
+> TF (`camera_init`, `body`, `map`, `base`, `laser_livox`). Added a
+> SimEnv-owned `runtime_real_data.launch` to relay global FAST-LIO2 outputs into
+> the `/navigation` namespace and expose bridge speed-limit overrides. R3 is
+> blocked: FALCO connected to real inputs but produced only a zero one-pose path
+> and zero raw velocity under observed low RTF (`~0.062`). R4-R6 were not run.
+> Overall verdict: `FALCO_DSV_RUNTIME_TIMING_BLOCKED`.
+
 > **2026-07-23 FALCO + DSV navigation integration**: branch
 > `feat/0723-falco-dsv-navigation-integration` starts from local `master`
 > `5bc0f6fbfdd8333dccbb44c26f216ecfb2811548` in isolated worktree

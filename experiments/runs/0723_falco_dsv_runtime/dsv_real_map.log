@@ -1,0 +1,8 @@
+Date: 2026-07-23
+
+R5 DSV real-map validation was not executed.
+
+Reason:
+R4 was not reached because R3 failed. The DSV runtime stage remains pending
+until FALCO produces a usable real-input path and low-speed Trotting validation
+passes.

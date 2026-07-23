@@ -1,0 +1,7 @@
+Date: 2026-07-23
+
+R6 DSV + FALCO + Trotting closed-loop validation was not executed.
+
+Reason:
+R3 failed and R4/R5 were not entered. The full closed-loop navigation stack
+must remain disabled until prior gates pass.

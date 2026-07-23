@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-23 — FALCO + DSV real runtime validation
+
+- Added `runtime_real_data.launch` for connecting an already running
+  SimEnv + FAST-LIO2 stack to the `/navigation` namespace without starting
+  Gazebo, FAST-LIO2, robot models, joystick, RViz, or rosbag.
+- Added launch-time command bridge limit overrides for low-speed validation.
+- Recorded real runtime evidence through R3 under
+  `experiments/runs/0723_falco_dsv_runtime/`.
+- Confirmed R2 real FAST-LIO2 data and TF pass; R3 remains blocked because
+  FALCO did not produce a useful path from real registered clouds under low RTF.
+
 ## 2026-07-23 — FALCO + DSV-Planner source integration
 
 - Added minimum navigation vendor sources under `src/navigation/vendor/`:

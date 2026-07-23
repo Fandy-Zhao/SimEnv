@@ -1,0 +1,31 @@
+## /Odometry/header
+seq: 87
+stamp:
+  secs: 9
+  nsecs: 458000000
+frame_id: "camera_init"
+---
+## /Odometry/child_frame_id
+"body"
+---
+## /cloud_registered/header
+seq: 91
+stamp:
+  secs: 9
+  nsecs: 860000000
+frame_id: "camera_init"
+---
+## /state_estimation/header
+seq: 93
+stamp:
+  secs: 10
+  nsecs:  58000000
+frame_id: "camera_init"
+---
+## /registered_scan/header
+seq: 95
+stamp:
+  secs: 10
+  nsecs: 260000000
+frame_id: "camera_init"
+---

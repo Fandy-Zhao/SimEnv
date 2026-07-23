@@ -1,5 +1,13 @@
 # Module Status
 
+> **2026-07-23 `src/navigation` real runtime validation**:
+> `runtime_real_data.launch` connects an already running SimEnv + FAST-LIO2
+> stack to `/navigation/state_estimation` and `/navigation/registered_scan` and
+> keeps command output behind the existing bridge gates. R2 real FAST-LIO2 data
+> and TF passed. R3 remains blocked because FALCO did not produce a useful
+> nonzero path from real registered clouds and a manual waypoint while RTF was
+> about `0.062`; Trotting and DSV motion stages were not entered.
+
 > **2026-07-23 `src/navigation` FALCO + DSV integration**: new navigation
 > subtree imports FALCO `local_planner`, DSV-Planner package closure, and
 > SimEnv-owned bridge/bringup packages. Interface adaptation uses launch

@@ -1,0 +1,13 @@
+Date: 2026-07-23
+
+Safety gate runtime tests were not executed.
+
+Reason:
+R3 did not pass. FALCO connected to real FAST-LIO2 inputs but produced only a
+zero one-pose path and zero raw velocity under low runtime RTF, so the task
+rules prevented entering higher-risk Trotting motion stages.
+
+Planned tests still required after R3 passes:
+- NAVIGATION_DISABLE_STOP
+- COMMAND_TIMEOUT_STOP
+- TROTTING_STATE_GATE

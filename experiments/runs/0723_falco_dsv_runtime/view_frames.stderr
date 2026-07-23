@@ -1,0 +1,8 @@
+/opt/ros/noetic/lib/python3/dist-packages/actionlib/goal_id_generator.py:47: SyntaxWarning: invalid escape sequence '\p'
+  * \param name Unique name to prepend to the goal id. This will
+/opt/ros/noetic/lib/python3/dist-packages/actionlib/goal_id_generator.py:57: SyntaxWarning: invalid escape sequence '\p'
+  * \param name Set the name to prepend to the goal id. This will
+/opt/ros/noetic/lib/python3/dist-packages/tf/transformations.py:59: SyntaxWarning: invalid escape sequence '\*'
+  numpy.dot(M, v) for shape (4, \*) "point of arrays", respectively
+/opt/ros/noetic/lib/python3/dist-packages/tf/transformations.py:869: SyntaxWarning: invalid escape sequence '\*'
+  v0 and v1 are shape (3, \*) or (4, \*) arrays of at least 3 vectors.

@@ -1,0 +1,201 @@
+## tf frames available
+
+
+
+RESULTS: for all Frames
+
+Frames:
+Frame: FL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: base published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: body published by unknown_publisher Average Delay: 0.048 Max Delay: 0.05
+Frame: camera_init published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: laser_livox published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: livox_imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: odom published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: real_sense published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: real_sense_optical_frame published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: trunk published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+
+All Broadcasters:
+Node: unknown_publisher 1072.22 Hz, Average Delay: 0.000497409 Max Delay: 0.05
+Node: unknown_publisher(static) 2e+08 Hz, Average Delay: 0 Max Delay: 0
+
+
+
+RESULTS: for all Frames
+
+Frames:
+Frame: FL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: base published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: body published by unknown_publisher Average Delay: 0.0455 Max Delay: 0.05
+Frame: camera_init published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: laser_livox published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: livox_imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: odom published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: real_sense published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: real_sense_optical_frame published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: trunk published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+
+All Broadcasters:
+Node: unknown_publisher 1067.01 Hz, Average Delay: 0.000439614 Max Delay: 0.05
+Node: unknown_publisher(static) 2e+08 Hz, Average Delay: 0 Max Delay: 0
+
+
+
+RESULTS: for all Frames
+
+Frames:
+Frame: FL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: base published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: body published by unknown_publisher Average Delay: 0.0496667 Max Delay: 0.066
+Frame: camera_init published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: laser_livox published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: livox_imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: odom published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: real_sense published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: real_sense_optical_frame published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: trunk published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+
+All Broadcasters:
+Node: unknown_publisher 1060 Hz, Average Delay: 0.000468553 Max Delay: 0.066
+Node: unknown_publisher(static) 2e+08 Hz, Average Delay: 0 Max Delay: 0
+
+
+
+RESULTS: for all Frames
+
+Frames:
+Frame: FL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: base published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: body published by unknown_publisher Average Delay: 0.0505 Max Delay: 0.066
+Frame: camera_init published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: laser_livox published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: livox_imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: odom published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: real_sense published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: real_sense_optical_frame published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: trunk published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+
+All Broadcasters:
+Node: unknown_publisher 1058.02 Hz, Average Delay: 0.000471412 Max Delay: 0.066
+Node: unknown_publisher(static) 2e+08 Hz, Average Delay: 0 Max Delay: 0
+
+
+
+RESULTS: for all Frames
+
+Frames:
+Frame: FL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: FR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: FR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RL_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RL_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_calf published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_foot published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: RR_hip published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: RR_thigh_shoulder published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: base published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: body published by unknown_publisher Average Delay: 0.0496 Max Delay: 0.066
+Frame: camera_init published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: laser_livox published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: livox_imu_link published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: odom published by unknown_publisher Average Delay: 0 Max Delay: 0
+Frame: real_sense published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: real_sense_optical_frame published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+Frame: trunk published by unknown_publisher(static) Average Delay: 0 Max Delay: 0
+
+All Broadcasters:
+Node: unknown_publisher 1057.08 Hz, Average Delay: 0.00045 Max Delay: 0.066
+Node: unknown_publisher(static) 2e+08 Hz, Average Delay: 0 Max Delay: 0
