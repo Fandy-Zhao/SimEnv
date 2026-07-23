@@ -1,0 +1,11 @@
+== before pause clock ==
+== pause ==
+
+== during pause clock samples ==
+== unpause ==
+
+== after unpause clock ==
+clock: 
+  secs: 25
+  nsecs:  12000000
+---

@@ -1,0 +1,41 @@
+WARNING: may be using simulated time
+subscribed to [/Odometry]
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 10.000
+	min: 0.100s max: 0.100s std dev: 0.00000s window: 2
+no new messages
+no new messages
+no new messages
+average rate: 9.615
+	min: 0.100s max: 0.108s std dev: 0.00400s window: 3
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 10.067
+	min: 0.090s max: 0.108s std dev: 0.00736s window: 4
+no new messages
+no new messages
+no new messages
+average rate: 10.050
+	min: 0.090s max: 0.108s std dev: 0.00638s window: 5
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 9.960
+	min: 0.090s max: 0.108s std dev: 0.00599s window: 6
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 10.067
+	min: 0.090s max: 0.108s std dev: 0.00596s window: 7
+no new messages
+no new messages

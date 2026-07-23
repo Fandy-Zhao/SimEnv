@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-23 — FAST-LIO2 clean runtime validation
+
+- Added governed runtime evidence for the clean external FAST-LIO2 build under
+  `experiments/runs/0723_fast-lio2-runtime-validation/`.
+- Confirmed `/scan_pointcloud2` is owned by the current adapter process,
+  `/Odometry` and `/cloud_registered` are owned by `laserMapping`, and the
+  pointcloud/odometry chain resumes after Gazebo pause/unpause.
+- Confirmed the PointCloud2 contract (`laser_livox`, `24000` points,
+  `x/y/z/intensity`, `point_step=16`) and that FAST-LIO2 no longer shows a
+  sustained empty-pointcloud failure in the clean runtime.
+
 ## 2026-07-23 — FAST-LIO2 reproducible external build and diagnostics
 
 - Added `tools/external_deps/prepare_fast_lio2_deps.sh` to stage fixed,

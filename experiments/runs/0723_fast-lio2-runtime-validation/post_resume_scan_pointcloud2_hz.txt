@@ -1,0 +1,23 @@
+WARNING: may be using simulated time
+subscribed to [/scan_pointcloud2]
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 9.615
+	min: 0.104s max: 0.104s std dev: 0.00000s window: 2
+no new messages
+no new messages
+no new messages
+average rate: 9.901
+	min: 0.098s max: 0.104s std dev: 0.00300s window: 3
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 9.868
+	min: 0.098s max: 0.104s std dev: 0.00249s window: 4

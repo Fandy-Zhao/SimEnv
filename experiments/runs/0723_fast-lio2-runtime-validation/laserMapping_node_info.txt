@@ -1,0 +1,54 @@
+--------------------------------------------------------------------------------
+Node [/laserMapping]
+Publications: 
+ * /Laser_map [sensor_msgs/PointCloud2]
+ * /Odometry [nav_msgs/Odometry]
+ * /cloud_effected [sensor_msgs/PointCloud2]
+ * /cloud_registered [sensor_msgs/PointCloud2]
+ * /cloud_registered_body [sensor_msgs/PointCloud2]
+ * /path [nav_msgs/Path]
+ * /rosout [rosgraph_msgs/Log]
+ * /tf [tf2_msgs/TFMessage]
+
+Subscriptions: 
+ * /clock [rosgraph_msgs/Clock]
+ * /scan_pointcloud2 [sensor_msgs/PointCloud2]
+ * /trunk_imu [sensor_msgs/Imu]
+
+Services: 
+ * /laserMapping/get_loggers
+ * /laserMapping/set_logger_level
+
+
+contacting node http://127.0.0.1:44049/ ...
+Pid: 392832
+Connections:
+ * topic: /rosout
+    * to: /rosout
+    * direction: outbound (38127 - 127.0.0.1:41672) [19]
+    * transport: TCPROS
+ * topic: /cloud_registered
+    * to: /registered_scan_relay
+    * direction: outbound (38127 - 127.0.0.1:49580) [10]
+    * transport: TCPROS
+ * topic: /Odometry
+    * to: /state_estimation_relay
+    * direction: outbound (38127 - 127.0.0.1:49582) [17]
+    * transport: TCPROS
+ * topic: /tf
+    * to: /map_to_camera_init_bridge
+    * direction: outbound (38127 - 127.0.0.1:57538) [16]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /gazebo (http://127.0.0.1:43725/)
+    * direction: inbound (32940 - 127.0.0.1:42827) [18]
+    * transport: TCPROS
+ * topic: /scan_pointcloud2
+    * to: /scan_to_pointcloud2_392581_1784801372018 (http://127.0.0.1:41975/)
+    * direction: inbound (34096 - 127.0.0.1:44269) [11]
+    * transport: TCPROS
+ * topic: /trunk_imu
+    * to: /gazebo (http://127.0.0.1:43725/)
+    * direction: inbound (39316 - 127.0.0.1:42827) [20]
+    * transport: TCPROS
+

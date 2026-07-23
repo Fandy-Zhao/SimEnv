@@ -1,5 +1,17 @@
 # Project State
 
+> **2026-07-23 FAST-LIO2 clean runtime validation**: branch
+> `fix/0723-fast-lio2-reproducible-build-pointcloud` now has clean runtime
+> evidence on private ROS master `http://127.0.0.1:12732`. The adapter owns
+> `/scan_pointcloud2`, FAST-LIO2 `laserMapping` owns `/Odometry` and
+> `/cloud_registered`, the topic chain runs around 10 Hz with `/trunk_imu`
+> around 340 Hz, and pause/resume returns both pointcloud and odometry output.
+> PointCloud2 metadata is `laser_livox`, `24000` points,
+> `x/y/z/intensity`, `point_step=16`. FAST-LIO2 logs show only one startup
+> `No point, skip this scan!` warning at sim time `0.804`, not a sustained
+> empty-pointcloud failure. Verdict: `FAST_LIO2_RUNTIME_VALIDATION_PASS`; no
+> merge or push has been performed.
+
 > **2026-07-23 FAST-LIO2 reproducible external build**: branch
 > `fix/0723-fast-lio2-reproducible-build-pointcloud` starts from
 > `master` `a423bcfd104659bfa05d286ccb79d6a03520b246` and adds a

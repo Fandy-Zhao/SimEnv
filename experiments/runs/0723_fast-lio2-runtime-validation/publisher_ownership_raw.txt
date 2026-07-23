@@ -1,0 +1,490 @@
+ROS_MASTER_URI=http://127.0.0.1:12732
+--- rostopic info ---
+### /scan
+Type: sensor_msgs/PointCloud
+
+Publishers: 
+ * /gazebo (http://127.0.0.1:43725/)
+
+Subscribers: 
+ * /scan_to_pointcloud2_392581_1784801372018 (http://127.0.0.1:41975/)
+
+
+### /scan_pointcloud2
+Type: sensor_msgs/PointCloud2
+
+Publishers: 
+ * /scan_to_pointcloud2_392581_1784801372018 (http://127.0.0.1:41975/)
+
+Subscribers: 
+ * /laserMapping (http://127.0.0.1:44049/)
+
+
+### /trunk_imu
+Type: sensor_msgs/Imu
+
+Publishers: 
+ * /gazebo (http://127.0.0.1:43725/)
+
+Subscribers: 
+ * /unitree_gazebo_servo (http://127.0.0.1:35881/)
+ * /laserMapping (http://127.0.0.1:44049/)
+
+
+### /Odometry
+Type: nav_msgs/Odometry
+
+Publishers: 
+ * /laserMapping (http://127.0.0.1:44049/)
+
+Subscribers: 
+ * /state_estimation_relay (http://127.0.0.1:40531/)
+
+
+### /cloud_registered
+Type: sensor_msgs/PointCloud2
+
+Publishers: 
+ * /laserMapping (http://127.0.0.1:44049/)
+
+Subscribers: 
+ * /registered_scan_relay (http://127.0.0.1:34613/)
+
+
+### /clock
+Type: rosgraph_msgs/Clock
+
+Publishers: 
+ * /gazebo (http://127.0.0.1:43725/)
+
+Subscribers: 
+ * /state_from_gazebo (http://127.0.0.1:43801/)
+ * /robot_state_publisher (http://127.0.0.1:39471/)
+ * /a1_gazebo/controller_spawner (http://127.0.0.1:36811/)
+ * /gazebo (http://127.0.0.1:43725/)
+ * /unitree_gazebo_servo (http://127.0.0.1:35881/)
+ * /scan_to_pointcloud2_392581_1784801372018 (http://127.0.0.1:41975/)
+ * /state_estimation_relay (http://127.0.0.1:40531/)
+ * /registered_scan_relay (http://127.0.0.1:34613/)
+ * /laserMapping (http://127.0.0.1:44049/)
+ * /map_to_camera_init_bridge (http://127.0.0.1:38197/)
+
+
+--- rosnode info ---
+### /gazebo
+--------------------------------------------------------------------------------
+Node [/gazebo]
+Publications: 
+ * /a1_gazebo/FL_calf_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/FL_hip_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/FL_thigh_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/FR_calf_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/FR_hip_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/FR_thigh_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/RL_calf_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/RL_hip_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/RL_thigh_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/RR_calf_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/RR_hip_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/RR_thigh_controller/state [unitree_legged_msgs/MotorState]
+ * /a1_gazebo/joint_states [sensor_msgs/JointState]
+ * /clock [rosgraph_msgs/Clock]
+ * /gazebo/link_states [gazebo_msgs/LinkStates]
+ * /gazebo/model_states [gazebo_msgs/ModelStates]
+ * /gazebo/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /gazebo/parameter_updates [dynamic_reconfigure/Config]
+ * /gazebo/performance_metrics [gazebo_msgs/PerformanceMetrics]
+ * /ground_truth/FL_foot [nav_msgs/Odometry]
+ * /ground_truth/FR_foot [nav_msgs/Odometry]
+ * /ground_truth/RL_foot [nav_msgs/Odometry]
+ * /ground_truth/RR_foot [nav_msgs/Odometry]
+ * /ground_truth/base_trunk [nav_msgs/Odometry]
+ * /ground_truth/base_w [nav_msgs/Odometry]
+ * /livox/imu [sensor_msgs/Imu]
+ * /rosout [rosgraph_msgs/Log]
+ * /scan [sensor_msgs/PointCloud]
+ * /tf [tf2_msgs/TFMessage]
+ * /trunk_imu [sensor_msgs/Imu]
+ * /visual/FL_foot_contact/the_force [geometry_msgs/WrenchStamped]
+ * /visual/FR_foot_contact/the_force [geometry_msgs/WrenchStamped]
+ * /visual/RL_foot_contact/the_force [geometry_msgs/WrenchStamped]
+ * /visual/RR_foot_contact/the_force [geometry_msgs/WrenchStamped]
+
+Subscriptions: 
+ * /a1_gazebo/FL_calf_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/FL_calf_controller/joint_wrench [unknown type]
+ * /a1_gazebo/FL_hip_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/FL_hip_controller/joint_wrench [unknown type]
+ * /a1_gazebo/FL_thigh_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/FL_thigh_controller/joint_wrench [unknown type]
+ * /a1_gazebo/FR_calf_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/FR_calf_controller/joint_wrench [unknown type]
+ * /a1_gazebo/FR_hip_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/FR_hip_controller/joint_wrench [unknown type]
+ * /a1_gazebo/FR_thigh_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/FR_thigh_controller/joint_wrench [unknown type]
+ * /a1_gazebo/RL_calf_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/RL_calf_controller/joint_wrench [unknown type]
+ * /a1_gazebo/RL_hip_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/RL_hip_controller/joint_wrench [unknown type]
+ * /a1_gazebo/RL_thigh_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/RL_thigh_controller/joint_wrench [unknown type]
+ * /a1_gazebo/RR_calf_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/RR_calf_controller/joint_wrench [unknown type]
+ * /a1_gazebo/RR_hip_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/RR_hip_controller/joint_wrench [unknown type]
+ * /a1_gazebo/RR_thigh_controller/command [unitree_legged_msgs/MotorCmd]
+ * /a1_gazebo/RR_thigh_controller/joint_wrench [unknown type]
+ * /apply_force/trunk [unknown type]
+ * /clock [rosgraph_msgs/Clock]
+ * /gazebo/set_link_state [unknown type]
+ * /gazebo/set_model_state [unknown type]
+
+Services: 
+ * /a1_gazebo/controller_manager/list_controller_types
+ * /a1_gazebo/controller_manager/list_controllers
+ * /a1_gazebo/controller_manager/load_controller
+ * /a1_gazebo/controller_manager/reload_controller_libraries
+ * /a1_gazebo/controller_manager/switch_controller
+ * /a1_gazebo/controller_manager/unload_controller
+ * /gazebo/apply_body_wrench
+ * /gazebo/apply_joint_effort
+ * /gazebo/clear_body_wrenches
+ * /gazebo/clear_joint_forces
+ * /gazebo/delete_light
+ * /gazebo/delete_model
+ * /gazebo/get_joint_properties
+ * /gazebo/get_light_properties
+ * /gazebo/get_link_properties
+ * /gazebo/get_link_state
+ * /gazebo/get_loggers
+ * /gazebo/get_model_properties
+ * /gazebo/get_model_state
+ * /gazebo/get_physics_properties
+ * /gazebo/get_world_properties
+ * /gazebo/pause_physics
+ * /gazebo/reset_simulation
+ * /gazebo/reset_world
+ * /gazebo/set_joint_properties
+ * /gazebo/set_light_properties
+ * /gazebo/set_link_properties
+ * /gazebo/set_link_state
+ * /gazebo/set_logger_level
+ * /gazebo/set_model_configuration
+ * /gazebo/set_model_state
+ * /gazebo/set_parameters
+ * /gazebo/set_physics_properties
+ * /gazebo/spawn_sdf_model
+ * /gazebo/spawn_urdf_model
+ * /gazebo/unpause_physics
+
+
+contacting node http://127.0.0.1:43725/ ...
+Pid: 390359
+Connections:
+ * topic: /rosout
+    * to: /rosout
+    * direction: outbound (42827 - 127.0.0.1:60852) [20]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /gazebo
+    * direction: outbound
+    * transport: INTRAPROCESS
+ * topic: /clock
+    * to: /a1_gazebo/controller_spawner
+    * direction: outbound (42827 - 127.0.0.1:60940) [56]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /state_from_gazebo
+    * direction: outbound (42827 - 127.0.0.1:60948) [57]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /robot_state_publisher
+    * direction: outbound (42827 - 127.0.0.1:60964) [49]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:39612) [58]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /scan_to_pointcloud2_392581_1784801372018
+    * direction: outbound (42827 - 127.0.0.1:32890) [89]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /registered_scan_relay
+    * direction: outbound (42827 - 127.0.0.1:32922) [47]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /state_estimation_relay
+    * direction: outbound (42827 - 127.0.0.1:32920) [92]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /laserMapping
+    * direction: outbound (42827 - 127.0.0.1:32940) [95]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /map_to_camera_init_bridge
+    * direction: outbound (42827 - 127.0.0.1:39328) [97]
+    * transport: TCPROS
+ * topic: /gazebo/link_states
+    * to: /state_from_gazebo
+    * direction: outbound (42827 - 127.0.0.1:60958) [48]
+    * transport: TCPROS
+ * topic: /trunk_imu
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:39614) [50]
+    * transport: TCPROS
+ * topic: /trunk_imu
+    * to: /laserMapping
+    * direction: outbound (42827 - 127.0.0.1:39316) [93]
+    * transport: TCPROS
+ * topic: /scan
+    * to: /scan_to_pointcloud2_392581_1784801372018
+    * direction: outbound (42827 - 127.0.0.1:32904) [87]
+    * transport: TCPROS
+ * topic: /tf
+    * to: /map_to_camera_init_bridge
+    * direction: outbound (42827 - 127.0.0.1:39330) [94]
+    * transport: TCPROS
+ * topic: /visual/FL_foot_contact/the_force
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:38206) [54]
+    * transport: TCPROS
+ * topic: /visual/FR_foot_contact/the_force
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:38212) [55]
+    * transport: TCPROS
+ * topic: /visual/RL_foot_contact/the_force
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:38214) [62]
+    * transport: TCPROS
+ * topic: /visual/RR_foot_contact/the_force
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:38226) [60]
+    * transport: TCPROS
+ * topic: /ground_truth/base_trunk
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:53826) [67]
+    * transport: TCPROS
+ * topic: /ground_truth/base_w
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:53864) [73]
+    * transport: TCPROS
+ * topic: /ground_truth/FL_foot
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:53834) [71]
+    * transport: TCPROS
+ * topic: /ground_truth/FR_foot
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:53848) [72]
+    * transport: TCPROS
+ * topic: /a1_gazebo/joint_states
+    * to: /robot_state_publisher
+    * direction: outbound (42827 - 127.0.0.1:53900) [59]
+    * transport: TCPROS
+ * topic: /ground_truth/RL_foot
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:53870) [74]
+    * transport: TCPROS
+ * topic: /ground_truth/RR_foot
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:53884) [75]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FL_hip_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:53896) [53]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FL_thigh_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:53914) [64]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FL_calf_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:42742) [52]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FR_hip_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:42802) [77]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FR_thigh_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:42794) [66]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FR_calf_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:42834) [61]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RL_hip_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:42868) [83]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RL_thigh_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:42876) [69]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RL_calf_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:42904) [79]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RR_hip_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:32856) [86]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RR_thigh_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:32862) [85]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RR_calf_controller/state
+    * to: /unitree_gazebo_servo
+    * direction: outbound (42827 - 127.0.0.1:32878) [91]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /gazebo (http://127.0.0.1:43725/)
+    * direction: inbound
+    * transport: INTRAPROCESS
+ * topic: /a1_gazebo/FL_hip_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (53898 - 127.0.0.1:50463) [76]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FL_thigh_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (53908 - 127.0.0.1:50463) [63]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FL_calf_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (56202 - 127.0.0.1:50463) [65]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FR_hip_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (56210 - 127.0.0.1:50463) [70]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FR_thigh_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (56212 - 127.0.0.1:50463) [68]
+    * transport: TCPROS
+ * topic: /a1_gazebo/FR_calf_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (56220 - 127.0.0.1:50463) [78]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RL_hip_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (56224 - 127.0.0.1:50463) [82]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RL_thigh_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (56230 - 127.0.0.1:50463) [80]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RL_calf_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (56232 - 127.0.0.1:50463) [84]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RR_hip_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (60746 - 127.0.0.1:50463) [88]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RR_thigh_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (60760 - 127.0.0.1:50463) [81]
+    * transport: TCPROS
+ * topic: /a1_gazebo/RR_calf_controller/command
+    * to: /unitree_gazebo_servo (http://127.0.0.1:35881/)
+    * direction: inbound (60766 - 127.0.0.1:50463) [90]
+    * transport: TCPROS
+
+### /scan_to_pointcloud2_392581_1784801372018
+--------------------------------------------------------------------------------
+Node [/scan_to_pointcloud2_392581_1784801372018]
+Publications: 
+ * /rosout [rosgraph_msgs/Log]
+ * /scan_pointcloud2 [sensor_msgs/PointCloud2]
+
+Subscriptions: 
+ * /clock [rosgraph_msgs/Clock]
+ * /scan [sensor_msgs/PointCloud]
+
+Services: 
+ * /scan_to_pointcloud2_392581_1784801372018/get_loggers
+ * /scan_to_pointcloud2_392581_1784801372018/set_logger_level
+
+
+contacting node http://127.0.0.1:41975/ ...
+Pid: 392581
+Connections:
+ * topic: /rosout
+    * to: /rosout
+    * direction: outbound (44269 - 127.0.0.1:59080) [14]
+    * transport: TCPROS
+ * topic: /scan_pointcloud2
+    * to: /laserMapping
+    * direction: outbound (44269 - 127.0.0.1:34096) [15]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /gazebo (http://127.0.0.1:43725/)
+    * direction: inbound
+    * transport: TCPROS
+ * topic: /scan
+    * to: /gazebo (http://127.0.0.1:43725/)
+    * direction: inbound
+    * transport: TCPROS
+
+### /laserMapping
+--------------------------------------------------------------------------------
+Node [/laserMapping]
+Publications: 
+ * /Laser_map [sensor_msgs/PointCloud2]
+ * /Odometry [nav_msgs/Odometry]
+ * /cloud_effected [sensor_msgs/PointCloud2]
+ * /cloud_registered [sensor_msgs/PointCloud2]
+ * /cloud_registered_body [sensor_msgs/PointCloud2]
+ * /path [nav_msgs/Path]
+ * /rosout [rosgraph_msgs/Log]
+ * /tf [tf2_msgs/TFMessage]
+
+Subscriptions: 
+ * /clock [rosgraph_msgs/Clock]
+ * /scan_pointcloud2 [sensor_msgs/PointCloud2]
+ * /trunk_imu [sensor_msgs/Imu]
+
+Services: 
+ * /laserMapping/get_loggers
+ * /laserMapping/set_logger_level
+
+
+contacting node http://127.0.0.1:44049/ ...
+Pid: 392832
+Connections:
+ * topic: /rosout
+    * to: /rosout
+    * direction: outbound (38127 - 127.0.0.1:41672) [19]
+    * transport: TCPROS
+ * topic: /cloud_registered
+    * to: /registered_scan_relay
+    * direction: outbound (38127 - 127.0.0.1:49580) [10]
+    * transport: TCPROS
+ * topic: /Odometry
+    * to: /state_estimation_relay
+    * direction: outbound (38127 - 127.0.0.1:49582) [17]
+    * transport: TCPROS
+ * topic: /tf
+    * to: /map_to_camera_init_bridge
+    * direction: outbound (38127 - 127.0.0.1:57538) [16]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /gazebo (http://127.0.0.1:43725/)
+    * direction: inbound (32940 - 127.0.0.1:42827) [18]
+    * transport: TCPROS
+ * topic: /scan_pointcloud2
+    * to: /scan_to_pointcloud2_392581_1784801372018 (http://127.0.0.1:41975/)
+    * direction: inbound (34096 - 127.0.0.1:44269) [11]
+    * transport: TCPROS
+ * topic: /trunk_imu
+    * to: /gazebo (http://127.0.0.1:43725/)
+    * direction: inbound (39316 - 127.0.0.1:42827) [20]
+    * transport: TCPROS
+
+--- process map ---
+ 390130  390049 Thu Jul 23 18:06:43 2026 /usr/bin/python3.10 /opt/ros/noetic/bin/roslaunch unitree_guide multi_floor_gazeboSim.launch gui:=False paused:=true user_debug:=False rname:=a1 robot_x:=0.0 robot_y:=2.3 robot_z:=0.6 robot_yaw:=1.5708 enable_sensor_data:=true enable_referee_odom:=true enable_ground_truth:=true enable_foot_force_visual:=false enable_joy_node:=false enable_pointcloud_converter:=true pointcloud_use_ground_truth_odom:=true
+ 390209  390130 Thu Jul 23 18:06:49 2026 /bin/sh /opt/ros/noetic/lib/gazebo_ros/gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/fast-lio2-repro-pointcloud/generated_building/competition_scene.world __name:=gazebo __log:=/tmp/simenv-fast-lio2-clean-logs-12732/2da48cd6-867e-11f1-a82a-13bbe2fcb04b/gazebo-1.log
+ 390359  390209 Thu Jul 23 18:06:50 2026 gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/fast-lio2-repro-pointcloud/generated_building/competition_scene.world -s /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so -s /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so __name:=gazebo __log:=/tmp/simenv-fast-lio2-clean-logs-12732/2da48cd6-867e-11f1-a82a-13bbe2fcb04b/gazebo-1.log
+ 392581  390049 Thu Jul 23 18:09:29 2026 /usr/bin/python3 /home/zzf/search_ws/SimEnv_worktrees/fast-lio2-repro-pointcloud/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py
+ 392832  392619 Thu Jul 23 18:09:36 2026 /home/zzf/search_ws/SimEnv_worktrees/fast-lio2-repro-pointcloud/devel/lib/fast_lio/fastlio_mapping __name:=laserMapping __log:=/tmp/simenv-fast-lio2-clean-logs-12732/2da48cd6-867e-11f1-a82a-13bbe2fcb04b/laserMapping-1.log

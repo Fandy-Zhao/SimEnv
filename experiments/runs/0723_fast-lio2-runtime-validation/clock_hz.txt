@@ -1,0 +1,18 @@
+WARNING: may be using simulated time
+subscribed to [/clock]
+average rate: 482.759
+	min: 0.002s max: 0.004s std dev: 0.00037s window: 29
+no new messages
+average rate: 475.610
+	min: 0.002s max: 0.004s std dev: 0.00044s window: 40
+average rate: 478.261
+	min: 0.002s max: 0.004s std dev: 0.00042s window: 45
+average rate: 487.342
+	min: 0.002s max: 0.004s std dev: 0.00032s window: 78
+no new messages
+no new messages
+average rate: 489.362
+	min: 0.002s max: 0.004s std dev: 0.00029s window: 93
+no new messages
+average rate: 492.187
+	min: 0.002s max: 0.004s std dev: 0.00025s window: 127

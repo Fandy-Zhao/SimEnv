@@ -1,0 +1,41 @@
+WARNING: may be using simulated time
+subscribed to [/scan]
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 9.091
+	min: 0.110s max: 0.110s std dev: 0.00000s window: 2
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 9.804
+	min: 0.094s max: 0.110s std dev: 0.00800s window: 3
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 9.868
+	min: 0.094s max: 0.110s std dev: 0.00660s window: 4
+no new messages
+no new messages
+no new messages
+average rate: 9.852
+	min: 0.094s max: 0.110s std dev: 0.00572s window: 5
+no new messages
+no new messages
+no new messages
+no new messages
+average rate: 9.804
+	min: 0.094s max: 0.110s std dev: 0.00522s window: 6
+no new messages
+no new messages
+no new messages
+average rate: 9.967
+	min: 0.092s max: 0.110s std dev: 0.00605s window: 7
+no new messages

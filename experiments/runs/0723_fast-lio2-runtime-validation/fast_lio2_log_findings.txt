@@ -1,0 +1,1 @@
+logs/fast_lio2.log:4:[WARN] [1784801386.419358939, 0.804000000]: No point, skip this scan!
