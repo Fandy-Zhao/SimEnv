@@ -1,0 +1,51 @@
+WARNING: may be using simulated time
+subscribed to [/trunk_imu]
+no new messages
+no new messages
+average rate: 384.615
+	min: 0.002s max: 0.004s std dev: 0.00092s window: 11
+no new messages
+average rate: 370.000
+	min: 0.002s max: 0.006s std dev: 0.00116s window: 38
+no new messages
+no new messages
+average rate: 363.636
+	min: 0.000s max: 0.006s std dev: 0.00133s window: 49
+no new messages
+average rate: 349.515
+	min: 0.000s max: 0.006s std dev: 0.00141s window: 73
+no new messages
+average rate: 349.558
+	min: 0.000s max: 0.006s std dev: 0.00145s window: 80
+average rate: 348.739
+	min: 0.000s max: 0.006s std dev: 0.00150s window: 84
+average rate: 347.973
+	min: 0.000s max: 0.006s std dev: 0.00149s window: 104
+no new messages
+no new messages
+average rate: 349.693
+	min: 0.000s max: 0.006s std dev: 0.00150s window: 115
+no new messages
+average rate: 344.221
+	min: 0.000s max: 0.006s std dev: 0.00153s window: 138
+no new messages
+average rate: 343.602
+	min: 0.000s max: 0.006s std dev: 0.00150s window: 146
+average rate: 343.458
+	min: 0.000s max: 0.006s std dev: 0.00150s window: 148
+average rate: 342.629
+	min: 0.000s max: 0.010s std dev: 0.00160s window: 173
+no new messages
+no new messages
+average rate: 342.697
+	min: 0.000s max: 0.010s std dev: 0.00162s window: 184
+no new messages
+average rate: 343.960
+	min: 0.000s max: 0.010s std dev: 0.00172s window: 206
+no new messages
+no new messages
+average rate: 341.853
+	min: 0.000s max: 0.010s std dev: 0.00171s window: 215
+no new messages
+average rate: 348.138
+	min: 0.000s max: 0.010s std dev: 0.00174s window: 244

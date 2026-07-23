@@ -1,5 +1,16 @@
 # Module Status
 
+> **2026-07-23 `simenv_fast_lio2_integration` external build staging**:
+> FAST-LIO2 dependencies are now prepared through a repeatable staging script
+> from fixed external source commits. Staged FAST_LIO uses C++17; staged
+> `livox_ros_driver` keeps message generation active while skipping the real
+> hardware driver node by default. The runtime whitelist build passes through
+> `tools/build_with_venv.sh`. The new pointcloud continuity diagnostic is
+> unit-tested and uses wall-clock windows plus vectorized PointCloud2 parsing;
+> live continuity still needs one clean isolated ROS master run because the
+> first validation attempts left stale adapter registrations that polluted
+> `/scan_pointcloud2` ownership checks.
+
 > **2026-07-22 `unitree_guide` Earth RL navigation baseline**:
 > `master` at `4eeae260`, build PASS, `WORLD_MODE=earth`, `PHYSICS_PROFILE=normal`.
 > Plane policy recommended; RL zero and IMU fallback PASS; LowCmd ≈500 Hz;

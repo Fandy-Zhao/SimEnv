@@ -1,0 +1,35 @@
+--------------------------------------------------------------------------------
+Node [/scan_to_pointcloud2_392581_1784801372018]
+Publications: 
+ * /rosout [rosgraph_msgs/Log]
+ * /scan_pointcloud2 [sensor_msgs/PointCloud2]
+
+Subscriptions: 
+ * /clock [rosgraph_msgs/Clock]
+ * /scan [sensor_msgs/PointCloud]
+
+Services: 
+ * /scan_to_pointcloud2_392581_1784801372018/get_loggers
+ * /scan_to_pointcloud2_392581_1784801372018/set_logger_level
+
+
+contacting node http://127.0.0.1:41975/ ...
+Pid: 392581
+Connections:
+ * topic: /rosout
+    * to: /rosout
+    * direction: outbound (44269 - 127.0.0.1:59080) [14]
+    * transport: TCPROS
+ * topic: /scan_pointcloud2
+    * to: /laserMapping
+    * direction: outbound (44269 - 127.0.0.1:34096) [15]
+    * transport: TCPROS
+ * topic: /clock
+    * to: /gazebo (http://127.0.0.1:43725/)
+    * direction: inbound
+    * transport: TCPROS
+ * topic: /scan
+    * to: /gazebo (http://127.0.0.1:43725/)
+    * direction: inbound
+    * transport: TCPROS
+

@@ -1,0 +1,10 @@
+At time 0.000
+- Translation: [0.200, 0.000, 0.080]
+- Rotation: in Quaternion [0.000, 0.382, 0.000, 0.924]
+            in RPY (radian) [0.000, 0.785, 0.000]
+            in RPY (degree) [0.000, 44.977, 0.000]
+At time 0.000
+- Translation: [0.200, 0.000, 0.080]
+- Rotation: in Quaternion [0.000, 0.382, 0.000, 0.924]
+            in RPY (radian) [0.000, 0.785, 0.000]
+            in RPY (degree) [0.000, 44.977, 0.000]

@@ -1,0 +1,8 @@
+WARNING: no messages received and simulated time is active.
+Is /clock being published?
+seq: 214
+stamp: 
+  secs: 21
+  nsecs: 934000000
+frame_id: "laser_livox"
+---

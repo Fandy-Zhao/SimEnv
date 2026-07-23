@@ -1,5 +1,32 @@
 # Changelog
 
+## 2026-07-23 — FAST-LIO2 clean runtime validation
+
+- Added governed runtime evidence for the clean external FAST-LIO2 build under
+  `experiments/runs/0723_fast-lio2-runtime-validation/`.
+- Confirmed `/scan_pointcloud2` is owned by the current adapter process,
+  `/Odometry` and `/cloud_registered` are owned by `laserMapping`, and the
+  pointcloud/odometry chain resumes after Gazebo pause/unpause.
+- Confirmed the PointCloud2 contract (`laser_livox`, `24000` points,
+  `x/y/z/intensity`, `point_step=16`) and that FAST-LIO2 no longer shows a
+  sustained empty-pointcloud failure in the clean runtime.
+
+## 2026-07-23 — FAST-LIO2 reproducible external build and diagnostics
+
+- Added `tools/external_deps/prepare_fast_lio2_deps.sh` to stage fixed,
+  clean external FAST_LIO and `livox_ros_driver` sources outside the worktree,
+  apply SimEnv-owned patches to the staging copies, and map them into `src/`
+  through ignored symlinks.
+- Added FAST_LIO C++17 and `livox_ros_driver` message-only staging patches so
+  simulation builds do not require Livox-SDK hardware-node linkage or network
+  clone.
+- Added `tools/diagnostics/check_fast_lio2_input.py` with unit coverage for
+  pointcloud finite/blind/timestamp checks and FAST-LIO output presence.
+- Validated the formal clean-shell `./tools/build_with_venv.sh` build for the
+  runtime whitelist. Runtime pointcloud continuity remains a follow-up gate
+  because repeated isolated runs polluted the ROS master with stale node
+  registrations before a clean 30-second diagnostic verdict was captured.
+
 ## 2026-07-23 — FAST-LIO2 TF repeated timestamp fix
 
 - Fixed `state_from_gazebo` to use a single guarded callback timestamp for
