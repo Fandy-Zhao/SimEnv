@@ -1,0 +1,45 @@
+<launch>
+  <!-- Runtime adapter for an already running SimEnv + FAST-LIO2 stack.
+       Does not start Gazebo, FAST-LIO2, robot models, RViz, joystick, or rosbag. -->
+  <arg name="ns" default="navigation"/>
+  <arg name="start_falco" default="true"/>
+  <arg name="start_dsv" default="false"/>
+  <arg name="start_bridge" default="true"/>
+  <arg name="state_estimation_source" default="/state_estimation"/>
+  <arg name="registered_scan_source" default="/registered_scan"/>
+  <arg name="state_estimation_topic" default="/$(arg ns)/state_estimation"/>
+  <arg name="registered_scan_topic" default="/$(arg ns)/registered_scan"/>
+  <arg name="max_linear_x" default="$(optenv NAV_MAX_LINEAR_X 0.10)"/>
+  <arg name="max_linear_y" default="$(optenv NAV_MAX_LINEAR_Y 0.00)"/>
+  <arg name="max_angular_z" default="$(optenv NAV_MAX_ANGULAR_Z 0.20)"/>
+  <arg name="command_timeout" default="$(optenv NAV_COMMAND_TIMEOUT 0.5)"/>
+
+  <node pkg="topic_tools" type="relay" name="navigation_state_estimation_relay"
+        args="$(arg state_estimation_source) $(arg state_estimation_topic)"
+        output="screen"/>
+  <node pkg="topic_tools" type="relay" name="navigation_registered_scan_relay"
+        args="$(arg registered_scan_source) $(arg registered_scan_topic)"
+        output="screen"/>
+
+  <include if="$(arg start_falco)"
+           file="$(find simenv_navigation_bringup)/launch/falco_only.launch">
+    <arg name="ns" value="$(arg ns)"/>
+    <arg name="state_estimation_topic" value="$(arg state_estimation_topic)"/>
+    <arg name="registered_scan_topic" value="$(arg registered_scan_topic)"/>
+    <arg name="enable_bridge" value="false"/>
+  </include>
+
+  <include if="$(arg start_dsv)"
+           file="$(find simenv_navigation_bringup)/launch/dsv_only.launch">
+    <arg name="ns" value="$(arg ns)"/>
+  </include>
+
+  <include if="$(arg start_bridge)"
+           file="$(find simenv_navigation_bringup)/launch/navigation_bridge.launch">
+    <arg name="ns" value="$(arg ns)"/>
+    <arg name="max_linear_x" value="$(arg max_linear_x)"/>
+    <arg name="max_linear_y" value="$(arg max_linear_y)"/>
+    <arg name="max_angular_z" value="$(arg max_angular_z)"/>
+    <arg name="command_timeout" value="$(arg command_timeout)"/>
+  </include>
+</launch>

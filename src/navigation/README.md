@@ -32,3 +32,14 @@ reach `/cmd_vel`.
 The bridge launch runs the Python node through `/usr/bin/python3` so ROS
 Noetic uses the system Python runtime even when the build venv was created by
 a newer shell Python.
+
+For runtime validation against an already running SimEnv + FAST-LIO2 stack:
+
+```bash
+NAV_MAX_LINEAR_X=0.10 NAV_MAX_ANGULAR_Z=0.20 \
+  roslaunch simenv_navigation_bringup runtime_real_data.launch
+```
+
+This launch relays global FAST-LIO2 `/state_estimation` and `/registered_scan`
+into `/navigation/state_estimation` and `/navigation/registered_scan` before
+starting FALCO, optional DSV, and the gated command bridge.
