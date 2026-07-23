@@ -1,0 +1,35 @@
+diff --git a/livox_ros_driver/CMakeLists.txt b/livox_ros_driver/CMakeLists.txt
+index 53e98c0..d69661e 100644
+--- a/livox_ros_driver/CMakeLists.txt
++++ b/livox_ros_driver/CMakeLists.txt
+@@ -9,6 +9,12 @@ include(cmake/version.cmake)
+ project(livox_ros_driver VERSION ${LIVOX_ROS_DRIVER_VERSION} LANGUAGES CXX)
+ message(STATUS "livox_ros_driver version: ${LIVOX_ROS_DRIVER_VERSION}")
+ 
++option(
++  BUILD_LIVOX_DRIVER_NODE
++  "Build the hardware Livox driver node"
++  OFF
++)
++
+ #---------------------------------------------------------------------------------------
+ # find package and the dependecy
+ #---------------------------------------------------------------------------------------
+@@ -70,6 +76,8 @@ set(CMAKE_CXX_STANDARD 11)
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ set(CMAKE_CXX_EXTENSIONS OFF)
+ 
++if(BUILD_LIVOX_DRIVER_NODE)
++
+ ## make sure the livox_sdk_static library is installed
+ find_library(LIVOX_SDK_LIBRARY liblivox_sdk_static.a /usr/local/lib)
+ 
+@@ -180,6 +188,8 @@ install(TARGETS ${PROJECT_NAME}_node
+ 	RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+ 	)
+ 
++endif()
++
+ install(DIRECTORY
+   launch
+   config

@@ -1,5 +1,21 @@
 # Project State
 
+> **2026-07-23 FAST-LIO2 reproducible external build**: branch
+> `fix/0723-fast-lio2-reproducible-build-pointcloud` starts from
+> `master` `a423bcfd104659bfa05d286ccb79d6a03520b246` and adds a
+> SimEnv-owned external dependency staging layer. Fixed source repositories
+> remain clean and read-only (`FAST_LIO` `7cc4175`, `ikd-Tree` `e2e3f4e`,
+> `livox_ros_driver` `3d240d5`). Staging under `/tmp/simenv-fast-lio2-deps`
+> patches only copies: FAST_LIO builds with C++17 and `livox_ros_driver`
+> defaults to message-only (`BUILD_LIVOX_DRIVER_NODE=OFF`) without Livox-SDK
+> clone. The formal clean-shell `./tools/build_with_venv.sh` runtime whitelist
+> build passes. Runtime ownership checks reached Gazebo, controller,
+> adapter, and FAST-LIO2 startup with `/scan_pointcloud2` owned by the adapter
+> and `/Odometry` plus `/cloud_registered` owned by `laserMapping`; final
+> continuity verdict remains blocked by stale ROS master registrations from
+> repeated isolated validation attempts, so this branch is not yet a merge
+> candidate.
+
 > **2026-07-23 FAST-LIO2 TF repeated timestamp fix**: branch
 > `fix/0723-fast-lio2-tf-repeated-data` isolates TF ownership and timestamp
 > handling from clean `master`. `state_from_gazebo` now uses one guarded
