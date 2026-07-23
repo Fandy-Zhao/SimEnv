@@ -21,7 +21,7 @@ class Stage2TopicContractTest(unittest.TestCase):
                 for item in self.root.findall("arg")}
         self.assertEqual(args["state_estimation_topic"], "/state_estimation")
         self.assertEqual(args["registered_scan_topic"], "/registered_scan")
-        self.assertEqual(args["enable_odometry_tf_bridge"], "true")
+        self.assertEqual(args["enable_odometry_tf_bridge"], "false")
 
     def test_transparent_relays_preserve_legacy_topics(self):
         nodes = {item.attrib.get("name"): item

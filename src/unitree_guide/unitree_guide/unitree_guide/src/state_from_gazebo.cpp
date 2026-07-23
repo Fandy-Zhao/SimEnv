@@ -17,6 +17,25 @@ double x=0, y=0, z=0, roll=0, pitch=0, yaw=0;
 
 
 void callback_BASE(const gazebo_msgs::LinkStates::ConstPtr &msg) {
+    static ros::Time last_publish_stamp;
+    const ros::Time stamp = ros::Time::now();
+
+    if (stamp.isZero()) {
+        ROS_DEBUG_THROTTLE(5.0, "Skipping state_from_gazebo publish while /clock is zero");
+        return;
+    }
+    if (!last_publish_stamp.isZero()) {
+        if (stamp == last_publish_stamp) {
+            ROS_DEBUG_THROTTLE(5.0, "Skipping state_from_gazebo publish at repeated stamp %.9f", stamp.toSec());
+            return;
+        }
+        if (stamp < last_publish_stamp) {
+            ROS_WARN_THROTTLE(5.0, "Simulation time moved backwards in state_from_gazebo: %.9f -> %.9f; resetting TF timestamp guard",
+                              last_publish_stamp.toSec(), stamp.toSec());
+            last_publish_stamp = ros::Time();
+        }
+    }
+
     int index = 0;
     for (auto &linkName : msg->name) {
         if (linkName == robot_name+"_gazebo::base")
@@ -41,7 +60,7 @@ void callback_BASE(const gazebo_msgs::LinkStates::ConstPtr &msg) {
                                     y,
                                     z));
     // 发布odom到map的tf关系
-    bf1.sendTransform(tf::StampedTransform(transform_odom2map, ros::Time::now(), "map", "odom"));
+    bf1.sendTransform(tf::StampedTransform(transform_odom2map, stamp, "map", "odom"));
     
     //求变化矩阵的逆解，用于推算map到odom的关系，以便能得到base到map的关系，及
     tf::Transform transform_map2odom = transform_odom2map.inverse();
@@ -74,9 +93,9 @@ void callback_BASE(const gazebo_msgs::LinkStates::ConstPtr &msg) {
     transform_odom2base.setRotation(q_odom);
     transform_odom2base.setOrigin(pt_odom);
 
-    bf2.sendTransform(tf::StampedTransform(transform_odom2base, ros::Time::now(), "odom", "base"));
+    bf2.sendTransform(tf::StampedTransform(transform_odom2base, stamp, "odom", "base"));
 
-    Odom.header.stamp = ros::Time::now();
+    Odom.header.stamp = stamp;
     Odom.header.frame_id = "odom";
     Odom.child_frame_id = "base";
 
@@ -103,6 +122,7 @@ void callback_BASE(const gazebo_msgs::LinkStates::ConstPtr &msg) {
 
 
     robotVelocity_BASE_frame_pub.publish(Odom);
+    last_publish_stamp = stamp;
 }
 
 
@@ -129,11 +149,10 @@ int main(int argc, char **argv) {
     roll  = atof(argv[6]);
   
     nh.param<std::string>("robot_name", robot_name, string("a1"));
-    tfState_BASE_sub = node.subscribe<gazebo_msgs::LinkStates>("/gazebo/link_states", 10, callback_BASE);
+    tfState_BASE_sub = node.subscribe<gazebo_msgs::LinkStates>("/gazebo/link_states", 1, callback_BASE);
     robotVelocity_BASE_frame_pub = node.advertise<nav_msgs::Odometry>("/Odometry_gazebo", 1);
 
     ros::spin();
     return 0;
 }
-
 

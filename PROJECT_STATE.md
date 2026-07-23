@@ -1,5 +1,19 @@
 # Project State
 
+> **2026-07-23 FAST-LIO2 TF repeated timestamp fix**: branch
+> `fix/0723-fast-lio2-tf-repeated-data` isolates TF ownership and timestamp
+> handling from clean `master`. `state_from_gazebo` now uses one guarded
+> callback stamp for `map -> odom`, `odom -> base`, and `/Odometry_gazebo`,
+> skips zero/repeated sim-time publications, resets on clock rollback, and
+> subscribes to `/gazebo/link_states` with queue depth 1. FAST-LIO2
+> `laserMapping` remains the default owner of `camera_init -> body`;
+> `odometry_tf_bridge` is opt-in to avoid duplicate dynamic TF owners. Scoped
+> `tools/build_with_venv.sh` validation passes for
+> `unitree_legged_msgs;simenv_fast_lio2_integration;unitree_guide`
+> with `unitree_move_base` blacklisted; `state_from_gazebo` and `junior_ctrl`
+> both link successfully. Full runtime reproduction is still not run because
+> `auto.sh` performs broad ROS/Gazebo process cleanup on this shared machine.
+
 > **2026-07-23 competition RL sensor-layer root cause**: FAST-LIO2 provenance
 > is resolved as an external dependency (`hku-mars/FAST_LIO`
 > `7cc4175de6f8ba2edf34bab02a42195b141027e9`, `ikd-Tree`

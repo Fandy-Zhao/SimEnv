@@ -33,7 +33,7 @@
   <arg name="save_pcd" default="true"/>
   <arg name="state_estimation_topic" default="/state_estimation"/>
   <arg name="registered_scan_topic" default="/registered_scan"/>
-  <arg name="enable_odometry_tf_bridge" default="true"/>
+  <arg name="enable_odometry_tf_bridge" default="false"/>
 
   <!-- PointCloud adapter node -->
   <node if="$(arg enable_adapter)" pkg="simenv_fast_lio2_integration"
@@ -51,7 +51,8 @@
   <!-- Navigation-facing Stage 2 contract. topic_tools/relay republishes the
        original serialized message without changing stamps, covariance, or
        camera_init/body frame semantics.  Legacy FAST-LIO2 topics remain
-       available for diagnostics and existing consumers. -->
+       available for diagnostics and existing consumers.
+       Default false: laserMapping owns the dynamic camera_init -> body TF. -->
   <node pkg="topic_tools" type="relay" name="state_estimation_relay"
         args="/Odometry $(arg state_estimation_topic)" output="screen"/>
   <node pkg="topic_tools" type="relay" name="registered_scan_relay"

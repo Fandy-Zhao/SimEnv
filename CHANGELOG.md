@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-23 — FAST-LIO2 TF repeated timestamp fix
+
+- Fixed `state_from_gazebo` to use a single guarded callback timestamp for
+  both referee TF edges and `/Odometry_gazebo`, skip zero/repeated sim-time
+  publications, recover after `/clock` rollback, and avoid link-state backlog
+  with queue depth 1.
+- Changed FAST-LIO2 mapping launch so `odometry_tf_bridge` defaults off;
+  `laserMapping` remains the default `camera_init -> body` TF owner and the
+  bridge is opt-in for estimators that do not publish TF.
+- Added governed TF ownership/root-cause records under
+  `experiments/runs/0723_fast_lio2_tf_repeated_data/`.
+
 ## 2026-07-23 — competition RL RTF collapse diagnostics
 
 - Added governed competition RL RTF collapse diagnostic artifacts: static

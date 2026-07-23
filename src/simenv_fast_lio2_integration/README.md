@@ -104,11 +104,11 @@ rosrun simenv_fast_lio2_integration pointcloud_fields_check.py _topic:=/scan_poi
 Stage 2 输出名称可通过 launch 参数 `state_estimation_topic` 和
 `registered_scan_topic` 覆盖。`map → camera_init` 仍仅由
 `map_to_camera_init_bridge.py` 发布；relay 不改写 frame，也不发布额外 TF。
-`odometry_tf_bridge.py` 将 `/state_estimation` 中已有的
-`camera_init → body` 位姿原样广播为动态 TF，使该估计链可通过静态
-`map → camera_init` 桥与 Gazebo 世界树连接；它拒绝空 frame 和非有限位姿。
-若另一个估计器已经广播同一 TF，可将 launch 参数
-`enable_odometry_tf_bridge:=false` 关闭，避免重复 authority。
+默认由 FAST-LIO2 `laserMapping` 拥有动态 `camera_init → body` TF，launch
+参数 `enable_odometry_tf_bridge` 默认关闭，避免 bridge 与 FAST-LIO2 双发布同一
+动态边。仅当上游估计器不发布该 TF 时，才将
+`enable_odometry_tf_bridge:=true` 打开；此时 `odometry_tf_bridge.py` 将
+`/state_estimation` 中已有的位姿原样广播，并拒绝空 frame 和非有限位姿。
 
 ## 已知限制
 
