@@ -43,6 +43,10 @@ Overall verdict: `FALCO_DSV_RUNTIME_TIMING_BLOCKED`
 - Actual TF uses `base`, not `base_link`; `map -> base`,
   `camera_init -> base`, `base -> laser_livox`, and `map -> camera_init`
   were available.
+- `rosrun tf view_frames` timed out during the original runtime attempt; the
+  committed `tf_frames.gv` and `tf_frames.pdf` are an audited diagram generated
+  from the saved `tf_echo` and `tf_monitor` evidence, not a native
+  `view_frames` dump.
 - R3 required a launch fix because the real FAST-LIO2 relays publish global
   `/state_estimation` and `/registered_scan`, while validation/DSV expect
   `/navigation/state_estimation` and `/navigation/registered_scan`.

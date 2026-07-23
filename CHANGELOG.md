@@ -10,6 +10,8 @@
   `experiments/runs/0723_falco_dsv_runtime/`.
 - Confirmed R2 real FAST-LIO2 data and TF pass; R3 remains blocked because
   FALCO did not produce a useful path from real registered clouds under low RTF.
+- Refreshed the evidence bundle on 2026-07-24 with `baseline.txt`, latest R0/R1
+  command outputs, and audited `tf_frames.gv`/`tf_frames.pdf` artifacts.
 
 ## 2026-07-23 — FALCO + DSV-Planner source integration
 

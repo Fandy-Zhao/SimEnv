@@ -27,6 +27,8 @@ Primary evidence is under
   ownership, type, frequency, and frame samples.
 - `r2_message_validity.txt`: finite odometry and nonempty cloud checks.
 - `tf_echo_base_frames.txt`, `tf_monitor.txt`: TF evidence.
+- `tf_frames.gv`, `tf_frames.pdf`: audited TF diagram generated from saved
+  echo/monitor evidence because native `view_frames` timed out.
 - `falco_real_input_retry.log`: R3 FALCO output evidence.
 - `rtf_metrics.csv`, `motion_metrics.csv`: timing and motion summary.
 

@@ -1,0 +1,31 @@
+Date: 2026-07-24
+Worktree: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation
+Branch: feat/0723-falco-dsv-navigation-integration
+Initial task baseline: 01776ecdb45cd00dfcaafcde0b89699f0444f4a4
+Current HEAD before this evidence refresh: 6132611c03eb94e43ba23ac17076ff9f08d1b466
+
+Governance checks:
+- branch == feat/0723-falco-dsv-navigation-integration
+- HEAD contains 01776ecd: yes
+- task worktree initial status: clean
+- root workspace /home/zzf/search_ws/SimEnv preserved; pre-existing generated/log/result dirty files were not cleaned or overwritten
+- no push
+- no master merge
+
+Files read for this refresh:
+- /home/zzf/.codex/attachments/ed11c12f-48a2-43f9-8f37-7bd347f09632/pasted-text.txt
+- /home/zzf/.codex/skills/project-governance/SKILL.md
+- /home/zzf/.codex/skills/cheap-code-worker/SKILL.md
+- AGENTS.md
+- experiments/runs/0723_falco_dsv_runtime/summary.md
+- docs/reports/0723_falco_dsv_runtime.md
+- existing R0/R1/R2/R3 evidence files in this directory
+
+Plan:
+1. Preserve existing task branch and worktree.
+2. Re-run R0 source/launch grep audit and save the latest output.
+3. Re-run formal build with ./tools/build_with_venv.sh and save build.log.
+4. Re-run package discovery and launch-file parsing checks.
+5. Fill missing required evidence artifacts: baseline.txt, tf_frames.gv, tf_frames.pdf.
+6. Update reports only if needed; do not enter R4-R6 because R3 did not pass.
+7. Commit evidence refresh only after diff and checks pass.

@@ -1,0 +1,26 @@
+digraph TF_Audit_0723_FALCO_DSV_Runtime {
+  graph [
+    label="SimEnv FALCO + DSV runtime TF audit, 2026-07-23 evidence\nGenerated from tf_echo/tf_monitor evidence because rosrun tf view_frames timed out; see view_frames.stderr",
+    labelloc=top,
+    fontsize=18
+  ];
+  node [shape=box, style="rounded", fontsize=12];
+  edge [fontsize=11];
+
+  map [label="map\nplanner/global frame"];
+  odom [label="odom"];
+  camera_init [label="camera_init\nFAST-LIO odom/cloud frame"];
+  body [label="body\nFAST-LIO child_frame_id"];
+  base [label="base\nUnitree base frame"];
+  laser_livox [label="laser_livox\nLiDAR frame"];
+
+  map -> odom [label="identity observed"];
+  map -> camera_init [label="available"];
+  map -> base [label="available"];
+  camera_init -> base [label="available"];
+  base -> laser_livox [label="static, available"];
+  camera_init -> body [label="/Odometry child_frame_id"];
+
+  base_link_missing [label="base_link\nnot present in runtime TF", shape=note];
+  base_link_missing -> base [style=dashed, label="do not assume alias"];
+}
