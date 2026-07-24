@@ -201,21 +201,46 @@ schedule_unpause_physics() {
 }
 
 # ---------------------------------------------------------------------------
-# Helper: wait for a ROS topic to publish at least one message.
+# Helper: wait for a ROS topic to publish at least two consecutive messages
+# with incrementing timestamps (proves the publisher is alive, not a stale
+# latched message).
 # Usage: wait_for_topic <topic> [timeout_sec]
 # Returns: 0 on success, 1 on timeout.
 # ---------------------------------------------------------------------------
 wait_for_topic() {
   local topic="$1"
   local timeout_sec="${2:-30}"
-  local start_time
+  local start_time prev_sec prev_nsec cur_sec cur_nsec
 
   start_time="$(date +%s)"
+  prev_sec="" prev_nsec=""
 
   while true; do
-    if timeout 2 rostopic echo -n 1 "$topic" >/dev/null 2>&1; then
-      echo "[READY] topic: $topic"
-      return 0
+    cur_sec=""
+    cur_nsec=""
+    read -r cur_sec cur_nsec < <(
+      timeout 2 rostopic echo -n 1 "$topic" 2>/dev/null \
+        | grep "secs:" | head -2 \
+        | awk '{sec=$2; getline; nsec=$2; print sec, nsec}'
+    ) 2>/dev/null || true
+
+    if [ -n "$cur_sec" ] && [ -n "$cur_nsec" ]; then
+      if [ -z "$prev_sec" ]; then
+        # First valid message captured
+        prev_sec="$cur_sec"
+        prev_nsec="$cur_nsec"
+      else
+        # Check timestamp is incrementing (proves live publisher)
+        if [ "$cur_sec" -gt "$prev_sec" ] 2>/dev/null || \
+           { [ "$cur_sec" -eq "$prev_sec" ] 2>/dev/null && \
+             [ "$cur_nsec" -gt "$prev_nsec" ] 2>/dev/null; }; then
+          echo "[READY] topic: $topic (timestamps incrementing)"
+          return 0
+        fi
+        # Timestamp not incrementing: reset and retry
+        prev_sec="$cur_sec"
+        prev_nsec="$cur_nsec"
+      fi
     fi
 
     if [ $(( $(date +%s) - start_time )) -ge "$timeout_sec" ]; then
