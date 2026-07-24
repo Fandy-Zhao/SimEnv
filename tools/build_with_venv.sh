@@ -29,8 +29,6 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-LIVOX_SDK_EXPECTED="9306596a2bf15c1343bc023b497465ed0a32909d"
-LIVOX_SDK_INSTALL="${SIMENV_LIVOX_SDK_INSTALL:-/home/zzf/search_ws/shared_ros_deps/Livox-SDK/${LIVOX_SDK_EXPECTED}/install}"
 
 cd "$REPO_ROOT"
 
@@ -65,23 +63,6 @@ fi
 if [[ ! -d "$REPO_ROOT/src" ]]; then
   echo "ERROR: catkin workspace src directory not found: $REPO_ROOT/src" >&2
   exit 1
-fi
-
-if [[ -x "$REPO_ROOT/tools/prepare_shared_ros_deps.sh" ]]; then
-  echo "[build_with_venv] Checking shared ROS dependency links..."
-  "$REPO_ROOT/tools/prepare_shared_ros_deps.sh" --check-only
-fi
-
-if [[ ! -f "$LIVOX_SDK_INSTALL/include/livox_sdk.h" ]]; then
-  echo "ERROR: Livox-SDK header not found: $LIVOX_SDK_INSTALL/include/livox_sdk.h" >&2
-  echo "Run tools/prepare_shared_ros_deps.sh before building." >&2
-  exit 21
-fi
-
-if [[ ! -f "$LIVOX_SDK_INSTALL/lib/liblivox_sdk_static.a" ]]; then
-  echo "ERROR: Livox-SDK static library not found: $LIVOX_SDK_INSTALL/lib/liblivox_sdk_static.a" >&2
-  echo "Run tools/prepare_shared_ros_deps.sh before building." >&2
-  exit 21
 fi
 
 # ---------------------------------------------------------------------------
@@ -219,10 +200,6 @@ fi
 # overriding per-package find_package() paths (e.g. unitree_guide's
 # NO_DEFAULT_PATH for its own LibTorch distribution).
 CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH:-}"
-CMAKE_LIBRARY_PATH="${CMAKE_LIBRARY_PATH:-}"
-CPATH="${CPATH:-}"
-CPLUS_INCLUDE_PATH="${CPLUS_INCLUDE_PATH:-}"
-LIBRARY_PATH="${LIBRARY_PATH:-}"
 
 if [[ -n "${TORCH_CMAKE_PREFIX:-}" ]]; then
   if find "$TORCH_CMAKE_PREFIX" \( -name "TorchConfig.cmake" -o -name "torch-config.cmake" \) 2>/dev/null | grep -q .; then
@@ -242,20 +219,8 @@ if [[ -d "${CUDA_HOME:-}" ]]; then
   CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}:${CUDA_HOME}"
 fi
 
-CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}:${LIVOX_SDK_INSTALL}"
-CMAKE_LIBRARY_PATH="${LIVOX_SDK_INSTALL}/lib:${CMAKE_LIBRARY_PATH}"
-CPATH="${LIVOX_SDK_INSTALL}/include:${CPATH}"
-CPLUS_INCLUDE_PATH="${LIVOX_SDK_INSTALL}/include:${CPLUS_INCLUDE_PATH}"
-LIBRARY_PATH="${LIVOX_SDK_INSTALL}/lib:${LIBRARY_PATH}"
-
 export CMAKE_PREFIX_PATH
-export CMAKE_LIBRARY_PATH
-export CPATH
-export CPLUS_INCLUDE_PATH
-export LIBRARY_PATH
 echo "[build_with_venv] CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH"
-echo "[build_with_venv] CMAKE_LIBRARY_PATH=$CMAKE_LIBRARY_PATH"
-echo "[build_with_venv] Livox-SDK install: $LIVOX_SDK_INSTALL"
 
 # ---------------------------------------------------------------------------
 # Warn about CMake cache if compilers may have changed
@@ -269,23 +234,6 @@ if [[ -f "$REPO_ROOT/build/CMakeCache.txt" ]]; then
     echo "[build_with_venv] WARN: CMake may refuse to reconfigure. If the build fails" >&2
     echo "[build_with_venv]       with 'compiler changed' errors, clean build/devel:" >&2
     echo "[build_with_venv]         rm -rf build devel" >&2
-  fi
-fi
-
-# ---------------------------------------------------------------------------
-# Shared dependency safety checks
-# ---------------------------------------------------------------------------
-SHARED_LIVOX_CMAKELISTS="$REPO_ROOT/src/external/livox_ros_driver/livox_ros_driver/CMakeLists.txt"
-if [[ -f "$SHARED_LIVOX_CMAKELISTS" ]]; then
-  if ! grep -q "BUILD_LIVOX_DRIVER_NODE" "$SHARED_LIVOX_CMAKELISTS"; then
-    if ! find "$LIVOX_SDK_INSTALL/lib" /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu -maxdepth 2 \
-      -name "liblivox_sdk_static.a" 2>/dev/null | grep -q .; then
-      echo "[build_with_venv] ERROR: shared livox_ros_driver requires Livox-SDK for its hardware node." >&2
-      echo "[build_with_venv] ERROR: its CMakeLists.txt has no BUILD_LIVOX_DRIVER_NODE guard and would try to clone/build Livox-SDK inside the shared source checkout." >&2
-      echo "[build_with_venv] ERROR: refusing to modify /home/zzf/search_ws/livox_ros_driver from this worktree." >&2
-      echo "[build_with_venv] ERROR: use a clean message-only upstream commit/patch strategy that does not mutate the shared source, or install a real Livox-SDK system library." >&2
-      exit 20
-    fi
   fi
 fi
 

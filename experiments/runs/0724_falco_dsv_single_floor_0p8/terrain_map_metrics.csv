@@ -1,2 +1,4 @@
-timestamp,gate,status,topic,frame_id,rate_hz,points,reason
-2026-07-24T18:03:00+08:00,FAST_LIO_INPUT_BLOCKED,not_run,/navigation/terrain_map,,0,0,FAST-LIO2 fast_lio package missing so /Odometry and /cloud_registered did not publish
+timestamp_sim_s,point_count,frame_id
+6.0,923,map
+27.0,889,map
+38.0,840,map

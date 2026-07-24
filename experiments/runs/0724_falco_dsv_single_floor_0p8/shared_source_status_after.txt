@@ -1,5 +1,22 @@
-2026-07-24T18:55:37+08:00
-## after formal build
-FAST_LIO status:
-livox_ros_driver status:
-## livox driver dependency artifacts after
+Shared Source Mutation Check (post-build)
+===========================================
+Date: 2026-07-24
+
+FAST_LIO (/home/zzf/search_ws/FAST_LIO):
+  HEAD: 7cc4175de6f8ba2edf34bab02a42195b141027e9
+  Status: CLEAN (no modifications, no untracked files)
+
+livox_ros_driver (/home/zzf/search_ws/livox_ros_driver):
+  HEAD: 3d240d5666129e1a3052e78ee8487a04b08fdda3
+  Status: CLEAN (no modifications, no untracked files)
+
+ikd-Tree (FAST_LIO submodule):
+  HEAD: e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4
+
+BUILD STAGING (temp copies, not shared sources):
+  /tmp/simenv-fast-lio2-deps/7cc4175...-3d240d.../
+  - FAST_LIO: PATCHED (fast_lio-cxx17.patch)
+  - livox_ros_driver: PATCHED (livox-driver-message-only.patch)
+  These patches are applied to independent copies, not to public sources.
+
+VERDICT: PASS. Public shared sources remain unmodified.

@@ -1,9 +1,9 @@
-... logging to /home/zzf/.ros/log/b89ef70e-8746-11f1-ac8c-bdece02cfe94/roslaunch-zzf-Legion-Y9000P-IRX9-78429.log
+... logging to /home/zzf/.ros/log/a328c684-8755-11f1-ac8c-bdece02cfe94/roslaunch-zzf-Legion-Y9000P-IRX9-103283.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/navigation/simenv_navigation_bringup/launch/single_floor_exploration.launch
-[1mstarted roslaunch server http://zzf-Legion-Y9000P-IRX9:37087/[0m
+[1mstarted roslaunch server http://zzf-Legion-Y9000P-IRX9:41965/[0m
 
 SUMMARY
 ========
@@ -591,14 +591,1659 @@ NODES
     exploration (dsvp_launch/exploration)
     graph_planner (graph_planner/graph_planner)
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-W0724 18:03:14.585203 78488 octomap_world.cc:82] Octomap resolution has changed! Resetting tree!
-Writing 0 nodes to output stream...Writing 0 nodes to output stream...Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784887394.821877, 0.000000]: Waiting for odometry or cloud data...
-[WARN] [1784887395.824649, 6.024000]: Waiting for odometry or cloud data...
-Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784887401.834088, 7.210000]: Waiting for odometry or cloud data...
-Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784887408.844386, 8.410000]: Waiting for odometry or cloud data...
-Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784887415.855143, 9.610000]: Waiting for odometry or cloud data...
-Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784887421.864084, 10.612000]: Waiting for odometry or cloud data...
-Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784887429.877376, 11.716000]: Waiting for odometry or cloud data...
-Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784887436.888129, 12.810000]: Waiting for odometry or cloud data...
-Writing 0 nodes to output stream...Writing 0 nodes to output stream...Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784887443.899129, 13.918000]: Waiting for odometry or cloud data...
-Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784887450.910867, 15.028000]: Waiting for odometry or cloud data...
+W0724 19:52:57.347802 103349 octomap_world.cc:82] Octomap resolution has changed! Resetting tree!
+Writing 0 nodes to output stream...Writing 0 nodes to output stream...Writing 0 nodes to output stream...Writing 0 nodes to output stream...[WARN] [1784893978.522625, 0.000000]: Waiting for odometry or cloud data...
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8798 nodes to output stream...Writing 8798 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8810 nodes to output stream...Writing 8810 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8773 nodes to output stream...Writing 8773 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[0m[INFO] [1784894048.627048123, 6.380000000]: Waiting for exploration start signal[0m
+[0m[INFO] [1784894064.665762828, 6.882000000]: Waiting for exploration start signal[0m
+[0m[INFO] [1784894069.715111065, 7.382000000]: Waiting for exploration start signal[0m
+[0m[INFO] [1784894069.715135587, 7.382000000]: Starting the planner: Performing initialization motion[0m
+[0m[INFO] [1784894069.715157513, 7.382000000]: DSV initialization skipped: skip=1 init_distance=0.000 tolerance=0.150[0m
+
+[1;32mExploration Started[0m
+
+Planning iteration 0
+[0m[INFO] [1784893977.497857434]: Successfully launched OccupancyGrid node[0m
+[0m[INFO] [1784893977.645095818]: Successfully launched DualStateGraph node[0m
+[0m[INFO] [1784893977.748586783]: Successfully launched DualStateFrontier node[0m
+[0m[INFO] [1784893977.748803715]: Successfully launched Drrt node[0m
+[0m[INFO] [1784893977.949001629]: Successfully launched DSVP node[0m
+Exploration Stage
+     New node number is 0
+     Current local RRT size is 0
+     Current global graph size is 1
+     No Remaining local frontiers  
+     Switch to relocation stage 
+     Total plan lasted 0
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8742 nodes to output stream...Writing 8742 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Planning iteration 0
+Relocation Stage
+     New node number is 1
+     Current local RRT size is 1
+     Current global graph size is 1
+
+[1;32mExploration completed, returning home[0m
+
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8748 nodes to output stream...Writing 8748 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8736 nodes to output stream...Writing 8736 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8747 nodes to output stream...Writing 8747 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+
+Reading path files.
+
+Initialization complete.
+
+[0m[INFO] [1784893981.140309664, 4.970000000]: falco_diag raw=22875 adjacent=17835 stacked=8240 height_filtered=318 center02=39 center03=77 center05=226 rel_z[min,p10,med,p90,max]=[-0.627,-0.416,1.858,2.194,2.267] candidate_paths=6174 free_paths=6174 selected_group=2 selected_rot=0 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=4 goal_dis=0.031 goal_dir=162.8 planning_ms=10.787 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894028.238680873, 5.972000000]: falco_diag raw=22884 adjacent=17835 stacked=8490 height_filtered=330 center02=46 center03=95 center05=267 rel_z[min,p10,med,p90,max]=[-0.637,-0.419,1.893,2.198,2.269] candidate_paths=6174 free_paths=6174 selected_group=2 selected_rot=0 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=3 goal_dis=0.028 goal_dir=157.8 planning_ms=12.314 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894065.798779842, 6.976000000]: falco_diag raw=22876 adjacent=17831 stacked=7986 height_filtered=321 center02=32 center03=69 center05=205 rel_z[min,p10,med,p90,max]=[-0.627,-0.415,1.776,2.191,2.266] candidate_paths=6174 free_paths=6174 selected_group=2 selected_rot=0 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=3 goal_dis=0.029 goal_dir=157.8 planning_ms=2.494 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894074.857232104, 8.024000000]: falco_diag raw=23228 adjacent=17981 stacked=8575 height_filtered=314 center02=44 center03=88 center05=250 rel_z[min,p10,med,p90,max]=[-0.628,-0.425,1.901,2.175,2.266] candidate_paths=6174 free_paths=6174 selected_group=2 selected_rot=0 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=3 goal_dis=0.030 goal_dir=159.1 planning_ms=1.474 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894082.837810714, 9.114000000]: falco_diag raw=23358 adjacent=17266 stacked=8203 height_filtered=326 center02=39 center03=98 center05=272 rel_z[min,p10,med,p90,max]=[-0.649,-0.444,1.851,2.171,2.269] candidate_paths=6174 free_paths=6174 selected_group=2 selected_rot=0 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=3 goal_dis=0.027 goal_dir=158.3 planning_ms=1.276 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894089.680389065, 10.194000000]: falco_diag raw=23291 adjacent=17235 stacked=8083 height_filtered=321 center02=39 center03=85 center05=243 rel_z[min,p10,med,p90,max]=[-0.646,-0.433,1.812,2.161,2.264] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.003 goal_dir=-0.9 planning_ms=1.149 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894095.355308920, 11.194000000]: falco_diag raw=23336 adjacent=17226 stacked=8442 height_filtered=314 center02=45 center03=100 center05=280 rel_z[min,p10,med,p90,max]=[-0.640,-0.435,1.895,2.167,2.263] candidate_paths=6174 free_paths=6174 selected_group=4 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.004 goal_dir=14.6 planning_ms=1.652 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894101.008682378, 12.194000000]: falco_diag raw=23347 adjacent=17168 stacked=8518 height_filtered=316 center02=56 center03=115 center05=326 rel_z[min,p10,med,p90,max]=[-0.646,-0.438,1.894,2.168,2.263] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.004 goal_dir=1.5 planning_ms=1.672 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPFailed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8743 nodes to output stream...Writing 8743 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8742 nodes to output stream...Writing 8742 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8752 nodes to output stream...Writing 8752 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8777 nodes to output stream...Writing 8777 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8768 nodes to output stream...Writing 8768 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8766 nodes to output stream...Writing 8766 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8790 nodes to output stream...Writing 8790 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8746 nodes to output stream...Writing 8746 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8771 nodes to output stream...Writing 8771 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[0m[INFO] [1784893982.715733429, 4.990000000]: falco_follower_diag heading_error_deg=179.7 stage=large_heading target_linear=-0.004 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.030 waypoint_dis=0.030 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894029.939634735, 5.990000000]: falco_follower_diag heading_error_deg=179.8 stage=large_heading target_linear=-0.003 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.020 waypoint_dis=0.020 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894065.813542354, 6.990000000]: falco_follower_diag heading_error_deg=179.8 stage=large_heading target_linear=-0.003 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.020 waypoint_dis=0.020 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894074.823596679, 7.990000000]: falco_follower_diag heading_error_deg=179.6 stage=large_heading target_linear=-0.003 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.020 waypoint_dis=0.020 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894082.213469328, 8.990000000]: falco_follower_diag heading_error_deg=179.8 stage=large_heading target_linear=-0.003 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.020 waypoint_dis=0.020 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894088.498790316, 9.990000000]: falco_follower_diag heading_error_deg=24.4 stage=turn target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.001 waypoint_dis=0.001 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894094.247420723, 10.990000000]: falco_follower_diag heading_error_deg=64.0 stage=large_heading target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.001 waypoint_dis=0.001 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894099.863549098, 11.990000000]: falco_follower_diag heading_error_deg=172.6 stage=large_heading target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.001 waypoint_dis=0.001 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894105.504132200, 12.990000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894111.459729087, 13.990000000]: falco_follower_diag heading_error_deg=142.4 stage=large_heading target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.001 waypoint_dis=0.001 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894118.052829079, 14.990000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894124.153980514, 15.990000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894130.637130115, 17.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894137.047321817, 18.010000000]: falco_follower_diag heading_error_deg=163.1 stage=large_heading target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.002 waypoint_dis=0.002 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894144.597811261, 19.010000000]: falco_follower_diag heading_error_deg=159.8 stage=large_heading target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.003 waypoint_dis=0.003 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894170.361439016, 20.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894217.882122055, 21.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 rFailed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+athThre=2[0m
+[0m[INFO] [1784894106.641750677, 13.204000000]: falco_diag raw=23360 adjacent=17230 stacked=8211 height_filtered=314 center02=42 center03=95 center05=280 rel_z[min,p10,med,p90,max]=[-0.649,-0.445,1.833,2.165,2.267] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.005 goal_dir=3.1 planning_ms=1.633 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894113.192185858, 14.316000000]: falco_diag raw=23219 adjacent=17992 stacked=8403 height_filtered=317 center02=41 center03=91 center05=274 rel_z[min,p10,med,p90,max]=[-0.633,-0.429,1.878,2.173,2.267] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.004 goal_dir=1.2 planning_ms=1.944 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894120.536936187, 15.414000000]: falco_diag raw=22926 adjacent=17885 stacked=8334 height_filtered=324 center02=35 center03=81 center05=245 rel_z[min,p10,med,p90,max]=[-0.655,-0.421,1.853,2.197,2.269] candidate_paths=6174 free_paths=6174 selected_group=4 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.004 goal_dir=13.5 planning_ms=1.736 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894127.441853735, 16.536000000]: falco_diag raw=23282 adjacent=18141 stacked=8078 height_filtered=316 center02=21 center03=56 center05=185 rel_z[min,p10,med,p90,max]=[-0.651,-0.429,1.797,2.170,2.267] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.004 goal_dir=-1.2 planning_ms=1.997 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894134.435157379, 17.604000000]: falco_diag raw=23284 adjacent=17301 stacked=8072 height_filtered=315 center02=40 center03=83 center05=239 rel_z[min,p10,med,p90,max]=[-0.624,-0.434,1.805,2.161,2.264] candidate_paths=6174 free_paths=6174 selected_group=4 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.005 goal_dir=13.3 planning_ms=1.173 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894141.665204991, 18.628000000]: falco_diag raw=23278 adjacent=17157 stacked=8079 height_filtered=323 center02=45 center03=91 center05=237 rel_z[min,p10,med,p90,max]=[-0.627,-0.441,1.789,2.160,2.265] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.006 goal_dir=-1.9 planning_ms=2.206 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894156.577853132, 19.706000000]: falco_diag raw=23292 adjacent=17091 stacked=8264 height_filtered=314 center02=46 center03=107 center05=279 rel_z[min,p10,med,p90,max]=[-0.647,-0.446,1.834,2.159,2.264] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.006 goal_dir=-0.9 planning_ms=5.248 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894206.295232195, 20.790000000]: falco_diag raw=23352 adjacent=17180 stacked=8304 height_filtered=318 center02=35 center03=82 center05=236 rel_z[min,p10,med,p90,max]=[-0.650,-0.450,1.774,2.170,2.269] candidate_paths=6174 free_paths=6174 selected_group=4 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.005 goal_dir=14.4 planning_ms=7.952 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894Failed to find match for field 'intensity'.
+Writing 8757 nodes to output stream...Writing 8757 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 8767 nodes to output stream...Writing 8767 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 8760 nodes to output stream...Writing 8760 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 8753 nodes to output stream...Writing 8753 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 8782 nodes to output stream...Writing 8782 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8760 nodes to output stream...Writing 8760 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8728 nodes to output stream...Writing 8728 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8763 nodes to output stream...Writing 8763 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8740 nodes to output stream...Writing 8740 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+255.467513803, 21.796000000]: falco_diag raw=23316 adjacent=17149 stacked=8446 height_filtered=319 center02=49 center03=112 center05=300 rel_z[min,p10,med,p90,max]=[-0.649,-0.448,1.847,2.166,2.267] candidate_paths=6174 free_paths=6174 selected_group=4 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.007 goal_dir=9.8 planning_ms=9.465 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894301.811675344, 22.800000000]: falco_diag raw=23298 adjacent=17146 stacked=8368 height_filtered=319 center02=57 center03=121 center05=304 rel_z[min,p10,med,p90,max]=[-0.651,-0.446,1.844,2.161,2.267] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.008 goal_dir=3.4 planning_ms=9.728 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894347.795057523, 23.800000000]: falco_diag raw=23355 adjacent=17174 stacked=8155 height_filtered=319 center02=34 center03=76 center05=223 rel_z[min,p10,med,p90,max]=[-0.650,-0.448,1.744,2.167,2.267] candidate_paths=6174 free_paths=6174 selected_group=4 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.006 goal_dir=16.8 planning_ms=10.833 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894398.273565960, 24.898000000]: falco_diag raw=23348 adjacent=18142 stacked=8313 height_filtered=318 center02=34 center03=85 center05=239 rel_z[min,p10,med,p90,max]=[-0.661,-0.447,1.805,2.149,2.245] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=1 goal_dis=0.008 goal_dir=5.4 planning_ms=10.751 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894448.024628910, 26.000000000]: falco_diag raw=23281 adjacent=18238 stacked=8463 height_filtered=315 center02=43 center03=95 center05=276 rel_z[min,p10,med,p90,max]=[-0.671,-0.441,1.879,2.169,2.235] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.013 goal_dir=5.1 planning_ms=10.796 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894481.211860559, 27.076000000]: falco_diag raw=23409 adjacent=18177 stacked=8441 height_filtered=318 center02=41 center03=94 center05=274 rel_z[min,p10,med,p90,max]=[-0.670,-0.452,1.844,2.143,2.237] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.016 goal_dir=2.4 planning_ms=1.684 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894490.245196838, 28.156000000]: falco_diag raw=23506 adjacent=17350 stacked=8128 height_filtered=323 center02=29 center03=77 center05=219 rel_z[min,p10,med,p90,max]=[-0.673,-0.470,1.744,2.141,2.238] candidate_paths=6174 free_paths=6174 selected_group=4 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.014 goal_dir=10.8 planning_ms=1.629 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894498.473998649, 29.242000000]: falco_diag raw=23520 adjacent=17359 stacked=8476 height_filtered=312 center02=48 center03=114 center05=318 rel_z[min,p10,med,p90,max]=[-0.671,-0.467,1.830,2.141,2.234] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.014 goal_dir=4.7 planning_ms=1.641 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894505.049314776, 30.332000000]: faFailed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8741 nodes to output stream...Writing 8741 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8742 nodes to output stream...Writing 8742 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8743 nodes to output stream...Writing 8743 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8741 nodes to output stream...Writing 8741 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8746 nodes to output stream...Writing 8746 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8747 nodes to output stream...Writing 8747 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8747 nodes to output stream...Writing 8747 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 8748 nodes to output stream...Writing 8748 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+aw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894264.723756753, 22.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894311.362625854, 23.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894357.315591244, 24.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894403.026812678, 25.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.000 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.000 waypoint_dis=0.000 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894448.058526874, 26.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894480.500681216, 27.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894489.406978036, 28.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894496.853224646, 29.010000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894503.307653904, 30.010000000]: falco_follower_diag heading_error_deg=0.4 stage=straight target_linear=0.005 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894508.982151976, 31.010000000]: falco_follower_diag heading_error_deg=0.1 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894515.044353891, 32.030000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894520.695744464, 33.030000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894527.393134975, 34.030000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894533.432964146, 35.030000000]: falco_follower_diag heading_error_deg=0.1 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894539.810923442, 36.030000000]: falco_follower_diag heading_error_deg=0.0 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894547.621034453, 37.030000000]: falco_follower_diag heading_error_deg=0.1 stage=straight target_linear=0.006 raw_linear=0.000 raw_angular=0.000 max_angular=0.220 end_dis=0.010 waypoint_dis=0.010 input_fresh=1 safety_stop=0[0m
+[0m[INFO] [1784894560.333595031, 38.030000000]: falco_follower_diag headinFailed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+lco_diag raw=23451 adjacent=18221 stacked=8474 height_filtered=320 center02=41 center03=95 center05=280 rel_z[min,p10,med,p90,max]=[-0.669,-0.454,1.872,2.146,2.238] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.016 goal_dir=3.0 planning_ms=1.170 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894510.689511757, 31.334000000]: falco_diag raw=23419 adjacent=18196 stacked=8478 height_filtered=316 center02=45 center03=93 center05=267 rel_z[min,p10,med,p90,max]=[-0.648,-0.449,1.856,2.147,2.235] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.015 goal_dir=3.8 planning_ms=1.700 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894517.297911727, 32.422000000]: falco_diag raw=23266 adjacent=18241 stacked=8423 height_filtered=317 center02=44 center03=103 center05=272 rel_z[min,p10,med,p90,max]=[-0.667,-0.439,1.854,2.171,2.236] candidate_paths=6174 free_paths=6174 selected_group=4 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.016 goal_dir=5.7 planning_ms=1.045 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894523.629233265, 33.432000000]: falco_diag raw=23281 adjacent=18253 stacked=8477 height_filtered=312 center02=49 center03=100 center05=283 rel_z[min,p10,med,p90,max]=[-0.645,-0.438,1.870,2.167,2.235] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.016 goal_dir=3.9 planning_ms=1.243 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894530.369262051, 34.544000000]: falco_diag raw=23451 adjacent=18259 stacked=8542 height_filtered=322 center02=43 center03=105 center05=276 rel_z[min,p10,med,p90,max]=[-0.668,-0.447,1.885,2.150,2.233] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.014 goal_dir=11.1 planning_ms=1.772 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894537.142079105, 35.624000000]: falco_diag raw=23501 adjacent=17336 stacked=8188 height_filtered=316 center02=49 center03=95 center05=260 rel_z[min,p10,med,p90,max]=[-0.645,-0.463,1.790,2.137,2.232] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.016 goal_dir=2.9 planning_ms=1.965 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894544.128093840, 36.644000000]: falco_diag raw=23500 adjacent=17291 stacked=8440 height_filtered=323 center02=58 center03=121 center05=314 rel_z[min,p10,med,p90,max]=[-0.668,-0.467,1.828,2.144,2.234] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.015 goal_dir=8.5 planning_ms=1.770 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894554.685220045, 37.710000000]: falco_diag raw=23501 adjacent=17517 stacked=8078 height_filtered=322 center02=38 center03=74 center05=231 rel_z[min,p10,med,p90,max]=[-0.638,-0.458,1.785,2.136,2.232] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.016 goal_dir=8.0 planning_ms=3.814 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894597.661973441, 38.806000000]: falco_diag raw=23511 adjacent=17358 sFailed to find match for field 'intensity'.
+Writing 8751 nodes to output stream...Writing 8751 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 8751 nodes to output stream...Writing 8751 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 8751 nodes to output stream...Writing 8751 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 8751 nodes to output stream...Writing 8751 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 8887 nodes to output stream...Writing 8887 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 13030 nodes to output stream...Writing 13030 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 13090 nodes to output stream...Writing 13090 nodes to output stream...[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 13372 nodes to output stream...Writing 13372 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+[A[2K[1;32mReturn home completed[0m
+Failed to find match for field 'intensity'.
+Writing 16178 nodes to output stream...Writing 16178 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+tacked=8510 height_filtered=316 center02=49 center03=113 center05=311 rel_z[min,p10,med,p90,max]=[-0.673,-0.472,1.826,2.146,2.239] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.016 goal_dir=2.3 planning_ms=11.542 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894642.559278259, 39.808000000]: falco_diag raw=23500 adjacent=17365 stacked=8298 height_filtered=320 center02=56 center03=115 center05=298 rel_z[min,p10,med,p90,max]=[-0.664,-0.468,1.799,2.136,2.235] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.016 goal_dir=1.3 planning_ms=10.495 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894688.160701512, 40.808000000]: falco_diag raw=23513 adjacent=17345 stacked=8251 height_filtered=319 center02=33 center03=80 center05=227 rel_z[min,p10,med,p90,max]=[-0.671,-0.473,1.733,2.142,2.238] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.016 goal_dir=7.1 planning_ms=10.789 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894735.793007740, 41.890000000]: falco_diag raw=23427 adjacent=18212 stacked=8154 height_filtered=316 center02=32 center03=80 center05=212 rel_z[min,p10,med,p90,max]=[-0.671,-0.455,1.785,2.143,2.239] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=2 goal_dis=0.015 goal_dir=7.9 planning_ms=9.230 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894782.434989906, 42.894000000]: falco_diag raw=23265 adjacent=17997 stacked=8091 height_filtered=343 center02=24 center03=57 center05=181 rel_z[min,p10,med,p90,max]=[-0.650,-0.410,1.808,2.175,2.269] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=10 goal_dis=0.092 goal_dir=2.0 planning_ms=11.252 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894828.376555171, 43.910000000]: falco_diag raw=23639 adjacent=16895 stacked=9317 height_filtered=405 center02=0 center03=0 center05=64 rel_z[min,p10,med,p90,max]=[-0.568,-0.336,1.466,2.238,2.326] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=29 goal_dis=0.288 goal_dir=3.4 planning_ms=10.781 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894867.535651997, 44.960000000]: falco_diag raw=23675 adjacent=16482 stacked=9026 height_filtered=687 center02=0 center03=0 center05=0 rel_z[min,p10,med,p90,max]=[-0.253,0.311,1.432,2.142,2.249] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=34 goal_dis=0.333 goal_dir=0.4 planning_ms=3.998 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894878.815680752, 46.026000000]: falco_diag raw=23755 adjacent=17026 stacked=8957 height_filtered=1068 center02=0 center03=0 center05=0 rel_z[min,p10,med,p90,max]=[-0.195,0.219,1.336,2.069,2.202] candidate_paths=6174 free_paths=6174 selected_group=3 selected_rot=18 collision[min,p10,med,p90,max]=[0,0,0,0,0] published_poses=67 goal_dis=0.666 goal_dir=8.5 planning_ms=2.682 params checkObstacle=1 minRelZ=-0.250 maxRelZ=0.250 vehicleLength=0.560 vehicleWidth=0.430 pointPerPathThre=2[0m
+[0m[INFO] [1784894886.569528032, 47.096000000]: falco_diag raw=23684 adjacent=16956 stacked=8328 height_filtered=754 center02=Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 17646 nodes to output stream...Writing 17646 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 19473 nodes to output stream...Writing 19473 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 19699 nodes to output stream...Writing 19699 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 20285 nodes to output stream...Writing 20285 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Writing 21171 nodes to output stream...Writing 21171 nodes to output stream...Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.
+Failed to find match for field 'intensity'.

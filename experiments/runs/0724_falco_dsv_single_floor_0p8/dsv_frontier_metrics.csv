@@ -1,2 +1,3 @@
-timestamp,gate,status,global_frontier_points,local_frontier_points,waypoint_seen,reason
-2026-07-24T18:03:00+08:00,FAST_LIO_INPUT_BLOCKED,not_run,0,0,false,DSV not started with valid FAST-LIO2 odometry/cloud inputs
+timestamp_sim_s,global_frontier_points,local_frontier_points,occupancy_cells
+27.0,0,0,160801
+38.0,0,0,160801

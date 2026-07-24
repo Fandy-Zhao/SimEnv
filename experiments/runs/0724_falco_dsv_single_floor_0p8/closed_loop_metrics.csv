@@ -1,2 +1,10 @@
-timestamp,gate,status,duration_s,max_raw_linear_x,max_raw_angular_z,max_bridge_linear_x,max_bridge_angular_z,reason
-2026-07-24T18:03:00+08:00,FAST_LIO_INPUT_BLOCKED,not_run,0,0,0,0,0,No motion entered because FAST-LIO2 did not publish /Odometry
+metric,value
+navigation_enabled,true
+fsm_state,4 (Trotting)
+cmd_vel_linear_x,0.0
+cmd_vel_angular_z,0.0
+falco_goal_distance_m,0.016
+frontier_points,0
+waypoint_published,false
+return_home_triggered,true
+blocked_reason,empty_frontiers_sparse_terrain_map

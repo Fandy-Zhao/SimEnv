@@ -1,0 +1,3 @@
+CMAKE_PREFIX_PATH=/home/zzf/search_ws/SimEnv/devel:/opt/ros/noetic:/usr/local/cuda-11.8
+LD_LIBRARY_PATH=/home/zzf/search_ws/SimEnv/devel/lib:/opt/ros/noetic/lib:/usr/local/cuda-11.8/lib64
+ROS_PACKAGE_PATH=/home/zzf/search_ws/SimEnv/src:/opt/ros/noetic/share

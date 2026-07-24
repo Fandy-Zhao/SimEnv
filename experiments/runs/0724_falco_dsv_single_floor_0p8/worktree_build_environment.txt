@@ -1,0 +1,24 @@
+Worktree Build Environment
+==========================
+Date: 2026-07-24
+
+ROS_PACKAGE_PATH: (from devel/setup.bash)
+CMAKE_PREFIX_PATH: (from devel/setup.bash)
+CC: gcc-11 (auto-selected by build_with_venv.sh)
+CXX: g++-11 (auto-selected by build_with_venv.sh)
+
+Build configuration (build_with_venv.sh):
+  -DPYTHON_EXECUTABLE=.venv/bin/python
+  -DCMAKE_C_COMPILER=/usr/bin/gcc-11
+  -DCMAKE_CXX_COMPILER=/usr/bin/g++-11
+  -DCMAKE_BUILD_TYPE=Release
+  -DCMAKE_CXX_STANDARD=17
+  -DCMAKE_CXX_STANDARD_REQUIRED=ON
+  -DCMAKE_EXE_LINKER_FLAGS=-no-pie
+  -DBUILD_LIVOX_DRIVER_NODE=OFF
+  -DCATKIN_WHITELIST_PACKAGES=livox_ros_driver;livox_laser_simulation;fast_lio;...
+  -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.8
+
+Source symlinks:
+  src/FAST_LIO -> /tmp/simenv-fast-lio2-deps/.../FAST_LIO (PATCHED C++17)
+  src/livox_ros_driver -> /tmp/simenv-fast-lio2-deps/.../livox_ros_driver/livox_ros_driver (PATCHED)
