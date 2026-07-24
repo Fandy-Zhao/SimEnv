@@ -144,7 +144,7 @@ frontier:
   pub_local_frontier_points_topic: /navigation/local_frontier
   kExecuteFrequency: 10
   kFrontierResolution: 0.5
-  kFrontierFilterSize: 1.2
+  kFrontierFilterSize: 0.3
   kSearchRadius: 8.0
   kSearchBoundingX: 22
   kSearchBoundingY: 38
