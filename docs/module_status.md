@@ -1,5 +1,15 @@
 # Module Status
 
+> **2026-07-24 `src/navigation` single-floor FALCO + DSV data path**:
+> `simenv_navigation_bridge` now provides `registered_cloud_to_terrain_map.py`
+> and `simenv_navigation_boundary.py`; `simenv_navigation_bringup` now provides
+> `single_floor_exploration.launch`. FALCO `pathFollower` owns a heading-aware
+> raw speed profile (`0.8/0.6/0.2 m/s`, `0.22 rad/s` cap, timeout zeroing).
+> DSV `exploration` skips zero initialization, uses time-window movement/stuck
+> detection, requests replans before frontier cleaning, parameterizes planner
+> services, and clamps single-floor goal Z. Build and isolated FALCO speed
+> probes pass; real Gazebo S2-S5 closed-loop exploration is pending.
+
 > **2026-07-24 `src/navigation` FALCO A1 tuning**:
 > `falco_only.launch` and `runtime_real_data.launch` now default to
 > `falco_a1.yaml`, an A1-specific local-planner profile for real FAST-LIO2

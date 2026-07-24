@@ -1,0 +1,95 @@
+<launch>
+  <!-- Single-floor runtime adapter for an already running auto.sh + FAST-LIO2 stack.
+       Does not start Gazebo, FAST-LIO2, robot models, junior_ctrl, RViz, or rosbag. -->
+  <arg name="ns" default="navigation"/>
+  <arg name="dsv_config" default="$(find simenv_navigation_bringup)/config/dsv_simenv.yaml"/>
+  <arg name="falco_config" default="$(find simenv_navigation_bringup)/config/falco_a1.yaml"/>
+  <arg name="state_estimation_source" default="/Odometry"/>
+  <arg name="registered_scan_source" default="/cloud_registered"/>
+  <arg name="state_estimation_topic" default="/$(arg ns)/state_estimation"/>
+  <arg name="registered_scan_topic" default="/$(arg ns)/registered_scan"/>
+  <arg name="terrain_map_topic" default="/$(arg ns)/terrain_map"/>
+  <arg name="boundary_topic" default="/$(arg ns)/boundary"/>
+  <arg name="boundary_marker_topic" default="/$(arg ns)/boundary_marker"/>
+  <arg name="start_dsv" default="true"/>
+  <arg name="start_falco" default="true"/>
+  <arg name="start_bridge" default="true"/>
+  <arg name="enable_diagnostics" default="true"/>
+  <arg name="diagnostic_throttle_sec" default="1.0"/>
+
+  <arg name="building_width" default="$(optenv BUILDING_WIDTH 20.0)"/>
+  <arg name="building_length" default="$(optenv BUILDING_LENGTH 36.0)"/>
+  <arg name="boundary_center_x" default="$(optenv ROBOT_X 0.0)"/>
+  <arg name="boundary_center_y" default="$(optenv ROBOT_Y 0.0)"/>
+  <arg name="boundary_shrink_margin" default="$(optenv NAV_BOUNDARY_SHRINK_MARGIN 0.4)"/>
+
+  <rosparam command="load" file="$(arg dsv_config)"/>
+
+  <node pkg="topic_tools" type="relay" name="navigation_state_estimation_relay"
+        args="$(arg state_estimation_source) $(arg state_estimation_topic)"
+        output="screen"/>
+  <node pkg="topic_tools" type="relay" name="navigation_registered_scan_relay"
+        args="$(arg registered_scan_source) $(arg registered_scan_topic)"
+        output="screen"/>
+
+  <node pkg="simenv_navigation_bridge" type="registered_cloud_to_terrain_map.py"
+        name="registered_cloud_to_terrain_map" output="screen" launch-prefix="/usr/bin/python3">
+    <param name="input_cloud" value="$(arg registered_scan_topic)"/>
+    <param name="state_estimation_topic" value="$(arg state_estimation_topic)"/>
+    <param name="output_cloud" value="$(arg terrain_map_topic)"/>
+    <param name="output_frame" value="map"/>
+    <param name="publish_rate" value="8.0"/>
+    <param name="voxel_size" value="0.12"/>
+    <param name="local_radius" value="15.0"/>
+    <param name="min_relative_z" value="-0.20"/>
+    <param name="max_relative_z" value="1.00"/>
+    <param name="ground_rejection_height" value="0.10"/>
+    <param name="robot_self_filter_radius" value="0.32"/>
+    <param name="max_input_age" value="0.5"/>
+    <param name="diagnostic_throttle_sec" value="$(arg diagnostic_throttle_sec)"/>
+  </node>
+
+  <node pkg="simenv_navigation_bridge" type="simenv_navigation_boundary.py"
+        name="simenv_navigation_boundary" output="screen" launch-prefix="/usr/bin/python3">
+    <param name="boundary_topic" value="$(arg boundary_topic)"/>
+    <param name="marker_topic" value="$(arg boundary_marker_topic)"/>
+    <param name="building_width" value="$(arg building_width)"/>
+    <param name="building_length" value="$(arg building_length)"/>
+    <param name="center_x" value="$(arg boundary_center_x)"/>
+    <param name="center_y" value="$(arg boundary_center_y)"/>
+    <param name="shrink_margin" value="$(arg boundary_shrink_margin)"/>
+    <param name="frame_id" value="map"/>
+    <param name="publish_rate" value="2.0"/>
+  </node>
+
+  <include if="$(arg start_dsv)"
+           file="$(find simenv_navigation_bringup)/launch/dsv_only.launch">
+    <arg name="ns" value="$(arg ns)"/>
+    <arg name="dsv_config" value="$(arg dsv_config)"/>
+    <arg name="simulation" value="false"/>
+    <arg name="use_boundary" value="false"/>
+  </include>
+
+  <include if="$(arg start_falco)"
+           file="$(find simenv_navigation_bringup)/launch/falco_only.launch">
+    <arg name="ns" value="$(arg ns)"/>
+    <arg name="falco_config" value="$(arg falco_config)"/>
+    <arg name="state_estimation_topic" value="$(arg state_estimation_topic)"/>
+    <arg name="registered_scan_topic" value="$(arg registered_scan_topic)"/>
+    <arg name="waypoint_topic" value="/$(arg ns)/way_point"/>
+    <arg name="path_topic" value="/$(arg ns)/path"/>
+    <arg name="cmd_vel_stamped_topic" value="/$(arg ns)/falco/cmd_vel_stamped"/>
+    <arg name="enable_bridge" value="false"/>
+    <arg name="enable_diagnostics" value="$(arg enable_diagnostics)"/>
+    <arg name="diagnostic_throttle_sec" value="$(arg diagnostic_throttle_sec)"/>
+  </include>
+
+  <include if="$(arg start_bridge)"
+           file="$(find simenv_navigation_bringup)/launch/navigation_bridge.launch">
+    <arg name="ns" value="$(arg ns)"/>
+    <arg name="max_linear_x" value="0.80"/>
+    <arg name="max_linear_y" value="0.00"/>
+    <arg name="max_angular_z" value="0.22"/>
+    <arg name="command_timeout" value="0.5"/>
+  </include>
+</launch>

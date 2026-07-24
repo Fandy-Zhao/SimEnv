@@ -7,6 +7,7 @@ Created and maintained by Hongbiao Zhu (hongbiaz@andrew.cmu.edu)
  */
 
 #include <chrono>
+#include <deque>
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -50,6 +51,7 @@ bool begin_signal = false;  // trigger the planner
 bool gp_in_progress = false;
 bool wp_state = false;
 bool return_home = false;
+bool odom_received = false;
 double current_odom_x = 0;
 double current_odom_y = 0;
 double current_odom_z = 0;
@@ -63,6 +65,18 @@ double init_z = 2;
 double init_time = 2;
 double return_home_threshold = 1.5;
 double robot_moving_threshold = 6;
+bool skip_initial_motion = false;
+double initialization_timeout = 5.0;
+double initialization_distance_tolerance = 0.15;
+bool continue_after_initialization_timeout = true;
+double movement_window = 2.0;
+double movement_distance_threshold = 0.08;
+double stuck_timeout = 15.0;
+int max_replans_before_frontier_clean = 2;
+bool single_floor_enabled = false;
+double floor_reference_z = 0.0;
+double max_goal_z_deviation = 0.20;
+bool floor_reference_initialized = false;
 std::string map_frame = "map";
 std::string waypoint_topic = "/way_point";
 std::string cmd_vel_topic = "/cmd_vel";
@@ -73,6 +87,19 @@ std::string gp_status_topic = "/graph_planner_status";
 std::string odom_topic = "/state_estimation";
 std::string begin_signal_topic = "/start_exploring";
 std::string stop_signal_topic = "/stop_exploring";
+std::string planner_service_name = "drrtPlannerSrv";
+std::string clean_frontier_service_name = "cleanFrontierSrv";
+
+struct OdomSample
+{
+  double stamp;
+  double x;
+  double y;
+  double z;
+};
+
+std::deque<OdomSample> odom_history;
+double last_movement_time = 0.0;
 
 tf::StampedTransform transformToMap;
 
@@ -111,6 +138,18 @@ void odom_callback(const nav_msgs::Odometry::ConstPtr& msg)
   current_odom_x = msg->pose.pose.position.x;
   current_odom_y = msg->pose.pose.position.y;
   current_odom_z = msg->pose.pose.position.z;
+  odom_received = true;
+  const double stamp = msg->header.stamp.toSec() > 0.0 ? msg->header.stamp.toSec() : ros::Time::now().toSec();
+
+  if (!floor_reference_initialized) {
+    floor_reference_z = current_odom_z;
+    floor_reference_initialized = true;
+  }
+
+  odom_history.push_back({stamp, current_odom_x, current_odom_y, current_odom_z});
+  while (!odom_history.empty() && stamp - odom_history.front().stamp > movement_window) {
+    odom_history.pop_front();
+  }
 
   transformToMap.setOrigin(
       tf::Vector3(msg->pose.pose.position.x, msg->pose.pose.position.y, msg->pose.pose.position.z));
@@ -125,19 +164,42 @@ void begin_signal_callback(const std_msgs::Bool::ConstPtr& msg)
 
 bool robotPositionChange()
 {
-  double dist = sqrt((current_odom_x - previous_odom_x) * (current_odom_x - previous_odom_x) +
-                     (current_odom_y - previous_odom_y) * (current_odom_y - previous_odom_y) +
-                     (current_odom_z - previous_odom_z) * (current_odom_z - previous_odom_z));
-  if (dist < robot_moving_threshold)
-    return false;
-  previous_odom_x = current_odom_x;
-  previous_odom_y = current_odom_y;
-  previous_odom_z = current_odom_z;
-  return true;
+  if (odom_history.size() < 2) return false;
+
+  const OdomSample& first = odom_history.front();
+  const OdomSample& last = odom_history.back();
+  double dist = sqrt((last.x - first.x) * (last.x - first.x) +
+                     (last.y - first.y) * (last.y - first.y) +
+                     (last.z - first.z) * (last.z - first.z));
+  if (dist >= movement_distance_threshold) {
+    last_movement_time = last.stamp;
+    return true;
+  }
+  return false;
 }
 
-void initilization()
+void enforceSingleFloor(geometry_msgs::Point& point)
 {
+  if (!single_floor_enabled || !floor_reference_initialized) return;
+  const double min_z = floor_reference_z - max_goal_z_deviation;
+  const double max_z = floor_reference_z + max_goal_z_deviation;
+  if (point.z < min_z) point.z = min_z;
+  else if (point.z > max_z) point.z = max_z;
+}
+
+bool initilization()
+{
+  home_point.x = current_odom_x;
+  home_point.y = current_odom_y;
+  home_point.z = current_odom_z;
+
+  const double init_distance = sqrt(init_x * init_x + init_y * init_y + init_z * init_z);
+  if (skip_initial_motion || init_distance <= initialization_distance_tolerance) {
+    ROS_INFO("DSV initialization skipped: skip=%d init_distance=%.3f tolerance=%.3f",
+             skip_initial_motion ? 1 : 0, init_distance, initialization_distance_tolerance);
+    return true;
+  }
+
   tf::Vector3 vec_init(init_x, init_y, init_z);
   tf::Vector3 vec_goal;
   vec_goal = transformToMap * vec_init;
@@ -147,26 +209,24 @@ void initilization()
   wp.point.x = vec_goal.x();
   wp.point.y = vec_goal.y();
   wp.point.z = vec_goal.z();
-  home_point.x = current_odom_x;
-  home_point.y = current_odom_y;
-  home_point.z = current_odom_z;
+  enforceSingleFloor(wp.point);
 
   ros::Duration(0.5).sleep();  // wait for sometime to make sure waypoint can be
                                // published properly
 
   waypoint_pub.publish(wp);
   bool wp_ongoing = true;
-  int init_time_count = 0;
+  const double init_start_time = ros::Time::now().toSec();
   while (wp_ongoing)
   {  // Keep publishing initial waypoint until the robot
     // reaches that point
-    init_time_count++;
     ros::Duration(0.1).sleep();
     ros::spinOnce();
     vec_goal = transformToMap * vec_init;
     wp.point.x = vec_goal.x();
     wp.point.y = vec_goal.y();
     wp.point.z = vec_goal.z();
+    enforceSingleFloor(wp.point);
     waypoint_pub.publish(wp);
     double dist = sqrt((wp.point.x - current_odom_x) * (wp.point.x - current_odom_x) +
                        (wp.point.y - current_odom_y) * (wp.point.y - current_odom_y));
@@ -174,9 +234,15 @@ void initilization()
                                (home_point.y - current_odom_y) * (home_point.y - current_odom_y));
     if (dist < 0.5 && dist_to_home > 0.5)
       wp_ongoing = false;
-    if (init_time_count >= init_time / 0.1 && dist_to_home > 0.5)
+    if (ros::Time::now().toSec() - init_start_time >= init_time && dist_to_home > 0.5)
       wp_ongoing = false;
+    if (ros::Time::now().toSec() - init_start_time >= initialization_timeout) {
+      ROS_WARN("DSV initialization timed out after %.2fs; dist=%.3f dist_to_home=%.3f continue=%d",
+               initialization_timeout, dist, dist_to_home, continue_after_initialization_timeout ? 1 : 0);
+      return continue_after_initialization_timeout;
+    }
   }
+  return true;
 }
 
 int main(int argc, char** argv)
@@ -193,6 +259,14 @@ int main(int argc, char** argv)
   nhPrivate.getParam("/interface/initTime", init_time);
   nhPrivate.getParam("/interface/returnHomeThres", return_home_threshold);
   nhPrivate.getParam("/interface/robotMovingThres", robot_moving_threshold);
+  nhPrivate.getParam("/interface/skipInitialMotion", skip_initial_motion);
+  nhPrivate.getParam("/interface/initializationTimeout", initialization_timeout);
+  nhPrivate.getParam("/interface/initializationDistanceTolerance", initialization_distance_tolerance);
+  nhPrivate.getParam("/interface/continueAfterInitializationTimeout", continue_after_initialization_timeout);
+  nhPrivate.getParam("/interface/movementWindow", movement_window);
+  nhPrivate.getParam("/interface/movementDistanceThreshold", movement_distance_threshold);
+  nhPrivate.getParam("/interface/stuckTimeout", stuck_timeout);
+  nhPrivate.getParam("/interface/maxReplansBeforeFrontierClean", max_replans_before_frontier_clean);
   nhPrivate.getParam("/interface/tfFrame", map_frame);
   nhPrivate.getParam("/interface/autoExp", begin_signal);
   nhPrivate.getParam("/interface/waypointTopic", waypoint_topic);
@@ -204,6 +278,10 @@ int main(int argc, char** argv)
   nhPrivate.getParam("/interface/odomTopic", odom_topic);
   nhPrivate.getParam("/interface/beginSignalTopic", begin_signal_topic);
   nhPrivate.getParam("/interface/stopSignalTopic", stop_signal_topic);
+  nhPrivate.getParam("/planner/plannerServiceName", planner_service_name);
+  nhPrivate.getParam("/planner/cleanFrontierServiceName", clean_frontier_service_name);
+  nhPrivate.getParam("/single_floor/enabled", single_floor_enabled);
+  nhPrivate.getParam("/single_floor/max_goal_z_deviation", max_goal_z_deviation);
 
   waypoint_pub = nh.advertise<geometry_msgs::PointStamped>(waypoint_topic, 5);
   gp_command_pub = nh.advertise<graph_planner::GraphPlannerCommand>(gp_command_topic, 1);
@@ -218,15 +296,28 @@ int main(int argc, char** argv)
   ros::Duration(1.0).sleep();
   ros::spinOnce();
 
-  while (!begin_signal)
+  while (!odom_received)
   {
     ros::Duration(0.5).sleep();
     ros::spinOnce();
     ROS_INFO("Waiting for Odometry");
   }
 
+  while (!begin_signal)
+  {
+    ros::Duration(0.5).sleep();
+    ros::spinOnce();
+    ROS_INFO("Waiting for exploration start signal");
+  }
+
   ROS_INFO("Starting the planner: Performing initialization motion");
-  initilization();
+  if (!initilization()) {
+    ROS_ERROR("DSV initialization failed and configuration requires safety stop");
+    std_msgs::Bool stop_exploring;
+    stop_exploring.data = true;
+    stop_signal_pub.publish(stop_exploring);
+    return 1;
+  }
   ros::Duration(1.0).sleep();
 
   std::cout << std::endl << "\033[1;32mExploration Started\033[0m\n" << std::endl;
@@ -253,7 +344,7 @@ int main(int argc, char** argv)
       planSrv.request.header.stamp = ros::Time::now();
       planSrv.request.header.seq = iteration;
       planSrv.request.header.frame_id = map_frame;
-      if (ros::service::call("drrtPlannerSrv", planSrv))
+      if (ros::service::call(planner_service_name, planSrv))
       {
         if (planSrv.response.goal.size() == 0)
         {  // usually the size should be 1 if planning successfully
@@ -265,6 +356,7 @@ int main(int argc, char** argv)
         {
           return_home = true;
           goal_point = home_point;
+          enforceSingleFloor(goal_point);
           std::cout << std::endl << "\033[1;32mExploration completed, returning home\033[0m" << std::endl << std::endl;
           effective_time.data = 0;
           effective_plan_time_pub.publish(effective_time);
@@ -273,6 +365,7 @@ int main(int argc, char** argv)
         {
           return_home = false;
           goal_point = planSrv.response.goal[0];
+          enforceSingleFloor(goal_point);
           plan_over = steady_clock::now();
           time_span = plan_over - plan_start;
           effective_time.data = float(time_span.count()) * steady_clock::period::num / steady_clock::period::den;
@@ -291,9 +384,11 @@ int main(int argc, char** argv)
                                          // searching path to goal point
           ros::spinOnce();               // update gp_in_progree
           int count = 200;
+          int replan_count = 0;
           previous_odom_x = current_odom_x;
           previous_odom_y = current_odom_y;
           previous_odom_z = current_odom_z;
+          last_movement_time = ros::Time::now().toSec();
           while (gp_in_progress)
           {                              // if the waypoint keep the same for 20
                                          // (200*0.1)
@@ -304,17 +399,37 @@ int main(int argc, char** argv)
             if (robotMoving)
             {
               count = 200;
+              replan_count = 0;
             }
             else
             {
               count--;
+            }
+            const double now = ros::Time::now().toSec();
+            if (now - last_movement_time >= stuck_timeout)
+            {
+              replan_count++;
+              ROS_WARN("DSV movement window stuck: window=%.2fs threshold=%.3fm stuck=%.2fs replan=%d/%d",
+                       movement_window, movement_distance_threshold, now - last_movement_time, replan_count,
+                       max_replans_before_frontier_clean);
+              if (replan_count <= max_replans_before_frontier_clean)
+              {
+                graph_planner_command.command = graph_planner::GraphPlannerCommand::COMMAND_GO_TO_LOCATION;
+                graph_planner_command.location = goal_point;
+                gp_command_pub.publish(graph_planner_command);
+                last_movement_time = now;
+                count = 200;
+                continue;
+              }
+              count = 0;
             }
             if (count <= 0)
             {  // when the goal point cannot be reached, clean
                // its correspoinding frontier if there is
               cleanSrv.request.header.stamp = ros::Time::now();
               cleanSrv.request.header.frame_id = map_frame;
-              ros::service::call("cleanFrontierSrv", cleanSrv);
+              ROS_WARN("DSV cleaning frontier after repeated stuck/replan failures");
+              ros::service::call(clean_frontier_service_name, cleanSrv);
               ros::Duration(0.1).sleep();
               break;
             }

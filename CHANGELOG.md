@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-07-24 — FALCO + DSV single-floor data path
+
+- Added `single_floor_exploration.launch` for an already running `auto.sh` +
+  FAST-LIO2 stack, starting navigation relays, terrain-map adapter, runtime
+  boundary, DSV, FALCO, and the `/cmd_vel` bridge without launching Gazebo,
+  FAST-LIO2, controller, RViz, or rosbag.
+- Added SimEnv-owned terrain-map and boundary adapter nodes under
+  `simenv_navigation_bridge`.
+- Updated FALCO A1 speed semantics so raw path-following commands reach
+  `0.8 m/s` on straight paths, reduce near `0.6 m/s` for ordinary turns, and
+  reduce near `0.2 m/s` for large heading errors with `0.22 rad/s` angular cap.
+- Repaired DSV initialization and movement detection semantics for zero initial
+  motion, windowed stuck detection, bounded replanning, single-floor goal Z, and
+  parameterized planner services.
+- Formal `./tools/build_with_venv.sh` passed; isolated FALCO path follower
+  probes passed. Full `auto.sh` closed-loop exploration was not run.
+
 ## 2026-07-24 — FALCO A1 real-cloud R3 tuning
 
 - Added `falco_a1.yaml` as the default FALCO profile for SimEnv Unitree A1

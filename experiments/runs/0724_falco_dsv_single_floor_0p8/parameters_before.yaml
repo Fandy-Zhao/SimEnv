@@ -1,3 +1,4 @@
+# dsv_simenv.yaml (master baseline)
 drrt:
   gain:
     kFree: 0.0
@@ -11,7 +12,7 @@ drrt:
   tree:
     kExtensionRange: 0.8
     kMinExtensionRange: 0.6
-    kMaxExtensionAlongZ: 0.08
+    kMaxExtensionAlongZ: 0.5
     kExactRoot: false
     kGlobalExtraIterations_: 300
     kCuttoffIterations: 200
@@ -46,16 +47,8 @@ interface:
   initY: 0
   initZ: 0
   initTime: 1
-  skipInitialMotion: true
-  initializationTimeout: 5.0
-  initializationDistanceTolerance: 0.15
-  continueAfterInitializationTimeout: true
   returnHomeThres: 1.0
-  robotMovingThres: 0.08
-  movementWindow: 2.0
-  movementDistanceThreshold: 0.08
-  stuckTimeout: 15.0
-  maxReplansBeforeFrontierClean: 2
+  robotMovingThres: 6.0
   autoExp: false
   tfFrame: map
   waypointTopic: /navigation/way_point
@@ -69,29 +62,29 @@ interface:
   stopSignalTopic: /navigation/stop_exploring
 
 lb:
-  kMinXLocal: -11.0
-  kMinYLocal: -19.0
-  kMinZLocal: -0.25
-  kMaxXLocal: 11.0
-  kMaxYLocal: 19.0
-  kMaxZLocal: 0.25
+  kMinXLocal: -15.0
+  kMinYLocal: -15.0
+  kMinZLocal: -2.0
+  kMaxXLocal: 15.0
+  kMaxYLocal: 15.0
+  kMaxZLocal: 2.0
 
 gb:
-  kMinXGlobal: -11.0
-  kMinYGlobal: -19.0
-  kMinZGlobal: -0.25
-  kMaxXGlobal: 11.0
-  kMaxYGlobal: 19.0
-  kMaxZGlobal: 0.25
+  kMinXGlobal: -80.0
+  kMinYGlobal: -80.0
+  kMinZGlobal: -3.0
+  kMaxXGlobal: 80.0
+  kMaxYGlobal: 80.0
+  kMaxZGlobal: 6.0
 
 rm:
   kSensorPitch: 0.0
   kSensorHorizontal: 360.0
   kSensorVertical: 30.0
-  kBoundX: 0.35
-  kBoundY: 0.30
-  kBoundZ: 0.35
-  kVehicleHeight: 0.65
+  kBoundX: 0.6
+  kBoundY: 0.6
+  kBoundZ: 0.4
+  kVehicleHeight: 0.75
 
 elevation:
   kTerrainVoxelHalfWidth: 50
@@ -105,9 +98,9 @@ grid:
   pubGridPointsTopic: /navigation/dsv/occupancy_grid_map
   kMapWidth: 40
   kGridSize: 0.1
-  kDownsampleSize: 0.10
-  kFlyingObstacleHeightThre: 1.10
-  kObstacleHeightThre: 0.12
+  kDownsampleSize: 0.05
+  kFlyingObstacleHeightThre: 1.0
+  kObstacleHeightThre: 0.2
 
 graph:
   world_frame_id: map
@@ -118,7 +111,7 @@ graph:
   sub_path_topic: /navigation/graph_planner_path
   sub_graph_planner_status_topic: /navigation/graph_planner_status
   kCropPathWithTerrain: false
-  kConnectVertexDistMax: 2.5
+  kConnectVertexDistMax: 3.0
   kDegressiveCoeff: 0.3
   kDirectionCoeff: 0.2
   kDistBadEdge: 5.0
@@ -127,10 +120,10 @@ graph:
   kLongEdgePenaltyMultiplier: 5.0
   kMaxLongEdgeDist: 6.0
   kMaxVertexAngleAlongZ: 38.0
-  kMaxVertexDiffAlongZ: 0.25
+  kMaxVertexDiffAlongZ: 0.5
   kMaxDistToPrunedRoot: 10
   kMaxPrunedNodeDist: 15
-  kMinVertexDist: 0.6
+  kMinVertexDist: 0.8
   kSurroundRange: 4
   kMinGainRange: 4
   kMinDistanceToRobotToCheck: 4
@@ -143,20 +136,20 @@ frontier:
   pub_global_frontier_points_topic: /navigation/global_frontier
   pub_local_frontier_points_topic: /navigation/local_frontier
   kExecuteFrequency: 10
-  kFrontierResolution: 0.5
-  kFrontierFilterSize: 1.2
-  kSearchRadius: 8.0
-  kSearchBoundingX: 22
-  kSearchBoundingY: 38
-  kSearchBoundingZ: 0.25
-  kEffectiveUnknownNumAroundFrontier: 2
+  kFrontierResolution: 0.8
+  kFrontierFilterSize: 2.5
+  kSearchRadius: 12
+  kSearchBoundingX: 40
+  kSearchBoundingY: 40
+  kSearchBoundingZ: 0.5
+  kEffectiveUnknownNumAroundFrontier: 1
   kFrontierNeighbourSearchRadius: 5
   kEliminateFrontiersAroundRobots: false
 
 octo:
   tfFrame: map
   robotFrame: laser_livox
-  resolution: 0.20
+  resolution: 0.3
   probabilityHit: 0.65
   probabilityMiss: 0.4
   thresholdMin: 0.12
@@ -165,9 +158,9 @@ octo:
   filterSpeckles: true
   maxFreeSpace: 0.0
   minHeightFreeSpace: 0.0
-  sensorMaxRange: 12.0
-  visualizeMinZ: -0.5
-  visualizeMaxZ: 1.2
+  sensorMaxRange: 15.0
+  visualizeMinZ: -5.0
+  visualizeMaxZ: 5.0
   mapPublishFrequency: 1.0
   treatUnknownAsOccupied: false
   changeDetectionEnabled: false
@@ -181,43 +174,89 @@ pub_path_topic: /navigation/graph_planner_path
 sub_graph_topic: /navigation/local_graph
 sub_odometry_topic: /navigation/state_estimation
 sub_terrain_topic: /navigation/terrain_map
-kLookAheadDist: 1.2
-kWaypointProjectionDistance: 0.6
+kLookAheadDist: 2.0
+kWaypointProjectionDistance: 1.0
 kDownsampleSize: 0.2
-kObstacleHeightThres: 0.12
-kOverheadObstacleHeightThres: 1.10
+kObstacleHeightThres: 0.20
+kOverheadObstacleHeightThres: 1.20
 kCollisionCheckDistace: 0.35
 kNextVertexMaintainTime: 5
 kExecuteFrequency: 5
-
-single_floor:
-  enabled: true
-  reference_z_mode: initial_odom
-  max_goal_z_deviation: 0.20
-  max_frontier_z_deviation: 0.30
-  max_extension_along_z: 0.08
-  search_bounding_z: 0.25
-
-terrain_map:
-  output_frame: map
-  publish_rate: 8.0
-  voxel_size: 0.12
-  local_radius: 15.0
-  min_relative_z: -0.20
-  max_relative_z: 1.00
-  ground_rejection_height: 0.10
-  robot_self_filter_radius: 0.32
-  max_input_age: 0.5
-
-boundary:
-  frame_id: map
-  building_width: 20.0
-  building_length: 36.0
-  shrink_margin: 0.4
-  publish_rate: 2.0
-
-robot:
-  length: 0.56
-  width: 0.43
-  collision_radius: 0.35
-  vehicle_height: 0.65
+\n# falco_a1.yaml (master baseline)
+vehicleLength: 0.56
+vehicleWidth: 0.43
+sensorOffsetX: 0.0
+sensorOffsetY: 0.0
+twoWayDrive: true
+laserVoxelSize: 0.05
+terrainVoxelSize: 0.2
+useTerrainAnalysis: false
+checkObstacle: true
+checkRotObstacle: false
+adjacentRange: 3.5
+obstacleHeightThre: 0.15
+groundHeightThre: 0.1
+costHeightThre: 0.1
+costScore: 0.02
+useCost: false
+pointPerPathThre: 2
+minRelZ: -0.25
+maxRelZ: 0.25
+maxSpeed: 0.20
+dirWeight: 0.02
+dirThre: 90.0
+dirToVehicle: false
+pathScale: 1.0
+minPathScale: 0.75
+pathScaleStep: 0.25
+pathScaleBySpeed: true
+minPathRange: 1.0
+pathRangeStep: 0.5
+pathRangeBySpeed: true
+pathCropByGoal: true
+autonomyMode: true
+autonomySpeed: 0.10
+joyToSpeedDelay: 0.0
+joyToCheckObstacleDelay: 5.0
+goalClearRange: 0.5
+goalX: 0.0
+goalY: 0.0
+pubSkipNum: 1
+lookAheadDis: 0.5
+yawRateGain: 7.5
+stopYawRateGain: 7.5
+maxYawRate: 45.0
+maxAccel: 0.5
+switchTimeThre: 1.0
+dirDiffThre: 0.1
+stopDisThre: 0.2
+slowDwnDisThre: 1.0
+useInclRateToSlow: false
+inclRateThre: 120.0
+slowRate1: 0.25
+slowRate2: 0.5
+slowTime1: 2.0
+slowTime2: 2.0
+useInclToStop: false
+inclThre: 45.0
+stopTime: 5.0
+noRotAtStop: false
+noRotAtGoal: true
+enableDiagnostics: false
+diagnosticThrottleSec: 1.0
+\n# navigation_safety.yaml (master baseline)
+input_topic: /navigation/falco/cmd_vel_stamped
+output_topic: /cmd_vel
+enabled_topic: /navigation/enabled
+stop_topic: /navigation/stop_exploring
+state_cmd_topic: /fsm/state_cmd
+max_linear_x: 0.20
+max_linear_y: 0.00
+max_angular_z: 0.30
+command_timeout: 0.5
+enable_lateral_velocity: false
+require_navigation_enabled: true
+require_trotting_state_cmd: true
+trotting_state_value: 4
+publish_zero_when_disabled: true
+publish_rate: 20.0

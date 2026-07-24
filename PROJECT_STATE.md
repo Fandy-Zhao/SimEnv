@@ -1,5 +1,18 @@
 # Project State
 
+> **2026-07-24 FALCO + DSV single-floor data path**: branch
+> `feat/0724-falco-dsv-single-floor-exploration-0p8` starts from local
+> `master` `ce73018c9ecc220bf01351a295a534ca56e67100` in isolated worktree
+> `/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8`. Root
+> `master` dirty scene/log/result files were preserved untouched. Added a
+> single-floor navigation launch, runtime terrain-map and boundary adapters,
+> FALCO heading-aware raw speed scheduling, and DSV zero-initialization/windowed
+> movement fixes. Formal `./tools/build_with_venv.sh` passes. Isolated FALCO
+> path follower probes measured straight `0.803999543 m/s`, 30 deg
+> `0.600000143 m/s`, 70 deg `0.203999937 m/s`, and max angular
+> `0.219911486 rad/s`. Verdict: `FALCO_DSV_DATA_PATH_READY`; S2-S5 `auto.sh`
+> Gazebo/Trotting closed-loop validation remains next and is not claimed.
+
 > **2026-07-24 FALCO A1 real-cloud R3 tuning**: branch
 > `feat/0723-falco-dsv-navigation-integration` continued only the R3 FALCO
 > local-planner gate from baseline `8f5c89ee`. Added an A1-specific

@@ -1,0 +1,26 @@
+{
+  "bridge_cmd.csv": {
+    "angular_abs_max": 0.0,
+    "linear_max": 0.035999998450279236,
+    "linear_min": 0.0,
+    "samples": 9
+  },
+  "falco_pathfollower_cmd_straight.csv": {
+    "angular_abs_max": 0.0,
+    "linear_max": 0.8039995431900024,
+    "linear_min": 0.0,
+    "samples": 281
+  },
+  "falco_pathfollower_cmd_turn30.csv": {
+    "angular_abs_max": 0.21991148591041565,
+    "linear_max": 0.6000001430511475,
+    "linear_min": 0.0,
+    "samples": 280
+  },
+  "falco_pathfollower_cmd_turn70.csv": {
+    "angular_abs_max": 0.21991148591041565,
+    "linear_max": 0.20399993658065796,
+    "linear_min": 0.0,
+    "samples": 280
+  }
+}

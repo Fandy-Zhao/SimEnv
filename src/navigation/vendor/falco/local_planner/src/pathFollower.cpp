@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <algorithm>
 #include <ros/ros.h>
 
 #include <message_filters/subscriber.h>
@@ -59,6 +60,18 @@ bool noRotAtGoal = true;
 bool autonomyMode = false;
 double autonomySpeed = 1.0;
 double joyToSpeedDelay = 2.0;
+bool enableHeadingSpeedSchedule = true;
+bool enableFollowerDiagnostics = false;
+double diagnosticThrottleSec = 1.0;
+double straightHeadingDeg = 10.0;
+double normalTurnHeadingDeg = 30.0;
+double sharpTurnHeadingDeg = 60.0;
+double straightSpeed = 0.8;
+double turnSpeed = 0.6;
+double sharpTurnSpeed = 0.3;
+double maxErrorSpeed = 0.2;
+double maxYawAccel = 1.0;
+double inputTimeout = 0.5;
 
 float joySpeed = 0;
 float joySpeedRaw = 0;
@@ -83,6 +96,7 @@ float vehicleYawRate = 0;
 float vehicleSpeed = 0;
 
 double odomTime = 0;
+double pathTime = 0;
 double joyTime = 0;
 double slowInitTime = 0;
 double stopInitTime = false;
@@ -92,6 +106,45 @@ bool navFwd = true;
 double switchTime = 0;
 
 nav_msgs::Path path;
+
+double clampValue(double value, double minValue, double maxValue)
+{
+  return std::max(minValue, std::min(maxValue, value));
+}
+
+double interpolateSpeed(double value, double x0, double y0, double x1, double y1)
+{
+  if (x1 <= x0) return y1;
+  double ratio = clampValue((value - x0) / (x1 - x0), 0.0, 1.0);
+  return y0 + ratio * (y1 - y0);
+}
+
+double scheduledSpeedForHeading(double absHeadingError)
+{
+  if (!enableHeadingSpeedSchedule) return maxSpeed * joySpeed;
+
+  const double straightHeading = straightHeadingDeg * PI / 180.0;
+  const double normalTurnHeading = normalTurnHeadingDeg * PI / 180.0;
+  const double sharpTurnHeading = sharpTurnHeadingDeg * PI / 180.0;
+
+  if (absHeadingError <= straightHeading) {
+    return straightSpeed;
+  }
+  if (absHeadingError <= normalTurnHeading) {
+    return interpolateSpeed(absHeadingError, straightHeading, straightSpeed, normalTurnHeading, turnSpeed);
+  }
+  if (absHeadingError <= sharpTurnHeading) {
+    return interpolateSpeed(absHeadingError, normalTurnHeading, turnSpeed, sharpTurnHeading, sharpTurnSpeed);
+  }
+  return maxErrorSpeed;
+}
+
+double rampToward(double current, double target, double maxStep)
+{
+  if (current < target) return std::min(current + maxStep, target);
+  if (current > target) return std::max(current - maxStep, target);
+  return current;
+}
 
 void odomHandler(const nav_msgs::Odometry::ConstPtr& odomIn)
 {
@@ -120,6 +173,12 @@ void odomHandler(const nav_msgs::Odometry::ConstPtr& odomIn)
 void pathHandler(const nav_msgs::Path::ConstPtr& pathIn)
 {
   int pathSize = pathIn->poses.size();
+  if (pathSize <= 0) {
+    path.poses.clear();
+    pathInit = false;
+    pathTime = ros::Time::now().toSec();
+    return;
+  }
   path.poses.resize(pathSize);
   for (int i = 0; i < pathSize; i++) {
     path.poses[i].pose.position.x = pathIn->poses[i].pose.position.x;
@@ -136,6 +195,7 @@ void pathHandler(const nav_msgs::Path::ConstPtr& pathIn)
 
   pathPointID = 0;
   pathInit = true;
+  pathTime = ros::Time::now().toSec();
 }
 
 void joystickHandler(const sensor_msgs::Joy::ConstPtr& joy)
@@ -212,6 +272,23 @@ int main(int argc, char** argv)
   nhPrivate.getParam("autonomyMode", autonomyMode);
   nhPrivate.getParam("autonomySpeed", autonomySpeed);
   nhPrivate.getParam("joyToSpeedDelay", joyToSpeedDelay);
+  nhPrivate.getParam("enableHeadingSpeedSchedule", enableHeadingSpeedSchedule);
+  nhPrivate.getParam("enableFollowerDiagnostics", enableFollowerDiagnostics);
+  nhPrivate.getParam("diagnosticThrottleSec", diagnosticThrottleSec);
+  nhPrivate.getParam("straightHeadingDeg", straightHeadingDeg);
+  nhPrivate.getParam("normalTurnHeadingDeg", normalTurnHeadingDeg);
+  nhPrivate.getParam("sharpTurnHeadingDeg", sharpTurnHeadingDeg);
+  nhPrivate.getParam("straightSpeed", straightSpeed);
+  nhPrivate.getParam("turnSpeed", turnSpeed);
+  nhPrivate.getParam("sharpTurnSpeed", sharpTurnSpeed);
+  nhPrivate.getParam("maxErrorSpeed", maxErrorSpeed);
+  nhPrivate.getParam("maxYawAccel", maxYawAccel);
+  nhPrivate.getParam("inputTimeout", inputTimeout);
+
+  straightSpeed = clampValue(straightSpeed, 0.0, maxSpeed);
+  turnSpeed = clampValue(turnSpeed, 0.0, straightSpeed);
+  sharpTurnSpeed = clampValue(sharpTurnSpeed, 0.0, turnSpeed);
+  maxErrorSpeed = clampValue(maxErrorSpeed, 0.0, sharpTurnSpeed);
 
   ros::Subscriber subOdom = nh.subscribe<nav_msgs::Odometry> ("/state_estimation", 5, odomHandler);
 
@@ -285,17 +362,23 @@ int main(int argc, char** argv)
       }
 
       float joySpeed2 = maxSpeed * joySpeed;
+      const float absDirDiff = fabs(dirDiff);
+      if (autonomyMode) {
+        joySpeed2 = scheduledSpeedForHeading(absDirDiff);
+      }
       if (!navFwd) {
         dirDiff += PI;
         if (dirDiff > PI) dirDiff -= 2 * PI;
         joySpeed2 *= -1;
       }
 
-      if (fabs(vehicleSpeed) < 2.0 * maxAccel / 100.0) vehicleYawRate = -stopYawRateGain * dirDiff;
-      else vehicleYawRate = -yawRateGain * dirDiff;
+      double desiredYawRate;
+      if (fabs(vehicleSpeed) < 2.0 * maxAccel / 100.0) desiredYawRate = -stopYawRateGain * dirDiff;
+      else desiredYawRate = -yawRateGain * dirDiff;
 
-      if (vehicleYawRate > maxYawRate * PI / 180.0) vehicleYawRate = maxYawRate * PI / 180.0;
-      else if (vehicleYawRate < -maxYawRate * PI / 180.0) vehicleYawRate = -maxYawRate * PI / 180.0;
+      if (desiredYawRate > maxYawRate * PI / 180.0) desiredYawRate = maxYawRate * PI / 180.0;
+      else if (desiredYawRate < -maxYawRate * PI / 180.0) desiredYawRate = -maxYawRate * PI / 180.0;
+      vehicleYawRate = rampToward(vehicleYawRate, desiredYawRate, maxYawAccel / 100.0);
 
       if (joySpeed2 == 0 && !autonomyMode) {
         vehicleYawRate = maxYawRate * joyYaw * PI / 180.0;
@@ -313,12 +396,19 @@ int main(int argc, char** argv)
       if (odomTime < slowInitTime + slowTime1 && slowInitTime > 0) joySpeed3 *= slowRate1;
       else if (odomTime < slowInitTime + slowTime1 + slowTime2 && slowInitTime > 0) joySpeed3 *= slowRate2;
 
-      if (fabs(dirDiff) < dirDiffThre && dis > stopDisThre) {
+      if ((enableHeadingSpeedSchedule || fabs(dirDiff) < dirDiffThre) && dis > stopDisThre) {
         if (vehicleSpeed < joySpeed3) vehicleSpeed += maxAccel / 100.0;
         else if (vehicleSpeed > joySpeed3) vehicleSpeed -= maxAccel / 100.0;
       } else {
         if (vehicleSpeed > 0) vehicleSpeed -= maxAccel / 100.0;
         else if (vehicleSpeed < 0) vehicleSpeed += maxAccel / 100.0;
+      }
+
+      double nowTime = ros::Time::now().toSec();
+      bool inputFresh = (nowTime - odomTime <= inputTimeout) && (nowTime - pathTime <= inputTimeout);
+      if (!inputFresh) {
+        vehicleSpeed = 0;
+        vehicleYawRate = 0;
       }
 
       if (odomTime < stopInitTime + stopTime && stopInitTime > 0) {
@@ -336,7 +426,30 @@ int main(int argc, char** argv)
         else cmd_vel.twist.linear.x = vehicleSpeed;
         cmd_vel.twist.angular.z = vehicleYawRate;
         pubSpeed.publish(cmd_vel);
+        if (enableFollowerDiagnostics) {
+          const char* speedStage = "straight";
+          if (absDirDiff > sharpTurnHeadingDeg * PI / 180.0) speedStage = "large_heading";
+          else if (absDirDiff > normalTurnHeadingDeg * PI / 180.0) speedStage = "sharp_turn";
+          else if (absDirDiff > straightHeadingDeg * PI / 180.0) speedStage = "turn";
+          ROS_INFO_THROTTLE(diagnosticThrottleSec,
+                            "falco_follower_diag heading_error_deg=%.1f stage=%s target_linear=%.3f raw_linear=%.3f "
+                            "raw_angular=%.3f max_angular=%.3f end_dis=%.3f waypoint_dis=%.3f input_fresh=%d safety_stop=%d",
+                            absDirDiff * 180.0 / PI, speedStage, joySpeed3, cmd_vel.twist.linear.x,
+                            cmd_vel.twist.angular.z, maxYawRate * PI / 180.0, endDis, dis, inputFresh ? 1 : 0,
+                            safetyStop);
+        }
 
+        pubSkipCount = pubSkipNum;
+      }
+    } else {
+      vehicleSpeed = 0;
+      vehicleYawRate = 0;
+      pubSkipCount--;
+      if (pubSkipCount < 0) {
+        cmd_vel.header.stamp = ros::Time::now();
+        cmd_vel.twist.linear.x = 0;
+        cmd_vel.twist.angular.z = 0;
+        pubSpeed.publish(cmd_vel);
         pubSkipCount = pubSkipNum;
       }
     }
