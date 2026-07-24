@@ -1,0 +1,86 @@
+WARNING: may be using simulated time
+subscribed to [/Odometry]
+subscribed to [/cloud_registered]
+subscribed to [/navigation/path]
+subscribed to [/navigation/falco/cmd_vel_stamped]
+              topic                 rate   min_delta   max_delta   std_dev   window
+===================================================================================
+/navigation/falco/cmd_vel_stamped   50.0   0.02        0.02        0.0       5     
+
+              topic                  rate   min_delta   max_delta   std_dev   window
+====================================================================================
+/Odometry                           9.434   0.086       0.126       0.02      3     
+/cloud_registered                   9.434   0.086       0.126       0.02      3     
+/navigation/path                    9.009   0.088       0.134       0.023     3     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        0.0       3     
+
+              topic                  rate   min_delta   max_delta   std_dev   window
+====================================================================================
+/Odometry                           9.804   0.08        0.126       0.01944   5     
+/cloud_registered                   9.756   0.082       0.126       0.01889   5     
+/navigation/path                    9.709   0.082       0.134       0.02032   5     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        0.0       5     
+
+              topic                  rate   min_delta   max_delta   std_dev   window
+====================================================================================
+/Odometry                           10.36   0.08        0.116       0.01431   5     
+/cloud_registered                   10.36   0.082       0.116       0.01352   5     
+/navigation/path                    10.26   0.082       0.112       0.01276   5     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        0.0       5     
+
+              topic                  rate   min_delta   max_delta   std_dev    window
+=====================================================================================
+/Odometry                           10.42   0.08        0.106       0.0103     5     
+/cloud_registered                   10.36   0.082       0.108       0.009734   5     
+/navigation/path                    10.15   0.082       0.112       0.01367    5     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        0.0        5     
+
+              topic                 rate   min_delta   max_delta    std_dev    window
+=====================================================================================
+/Odometry                           10.0   0.094       0.106       0.005099    5     
+/cloud_registered                   10.0   0.094       0.108       0.005477    5     
+/navigation/path                    10.0   0.088       0.112       0.012       5     
+/navigation/falco/cmd_vel_stamped   50.0   0.02        0.02        1.538e-15   5     
+
+              topic                  rate   min_delta   max_delta    std_dev    window
+======================================================================================
+/Odometry                           10.15   0.09        0.106       0.006062    5     
+/cloud_registered                   10.1    0.092       0.108       0.005916    5     
+/navigation/path                    9.95    0.088       0.112       0.008529    5     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        1.538e-15   5     
+
+              topic                  rate   min_delta   max_delta   std_dev    window
+=====================================================================================
+/Odometry                           10.1    0.09        0.114       0.00995    5     
+/cloud_registered                   10.15   0.09        0.112       0.008646   5     
+/navigation/path                    10.0    0.088       0.11        0.007874   5     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        0.0        5     
+
+              topic                  rate   min_delta   max_delta    std_dev    window
+======================================================================================
+/Odometry                           10.0    0.09        0.114       0.01039     5     
+/cloud_registered                   10.0    0.09        0.112       0.009274    5     
+/navigation/path                    9.756   0.088       0.11        0.008986    5     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        1.538e-15   5     
+
+              topic                  rate   min_delta   max_delta   std_dev    window
+=====================================================================================
+/Odometry                           10.05   0.09        0.112       0.009734   5     
+/cloud_registered                   10.05   0.09        0.112       0.009734   5     
+/navigation/path                    10.05   0.078       0.122       0.0174     5     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        0.0        5     
+
+              topic                 rate   min_delta   max_delta   std_dev   window
+===================================================================================
+/Odometry                           10.0   0.088       0.112       0.01105   5     
+/cloud_registered                   9.95   0.088       0.112       0.01152   5     
+/navigation/path                    10.0   0.078       0.122       0.01772   5     
+/navigation/falco/cmd_vel_stamped   50.0   0.02        0.02        0.0       5     
+
+              topic                  rate   min_delta   max_delta    std_dev    window
+======================================================================================
+/Odometry                           10.05   0.088       0.112       0.01152     5     
+/cloud_registered                   10.0    0.088       0.112       0.012       5     
+/navigation/path                    9.95    0.08        0.122       0.01711     5     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        1.538e-15   5     
+

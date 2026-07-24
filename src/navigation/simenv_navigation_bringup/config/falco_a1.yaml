@@ -1,5 +1,5 @@
-vehicleLength: 0.6
-vehicleWidth: 0.6
+vehicleLength: 0.56
+vehicleWidth: 0.43
 sensorOffsetX: 0.0
 sensorOffsetY: 0.0
 twoWayDrive: true
@@ -15,7 +15,7 @@ costHeightThre: 0.1
 costScore: 0.02
 useCost: false
 pointPerPathThre: 2
-minRelZ: -0.5
+minRelZ: -0.25
 maxRelZ: 0.25
 maxSpeed: 0.20
 dirWeight: 0.02

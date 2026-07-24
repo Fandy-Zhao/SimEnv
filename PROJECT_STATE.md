@@ -1,5 +1,18 @@
 # Project State
 
+> **2026-07-24 FALCO A1 real-cloud R3 tuning**: branch
+> `feat/0723-falco-dsv-navigation-integration` continued only the R3 FALCO
+> local-planner gate from baseline `8f5c89ee`. Added an A1-specific
+> `falco_a1.yaml` profile and launch overrides, with opt-in diagnostics for
+> point filtering, candidate/free paths, selected path group/rotation, collision
+> scores, and output command/path counts. Real FAST-LIO2 `/Odometry` and
+> `/cloud_registered` with `checkObstacle=true` now produce repeatable local
+> FALCO output: forward regressions command about `0.095-0.100 m/s`, side
+> offset regressions turn toward the goal, and the long-front probe shows
+> obstacle scoring remains active. `/navigation/enabled=false` still gates
+> `/cmd_vel` to zero. Verdict: `FALCO_A1_REAL_PATH_READY`; R4 Trotting, R5 DSV,
+> and R6 full exploration were not run.
+
 > **2026-07-24 FALCO R3 real-data diagnosis**: branch
 > `feat/0723-falco-dsv-navigation-integration` re-tested only R3 in the
 > isolated worktree. Build passes with `./tools/build_with_venv.sh`. Runtime

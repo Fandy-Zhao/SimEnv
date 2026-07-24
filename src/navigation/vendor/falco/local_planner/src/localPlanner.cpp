@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <algorithm>
 #include <ros/ros.h>
 
 #include <message_filters/subscriber.h>
@@ -74,6 +75,8 @@ double joyToCheckObstacleDelay = 5.0;
 double goalClearRange = 0.5;
 double goalX = 0;
 double goalY = 0;
+bool enableDiagnostics = false;
+double diagnosticThrottleSec = 1.0;
 
 float joySpeed = 0;
 float joySpeedRaw = 0;
@@ -123,6 +126,68 @@ float vehicleRoll = 0, vehiclePitch = 0, vehicleYaw = 0;
 float vehicleX = 0, vehicleY = 0, vehicleZ = 0;
 
 pcl::VoxelGrid<pcl::PointXYZI> laserDwzFilter, terrainDwzFilter;
+
+struct PlannerDiagnostics {
+  int rawCloudPoints = 0;
+  int adjacentRawPoints = 0;
+  int stackedCloudPoints = 0;
+  int heightFilteredPoints = 0;
+  int center02Points = 0;
+  int center03Points = 0;
+  int center05Points = 0;
+  int candidatePathCount = 0;
+  int freePathCount = 0;
+  int selectedGroupID = -1;
+  int selectedRotDir = -1;
+  int publishedPathPoseCount = 0;
+  double relativeGoalDis = 0.0;
+  double joyDir = 0.0;
+  double planningPeriodMs = 0.0;
+  double zMin = 0.0;
+  double zP10 = 0.0;
+  double zMedian = 0.0;
+  double zP90 = 0.0;
+  double zMax = 0.0;
+  int collisionMin = 0;
+  int collisionP10 = 0;
+  int collisionMedian = 0;
+  int collisionP90 = 0;
+  int collisionMax = 0;
+};
+
+double percentileValue(const std::vector<double>& values, double fraction)
+{
+  if (values.empty()) return 0.0;
+  size_t index = std::min(values.size() - 1, static_cast<size_t>(fraction * (values.size() - 1)));
+  return values[index];
+}
+
+int percentileValue(const std::vector<int>& values, double fraction)
+{
+  if (values.empty()) return 0;
+  size_t index = std::min(values.size() - 1, static_cast<size_t>(fraction * (values.size() - 1)));
+  return values[index];
+}
+
+void publishDiagnostics(const PlannerDiagnostics& diag)
+{
+  if (!enableDiagnostics) return;
+
+  ROS_INFO_THROTTLE(diagnosticThrottleSec,
+                    "falco_diag raw=%d adjacent=%d stacked=%d height_filtered=%d "
+                    "center02=%d center03=%d center05=%d rel_z[min,p10,med,p90,max]=[%.3f,%.3f,%.3f,%.3f,%.3f] "
+                    "candidate_paths=%d free_paths=%d selected_group=%d selected_rot=%d "
+                    "collision[min,p10,med,p90,max]=[%d,%d,%d,%d,%d] published_poses=%d "
+                    "goal_dis=%.3f goal_dir=%.1f planning_ms=%.3f "
+                    "params checkObstacle=%d minRelZ=%.3f maxRelZ=%.3f vehicleLength=%.3f vehicleWidth=%.3f pointPerPathThre=%d",
+                    diag.rawCloudPoints, diag.adjacentRawPoints, diag.stackedCloudPoints, diag.heightFilteredPoints,
+                    diag.center02Points, diag.center03Points, diag.center05Points,
+                    diag.zMin, diag.zP10, diag.zMedian, diag.zP90, diag.zMax,
+                    diag.candidatePathCount, diag.freePathCount, diag.selectedGroupID, diag.selectedRotDir,
+                    diag.collisionMin, diag.collisionP10, diag.collisionMedian, diag.collisionP90, diag.collisionMax,
+                    diag.publishedPathPoseCount, diag.relativeGoalDis, diag.joyDir, diag.planningPeriodMs,
+                    checkObstacle ? 1 : 0, minRelZ, maxRelZ, vehicleLength, vehicleWidth, pointPerPathThre);
+}
 
 void odometryHandler(const nav_msgs::Odometry::ConstPtr& odom)
 {
@@ -535,6 +600,8 @@ int main(int argc, char** argv)
   nhPrivate.getParam("goalClearRange", goalClearRange);
   nhPrivate.getParam("goalX", goalX);
   nhPrivate.getParam("goalY", goalY);
+  nhPrivate.getParam("enableDiagnostics", enableDiagnostics);
+  nhPrivate.getParam("diagnosticThrottleSec", diagnosticThrottleSec);
 
   ros::Subscriber subOdometry = nh.subscribe<nav_msgs::Odometry>
                                 ("/state_estimation", 5, odometryHandler);
@@ -608,8 +675,12 @@ int main(int argc, char** argv)
     ros::spinOnce();
 
     if (newLaserCloud || newTerrainCloud) {
+      ros::WallTime planningStart = ros::WallTime::now();
+      PlannerDiagnostics diag;
       if (newLaserCloud) {
         newLaserCloud = false;
+        diag.rawCloudPoints = laserCloud->points.size();
+        diag.adjacentRawPoints = laserCloudCrop->points.size();
 
         laserCloudStack[laserCloudCount]->clear();
         *laserCloudStack[laserCloudCount] = *laserCloudDwz;
@@ -638,6 +709,9 @@ int main(int argc, char** argv)
       pcl::PointXYZI point;
       plannerCloudCrop->clear();
       int plannerCloudSize = plannerCloud->points.size();
+      diag.stackedCloudPoints = plannerCloudSize;
+      std::vector<double> relZValues;
+      relZValues.reserve(plannerCloudSize);
       for (int i = 0; i < plannerCloudSize; i++) {
         float pointX1 = plannerCloud->points[i].x - vehicleX;
         float pointY1 = plannerCloud->points[i].y - vehicleY;
@@ -649,9 +723,22 @@ int main(int argc, char** argv)
         point.intensity = plannerCloud->points[i].intensity;
 
         float dis = sqrt(point.x * point.x + point.y * point.y);
+        relZValues.push_back(point.z);
+        if (dis < 0.2) diag.center02Points++;
+        if (dis < 0.3) diag.center03Points++;
+        if (dis < 0.5) diag.center05Points++;
         if (dis < adjacentRange && ((point.z > minRelZ && point.z < maxRelZ) || useTerrainAnalysis)) {
           plannerCloudCrop->push_back(point);
         }
+      }
+      diag.heightFilteredPoints = plannerCloudCrop->points.size();
+      if (!relZValues.empty()) {
+        std::sort(relZValues.begin(), relZValues.end());
+        diag.zMin = relZValues.front();
+        diag.zP10 = percentileValue(relZValues, 0.10);
+        diag.zMedian = percentileValue(relZValues, 0.50);
+        diag.zP90 = percentileValue(relZValues, 0.90);
+        diag.zMax = relZValues.back();
       }
 
       int boundaryCloudSize = boundaryCloud->points.size();
@@ -695,6 +782,8 @@ int main(int argc, char** argv)
 
         relativeGoalDis = sqrt(relativeGoalX * relativeGoalX + relativeGoalY * relativeGoalY);
         joyDir = atan2(relativeGoalY, relativeGoalX) * 180 / PI;
+        diag.relativeGoalDis = relativeGoalDis;
+        diag.joyDir = joyDir;
 
         if (!twoWayDrive) {
           if (joyDir > 90.0) joyDir = 90.0;
@@ -789,8 +878,10 @@ int main(int argc, char** argv)
               ((10.0 * rotDir > dirThre && 360.0 - 10.0 * rotDir > dirThre) && fabs(joyDir) > 90.0 && dirToVehicle)) {
             continue;
           }
+          diag.candidatePathCount++;
 
           if (clearPathList[i] < pointPerPathThre) {
+            diag.freePathCount++;
             float penaltyScore = 1.0 - pathPenaltyList[i] / costHeightThre;
             if (penaltyScore < costScore) penaltyScore = costScore;
 
@@ -829,8 +920,10 @@ int main(int argc, char** argv)
         if (selectedGroupID >= 0) {
           int rotDir = int(selectedGroupID / groupNum);
           float rotAng = (10.0 * rotDir - 180.0) * PI / 180;
+          diag.selectedRotDir = rotDir;
 
           selectedGroupID = selectedGroupID % groupNum;
+          diag.selectedGroupID = selectedGroupID;
           int selectedPathLength = startPaths[selectedGroupID]->points.size();
           path.poses.resize(selectedPathLength);
           for (int i = 0; i < selectedPathLength; i++) {
@@ -851,6 +944,7 @@ int main(int argc, char** argv)
 
           path.header.stamp = ros::Time().fromSec(odomTime);
           path.header.frame_id = "vehicle";
+          diag.publishedPathPoseCount = path.poses.size();
           pubPath.publish(path);
 
           #if PLOTPATHSET == 1
@@ -923,6 +1017,7 @@ int main(int argc, char** argv)
 
         path.header.stamp = ros::Time().fromSec(odomTime);
         path.header.frame_id = "vehicle";
+        diag.publishedPathPoseCount = path.poses.size();
         pubPath.publish(path);
 
         #if PLOTPATHSET == 1
@@ -934,6 +1029,22 @@ int main(int argc, char** argv)
         pubFreePaths.publish(freePaths2);
         #endif
       }
+
+      std::vector<int> collisionCounts;
+      collisionCounts.reserve(36 * pathNum);
+      for (int i = 0; i < 36 * pathNum; i++) {
+        collisionCounts.push_back(clearPathList[i]);
+      }
+      if (!collisionCounts.empty()) {
+        std::sort(collisionCounts.begin(), collisionCounts.end());
+        diag.collisionMin = collisionCounts.front();
+        diag.collisionP10 = percentileValue(collisionCounts, 0.10);
+        diag.collisionMedian = percentileValue(collisionCounts, 0.50);
+        diag.collisionP90 = percentileValue(collisionCounts, 0.90);
+        diag.collisionMax = collisionCounts.back();
+      }
+      diag.planningPeriodMs = (ros::WallTime::now() - planningStart).toSec() * 1000.0;
+      publishDiagnostics(diag);
 
       /*sensor_msgs::PointCloud2 plannerCloud2;
       pcl::toROSMsg(*plannerCloudCrop, plannerCloud2);

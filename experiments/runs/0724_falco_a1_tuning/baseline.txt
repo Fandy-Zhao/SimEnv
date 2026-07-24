@@ -1,0 +1,17 @@
+2026-07-24T11:35:41+08:00
+worktree:
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation
+branch:
+feat/0723-falco-dsv-navigation-integration
+head:
+8f5c89eedb4ed52db8c245e48ab05bd6c1873ec0
+status:
+ M src/navigation/simenv_navigation_bringup/config/falco_simenv.yaml
+ M src/navigation/simenv_navigation_bringup/launch/falco_only.launch
+ M src/navigation/simenv_navigation_bringup/launch/runtime_real_data.launch
+ M src/navigation/vendor/falco/local_planner/src/localPlanner.cpp
+?? experiments/runs/0724_falco_a1_tuning/
+log:
+8f5c89ee fix(navigation): correct falco real-data path generation
+569e4ff7 test(navigation): refresh falco dsv runtime evidence
+6132611c test(navigation): validate falco dsv runtime interfaces

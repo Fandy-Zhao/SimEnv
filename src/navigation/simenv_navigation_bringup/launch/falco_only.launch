@@ -1,16 +1,40 @@
 <launch>
   <arg name="ns" default="navigation"/>
-  <arg name="falco_config" default="$(find simenv_navigation_bringup)/config/falco_simenv.yaml"/>
+  <arg name="falco_config" default="$(find simenv_navigation_bringup)/config/falco_a1.yaml"/>
   <arg name="state_estimation_topic" default="/$(arg ns)/state_estimation"/>
   <arg name="registered_scan_topic" default="/$(arg ns)/registered_scan"/>
   <arg name="waypoint_topic" default="/$(arg ns)/way_point"/>
   <arg name="path_topic" default="/$(arg ns)/path"/>
   <arg name="cmd_vel_stamped_topic" default="/$(arg ns)/falco/cmd_vel_stamped"/>
   <arg name="enable_bridge" default="true"/>
+  <arg name="enable_diagnostics" default="false"/>
+  <arg name="diagnostic_throttle_sec" default="1.0"/>
+  <arg name="vehicle_length" default="0.56"/>
+  <arg name="vehicle_width" default="0.43"/>
+  <arg name="adjacent_range" default="3.5"/>
+  <arg name="min_rel_z" default="-0.25"/>
+  <arg name="max_rel_z" default="0.25"/>
+  <arg name="point_per_path_thre" default="2"/>
+  <arg name="path_scale" default="1.0"/>
+  <arg name="min_path_scale" default="0.75"/>
+  <arg name="min_path_range" default="1.0"/>
+  <arg name="goal_clear_range" default="0.5"/>
 
   <node pkg="local_planner" type="localPlanner"
         name="localPlanner" output="screen" required="true">
     <rosparam command="load" file="$(arg falco_config)"/>
+    <param name="enableDiagnostics" value="$(arg enable_diagnostics)"/>
+    <param name="diagnosticThrottleSec" value="$(arg diagnostic_throttle_sec)"/>
+    <param name="vehicleLength" value="$(arg vehicle_length)"/>
+    <param name="vehicleWidth" value="$(arg vehicle_width)"/>
+    <param name="adjacentRange" value="$(arg adjacent_range)"/>
+    <param name="minRelZ" value="$(arg min_rel_z)"/>
+    <param name="maxRelZ" value="$(arg max_rel_z)"/>
+    <param name="pointPerPathThre" value="$(arg point_per_path_thre)"/>
+    <param name="pathScale" value="$(arg path_scale)"/>
+    <param name="minPathScale" value="$(arg min_path_scale)"/>
+    <param name="minPathRange" value="$(arg min_path_range)"/>
+    <param name="goalClearRange" value="$(arg goal_clear_range)"/>
     <param name="pathFolder" type="string" value="$(find local_planner)/paths"/>
     <remap from="/state_estimation" to="$(arg state_estimation_topic)"/>
     <remap from="/registered_scan" to="$(arg registered_scan_topic)"/>
@@ -28,6 +52,16 @@
   <node pkg="local_planner" type="pathFollower"
         name="pathFollower" output="screen" required="true">
     <rosparam command="load" file="$(arg falco_config)"/>
+    <param name="vehicleLength" value="$(arg vehicle_length)"/>
+    <param name="vehicleWidth" value="$(arg vehicle_width)"/>
+    <param name="adjacentRange" value="$(arg adjacent_range)"/>
+    <param name="minRelZ" value="$(arg min_rel_z)"/>
+    <param name="maxRelZ" value="$(arg max_rel_z)"/>
+    <param name="pointPerPathThre" value="$(arg point_per_path_thre)"/>
+    <param name="pathScale" value="$(arg path_scale)"/>
+    <param name="minPathScale" value="$(arg min_path_scale)"/>
+    <param name="minPathRange" value="$(arg min_path_range)"/>
+    <param name="goalClearRange" value="$(arg goal_clear_range)"/>
     <remap from="/state_estimation" to="$(arg state_estimation_topic)"/>
     <remap from="/path" to="$(arg path_topic)"/>
     <remap from="/cmd_vel" to="$(arg cmd_vel_stamped_topic)"/>

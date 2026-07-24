@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-07-24 — FALCO A1 real-cloud R3 tuning
+
+- Added `falco_a1.yaml` as the default FALCO profile for SimEnv Unitree A1
+  real FAST-LIO2 `/cloud_registered` validation with `checkObstacle=true`.
+- Added launch-time overrides for A1 footprint, height band, path scale/range,
+  obstacle threshold, and opt-in FALCO diagnostics.
+- Added throttled `falco_diag` logging in FALCO local planner to record cloud
+  filtering, candidate/free path counts, selected path, collision score
+  distribution, and output command/path state.
+- Recorded selected-parameter, pointcloud, candidate-path, and obstacle
+  regression evidence under `experiments/runs/0724_falco_a1_tuning/`.
+- Kept `/navigation/enabled=false` command gating during all R3 checks; R4-R6
+  were not run.
+
 ## 2026-07-24 — FALCO R3 real-data diagnosis
 
 - Updated `runtime_real_data.launch` to relay directly from FAST-LIO2

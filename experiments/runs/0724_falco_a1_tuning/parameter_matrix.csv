@@ -1,0 +1,17 @@
+case,label,args,raw_points,adjacent_points,stacked_points,height_filtered_points,center02,center03,center05,rel_z_min,rel_z_p10,rel_z_median,rel_z_p90,rel_z_max,candidate_paths,free_paths,selected_group,selected_rot,collision_min,collision_p10,collision_median,collision_p90,collision_max,published_poses,goal_distance,goal_direction_deg,raw_linear_x,raw_angular_z,gated_linear_x,waypoint_forward_m,waypoint_lateral_m,verdict
+baseline,baseline/default R3 diagnosis,pre-tuning default minRelZ=-0.5 vehicleWidth=0.6,23221,17990,8326,2390,46,97,261,-0.447,-0.351,1.976,2.104,2.155,12348,1207,4,27,0,0,0,198,230,101,0.815,0.1,,,,,,BLOCKED
+t1_minrelz_m035,minRelZ -0.35,min_rel_z:=-0.35,,,,,,,,,,,,,,,,,,,,,,,,,0.0,-0.7853981256484985,0.0,,,TURN
+t1_minrelz_m025,minRelZ -0.25,min_rel_z:=-0.25,,,,,,,,,,,,,,,,,,,,,,,,,0.0950000137090683,-0.0,0.0,,,PASS
+t1_minrelz_m015,minRelZ -0.15,min_rel_z:=-0.15,23264,18069,7983,271,35,,,,,,,,,,,,,,,,,,,,0.10000001639127731,-0.0,0.0,,,PASS
+t2_footprint_small,0.50 x 0.37 footprint,min_rel_z:=-0.25 vehicle_length:=0.50 vehicle_width:=0.37,,,,,,,,,,,,,,,,,,,,,,,,,0.10000001639127731,-0.0,0.0,,,PASS
+t2_footprint_medium,0.56 x 0.43 footprint selected,min_rel_z:=-0.25 vehicle_length:=0.56 vehicle_width:=0.43,23345,17209,8083,316,41,83,235,-0.450,-0.360,1.798,2.100,2.154,6174,6174,3,18,0,0,0,0,0,101,0.798,-0.0,0.10000001639127731,-0.0,0.0,,,PASS
+t2_footprint_conservative,0.64 x 0.51 footprint,min_rel_z:=-0.25 vehicle_length:=0.64 vehicle_width:=0.51,,,,,,,,,,,,,,,,,,,,,,,,,0.10000001639127731,-0.0,0.0,,,PASS
+t3_threshold_strict,pointPerPathThre 1,min_rel_z:=-0.25 vehicle_length:=0.56 vehicle_width:=0.43 point_per_path_thre:=1,,,,,,,,,,,,,,,,,,,,,,,,,0.10000001639127731,-0.0,0.0,,,PASS
+t3_threshold_current,pointPerPathThre 2 selected,min_rel_z:=-0.25 vehicle_length:=0.56 vehicle_width:=0.43 point_per_path_thre:=2,22848,17808,7869,322,,,,,,,,,,,,,,,,,,,,,0.10000001639127731,-0.0,0.0,,,PASS
+t3_threshold_loose,pointPerPathThre 5,min_rel_z:=-0.25 vehicle_length:=0.56 vehicle_width:=0.43 point_per_path_thre:=5,,,,,,,,,,,,,,,,,,,,,,,,,0.0950000137090683,0.008989626541733742,0.0,,,PASS
+reg_front_1,front regression 1,,23283,17092,8202,323,44,106,270,-0.446,-0.359,1.853,2.099,2.151,6174,6174,3,18,0,0,0,0,0,101,0.801,-0.1,0.10000001639127731,-0.0,0.0,0.8,0.0,PASS
+reg_front_2,front regression 2,,,,,,,,,,,,,,,,,,,,,,,,,,0.10000001639127731,-0.0,0.0,0.8,0.0,PASS
+reg_front_3,front regression 3,,,,,,,,,,,,,,,,,,,,,,,,,,0.0950000137090683,-0.0,0.0,0.8,0.0,PASS
+reg_left_02,left 0.2 m regression,,23237,18004,8397,323,40,95,265,-0.447,-0.352,1.945,2.105,2.153,6174,6174,4,18,0,0,0,0,0,101,0.824,14.1,0.0,0.7853981256484985,0.0,0.8,0.2,TURN
+reg_right_02,right 0.2 m regression,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,-0.7853981256484985,0.0,0.8,-0.2,TURN
+reg_long_front_3m,3.0 m obstacle-checked local regression,,23338,17180,8214,317,46,92,233,-0.446,-0.360,1.804,2.101,2.152,6174,4546,3,18,0,0,0,30,171,101,3.002,-0.0,0.10000001639127731,-0.0,0.0,3.0,0.0,PASS

@@ -1,5 +1,16 @@
 # Module Status
 
+> **2026-07-24 `src/navigation` FALCO A1 tuning**:
+> `falco_only.launch` and `runtime_real_data.launch` now default to
+> `falco_a1.yaml`, an A1-specific local-planner profile for real FAST-LIO2
+> `/cloud_registered` with obstacle checking enabled. The tuned R3 profile uses
+> `minRelZ=-0.25`, `maxRelZ=0.25`, `vehicleLength=0.56`,
+> `vehicleWidth=0.43`, and `pointPerPathThre=2`, derived from A1 xacro geometry
+> plus controlled real-cloud sweeps. New opt-in `falco_diag` logs provide cloud
+> filtering and candidate-path evidence. R3 verdict is
+> `FALCO_A1_REAL_PATH_READY`; command output remains gated by
+> `/navigation/enabled`, and R4/R5/R6 are still pending separate validation.
+
 > **2026-07-24 `src/navigation` FALCO R3 diagnosis**:
 > `runtime_real_data.launch` now defaults to FAST-LIO2's native `/Odometry` and
 > `/cloud_registered` topics before relaying into `/navigation`. R3 direct-source

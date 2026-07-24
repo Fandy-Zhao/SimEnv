@@ -1,0 +1,43 @@
+verdict: FALCO_A1_REAL_PATH_READY
+scope: R3 only; no Trotting motion, no DSV exploration, no R4-R6
+selected_config: src/navigation/simenv_navigation_bringup/config/falco_a1.yaml
+runtime_launch: src/navigation/simenv_navigation_bringup/launch/runtime_real_data.launch
+inputs:
+  odometry: /Odometry
+  registered_scan: /cloud_registered
+  check_obstacle: true
+selected_parameters:
+  minRelZ: -0.25
+  maxRelZ: 0.25
+  vehicleLength: 0.56
+  vehicleWidth: 0.43
+  pointPerPathThre: 2
+  adjacentRange: 3.5
+  pathScale: 1.0
+  minPathScale: 0.75
+  minPathRange: 1.0
+  goalClearRange: 0.5
+  autonomyMode: true
+  autonomySpeed: 0.10
+diagnostics:
+  enableDiagnostics: false
+  diagnosticThrottleSec: 1.0
+rationale:
+  minRelZ: >
+    The previous -0.50 m lower band included many low/self/ground-adjacent
+    points from real FAST-LIO2 clouds and blocked forward local paths. -0.35 m
+    still selected a rotation-only response, while -0.25 m repeatedly produced
+    forward local paths with obstacle checking still enabled.
+  footprint: >
+    A1 geometry audit found a standing lidar-inclusive footprint around
+    0.434 m x 0.302 m. The selected 0.56 m x 0.43 m keeps a practical margin
+    without the older 0.60 m width that over-penalized narrow passages.
+  pointPerPathThre: >
+    Threshold 1, 2, and 5 all generated valid local commands after the height
+    and footprint fixes. Kept 2 because it matches the prior SimEnv default and
+    avoids loosening obstacle evidence unnecessarily.
+validation_artifacts:
+  - experiments/runs/0724_falco_a1_tuning/parameter_matrix.csv
+  - experiments/runs/0724_falco_a1_tuning/cloud_statistics.csv
+  - experiments/runs/0724_falco_a1_tuning/candidate_path_statistics.csv
+  - experiments/runs/0724_falco_a1_tuning/obstacle_regression.md
