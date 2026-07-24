@@ -1,0 +1,59 @@
+## tf_echo map base
+At time 32.492
+- Translation: [-0.015, 2.290, 0.326]
+- Rotation: in Quaternion [0.011, -0.013, 0.711, 0.703]
+            in RPY (radian) [-0.003, -0.035, 1.583]
+            in RPY (degree) [-0.179, -2.000, 90.711]
+At time 32.492
+- Translation: [-0.015, 2.290, 0.326]
+- Rotation: in Quaternion [0.011, -0.013, 0.711, 0.703]
+            in RPY (radian) [-0.003, -0.035, 1.583]
+            in RPY (degree) [-0.179, -2.000, 90.711]
+
+## tf_echo camera_init base
+At time 32.590
+- Translation: [0.129, 0.010, 0.144]
+- Rotation: in Quaternion [-0.000, 0.072, 0.013, 0.997]
+            in RPY (radian) [0.001, 0.145, 0.026]
+            in RPY (degree) [0.076, 8.309, 1.486]
+At time 32.592
+- Translation: [0.129, 0.010, 0.144]
+- Rotation: in Quaternion [-0.000, 0.072, 0.013, 0.997]
+            in RPY (radian) [0.001, 0.145, 0.026]
+            in RPY (degree) [0.076, 8.309, 1.486]
+
+## tf_echo base laser_livox
+At time 0.000
+- Translation: [0.200, 0.000, 0.080]
+- Rotation: in Quaternion [0.000, 0.382, 0.000, 0.924]
+            in RPY (radian) [0.000, 0.785, 0.000]
+            in RPY (degree) [0.000, 44.977, 0.000]
+At time 0.000
+- Translation: [0.200, 0.000, 0.080]
+- Rotation: in Quaternion [0.000, 0.382, 0.000, 0.924]
+            in RPY (radian) [0.000, 0.785, 0.000]
+            in RPY (degree) [0.000, 44.977, 0.000]
+
+## tf_echo odom base
+At time 32.760
+- Translation: [-0.015, 2.290, 0.326]
+- Rotation: in Quaternion [0.011, -0.013, 0.711, 0.703]
+            in RPY (radian) [-0.003, -0.035, 1.583]
+            in RPY (degree) [-0.179, -2.000, 90.711]
+At time 32.760
+- Translation: [-0.015, 2.290, 0.326]
+- Rotation: in Quaternion [0.011, -0.013, 0.711, 0.703]
+            in RPY (radian) [-0.003, -0.035, 1.583]
+            in RPY (degree) [-0.179, -2.000, 90.711]
+
+## tf_echo map odom
+At time 32.864
+- Translation: [0.000, 0.000, 0.000]
+- Rotation: in Quaternion [0.000, 0.000, 0.000, 1.000]
+            in RPY (radian) [0.000, -0.000, 0.000]
+            in RPY (degree) [0.000, -0.000, 0.000]
+At time 32.864
+- Translation: [0.000, 0.000, 0.000]
+- Rotation: in Quaternion [0.000, 0.000, 0.000, 1.000]
+            in RPY (radian) [0.000, -0.000, 0.000]
+            in RPY (degree) [0.000, -0.000, 0.000]

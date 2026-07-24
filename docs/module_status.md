@@ -1,5 +1,45 @@
 # Module Status
 
+> **2026-07-24 `src/navigation` FALCO A1 tuning**:
+> `falco_only.launch` and `runtime_real_data.launch` now default to
+> `falco_a1.yaml`, an A1-specific local-planner profile for real FAST-LIO2
+> `/cloud_registered` with obstacle checking enabled. The tuned R3 profile uses
+> `minRelZ=-0.25`, `maxRelZ=0.25`, `vehicleLength=0.56`,
+> `vehicleWidth=0.43`, and `pointPerPathThre=2`, derived from A1 xacro geometry
+> plus controlled real-cloud sweeps. New opt-in `falco_diag` logs provide cloud
+> filtering and candidate-path evidence. R3 verdict is
+> `FALCO_A1_REAL_PATH_READY`; command output remains gated by
+> `/navigation/enabled`, and R4/R5/R6 are still pending separate validation.
+
+> **2026-07-24 `src/navigation` FALCO R3 diagnosis**:
+> `runtime_real_data.launch` now defaults to FAST-LIO2's native `/Odometry` and
+> `/cloud_registered` topics before relaying into `/navigation`. R3 direct-source
+> runtime input frequency passes at about 10 Hz. Case A with real cloud obstacle
+> checking still returns the zero one-pose FALCO path. Case B with only temporary
+> `checkObstacle=false` returns a multi-pose path and finite nonzero
+> `/navigation/falco/cmd_vel_stamped`, proving the current blocker is FALCO's
+> obstacle filtering against the real registered cloud rather than
+> `pathFollower/autonomyMode` or the command bridge. `/navigation/enabled=false`
+> keeps `/cmd_vel` zero. R4-R6 remain gated off.
+
+> **2026-07-23 `src/navigation` real runtime validation**:
+> `runtime_real_data.launch` connects an already running SimEnv + FAST-LIO2
+> stack to `/navigation/state_estimation` and `/navigation/registered_scan` and
+> keeps command output behind the existing bridge gates. R2 real FAST-LIO2 data
+> and TF passed. R3 remains blocked because FALCO did not produce a useful
+> nonzero path from real registered clouds and a manual waypoint while RTF was
+> about `0.062`; Trotting and DSV motion stages were not entered.
+
+> **2026-07-23 `src/navigation` FALCO + DSV integration**: new navigation
+> subtree imports FALCO `local_planner`, DSV-Planner package closure, and
+> SimEnv-owned bridge/bringup packages. Interface adaptation uses launch
+> remaps and `cmd_vel_bridge.py`; no Gazebo, FAST-LIO2 core, Unitree
+> controller core, RL policy, physics, or scene generation files changed.
+> Build/static/runtime interface validation passes in the isolated worktree:
+> `tools/build_with_venv.sh`, launch parsing, FALCO command-path smoke, and DSV
+> service/waypoint smoke are recorded under
+> `experiments/runs/0723_falco_dsv_integration/`.
+
 > **2026-07-23 `simenv_fast_lio2_integration` external build staging**:
 > FAST-LIO2 dependencies are now prepared through a repeatable staging script
 > from fixed external source commits. Staged FAST_LIO uses C++17; staged

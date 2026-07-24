@@ -1,0 +1,12 @@
+motion_gate_disabled_sample
+WARNING: no messages received and simulated time is active.
+Is /clock being published?
+linear: 
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular: 
+  x: 0.0
+  y: 0.0
+  z: 0.0
+---

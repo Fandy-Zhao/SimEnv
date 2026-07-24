@@ -1,0 +1,700 @@
+[build_with_venv] CUDA_HOME: /usr/local/cuda-11.8
+[build_with_venv] Repository root: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation
+[build_with_venv] Selected CC : /usr/bin/gcc-11
+[build_with_venv] Selected CXX: /usr/bin/g++-11
+[build_with_venv] CUDAHOSTCXX : /usr/bin/g++-11
+[build_with_venv] ROS setup: /opt/ros/noetic/setup.bash
+[build_with_venv] Python executable: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/.venv/bin/python
+[build_with_venv] Active python: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/.venv/bin/python
+Python 3.13.13
+[build_with_venv] Catkin whitelist: livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup
+WARN: Python torch is not importable from venv.
+      If a package needs LibTorch, install a compatible torch wheel:
+      source .venv/bin/activate
+      python -m pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+[build_with_venv] CMAKE_PREFIX_PATH=/opt/ros/noetic:/usr/local/cuda-11.8
+[build_with_venv] Starting catkin_make...
+-- Using CATKIN_DEVEL_PREFIX: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel
+-- Using CMAKE_PREFIX_PATH: /opt/ros/noetic;/usr/local/cuda-11.8
+-- This workspace overlays: /opt/ros/noetic
+-- Using PYTHON_EXECUTABLE: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/.venv/bin/python
+-- Using Debian Python package layout
+-- Using empy: /usr/bin/empy
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/build/test_results
+-- Forcing gtest/gmock from source, though one was otherwise available.
+-- Found gtest sources under '/usr/src/googletest': gtests will be built
+-- Found gmock sources under '/usr/src/googletest': gmock will be built
+-- Using Python nosetests: /usr/bin/nosetests3
+-- catkin 0.8.10
+-- BUILD_SHARED_LIBS is on
+-- BUILD_SHARED_LIBS is on
+-- Using CATKIN_WHITELIST_PACKAGES: livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- ~~  traversing 23 packages in topological order:
+-- ~~  - catkin_simple
+-- ~~  - kdtree
+-- ~~  - minkindr
+-- ~~  - simenv_navigation_bridge
+-- ~~  - simenv_navigation_bringup
+-- ~~  - octomap_msgs
+-- ~~  - volumetric_msgs
+-- ~~  - livox_laser_simulation
+-- ~~  - octomap_ros
+-- ~~  - local_planner
+-- ~~  - misc_utils
+-- ~~  - graph_utils
+-- ~~  - graph_planner
+-- ~~  - simenv_fast_lio2_integration
+-- ~~  - minkindr_conversions
+-- ~~  - unitree_legged_msgs
+-- ~~  - unitree_legged_control
+-- ~~  - unitree_gazebo
+-- ~~  - unitree_guide
+-- ~~  - volumetric_map_base
+-- ~~  - octomap_world
+-- ~~  - dsvplanner
+-- ~~  - dsvp_launch
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- +++ processing catkin package: 'catkin_simple'
+-- ==> add_subdirectory(navigation/vendor/dsv/catkin_simple)
+CMake Deprecation Warning at navigation/vendor/dsv/catkin_simple/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'kdtree'
+-- ==> add_subdirectory(navigation/vendor/dsv/kdtree)
+CMake Deprecation Warning at navigation/vendor/dsv/kdtree/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'minkindr'
+-- ==> add_subdirectory(navigation/vendor/dsv/minkindr/minkindr)
+CMake Deprecation Warning at navigation/vendor/dsv/minkindr/minkindr/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Marking HEADER FILES in "include" folder of package "minkindr" for installation
+-- +++ processing catkin package: 'simenv_navigation_bridge'
+-- ==> add_subdirectory(navigation/simenv_navigation_bridge)
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/simenv_navigation_bridge
+-- +++ processing catkin package: 'simenv_navigation_bringup'
+-- ==> add_subdirectory(navigation/simenv_navigation_bringup)
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/simenv_navigation_bringup
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/navigation/simenv_navigation_bringup/scripts/test_dsv_interface_smoke.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/simenv_navigation_bringup
+-- +++ processing catkin package: 'octomap_msgs'
+-- ==> add_subdirectory(navigation/vendor/dsv/deps/octomap_msgs)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- octomap_msgs: 2 messages, 2 services
+-- +++ processing catkin package: 'volumetric_msgs'
+-- ==> add_subdirectory(navigation/vendor/dsv/volumetric_mapping/volumetric_msgs)
+CMake Deprecation Warning at navigation/vendor/dsv/volumetric_mapping/volumetric_msgs/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- volumetric_msgs: 0 messages, 4 services
+-- +++ processing catkin package: 'livox_laser_simulation'
+-- ==> add_subdirectory(Mid360_imu_sim)
+CMake Deprecation Warning at Mid360_imu_sim/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PkgConfig)
+  does not match the name of the calling package (gazebo).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
+  Mid360_imu_sim/CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.40.0") found components: thread system filesystem program_options regex iostreams date_time 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4") 
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-transport8 -- found version 8.2.1
+-- Searching for dependencies of ignition-transport8
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3") 
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.4
+-- Checking for module 'uuid'
+--   Found uuid, version 2.37.2
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Searching for dependencies of ignition-msgs5
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 9.0.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.14.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-fuel_tools4 -- found version 4.4.0
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.9.5
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.7.3
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- +++ processing catkin package: 'octomap_ros'
+-- ==> add_subdirectory(navigation/vendor/dsv/deps/octomap_ros)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'local_planner'
+-- ==> add_subdirectory(navigation/vendor/falco/local_planner)
+CMake Deprecation Warning at navigation/vendor/falco/local_planner/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.65.0") found components: system filesystem date_time iostreams serialization 
+-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+** WARNING ** io features related to pcap will be disabled
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+-- Found Qhull version 8.0.2
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- looking for PCL_COMMON
+-- looking for PCL_KDTREE
+-- looking for PCL_OCTREE
+-- looking for PCL_SEARCH
+-- looking for PCL_SAMPLE_CONSENSUS
+-- looking for PCL_FILTERS
+-- looking for PCL_2D
+-- looking for PCL_GEOMETRY
+-- looking for PCL_IO
+-- looking for PCL_FEATURES
+-- looking for PCL_ML
+-- looking for PCL_SEGMENTATION
+-- looking for PCL_VISUALIZATION
+-- looking for PCL_SURFACE
+-- looking for PCL_REGISTRATION
+-- looking for PCL_KEYPOINTS
+-- looking for PCL_TRACKING
+-- looking for PCL_RECOGNITION
+-- looking for PCL_STEREO
+-- looking for PCL_APPS
+-- looking for PCL_IN_HAND_SCANNER
+-- looking for PCL_MODELER
+-- looking for PCL_POINT_CLOUD_EDITOR
+-- looking for PCL_OUTOFCORE
+-- looking for PCL_PEOPLE
+-- +++ processing catkin package: 'misc_utils'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/misc_utils)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/misc_utils/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'graph_utils'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/graph_utils)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/graph_utils/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- graph_utils: 3 messages, 0 services
+-- +++ processing catkin package: 'graph_planner'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/graph_planner)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/graph_planner/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- graph_planner: 2 messages, 0 services
+-- +++ processing catkin package: 'simenv_fast_lio2_integration'
+-- ==> add_subdirectory(simenv_fast_lio2_integration)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/scripts/map_to_camera_init_bridge.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/scripts/odometry_tf_bridge.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/scripts/runtime_pointcloud_smoke_check.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/simenv_fast_lio2_integration
+-- +++ processing catkin package: 'minkindr_conversions'
+-- ==> add_subdirectory(navigation/vendor/dsv/minkindr_ros/minkindr_conversions)
+CMake Deprecation Warning at navigation/vendor/dsv/minkindr_ros/minkindr_conversions/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Marking SHARED_LIBRARY "minkindr_conversions" of package "minkindr_conversions" for installation
+-- Marking HEADER FILES in "include" folder of package "minkindr_conversions" for installation
+-- +++ processing catkin package: 'unitree_legged_msgs'
+-- ==> add_subdirectory(unitree_guide/unitree_ros_to_real/unitree_legged_msgs)
+CMake Deprecation Warning at unitree_guide/unitree_ros_to_real/unitree_legged_msgs/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- unitree_legged_msgs: 11 messages, 0 services
+-- +++ processing catkin package: 'unitree_legged_control'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/unitree_legged_control)
+CMake Deprecation Warning at unitree_guide/unitree_ros/unitree_legged_control/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'unitree_gazebo'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/unitree_gazebo)
+CMake Deprecation Warning at unitree_guide/unitree_ros/unitree_gazebo/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PkgConfig)
+  does not match the name of the calling package (gazebo).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
+  unitree_guide/unitree_ros/unitree_gazebo/CMakeLists.txt:17 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.40.0") found components: thread system filesystem program_options regex iostreams date_time 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4") 
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-transport8 -- found version 8.2.1
+-- Searching for dependencies of ignition-transport8
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3") 
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.4
+-- Checking for module 'uuid'
+--   Found uuid, version 2.37.2
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Searching for dependencies of ignition-msgs5
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 9.0.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.14.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-fuel_tools4 -- found version 4.4.0
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.9.5
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.7.3
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- +++ processing catkin package: 'unitree_guide'
+-- ==> add_subdirectory(unitree_guide/unitree_guide/unitree_guide)
+-- UNITREE_ENABLE_TORCH_POLICY=ON
+-- Caffe2: CUDA detected: 11.8
+-- Caffe2: CUDA nvcc is: /usr/local/cuda-11.8/bin/nvcc
+-- Caffe2: CUDA toolkit directory: /usr/local/cuda-11.8
+-- Caffe2: Header version is: 11.8
+-- /usr/local/cuda-11.8/lib64/libnvrtc.so shorthash is 672ee683
+-- USE_CUDNN is set to 0. Compiling without cuDNN support
+-- Added CUDA NVCC flags for: -gencode;arch=compute_52,code=sm_52
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0")  
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- unitree_guide: 2 messages, 0 services
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/unitree_guide/unitree_guide/unitree_guide/scripts/virtual_joy.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/unitree_guide
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/unitree_guide/unitree_guide/unitree_guide/scripts/keyboard_teleop.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/unitree_guide
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/unitree_guide/unitree_guide/unitree_guide/scripts/pointcloud2livox.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/unitree_guide
+-- +++ processing catkin package: 'volumetric_map_base'
+-- ==> add_subdirectory(navigation/vendor/dsv/volumetric_mapping/volumetric_map_base)
+CMake Deprecation Warning at navigation/vendor/dsv/volumetric_mapping/volumetric_map_base/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Marking SHARED_LIBRARY "volumetric_map_base" of package "volumetric_map_base" for installation
+-- Marking HEADER FILES in "include" folder of package "volumetric_map_base" for installation
+-- +++ processing catkin package: 'octomap_world'
+-- ==> add_subdirectory(navigation/vendor/dsv/volumetric_mapping/octomap_world)
+CMake Deprecation Warning at navigation/vendor/dsv/volumetric_mapping/octomap_world/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Marking SHARED_LIBRARY "octomap_world" of package "octomap_world" for installation
+-- Marking EXECUTABLE "octomap_manager" of package "octomap_world" for installation
+-- Marking HEADER FILES in "include" folder of package "octomap_world" for installation
+-- +++ processing catkin package: 'dsvplanner'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/dsvplanner)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/dsvplanner/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning at /opt/ros/noetic/share/cmake_modules/cmake/Modules/FindEigen.cmake:62 (message):
+  The FindEigen.cmake Module in the cmake_modules package is deprecated.
+
+  Please use the FindEigen3.cmake Module provided with Eigen.  Change
+  instances of find_package(Eigen) to find_package(Eigen3).  Check the
+  FindEigen3.cmake Module for the resulting CMake variable names.
+
+Call Stack (most recent call first):
+  navigation/vendor/dsv/dsvplanner/dsvplanner/CMakeLists.txt:22 (find_package)
+
+
+-- Found Eigen: /usr/include/eigen3  
+-- Eigen found (include: /usr/include/eigen3)
+-- dsvplanner: 0 messages, 2 services
+-- +++ processing catkin package: 'dsvp_launch'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/dsvp_launch)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/dsvp_launch/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/build
+[  0%] Built target _catkin_empty_exported_target
+[  0%] Built target geometry_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target geometry_msgs_generate_messages_cpp
+[  0%] Built target geometry_msgs_generate_messages_lisp
+[  0%] Built target geometry_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target geometry_msgs_generate_messages_eus
+[  0%] Built target roscpp_generate_messages_eus
+[  0%] Built target tf2_msgs_generate_messages_py
+[  0%] Built target roscpp_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_cpp
+[  0%] Built target rosgraph_msgs_generate_messages_cpp
+[  0%] Built target rosgraph_msgs_generate_messages_eus
+[  0%] Built target rosgraph_msgs_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_py
+[  0%] Built target rosgraph_msgs_generate_messages_py
+[  0%] Built target roscpp_generate_messages_nodejs
+Consolidate compiler generated dependencies of target livox_laser_simulation
+[  0%] Built target rosgraph_msgs_generate_messages_nodejs
+[  0%] Built target tf_generate_messages_cpp
+[  0%] Built target tf_generate_messages_nodejs
+[  0%] Built target tf_generate_messages_py
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[  0%] Built target tf_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[  0%] Built target actionlib_generate_messages_py
+[  0%] Built target actionlib_generate_messages_nodejs
+[  0%] Built target tf_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_lisp
+[  0%] Built target actionlib_generate_messages_cpp
+[  0%] Built target actionlib_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_py
+[  0%] Built target actionlib_msgs_generate_messages_eus
+[  0%] Built target actionlib_msgs_generate_messages_cpp
+[  0%] Built target actionlib_generate_messages_eus
+[  0%] Built target actionlib_msgs_generate_messages_lisp
+[  0%] Built target actionlib_msgs_generate_messages_nodejs
+[  0%] Built target actionlib_msgs_generate_messages_py
+[  0%] Built target tf2_msgs_generate_messages_cpp
+[  0%] Built target tf2_msgs_generate_messages_eus
+Consolidate compiler generated dependencies of target misc_utils
+Consolidate compiler generated dependencies of target pathFollower
+Consolidate compiler generated dependencies of target localPlanner
+[  0%] Built target nav_msgs_generate_messages_nodejs
+[  0%] Built target tf2_msgs_generate_messages_nodejs
+[  0%] Built target nav_msgs_generate_messages_cpp
+[  0%] Built target pcl_ros_gencfg
+[  0%] Built target nav_msgs_generate_messages_lisp
+[  0%] Built target tf2_msgs_generate_messages_lisp
+[  0%] Built target _octomap_msgs_generate_messages_check_deps_BoundingBoxQuery
+[  0%] Built target nav_msgs_generate_messages_py
+[  0%] Built target nav_msgs_generate_messages_eus
+[  0%] Built target _octomap_msgs_generate_messages_check_deps_Octomap
+[  0%] Built target _volumetric_msgs_generate_messages_check_deps_LoadMap
+[  0%] Built target _octomap_msgs_generate_messages_check_deps_OctomapWithPose
+[  0%] Built target _volumetric_msgs_generate_messages_check_deps_SetBoxOccupancy
+[  0%] Built target dynamic_reconfigure_generate_messages_cpp
+[  0%] Built target dynamic_reconfigure_generate_messages_lisp
+[  0%] Built target dynamic_reconfigure_generate_messages_py
+[  0%] Built target _octomap_msgs_generate_messages_check_deps_GetOctomap
+[  0%] Built target dynamic_reconfigure_generate_messages_nodejs
+[  0%] Built target dynamic_reconfigure_generate_messages_eus
+[  0%] Built target nodelet_generate_messages_cpp
+[  0%] Built target nodelet_generate_messages_eus
+[  0%] Built target _volumetric_msgs_generate_messages_check_deps_SaveMap
+[  2%] Built target livox_laser_simulation
+[  2%] Built target nodelet_generate_messages_nodejs
+[  2%] Built target nodelet_generate_messages_lisp
+[  2%] Built target _volumetric_msgs_generate_messages_check_deps_SetDisplayBounds
+[  2%] Built target localPlanner
+[  3%] Built target misc_utils
+[  4%] Built target pathFollower
+[  4%] Built target nodelet_generate_messages_py
+[  4%] Built target bond_generate_messages_cpp
+[  4%] Built target bond_generate_messages_eus
+[  4%] Built target bond_generate_messages_lisp
+[  4%] Built target nodelet_topic_tools_gencfg
+[  4%] Built target bond_generate_messages_nodejs
+[  4%] Built target pcl_msgs_generate_messages_eus
+[  4%] Built target bond_generate_messages_py
+[  4%] Built target pcl_msgs_generate_messages_cpp
+[  4%] Built target std_srvs_generate_messages_cpp
+[  4%] Built target std_srvs_generate_messages_eus
+[  4%] Built target pcl_msgs_generate_messages_nodejs
+[  4%] Built target pcl_msgs_generate_messages_py
+[  4%] Built target std_srvs_generate_messages_nodejs
+[  4%] Built target std_srvs_generate_messages_lisp
+[  4%] Built target std_srvs_generate_messages_py
+[  4%] Built target pcl_msgs_generate_messages_lisp
+[  4%] Built target topic_tools_generate_messages_eus
+[  4%] Built target topic_tools_generate_messages_cpp
+[  4%] Built target topic_tools_generate_messages_lisp
+[  4%] Built target topic_tools_generate_messages_nodejs
+[  4%] Built target topic_tools_generate_messages_py
+Consolidate compiler generated dependencies of target minkindr_conversions
+[  4%] Built target visualization_msgs_generate_messages_cpp
+[  4%] Built target visualization_msgs_generate_messages_nodejs
+[  4%] Built target visualization_msgs_generate_messages_py
+[  4%] Built target visualization_msgs_generate_messages_lisp
+[  4%] Built target visualization_msgs_generate_messages_eus
+Consolidate compiler generated dependencies of target state_from_gazebo
+Consolidate compiler generated dependencies of target unitreeFootContactPlugin
+Consolidate compiler generated dependencies of target unitreeDrawForcePlugin
+[  4%] Built target _graph_utils_generate_messages_check_deps_TopologicalGraph
+Consolidate compiler generated dependencies of target kdtree
+[  4%] Built target _graph_utils_generate_messages_check_deps_Edge
+[  6%] Built target minkindr_conversions
+[  6%] Built target stereo_msgs_generate_messages_py
+[  6%] Built target stereo_msgs_generate_messages_eus
+[  8%] Built target octomap_msgs_generate_messages_py
+[  7%] Built target _graph_utils_generate_messages_check_deps_Vertex
+[  9%] Built target kdtree
+[  9%] Built target stereo_msgs_generate_messages_nodejs
+[  9%] Built target stereo_msgs_generate_messages_cpp
+[  9%] Built target stereo_msgs_generate_messages_lisp
+[ 11%] Built target octomap_msgs_generate_messages_cpp
+[ 11%] Built target state_from_gazebo
+[ 12%] Built target unitreeFootContactPlugin
+[ 13%] Built target unitreeDrawForcePlugin
+[ 14%] Built target octomap_msgs_generate_messages_lisp
+[ 17%] Built target octomap_msgs_generate_messages_nodejs
+[ 18%] Built target volumetric_msgs_generate_messages_lisp
+[ 20%] Built target volumetric_msgs_generate_messages_cpp
+[ 20%] Built target _graph_planner_generate_messages_check_deps_GraphPlannerCommand
+[ 22%] Built target volumetric_msgs_generate_messages_py
+[ 22%] Built target _graph_planner_generate_messages_check_deps_GraphPlannerStatus
+[ 24%] Built target octomap_msgs_generate_messages_eus
+[ 26%] Built target volumetric_msgs_generate_messages_eus
+[ 30%] Built target volumetric_msgs_generate_messages_nodejs
+[ 30%] Built target graph_utils_generate_messages_eus
+[ 30%] Built target _unitree_legged_msgs_generate_messages_check_deps_MotorCmd
+[ 31%] Built target graph_utils_generate_messages_lisp
+[ 31%] Built target _unitree_legged_msgs_generate_messages_check_deps_HighState
+[ 31%] Built target _unitree_legged_msgs_generate_messages_check_deps_IMU
+[ 32%] Built target graph_utils_generate_messages_py
+[ 34%] Built target graph_utils_generate_messages_cpp
+[ 34%] Built target _unitree_legged_msgs_generate_messages_check_deps_BmsState
+Consolidate compiler generated dependencies of target volumetric_map_base
+[ 35%] Built target _unitree_legged_msgs_generate_messages_check_deps_Cartesian
+[ 35%] Built target graph_utils_generate_messages_nodejs
+[ 35%] Built target _unitree_legged_msgs_generate_messages_check_deps_BmsCmd
+[ 35%] Built target _unitree_guide_generate_messages_check_deps_CustomMsg
+Consolidate compiler generated dependencies of target octomap_ros
+[ 35%] Built target _unitree_legged_msgs_generate_messages_check_deps_LED
+[ 35%] Built target _unitree_legged_msgs_generate_messages_check_deps_LowCmd
+[ 35%] Built target _unitree_legged_msgs_generate_messages_check_deps_LowState
+[ 35%] Built target _unitree_legged_msgs_generate_messages_check_deps_HighCmd
+[ 35%] Built target graph_planner_generate_messages_cpp
+[ 35%] Built target octomap_msgs_generate_messages
+[ 35%] Built target _unitree_legged_msgs_generate_messages_check_deps_MotorState
+[ 36%] Built target graph_planner_generate_messages_py
+[ 38%] Built target graph_planner_generate_messages_eus
+[ 38%] Built target graph_planner_generate_messages_lisp
+[ 39%] Built target graph_planner_generate_messages_nodejs
+[ 39%] Built target _unitree_guide_generate_messages_check_deps_CustomPoint
+[ 39%] Built target volumetric_msgs_generate_messages
+[ 39%] Built target _dsvplanner_generate_messages_check_deps_dsvplanner_srv
+[ 40%] Built target octomap_ros
+Consolidate compiler generated dependencies of target graph_utils
+[ 40%] Built target graph_utils_generate_messages
+Consolidate compiler generated dependencies of target graph_visualization
+[ 41%] Built target volumetric_map_base
+[ 41%] Built target _dsvplanner_generate_messages_check_deps_clean_frontier_srv
+[ 45%] Built target unitree_legged_msgs_generate_messages_eus
+[ 55%] Built target unitree_legged_msgs_generate_messages_cpp
+[ 56%] Built target unitree_legged_msgs_generate_messages_nodejs
+[ 60%] Built target unitree_legged_msgs_generate_messages_py
+[ 60%] Built target graph_planner_generate_messages
+[ 64%] Built target unitree_legged_msgs_generate_messages_lisp
+[ 65%] Built target unitree_guide_generate_messages_nodejs
+[ 67%] Built target unitree_guide_generate_messages_lisp
+[ 67%] Built target unitree_guide_generate_messages_py
+[ 69%] Built target unitree_guide_generate_messages_eus
+[ 69%] Built target unitree_guide_generate_messages_cpp
+[ 71%] Built target graph_visualization
+[ 72%] Built target graph_utils
+[ 73%] Built target dsvplanner_generate_messages_lisp
+[ 73%] Built target dsvplanner_generate_messages_cpp
+[ 74%] Built target dsvplanner_generate_messages_eus
+Consolidate compiler generated dependencies of target octomap_world
+[ 75%] Built target dsvplanner_generate_messages_py
+[ 75%] Built target unitree_legged_msgs_generate_messages
+[ 76%] Built target dsvplanner_generate_messages_nodejs
+[ 76%] Built target unitree_legged_msgs_gencpp
+[ 76%] Built target unitree_guide_generate_messages
+Consolidate compiler generated dependencies of target graph_planner
+Consolidate compiler generated dependencies of target unitree_legged_control
+[ 76%] Built target dsvplanner_generate_messages
+[ 77%] Built target octomap_world
+[ 79%] Built target graph_planner
+[ 80%] Built target unitree_legged_control
+Consolidate compiler generated dependencies of target exploration
+Consolidate compiler generated dependencies of target navigationBoundary
+Consolidate compiler generated dependencies of target octomap_manager
+[ 80%] Built target navigationBoundary
+[ 81%] Built target exploration
+[ 82%] Built target octomap_manager
+Consolidate compiler generated dependencies of target dsvPlannerLib
+[ 85%] Built target dsvPlannerLib
+Consolidate compiler generated dependencies of target dsvplanner
+[ 86%] Built target dsvplanner
+Consolidate compiler generated dependencies of target junior_ctrl
+[100%] Built target junior_ctrl
+Base path: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation
+Source space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src
+Build space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/build
+Devel space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel
+Install space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/install
+####
+#### Running command: "cmake /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src -DPYTHON_EXECUTABLE=/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/.venv/bin/python -DCMAKE_C_COMPILER=/usr/bin/gcc-11 -DCMAKE_CXX_COMPILER=/usr/bin/g++-11 -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-11 -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=ON -DCMAKE_EXE_LINKER_FLAGS=-no-pie -DBUILD_LIVOX_DRIVER_NODE=OFF -DCATKIN_WHITELIST_PACKAGES=livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.8 -DCUDAToolkit_ROOT=/usr/local/cuda-11.8 -DCMAKE_CUDA_FLAGS=-ccbin=/usr/bin/g++-11 -DCATKIN_DEVEL_PREFIX=/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel -DCMAKE_INSTALL_PREFIX=/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/install -G Unix Makefiles" in "/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/build"
+####
+####
+#### Running command: "make -j32 -l32" in "/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/build"
+####
+[build_with_venv] Sourced devel/setup.bash inside script.
+[build_with_venv] Build finished.
+[build_with_venv] To use the workspace in your current shell, run:
+  source devel/setup.bash

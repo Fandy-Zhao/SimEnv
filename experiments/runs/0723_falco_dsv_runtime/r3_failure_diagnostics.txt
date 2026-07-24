@@ -1,0 +1,73 @@
+## nodes
+/a1_gazebo/controller_spawner
+/cmd_vel_bridge
+/gazebo
+/laserMapping
+/localPlanner
+/map_to_camera_init_bridge
+/navigation_registered_scan_relay
+/navigation_state_estimation_relay
+/pathFollower
+/registered_scan_relay
+/robot_state_publisher
+/rosout
+/scan_to_pointcloud2_535784_1784821351129
+/state_estimation_relay
+/state_from_gazebo
+/unitree_gazebo_servo
+## topics fast/nav
+/Odometry
+/Odometry_gazebo
+/clock
+/cloud_effected
+/cloud_registered
+/cloud_registered_body
+/cmd_vel
+/navigation/falco/cmd_vel_stamped
+/navigation/path
+/navigation/registered_scan
+/navigation/state_estimation
+/registered_scan
+/scan
+/scan_pointcloud2
+/state_estimation
+## clock
+clock:
+  secs: 12
+  nsecs: 362000000
+---
+clock:
+  secs: 12
+  nsecs: 364000000
+---
+clock:
+  secs: 12
+  nsecs: 366000000
+---
+## gazebo performance
+header:
+  seq: 0
+  stamp:
+    secs: 12
+    nsecs: 488000000
+  frame_id: ''
+real_time_factor: 0.062393412
+sensors:
+  -
+    name: "generated_world::a1_gazebo::base::imu_sensor"
+    sim_update_rate: 0.0
+    real_update_rate: 0.0
+    fps: 0.0
+---
+## state hz
+WARNING: may be using simulated time
+subscribed to [/state_estimation]
+no new messages
+no new messages
+no new messages
+## nav state hz
+WARNING: may be using simulated time
+subscribed to [/navigation/state_estimation]
+no new messages
+no new messages
+no new messages

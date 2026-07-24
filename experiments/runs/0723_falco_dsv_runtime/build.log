@@ -1,0 +1,233 @@
+[build_with_venv] CUDA_HOME: /usr/local/cuda-11.8
+[build_with_venv] Repository root: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation
+[build_with_venv] Selected CC : /usr/bin/gcc-11
+[build_with_venv] Selected CXX: /usr/bin/g++-11
+[build_with_venv] CUDAHOSTCXX : /usr/bin/g++-11
+[build_with_venv] ROS setup: /opt/ros/noetic/setup.bash
+[build_with_venv] Python executable: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/.venv/bin/python
+[build_with_venv] Active python: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/.venv/bin/python
+Python 3.13.13
+[build_with_venv] Catkin whitelist: livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup
+WARN: Python torch is not importable from venv.
+      If a package needs LibTorch, install a compatible torch wheel:
+      source .venv/bin/activate
+      python -m pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+[build_with_venv] CMAKE_PREFIX_PATH=/opt/ros/noetic:/usr/local/cuda-11.8
+[build_with_venv] Starting catkin_make...
+[  0%] Built target _catkin_empty_exported_target
+[  0%] Built target geometry_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target geometry_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target geometry_msgs_generate_messages_lisp
+[  0%] Built target geometry_msgs_generate_messages_nodejs
+[  0%] Built target roscpp_generate_messages_py
+[  0%] Built target roscpp_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_nodejs
+[  0%] Built target geometry_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target rosgraph_msgs_generate_messages_eus
+[  0%] Built target rosgraph_msgs_generate_messages_cpp
+[  0%] Built target roscpp_generate_messages_cpp
+[  0%] Built target rosgraph_msgs_generate_messages_py
+[  0%] Built target rosgraph_msgs_generate_messages_nodejs
+[  0%] Built target tf_generate_messages_cpp
+[  0%] Built target rosgraph_msgs_generate_messages_lisp
+[  0%] Built target tf2_msgs_generate_messages_py
+[  0%] Built target roscpp_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[  0%] Built target tf_generate_messages_lisp
+[  0%] Built target tf_generate_messages_nodejs
+[  0%] Built target tf_generate_messages_py
+[  0%] Built target sensor_msgs_generate_messages_lisp
+[  0%] Built target tf_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[  0%] Built target actionlib_generate_messages_cpp
+[  0%] Built target actionlib_generate_messages_nodejs
+[  0%] Built target actionlib_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_py
+[  0%] Built target sensor_msgs_generate_messages_eus
+[  0%] Built target actionlib_generate_messages_py
+[  0%] Built target actionlib_generate_messages_eus
+[  1%] Built target livox_laser_simulation
+[  1%] Built target actionlib_msgs_generate_messages_nodejs
+[  1%] Built target actionlib_msgs_generate_messages_lisp
+[  1%] Built target actionlib_msgs_generate_messages_cpp
+[  1%] Built target actionlib_msgs_generate_messages_eus
+[  1%] Built target actionlib_msgs_generate_messages_py
+[  1%] Built target tf2_msgs_generate_messages_cpp
+[  1%] Built target tf2_msgs_generate_messages_eus
+[  1%] Built target tf2_msgs_generate_messages_lisp
+[  1%] Built target _octomap_msgs_generate_messages_check_deps_GetOctomap
+[  1%] Built target _volumetric_msgs_generate_messages_check_deps_SetBoxOccupancy
+[  1%] Built target _volumetric_msgs_generate_messages_check_deps_SetDisplayBounds
+[  1%] Built target _volumetric_msgs_generate_messages_check_deps_SaveMap
+[  1%] Built target tf2_msgs_generate_messages_nodejs
+[  1%] Built target std_srvs_generate_messages_cpp
+[  1%] Built target _volumetric_msgs_generate_messages_check_deps_LoadMap
+[  1%] Built target _octomap_msgs_generate_messages_check_deps_OctomapWithPose
+[  1%] Built target _octomap_msgs_generate_messages_check_deps_Octomap
+[  1%] Built target _octomap_msgs_generate_messages_check_deps_BoundingBoxQuery
+[  1%] Built target std_srvs_generate_messages_lisp
+[  1%] Built target std_srvs_generate_messages_py
+[  1%] Built target std_srvs_generate_messages_eus
+[  1%] Built target std_srvs_generate_messages_nodejs
+[  1%] Built target topic_tools_generate_messages_cpp
+[  2%] Built target misc_utils
+[  3%] Built target pathFollower
+[  3%] Built target pcl_ros_gencfg
+[  3%] Built target topic_tools_generate_messages_nodejs
+[  3%] Built target topic_tools_generate_messages_py
+[  3%] Built target topic_tools_generate_messages_lisp
+[  3%] Built target dynamic_reconfigure_generate_messages_eus
+[  3%] Built target dynamic_reconfigure_generate_messages_cpp
+[  3%] Built target nodelet_generate_messages_cpp
+[  3%] Built target dynamic_reconfigure_generate_messages_lisp
+[  3%] Built target topic_tools_generate_messages_eus
+[  4%] Built target localPlanner
+[  4%] Built target nodelet_generate_messages_nodejs
+[  4%] Built target nodelet_generate_messages_eus
+[  4%] Built target dynamic_reconfigure_generate_messages_nodejs
+[  4%] Built target bond_generate_messages_cpp
+[  4%] Built target nodelet_generate_messages_lisp
+[  4%] Built target bond_generate_messages_eus
+[  4%] Built target nodelet_generate_messages_py
+[  4%] Built target dynamic_reconfigure_generate_messages_py
+[  4%] Built target bond_generate_messages_lisp
+[  5%] Built target fastlio_mapping
+[  5%] Built target bond_generate_messages_py
+[  5%] Built target bond_generate_messages_nodejs
+[  5%] Built target nodelet_topic_tools_gencfg
+[  5%] Built target pcl_msgs_generate_messages_cpp
+[  5%] Built target pcl_msgs_generate_messages_lisp
+[  5%] Built target pcl_msgs_generate_messages_eus
+[  5%] Built target pcl_msgs_generate_messages_nodejs
+[  5%] Built target pcl_msgs_generate_messages_py
+[  5%] Built target nav_msgs_generate_messages_lisp
+[  5%] Built target nav_msgs_generate_messages_cpp
+[  5%] Built target nav_msgs_generate_messages_py
+[  5%] Built target nav_msgs_generate_messages_eus
+[  5%] Built target nav_msgs_generate_messages_nodejs
+[  5%] Built target visualization_msgs_generate_messages_cpp
+[  5%] Built target visualization_msgs_generate_messages_eus
+[  5%] Built target visualization_msgs_generate_messages_py
+[  5%] Built target _graph_utils_generate_messages_check_deps_TopologicalGraph
+[  5%] Built target _livox_ros_driver_generate_messages_check_deps_CustomPoint
+[  5%] Built target _graph_utils_generate_messages_check_deps_Vertex
+[  5%] Built target visualization_msgs_generate_messages_nodejs
+[  5%] Built target visualization_msgs_generate_messages_lisp
+[  5%] Built target _graph_utils_generate_messages_check_deps_Edge
+[  5%] Built target _livox_ros_driver_generate_messages_check_deps_CustomMsg
+[  6%] Built target minkindr_conversions
+[  6%] Built target _fast_lio_generate_messages_check_deps_Pose6D
+[  6%] Built target stereo_msgs_generate_messages_cpp
+[  6%] Built target stereo_msgs_generate_messages_py
+[  6%] Built target stereo_msgs_generate_messages_eus
+[  6%] Built target stereo_msgs_generate_messages_lisp
+[  6%] Built target stereo_msgs_generate_messages_nodejs
+[  7%] Built target kdtree
+[  9%] Built target octomap_msgs_generate_messages_lisp
+[ 10%] Built target octomap_msgs_generate_messages_eus
+[ 12%] Built target octomap_msgs_generate_messages_cpp
+[ 14%] Built target octomap_msgs_generate_messages_py
+[ 15%] Built target octomap_msgs_generate_messages_nodejs
+[ 17%] Built target state_from_gazebo
+[ 18%] Built target unitreeDrawForcePlugin
+[ 20%] Built target volumetric_msgs_generate_messages_py
+[ 21%] Built target unitreeFootContactPlugin
+[ 21%] Built target _graph_planner_generate_messages_check_deps_GraphPlannerCommand
+[ 21%] Built target _graph_planner_generate_messages_check_deps_GraphPlannerStatus
+[ 21%] Built target _unitree_legged_msgs_generate_messages_check_deps_MotorCmd
+[ 22%] Built target volumetric_msgs_generate_messages_lisp
+[ 23%] Built target _unitree_legged_msgs_generate_messages_check_deps_BmsState
+[ 23%] Built target livox_ros_driver_generate_messages_py
+[ 25%] Built target volumetric_msgs_generate_messages_cpp
+[ 25%] Built target livox_ros_driver_generate_messages_cpp
+[ 27%] Built target volumetric_msgs_generate_messages_eus
+[ 27%] Built target _unitree_legged_msgs_generate_messages_check_deps_HighState
+[ 29%] Built target volumetric_msgs_generate_messages_nodejs
+[ 30%] Built target fast_lio_generate_messages_py
+[ 31%] Built target livox_ros_driver_generate_messages_eus
+[ 31%] Built target livox_ros_driver_generate_messages_nodejs
+[ 31%] Built target _unitree_legged_msgs_generate_messages_check_deps_MotorState
+[ 32%] Built target livox_ros_driver_generate_messages_lisp
+[ 34%] Built target fast_lio_generate_messages_cpp
+[ 34%] Built target fast_lio_generate_messages_eus
+[ 34%] Built target _unitree_legged_msgs_generate_messages_check_deps_BmsCmd
+[ 34%] Built target _unitree_legged_msgs_generate_messages_check_deps_Cartesian
+[ 34%] Built target fast_lio_generate_messages_nodejs
+[ 34%] Built target _unitree_legged_msgs_generate_messages_check_deps_HighCmd
+[ 34%] Built target _unitree_legged_msgs_generate_messages_check_deps_IMU
+[ 35%] Built target fast_lio_generate_messages_lisp
+[ 36%] Built target graph_utils_generate_messages_lisp
+[ 36%] Built target _unitree_legged_msgs_generate_messages_check_deps_LowCmd
+[ 37%] Built target graph_utils_generate_messages_cpp
+[ 39%] Built target graph_utils_generate_messages_py
+[ 39%] Built target _dsvplanner_generate_messages_check_deps_dsvplanner_srv
+[ 40%] Built target graph_utils_generate_messages_eus
+[ 40%] Built target _unitree_legged_msgs_generate_messages_check_deps_LED
+[ 40%] Built target _unitree_guide_generate_messages_check_deps_CustomPoint
+[ 41%] Built target graph_utils_generate_messages_nodejs
+[ 42%] Built target graph_planner_generate_messages_py
+[ 42%] Built target graph_planner_generate_messages_cpp
+[ 43%] Built target graph_planner_generate_messages_eus
+[ 44%] Built target graph_planner_generate_messages_nodejs
+[ 45%] Built target _dsvplanner_generate_messages_check_deps_clean_frontier_srv
+[ 45%] Built target graph_planner_generate_messages_lisp
+[ 45%] Built target volumetric_msgs_generate_messages
+[ 45%] Built target octomap_msgs_generate_messages
+[ 45%] Built target livox_ros_driver_generate_messages
+[ 46%] Built target octomap_ros
+[ 46%] Built target fast_lio_generate_messages
+[ 47%] Built target volumetric_map_base
+[ 47%] Built target graph_utils_generate_messages
+[ 47%] Built target _unitree_guide_generate_messages_check_deps_CustomMsg
+[ 50%] Built target dsvplanner_generate_messages_py
+[ 51%] Built target dsvplanner_generate_messages_cpp
+[ 51%] Built target _unitree_legged_msgs_generate_messages_check_deps_LowState
+[ 52%] Built target dsvplanner_generate_messages_lisp
+[ 52%] Built target dsvplanner_generate_messages_nodejs
+[ 52%] Built target graph_planner_generate_messages
+[ 53%] Built target dsvplanner_generate_messages_eus
+[ 54%] Built target graph_visualization
+[ 55%] Built target graph_utils
+[ 55%] Built target unitree_guide_generate_messages_cpp
+[ 56%] Built target unitree_guide_generate_messages_lisp
+[ 57%] Built target unitree_guide_generate_messages_nodejs
+[ 58%] Built target unitree_guide_generate_messages_eus
+[ 59%] Built target unitree_guide_generate_messages_py
+[ 63%] Built target unitree_legged_msgs_generate_messages_eus
+[ 63%] Built target dsvplanner_generate_messages
+[ 68%] Built target unitree_legged_msgs_generate_messages_py
+[ 72%] Built target unitree_legged_msgs_generate_messages_lisp
+[ 80%] Built target unitree_legged_msgs_generate_messages_nodejs
+[ 80%] Built target unitree_legged_msgs_generate_messages_cpp
+[ 80%] Built target unitree_guide_generate_messages
+[ 81%] Built target octomap_world
+[ 81%] Built target unitree_legged_msgs_generate_messages
+[ 81%] Built target unitree_legged_msgs_gencpp
+[ 82%] Built target graph_planner
+[ 82%] Built target exploration
+[ 84%] Built target navigationBoundary
+[ 85%] Built target unitree_legged_control
+[ 85%] Built target octomap_manager
+[ 87%] Built target dsvPlannerLib
+[ 87%] Built target dsvplanner
+[100%] Built target junior_ctrl
+Base path: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation
+Source space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src
+Build space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/build
+Devel space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel
+Install space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/install
+####
+#### Running command: "make cmake_check_build_system" in "/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/build"
+####
+####
+#### Running command: "make -j32 -l32" in "/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/build"
+####
+[build_with_venv] Sourced devel/setup.bash inside script.
+[build_with_venv] Build finished.
+[build_with_venv] To use the workspace in your current shell, run:
+  source devel/setup.bash

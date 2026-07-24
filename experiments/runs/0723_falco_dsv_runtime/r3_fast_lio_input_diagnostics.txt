@@ -1,0 +1,138 @@
+## info /scan
+Type: sensor_msgs/PointCloud
+
+Publishers:
+ * /gazebo (http://zzf-Legion-Y9000P-IRX9:33305/)
+
+Subscribers:
+ * /scan_to_pointcloud2_535784_1784821351129 (http://zzf-Legion-Y9000P-IRX9:35985/)
+
+
+## hz /scan
+WARNING: may be using simulated time
+subscribed to [/scan]
+no new messages
+average rate: 9.804
+	min: 0.102s max: 0.102s std dev: 0.00000s window: 2
+average rate: 10.753
+	min: 0.084s max: 0.102s std dev: 0.00900s window: 3
+average rate: 10.563
+	min: 0.084s max: 0.102s std dev: 0.00772s window: 4
+no new messages
+
+## info /scan_pointcloud2
+Type: sensor_msgs/PointCloud2
+
+Publishers:
+ * /scan_to_pointcloud2_535784_1784821351129 (http://zzf-Legion-Y9000P-IRX9:35985/)
+
+Subscribers:
+ * /laserMapping (http://zzf-Legion-Y9000P-IRX9:46567/)
+
+
+## hz /scan_pointcloud2
+WARNING: may be using simulated time
+subscribed to [/scan_pointcloud2]
+no new messages
+average rate: 8.772
+	min: 0.114s max: 0.114s std dev: 0.00000s window: 2
+average rate: 10.000
+	min: 0.086s max: 0.114s std dev: 0.01400s window: 3
+average rate: 10.256
+	min: 0.082s max: 0.114s std dev: 0.01374s window: 5
+no new messages
+
+## info /trunk_imu
+Type: sensor_msgs/Imu
+
+Publishers:
+ * /gazebo (http://zzf-Legion-Y9000P-IRX9:33305/)
+
+Subscribers:
+ * /unitree_gazebo_servo (http://zzf-Legion-Y9000P-IRX9:45007/)
+ * /laserMapping (http://zzf-Legion-Y9000P-IRX9:46567/)
+
+
+## hz /trunk_imu
+WARNING: may be using simulated time
+subscribed to [/trunk_imu]
+average rate: 386.792
+	min: 0.002s max: 0.004s std dev: 0.00091s window: 42
+average rate: 395.105
+	min: 0.000s max: 0.006s std dev: 0.00096s window: 114
+average rate: 401.478
+	min: 0.000s max: 0.006s std dev: 0.00099s window: 164
+average rate: 409.556
+	min: 0.000s max: 0.006s std dev: 0.00096s window: 241
+average rate: 412.621
+	min: 0.000s max: 0.006s std dev: 0.00094s window: 256
+
+## info /livox/imu
+Type: sensor_msgs/Imu
+
+Publishers:
+ * /gazebo (http://zzf-Legion-Y9000P-IRX9:33305/)
+
+Subscribers: None
+
+
+## hz /livox/imu
+WARNING: may be using simulated time
+subscribed to [/livox/imu]
+average rate: 401.163
+	min: 0.002s max: 0.004s std dev: 0.00086s window: 70
+average rate: 393.836
+	min: 0.000s max: 0.004s std dev: 0.00093s window: 116
+average rate: 394.068
+	min: 0.000s max: 0.004s std dev: 0.00091s window: 187
+average rate: 384.731
+	min: 0.000s max: 0.004s std dev: 0.00095s window: 258
+average rate: 383.289
+	min: 0.000s max: 0.004s std dev: 0.00095s window: 290
+
+## info /Odometry
+Type: nav_msgs/Odometry
+
+Publishers:
+ * /laserMapping (http://zzf-Legion-Y9000P-IRX9:46567/)
+
+Subscribers:
+ * /state_estimation_relay (http://zzf-Legion-Y9000P-IRX9:34949/)
+
+
+## hz /Odometry
+WARNING: may be using simulated time
+subscribed to [/Odometry]
+no new messages
+average rate: 10.204
+	min: 0.088s max: 0.108s std dev: 0.01000s window: 3
+average rate: 9.901
+	min: 0.088s max: 0.114s std dev: 0.01044s window: 5
+average rate: 10.204
+	min: 0.086s max: 0.114s std dev: 0.01110s window: 6
+average rate: 9.967
+	min: 0.086s max: 0.114s std dev: 0.01140s window: 7
+
+## info /cloud_registered
+Type: sensor_msgs/PointCloud2
+
+Publishers:
+ * /laserMapping (http://zzf-Legion-Y9000P-IRX9:46567/)
+
+Subscribers:
+ * /registered_scan_relay (http://zzf-Legion-Y9000P-IRX9:35065/)
+
+
+## hz /cloud_registered
+WARNING: may be using simulated time
+subscribed to [/cloud_registered]
+average rate: 9.804
+	min: 0.102s max: 0.102s std dev: 0.00000s window: 2
+average rate: 10.135
+	min: 0.096s max: 0.102s std dev: 0.00249s window: 4
+average rate: 10.101
+	min: 0.096s max: 0.102s std dev: 0.00224s window: 5
+average rate: 10.204
+	min: 0.088s max: 0.104s std dev: 0.00516s window: 7
+average rate: 9.943
+	min: 0.088s max: 0.116s std dev: 0.00791s window: 8

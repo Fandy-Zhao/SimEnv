@@ -1,5 +1,55 @@
 # Project State
 
+> **2026-07-24 FALCO A1 real-cloud R3 tuning**: branch
+> `feat/0723-falco-dsv-navigation-integration` continued only the R3 FALCO
+> local-planner gate from baseline `8f5c89ee`. Added an A1-specific
+> `falco_a1.yaml` profile and launch overrides, with opt-in diagnostics for
+> point filtering, candidate/free paths, selected path group/rotation, collision
+> scores, and output command/path counts. Real FAST-LIO2 `/Odometry` and
+> `/cloud_registered` with `checkObstacle=true` now produce repeatable local
+> FALCO output: forward regressions command about `0.095-0.100 m/s`, side
+> offset regressions turn toward the goal, and the long-front probe shows
+> obstacle scoring remains active. `/navigation/enabled=false` still gates
+> `/cmd_vel` to zero. Verdict: `FALCO_A1_REAL_PATH_READY`; R4 Trotting, R5 DSV,
+> and R6 full exploration were not run.
+
+> **2026-07-24 FALCO R3 real-data diagnosis**: branch
+> `feat/0723-falco-dsv-navigation-integration` re-tested only R3 in the
+> isolated worktree. Build passes with `./tools/build_with_venv.sh`. Runtime
+> diagnosis found two direct blockers: `runtime_real_data.launch` depended on
+> intermediate `/state_estimation` and `/registered_scan` relays that were not
+> alive in the recovered FAST-LIO2 run, so it now defaults directly to
+> FAST-LIO2 `/Odometry` and `/cloud_registered`; with direct sources, Case A
+> (`checkObstacle=true`) still publishes the zero one-pose path, while Case B
+> (`checkObstacle=false`) publishes a multi-pose path and finite nonzero raw
+> FALCO TwistStamped. Motion remains gated: `/navigation/enabled=false` keeps
+> `/cmd_vel` zero. Verdict: `FALCO_POINTCLOUD_FILTER_BLOCKED`; R4-R6 were not
+> entered.
+
+> **2026-07-23 FALCO + DSV real runtime validation**: branch
+> `feat/0723-falco-dsv-navigation-integration` now has staged runtime evidence
+> under `experiments/runs/0723_falco_dsv_runtime/`. R2 passed with real Gazebo,
+> LiDAR, FAST-LIO2 `/Odometry` and `/cloud_registered`, navigation relays, and
+> TF (`camera_init`, `body`, `map`, `base`, `laser_livox`). Added a
+> SimEnv-owned `runtime_real_data.launch` to relay global FAST-LIO2 outputs into
+> the `/navigation` namespace and expose bridge speed-limit overrides. R3 is
+> blocked: FALCO connected to real inputs but produced only a zero one-pose path
+> and zero raw velocity under observed low RTF (`~0.062`). R4-R6 were not run.
+> Overall verdict: `FALCO_DSV_RUNTIME_TIMING_BLOCKED`.
+
+> **2026-07-23 FALCO + DSV navigation integration**: branch
+> `feat/0723-falco-dsv-navigation-integration` starts from local `master`
+> `5bc0f6fbfdd8333dccbb44c26f216ecfb2811548` in isolated worktree
+> `/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation`. Imported
+> FALCO `local_planner` and the minimum DSV-Planner package closure under
+> `src/navigation/vendor/`, added SimEnv bridge/bringup packages, and kept
+> Gazebo, FAST-LIO2, robot model, controller, RL, and physics code unchanged.
+> Validation passed through source package discovery, launch parsing,
+> `tools/build_with_venv.sh`, static ROS interface checks, FALCO command-path
+> smoke, and DSV service/waypoint smoke. Runtime startup remains intentionally
+> decoupled from Gazebo/FAST-LIO2/controller startup until the next integrated
+> simulation run.
+
 > **2026-07-23 FAST-LIO2 clean runtime validation**: branch
 > `fix/0723-fast-lio2-reproducible-build-pointcloud` now has clean runtime
 > evidence on private ROS master `http://127.0.0.1:12732`. The adapter owns

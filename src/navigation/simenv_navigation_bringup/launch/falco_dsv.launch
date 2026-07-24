@@ -1,0 +1,15 @@
+<launch>
+  <arg name="ns" default="navigation"/>
+  <arg name="enable_bridge" default="true"/>
+
+  <include file="$(find simenv_navigation_bringup)/launch/dsv_only.launch">
+    <arg name="ns" value="$(arg ns)"/>
+    <arg name="simulation" value="false"/>
+    <arg name="use_boundary" value="false"/>
+  </include>
+
+  <include file="$(find simenv_navigation_bringup)/launch/falco_only.launch">
+    <arg name="ns" value="$(arg ns)"/>
+    <arg name="enable_bridge" value="$(arg enable_bridge)"/>
+  </include>
+</launch>

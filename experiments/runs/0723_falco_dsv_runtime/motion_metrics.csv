@@ -1,0 +1,3 @@
+stage,initial_pose,final_pose,displacement,max_roll_deg,max_pitch_deg,fallen,reached_waypoint,max_cmd_linear_x,max_cmd_angular_z
+R4,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN
+R6,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN,NOT_RUN

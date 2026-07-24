@@ -1,0 +1,192 @@
+## auto stdout tail
+Cleaning up all leftover processes from previous runs...
+Checking ROS Python environment for Conda contamination...
+ROS Python environment:
+/usr/bin/python3
+/usr/lib/python3.10/xml/dom/minidom.py
+Sourcing ROS environment...
+Runtime source diagnostics:
+  Workspace: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation
+  Git branch: feat/0723-falco-dsv-navigation-integration
+  Git HEAD:   01776ecd
+  Contains FAST-LIO2 pointcloud semantics fix 69ff34e7: yes
+  ROS_PACKAGE_PATH: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src:/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src:/opt/ros/noetic/share
+  CMAKE_PREFIX_PATH: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel:/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel:/opt/ros/noetic:/usr/local/cuda-11.8
+  simenv_fast_lio2_integration: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration
+  a1_description: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/unitree_guide/unitree_ros/robots/a1_description
+  fast_lio: NOT_FOUND
+  scan_to_pointcloud2.py: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py
+Generating competition scene...
+==========================================
+Startup summary
+  World mode: competition
+  Physics profile: competition_legacy_default
+  Physics source:  competition legacy default (0.002/500/40)
+  Workspace: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation
+  World:   /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/generated_building/competition_scene.world
+  Robot spawn pose: x=0.0 y=2.3 z=0.6 yaw=1.5708
+  GUI: false
+  Truth:   /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/results/danger_truth.json
+  Manifest:/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/generated_building/scene_manifest.json
+  Result:  /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/results/detected_danger.json
+  Sensor data: true
+  PointCloud2 converter: true
+  Ground truth topics: true
+  Referee odom: true
+  FAST-LIO2 mapping: true
+  RViz: false
+  Building controller: 0
+  Virtual joystick: 0
+  Timing diagnostics: false
+  RL policy override: unset (controller default; /rl_policy_path ROS param still has priority)
+  Gazebo starts paused: true
+  Auto unpause: true after 6s
+  Gazebo physics:
+    max_step_size:            0.002
+    real_time_update_rate:    500
+    ode_iters:                40
+    contact_max_correcting_vel: 5.0
+    theoretical target RTF:   1.000
+  Gazebo plugin path: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib:
+==========================================
+Launching Gazebo, Unitree A1 model, sensors, and ROS interfaces...
+Starting junior_ctrl in a dedicated terminal...
+UNITREE_CTRL_DT=0.002 seconds.
+Keyboard input in the controller terminal: 2=stand (4=trot, 6=RL need Torch build).
+tmux session ready: simenv-r2-junior_ctrl
+  Reattach from any terminal: tmux attach-session -t simenv-r2-junior_ctrl
+Waiting additional 5s (FAST_LIO2_DELAY)...
+Commanding FixedStand via /fsm/state_cmd...
+publishing and latching message for 3.0 seconds
+Waiting for IMU stabilisation (robot upright)...
+  IMU stabilised: linear_acceleration.z ≈ 9.800935966569973 m/s²
+Starting FAST-LIO2 mapping (scan adapter + fastlio_mapping)...
+FAST-LIO2 mapping launched in background (logs: logs/fast_lio2.log)
+Simulation startup command completed.
+Publish geometry_msgs/Twist to /cmd_vel for velocity control (Trotting/RL mode only;
+  Trotting and RL require a Torch-enabled build: set UNITREE_ENABLE_TORCH_POLICY=ON).
+Use rostopic to switch FSM states:
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 2"  # FixedStand
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 4"  # Trotting   (needs Torch)
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 6"  # RL         (needs Torch)
+
+==============================================
+  auto.sh startup complete.
+  The controller and rviz are in separate tmux sessions.
+  Reattach if a GUI terminal closes: tmux attach-session -t simenv-r2-junior_ctrl
+                                 tmux attach-session -t simenv-r2-rviz
+  Press Ctrl-C in THIS terminal to stop all ROS processes.
+==============================================
+
+## process snapshot
+zzf       522190  522074  7 23:27 ?        00:00:03 /usr/bin/python3.10 /opt/ros/noetic/bin/roslaunch unitree_guide multi_floor_gazeboSim.launch gui:=false paused:=true user_debug:=False rname:=a1 robot_x:=0.0 robot_y:=2.3 robot_z:=0.6 robot_yaw:=1.5708 enable_sensor_data:=true enable_referee_odom:=true enable_ground_truth:=true enable_foot_force_visual:=false enable_joy_node:=false enable_pointcloud_converter:=true pointcloud_use_ground_truth_odom:=true
+zzf       522264  522190  8 23:27 ?        00:00:04 /usr/bin/python3.10 /opt/ros/noetic/bin/rosmaster --core -p 11311 -w 3 __log:=/home/zzf/.ros/log/05e05d38-86ab-11f1-a82a-13bbe2fcb04b/master.log
+zzf       522311  522190  0 23:27 ?        00:00:00 /bin/sh /opt/ros/noetic/lib/gazebo_ros/gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/generated_building/competition_scene.world __name:=gazebo __log:=/home/zzf/.ros/log/05e05d38-86ab-11f1-a82a-13bbe2fcb04b/gazebo-2.log
+zzf       522317  522190  0 23:27 ?        00:00:00 /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/unitree_guide/state_from_gazebo 0 0 0 0 0 0 __name:=state_from_gazebo __log:=/home/zzf/.ros/log/05e05d38-86ab-11f1-a82a-13bbe2fcb04b/state_from_gazebo-4.log
+zzf       522465  522311 93 23:27 ?        00:00:45 gzserver -u -e ode /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/generated_building/competition_scene.world -s /opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so -s /opt/ros/noetic/lib/libgazebo_ros_api_plugin.so __name:=gazebo __log:=/home/zzf/.ros/log/05e05d38-86ab-11f1-a82a-13bbe2fcb04b/gazebo-2.log
+zzf       522776    1894  0 23:27 ?        00:00:00 tmux new-session -d -s simenv-r2-junior_ctrl bash '/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/logs/junior_ctrl.tmux.sh'
+zzf       522777  522776  0 23:27 pts/7    00:00:00 bash /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/logs/junior_ctrl.tmux.sh
+zzf       522801  314275  0 23:27 pts/8    00:00:00 tmux attach-session -t simenv-r2-junior_ctrl
+zzf       522825  522777 33 23:27 pts/7    00:00:08 /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/devel/lib/unitree_guide/junior_ctrl
+zzf       523082  522074 45 23:28 ?        00:00:04 /usr/bin/python3 /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py
+zzf       523134  522074 78 23:28 ?        00:00:05 /usr/bin/python3.10 /opt/ros/noetic/bin/roslaunch simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch enable_adapter:=false
+
+## rosnode list
+/a1_gazebo/controller_spawner
+/gazebo
+/map_to_camera_init_bridge
+/registered_scan_relay
+/robot_state_publisher
+/rosout
+/scan_to_pointcloud2_523082_1784820493444
+/state_estimation_relay
+/state_from_gazebo
+/unitree_gazebo_servo
+
+## rostopic list
+/Odometry
+/Odometry_gazebo
+/a1_gazebo/FL_calf_controller/command
+/a1_gazebo/FL_calf_controller/joint_wrench
+/a1_gazebo/FL_calf_controller/state
+/a1_gazebo/FL_hip_controller/command
+/a1_gazebo/FL_hip_controller/joint_wrench
+/a1_gazebo/FL_hip_controller/state
+/a1_gazebo/FL_thigh_controller/command
+/a1_gazebo/FL_thigh_controller/joint_wrench
+/a1_gazebo/FL_thigh_controller/state
+/a1_gazebo/FR_calf_controller/command
+/a1_gazebo/FR_calf_controller/joint_wrench
+/a1_gazebo/FR_calf_controller/state
+/a1_gazebo/FR_hip_controller/command
+/a1_gazebo/FR_hip_controller/joint_wrench
+/a1_gazebo/FR_hip_controller/state
+/a1_gazebo/FR_thigh_controller/command
+/a1_gazebo/FR_thigh_controller/joint_wrench
+/a1_gazebo/FR_thigh_controller/state
+/a1_gazebo/RL_calf_controller/command
+/a1_gazebo/RL_calf_controller/joint_wrench
+/a1_gazebo/RL_calf_controller/state
+/a1_gazebo/RL_hip_controller/command
+/a1_gazebo/RL_hip_controller/joint_wrench
+/a1_gazebo/RL_hip_controller/state
+/a1_gazebo/RL_thigh_controller/command
+/a1_gazebo/RL_thigh_controller/joint_wrench
+/a1_gazebo/RL_thigh_controller/state
+/a1_gazebo/RR_calf_controller/command
+/a1_gazebo/RR_calf_controller/joint_wrench
+/a1_gazebo/RR_calf_controller/state
+/a1_gazebo/RR_hip_controller/command
+/a1_gazebo/RR_hip_controller/joint_wrench
+/a1_gazebo/RR_hip_controller/state
+/a1_gazebo/RR_thigh_controller/command
+/a1_gazebo/RR_thigh_controller/joint_wrench
+/a1_gazebo/RR_thigh_controller/state
+/a1_gazebo/joint_states
+/apply_force/trunk
+/clock
+/cloud_registered
+/cmd_vel
+/fsm/state_cmd
+/gazebo/link_states
+/gazebo/model_states
+/gazebo/parameter_descriptions
+/gazebo/parameter_updates
+/gazebo/performance_metrics
+/gazebo/set_link_state
+/gazebo/set_model_state
+/ground_truth/FL_foot
+/ground_truth/FR_foot
+/ground_truth/RL_foot
+/ground_truth/RR_foot
+/ground_truth/base_trunk
+/ground_truth/base_w
+/joy
+/livox/imu
+/real_sense/depth/camera_info
+/real_sense/depth/image_raw
+/real_sense/depth/points
+/real_sense/parameter_descriptions
+/real_sense/parameter_updates
+/real_sense/rgb/camera_info
+/real_sense/rgb/image_raw
+/real_sense/rgb/image_raw/compressed
+/real_sense/rgb/image_raw/compressed/parameter_descriptions
+/real_sense/rgb/image_raw/compressed/parameter_updates
+/real_sense/rgb/image_raw/compressedDepth
+/real_sense/rgb/image_raw/compressedDepth/parameter_descriptions
+/real_sense/rgb/image_raw/compressedDepth/parameter_updates
+/real_sense/rgb/image_raw/theora
+/real_sense/rgb/image_raw/theora/parameter_descriptions
+/real_sense/rgb/image_raw/theora/parameter_updates
+/rosout
+/rosout_agg
+/scan
+/scan_pointcloud2
+/tf
+/tf_static
+/trunk_imu
+/visual/FL_foot_contact/the_force
+/visual/FR_foot_contact/the_force
+/visual/RL_foot_contact/the_force
+/visual/RR_foot_contact/the_force

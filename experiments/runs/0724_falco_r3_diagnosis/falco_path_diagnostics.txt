@@ -1,0 +1,48 @@
+Runtime parameter audit:
+- /localPlanner/autonomyMode: true
+- /pathFollower/autonomyMode: true
+- /pathFollower/autonomySpeed: 0.1
+- /localPlanner/checkObstacle: true during Case A, restored true after Case B.
+- /localPlanner/useTerrainAnalysis: false
+- /localPlanner/vehicleLength: 0.6
+- /localPlanner/vehicleWidth: 0.6
+- /localPlanner/adjacentRange: 3.5
+- /localPlanner/minRelZ: -0.5
+- /localPlanner/maxRelZ: 0.25
+- /localPlanner/pointPerPathThre: 2
+
+Input source diagnosis:
+- First launch path depended on intermediate /state_estimation and
+  /registered_scan relays. Those relays were not alive after recovering the
+  missing /tmp FAST-LIO2 staging tree, so /navigation/state_estimation and
+  /navigation/registered_scan initially had no messages.
+- Relaunching runtime_real_data.launch with state_estimation_source:=/Odometry
+  and registered_scan_source:=/cloud_registered produced about 10 Hz input on
+  both /navigation/state_estimation and /navigation/registered_scan.
+
+Waypoint diagnosis:
+- FALCO localPlanner subscribes to /way_point as geometry_msgs/PointStamped.
+- Publishing geometry_msgs/PoseStamped produces a ROS topic type mismatch and
+  localPlanner does not receive the waypoint.
+- Correct PointStamped waypoint used frame_id camera_init, based on live
+  /navigation/state_estimation frame_id and yaw.
+
+Case A:
+- checkObstacle=true.
+- Path: one pose at (0, 0, 0).
+- Raw /navigation/falco/cmd_vel_stamped: zero linear and angular velocity.
+
+Case B:
+- checkObstacle=false temporarily, then restored true.
+- Path: multiple poses beginning along +vehicle X toward the 0.8 m waypoint.
+- Raw /navigation/falco/cmd_vel_stamped: finite nonzero linear.x about
+  0.095 m/s.
+- /navigation/enabled=false kept /cmd_vel at zero.
+
+Conclusion:
+- The zero path direct cause is FALCO obstacle filtering against the real
+  registered cloud.
+- The zero TwistStamped direct cause is downstream pathFollower behavior when
+  localPlanner publishes the one-pose zero path.
+- pathFollower/autonomyMode is not the blocker.
+- The command bridge safety gate is not the blocker and remains effective.

@@ -1,0 +1,235 @@
+## grep state_estimation
+src/navigation/README.md:17:- FAST-LIO2 odometry: `/state_estimation` -> `/navigation/state_estimation`
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:216:  ros::Subscriber subOdom = nh.subscribe<nav_msgs::Odometry> ("/state_estimation", 5, odomHandler);
+src/navigation/vendor/falco/local_planner/src/localPlanner.cpp:540:                                ("/state_estimation", 5, odometryHandler);
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_forest.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_forest.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_forest.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_forest.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_tunnel.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_tunnel.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_tunnel.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_tunnel.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_campus.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_campus.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_campus.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_campus.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_indoor.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_indoor.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_indoor.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_indoor.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_garage.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_garage.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_garage.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_garage.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_matterport.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_matterport.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_matterport.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_matterport.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/launch/rosbag_record.launch:4:          args="record -o $(env HOME)/Desktop/simulation_bags/dsvp/$(arg bag_name)/ /tf /registered_scan /state_estimation /way_point /local_graph /global_graph /new_tree_path /remaining_tree_path /planner_boundry /globalSelectedfrontier /threefrontier /graph_planner_command /graph_planner_status /graph_planner_path /global_frontier /local_frontier /threefrontier /plan_time /runtime /totaltime /next_goal /dsvplanner/octomap_occupied" />
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/default.rviz:222:          Topic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/src/exploration.cpp:73:std::string odom_topic = "/state_estimation";
+src/navigation/vendor/dsv/dsvplanner/graph_planner/config/matterport.yaml:8:sub_odometry_topic                  : /state_estimation
+src/navigation/vendor/dsv/dsvplanner/graph_planner/config/default.yaml:8:sub_odometry_topic                  : /state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:28:  odomSubTopic: /navigation/state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:59:  odomTopic: /navigation/state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:95:  odomSubTopic: /navigation/state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:109:  sub_keypose_topic: /navigation/state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:174:sub_odometry_topic: /navigation/state_estimation
+src/navigation/simenv_navigation_bringup/launch/falco_only.launch:4:  <arg name="state_estimation_topic" default="/$(arg ns)/state_estimation"/>
+src/navigation/simenv_navigation_bringup/launch/falco_only.launch:15:    <remap from="/state_estimation" to="$(arg state_estimation_topic)"/>
+src/navigation/simenv_navigation_bringup/launch/falco_only.launch:31:    <remap from="/state_estimation" to="$(arg state_estimation_topic)"/>
+src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py:31:    odom_pub = rospy.Publisher("/navigation/state_estimation", Odometry, queue_size=1)
+src/navigation/simenv_navigation_bringup/scripts/test_dsv_interface_smoke.py:32:    odom_pub = rospy.Publisher("/navigation/state_estimation", Odometry, queue_size=1)
+src/simenv_fast_lio2_integration/README.md:95:| `/state_estimation` | `nav_msgs/Odometry` | 导航接口；由 `topic_tools/relay` 透明复制 `/Odometry` |
+src/simenv_fast_lio2_integration/README.md:104:Stage 2 输出名称可通过 launch 参数 `state_estimation_topic` 和
+src/simenv_fast_lio2_integration/README.md:111:`/state_estimation` 中已有的位姿原样广播，并拒绝空 frame 和非有限位姿。
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:34:  <arg name="state_estimation_topic" default="/state_estimation"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:56:  <node pkg="topic_tools" type="relay" name="state_estimation_relay"
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:57:        args="/Odometry $(arg state_estimation_topic)" output="screen"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:63:    <param name="odometry_topic" value="$(arg state_estimation_topic)"/>
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py:22:        self.assertEqual(args["state_estimation_topic"], "/state_estimation")
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py:29:        self.assertEqual(nodes["state_estimation_relay"].attrib["pkg"],
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py:31:        self.assertEqual(nodes["state_estimation_relay"].attrib["args"],
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py:32:                         "/Odometry $(arg state_estimation_topic)")
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py:50:                         "$(arg state_estimation_topic)")
+src/simenv_fast_lio2_integration/scripts/odometry_tf_bridge.py:19:        topic = rospy.get_param("~odometry_topic", "/state_estimation")
+src/navigation/README.md:17:- FAST-LIO2 odometry: `/state_estimation` -> `/navigation/state_estimation`
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:216:  ros::Subscriber subOdom = nh.subscribe<nav_msgs::Odometry> ("/state_estimation", 5, odomHandler);
+src/navigation/vendor/falco/local_planner/src/localPlanner.cpp:540:                                ("/state_estimation", 5, odometryHandler);
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_forest.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_forest.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_forest.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_forest.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_tunnel.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_tunnel.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_tunnel.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_tunnel.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_campus.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_campus.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_campus.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_campus.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_indoor.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_indoor.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_indoor.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_indoor.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_garage.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_garage.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_garage.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_garage.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_matterport.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_matterport.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_matterport.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_matterport.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration.yaml:26:planner/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration.yaml:57:interface/odomTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration.yaml:93:grid/odomSubTopic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration.yaml:107:graph/sub_keypose_topic                       : /state_estimation_at_scan
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/launch/rosbag_record.launch:4:          args="record -o $(env HOME)/Desktop/simulation_bags/dsvp/$(arg bag_name)/ /tf /registered_scan /state_estimation /way_point /local_graph /global_graph /new_tree_path /remaining_tree_path /planner_boundry /globalSelectedfrontier /threefrontier /graph_planner_command /graph_planner_status /graph_planner_path /global_frontier /local_frontier /threefrontier /plan_time /runtime /totaltime /next_goal /dsvplanner/octomap_occupied" />
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/default.rviz:222:          Topic: /state_estimation
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/src/exploration.cpp:73:std::string odom_topic = "/state_estimation";
+src/navigation/vendor/dsv/dsvplanner/graph_planner/config/matterport.yaml:8:sub_odometry_topic                  : /state_estimation
+src/navigation/vendor/dsv/dsvplanner/graph_planner/config/default.yaml:8:sub_odometry_topic                  : /state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:28:  odomSubTopic: /navigation/state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:59:  odomTopic: /navigation/state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:95:  odomSubTopic: /navigation/state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:109:  sub_keypose_topic: /navigation/state_estimation
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:174:sub_odometry_topic: /navigation/state_estimation
+
+## grep registered_scan
+src/navigation/README.md:18:- FAST-LIO2 registered scan: `/registered_scan` -> `/navigation/registered_scan`
+src/navigation/vendor/falco/local_planner/src/localPlanner.cpp:543:                                  ("/registered_scan", 5, laserCloudHandler);
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/launch/rosbag_record.launch:4:          args="record -o $(env HOME)/Desktop/simulation_bags/dsvp/$(arg bag_name)/ /tf /registered_scan /state_estimation /way_point /local_graph /global_graph /new_tree_path /remaining_tree_path /planner_boundry /globalSelectedfrontier /threefrontier /graph_planner_command /graph_planner_status /graph_planner_path /global_frontier /local_frontier /threefrontier /plan_time /runtime /totaltime /next_goal /dsvplanner/octomap_occupied" />
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/default.rviz:156:          Topic: /registered_scan
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:166:  velodyne_cloud_topic: /navigation/registered_scan
+src/navigation/simenv_navigation_bringup/launch/falco_only.launch:5:  <arg name="registered_scan_topic" default="/$(arg ns)/registered_scan"/>
+src/navigation/simenv_navigation_bringup/launch/falco_only.launch:16:    <remap from="/registered_scan" to="$(arg registered_scan_topic)"/>
+src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py:32:    cloud_pub = rospy.Publisher("/navigation/registered_scan", PointCloud2, queue_size=1)
+src/navigation/simenv_navigation_bringup/scripts/test_dsv_interface_smoke.py:34:    scan_pub = rospy.Publisher("/navigation/registered_scan", PointCloud2, queue_size=1)
+src/simenv_fast_lio2_integration/README.md:96:| `/registered_scan` | `sensor_msgs/PointCloud2` | 导航接口；由 `topic_tools/relay` 透明复制 `/cloud_registered` |
+src/simenv_fast_lio2_integration/README.md:105:`registered_scan_topic` 覆盖。`map → camera_init` 仍仅由
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:35:  <arg name="registered_scan_topic" default="/registered_scan"/>
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:58:  <node pkg="topic_tools" type="relay" name="registered_scan_relay"
+src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch:59:        args="/cloud_registered $(arg registered_scan_topic)" output="screen"/>
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py:23:        self.assertEqual(args["registered_scan_topic"], "/registered_scan")
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py:33:        self.assertEqual(nodes["registered_scan_relay"].attrib["args"],
+src/simenv_fast_lio2_integration/test/test_stage2_topic_contract.py:34:                         "/cloud_registered $(arg registered_scan_topic)")
+src/navigation/README.md:18:- FAST-LIO2 registered scan: `/registered_scan` -> `/navigation/registered_scan`
+src/navigation/vendor/falco/local_planner/src/localPlanner.cpp:543:                                  ("/registered_scan", 5, laserCloudHandler);
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/launch/rosbag_record.launch:4:          args="record -o $(env HOME)/Desktop/simulation_bags/dsvp/$(arg bag_name)/ /tf /registered_scan /state_estimation /way_point /local_graph /global_graph /new_tree_path /remaining_tree_path /planner_boundry /globalSelectedfrontier /threefrontier /graph_planner_command /graph_planner_status /graph_planner_path /global_frontier /local_frontier /threefrontier /plan_time /runtime /totaltime /next_goal /dsvplanner/octomap_occupied" />
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/default.rviz:156:          Topic: /registered_scan
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:166:  velodyne_cloud_topic: /navigation/registered_scan
+src/navigation/simenv_navigation_bringup/launch/falco_only.launch:5:  <arg name="registered_scan_topic" default="/$(arg ns)/registered_scan"/>
+src/navigation/simenv_navigation_bringup/launch/falco_only.launch:16:    <remap from="/registered_scan" to="$(arg registered_scan_topic)"/>
+src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py:32:    cloud_pub = rospy.Publisher("/navigation/registered_scan", PointCloud2, queue_size=1)
+src/navigation/simenv_navigation_bringup/scripts/test_dsv_interface_smoke.py:34:    scan_pub = rospy.Publisher("/navigation/registered_scan", PointCloud2, queue_size=1)
+
+## grep cmd_vel
+src/navigation/README.md:21:- FALCO speed output: `/navigation/falco/cmd_vel_stamped`
+src/navigation/README.md:22:- Trotting command input: `/cmd_vel`
+src/navigation/README.md:30:reach `/cmd_vel`.
+src/navigation/simenv_navigation_bridge/CMakeLists.txt:13:  scripts/cmd_vel_bridge.py
+src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py:2:"""Bridge FALCO TwistStamped commands into SimEnv's Trotting /cmd_vel."""
+src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py:17:        self.input_topic = rospy.get_param("~input_topic", "/navigation/falco/cmd_vel_stamped")
+src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py:18:        self.output_topic = rospy.get_param("~output_topic", "/cmd_vel")
+src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py:115:    rospy.init_node("cmd_vel_bridge")
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:226:  ros::Publisher pubSpeed = nh.advertise<geometry_msgs::TwistStamped> ("/cmd_vel", 5);
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:227:  geometry_msgs::TwistStamped cmd_vel;
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:228:  cmd_vel.header.frame_id = "vehicle";
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:334:        cmd_vel.header.stamp = ros::Time().fromSec(odomTime);
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:335:        if (fabs(vehicleSpeed) <= maxAccel / 100.0) cmd_vel.twist.linear.x = 0;
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:336:        else cmd_vel.twist.linear.x = vehicleSpeed;
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:337:        cmd_vel.twist.angular.z = vehicleYawRate;
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:338:        pubSpeed.publish(cmd_vel);
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_forest.yaml:52:interface/cmdVelTopic: /cmd_vel
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_tunnel.yaml:52:interface/cmdVelTopic: /cmd_vel
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_campus.yaml:52:interface/cmdVelTopic: /cmd_vel
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_indoor.yaml:52:interface/cmdVelTopic: /cmd_vel
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_garage.yaml:52:interface/cmdVelTopic: /cmd_vel
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration_matterport.yaml:52:interface/cmdVelTopic: /cmd_vel
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/config/exploration.yaml:52:interface/cmdVelTopic: /cmd_vel
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/src/exploration.cpp:68:std::string cmd_vel_topic = "/cmd_vel";
+src/navigation/vendor/dsv/dsvplanner/dsvp_launch/src/exploration.cpp:199:  nhPrivate.getParam("/interface/cmdVelTopic", cmd_vel_topic);
+src/navigation/simenv_navigation_bringup/config/dsv_simenv.yaml:54:  cmdVelTopic: /navigation/falco/cmd_vel_stamped
+src/navigation/simenv_navigation_bringup/config/navigation_safety.yaml:1:input_topic: /navigation/falco/cmd_vel_stamped
+src/navigation/simenv_navigation_bringup/config/navigation_safety.yaml:2:output_topic: /cmd_vel
+src/navigation/simenv_navigation_bringup/launch/falco_only.launch:8:  <arg name="cmd_vel_stamped_topic" default="/$(arg ns)/falco/cmd_vel_stamped"/>
+src/navigation/simenv_navigation_bringup/launch/falco_only.launch:33:    <remap from="/cmd_vel" to="$(arg cmd_vel_stamped_topic)"/>
+src/navigation/simenv_navigation_bringup/launch/navigation_bridge.launch:5:  <node pkg="simenv_navigation_bridge" type="cmd_vel_bridge.py"
+src/navigation/simenv_navigation_bringup/launch/navigation_bridge.launch:6:        name="cmd_vel_bridge" output="screen" launch-prefix="/usr/bin/python3">
+src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py:43:        "/navigation/falco/cmd_vel_stamped",
+src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py:48:    rospy.Subscriber("/cmd_vel", Twist, lambda msg: twist_seen.__setitem__("value", True), queue_size=1)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/src/exe/control_via_keyboard.cpp:41:	ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/src/exe/twist_sub.cpp:69:ros::Subscriber sub_cmd_vel;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/src/exe/twist_sub.cpp:72:long cmd_vel_count = 0;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/src/exe/twist_sub.cpp:76:    printf("cmdVelCallback is running!\t%ld\n", cmd_vel_count);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/src/exe/twist_sub.cpp:90:    printf("cmdVelCallback ending!\t%ld\n\n", cmd_vel_count++);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/src/exe/twist_sub.cpp:101:    sub_cmd_vel = nh.subscribe("cmd_vel", 1, cmdVelCallback);
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:115:    double cmd_vel_timeout_ = 0.5;
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_Trotting.h:123:    // /cmd_vel subscriber
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:72:    //cmd_vel callback function
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:73:    CmdVel current_cmd_vel_;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:92:    this->Sub_=nh.subscribe<geometry_msgs::Twist>("/cmd_vel",1000,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:506:        //订阅cmd_vel
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:507:        // this->Sub_=nh.subscribe<geometry_msgs::Twist>("/cmd_vel",1000,boost::bind(&FSMState::cmdVelCallback,this,_1));
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:597:        ROS_WARN_THROTTLE(1.0, "RL rejected a non-finite /cmd_vel and commanded a stop.");
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:622:        cmdAge <= cmd_vel_timeout_;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_move_base.cpp:39:    _cmdSub = _nm.subscribe("/cmd_vel", 1, &State_move_base::twistCallback, this);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:14:    _cmdVelSub = _nh.subscribe<geometry_msgs::Twist>("/cmd_vel", 10,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:16:    _nh.param("trotting_cmd_vel_timeout", _cmdVelTimeout, 0.5);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:18:        ROS_WARN("Invalid trotting_cmd_vel_timeout; using 0.5 seconds.");
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:364:        ROS_WARN_THROTTLE(1.0, "Trotting rejected a non-finite /cmd_vel and commanded a stop.");
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:387:        ROS_WARN_THROTTLE(1.0, "Trotting /cmd_vel timed out; commanding zero velocity.");
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:391:        /* Use /cmd_vel when available */
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:75://设置cmd_vel的回调函数，将move_base转化为
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:78:        current_cmd_vel_.linear_x = msg->linear.x;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:79:        current_cmd_vel_.linear_y = msg->linear.y;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:80:        current_cmd_vel_.angular_z = msg->angular.z;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:81:        current_cmd_vel_.valid = true;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:82:        current_cmd_vel_.stamp = ros::Time::now();
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:84:    // std::cout << "cmd_vel_linear_x"<< this->current_cmd_vel_.linear_x<< std::endl;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:85:    // std::cout << "cmd_vel_linear_y"<< this->current_cmd_vel_.linear_y<< std::endl;
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:86:    // std::cout << "cmd_vel_angular_z"<< this->current_cmd_vel_.angular_z<< std::endl;
+
+## grep fsm/state_cmd
+src/unitree_guide/unitree_guide/unitree_guide/include/control/CtrlComponents.h:84:    // Latch for /fsm/state_cmd ROS topic. Set by ROS callback, applied by
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSM.cpp:99:    // Apply ROS /fsm/state_cmd only on an advancing simulation step so a
+src/unitree_guide/unitree_guide/unitree_guide/src/main.cpp:194:    ros::Subscriber stateCmdSub = fsm_nh.subscribe<std_msgs::Int8>("/fsm/state_cmd", 10, stateCmdCb);
+src/navigation/README.md:29:Trotting with `/fsm/state_cmd` value `4` before non-zero FALCO velocity can
+src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py:21:        self.state_cmd_topic = rospy.get_param("~state_cmd_topic", "/fsm/state_cmd")
+src/navigation/simenv_navigation_bringup/config/navigation_safety.yaml:5:state_cmd_topic: /fsm/state_cmd
+src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py:35:    state_pub = rospy.Publisher("/fsm/state_cmd", Int8, queue_size=1, latch=True)
+
+## grep TwistStamped
+src/navigation/README.md:11:  `geometry_msgs/TwistStamped` to SimEnv Trotting `geometry_msgs/Twist`.
+src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py:2:"""Bridge FALCO TwistStamped commands into SimEnv's Trotting /cmd_vel."""
+src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py:11:from geometry_msgs.msg import Twist, TwistStamped
+src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py:42:        rospy.Subscriber(self.input_topic, TwistStamped, self._cmd_cb, queue_size=1)
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:15:#include <geometry_msgs/TwistStamped.h>
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:226:  ros::Publisher pubSpeed = nh.advertise<geometry_msgs::TwistStamped> ("/cmd_vel", 5);
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:227:  geometry_msgs::TwistStamped cmd_vel;
+src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py:8:from geometry_msgs.msg import PointStamped, TransformStamped, Twist, TwistStamped
+src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py:44:        TwistStamped,
+
+## grep geometry_msgs::Twist
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:226:  ros::Publisher pubSpeed = nh.advertise<geometry_msgs::TwistStamped> ("/cmd_vel", 5);
+src/navigation/vendor/falco/local_planner/src/pathFollower.cpp:227:  geometry_msgs::TwistStamped cmd_vel;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/include/convert.h:304:UNITREE_LEGGED_SDK::HighCmd rosMsg2Cmd(const geometry_msgs::Twist::ConstPtr &msg)
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/src/exe/control_via_keyboard.cpp:41:	ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/src/exe/control_via_keyboard.cpp:43:	geometry_msgs::Twist twist;
+src/unitree_guide/unitree_ros_to_real/unitree_legged_real/src/exe/twist_sub.cpp:74:void cmdVelCallback(const geometry_msgs::Twist::ConstPtr &msg)
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_RL_test.h:35:    void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_move_base.h:21:    void twistCallback(const geometry_msgs::Twist& msg);
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/State_Trotting.h:25:    void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg);
+src/unitree_guide/unitree_guide/unitree_guide/include/FSM/FSMState.h:74:    void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:92:    this->Sub_=nh.subscribe<geometry_msgs::Twist>("/cmd_vel",1000,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:507:        // this->Sub_=nh.subscribe<geometry_msgs::Twist>("/cmd_vel",1000,boost::bind(&FSMState::cmdVelCallback,this,_1));
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_RL_test.cpp:587:void State_RL::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_move_base.cpp:32:void State_move_base::twistCallback(const geometry_msgs::Twist& msg){
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:14:    _cmdVelSub = _nh.subscribe<geometry_msgs::Twist>("/cmd_vel", 10,
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/State_Trotting.cpp:356:void State_Trotting::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
+src/unitree_guide/unitree_guide/unitree_guide/src/FSM/FSMState.cpp:76:void FSMState::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){

@@ -1,0 +1,139 @@
+## hz /navigation/state_estimation
+WARNING: may be using simulated time
+subscribed to [/navigation/state_estimation]
+no new messages
+average rate: 10.000
+	min: 0.100s max: 0.100s std dev: 0.00000s window: 2
+no new messages
+average rate: 9.259
+	min: 0.100s max: 0.116s std dev: 0.00800s window: 3
+no new messages
+average rate: 9.554
+	min: 0.098s max: 0.116s std dev: 0.00806s window: 4
+## hz /navigation/registered_scan
+WARNING: may be using simulated time
+subscribed to [/navigation/registered_scan]
+no new messages
+no new messages
+average rate: 11.494
+	min: 0.078s max: 0.096s std dev: 0.00900s window: 3
+no new messages
+no new messages
+no new messages
+## hz /navigation/path
+WARNING: may be using simulated time
+subscribed to [/navigation/path]
+no new messages
+no new messages
+no new messages
+no new messages
+## path sample
+header:
+  seq: 231
+  stamp:
+    secs: 24
+    nsecs: 560000000
+  frame_id: "vehicle"
+poses:
+  -
+    header:
+      seq: 0
+      stamp:
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose:
+      position:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      orientation:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+---
+## falco cmd samples
+header:
+  seq: 1162
+  stamp:
+    secs: 24
+    nsecs: 560000000
+  frame_id: "vehicle"
+twist:
+  linear:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---
+header:
+  seq: 1163
+  stamp:
+    secs: 24
+    nsecs: 658000000
+  frame_id: "vehicle"
+twist:
+  linear:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---
+header:
+  seq: 1164
+  stamp:
+    secs: 24
+    nsecs: 658000000
+  frame_id: "vehicle"
+twist:
+  linear:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---
+header:
+  seq: 1165
+  stamp:
+    secs: 24
+    nsecs: 658000000
+  frame_id: "vehicle"
+twist:
+  linear:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---
+header:
+  seq: 1166
+  stamp:
+    secs: 24
+    nsecs: 658000000
+  frame_id: "vehicle"
+twist:
+  linear:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---
+## gated /cmd_vel samples
+WARNING: no messages received and simulated time is active.
+Is /clock being published?

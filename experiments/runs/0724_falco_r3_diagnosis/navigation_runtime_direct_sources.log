@@ -1,0 +1,180 @@
+
+Reading path files.
+
+Initialization complete.
+
+[INFO] [1784860051.093820179, 16.358000000]: advertised as /navigation/state_estimation
+
+[INFO] [1784860051.110711621, 16.362000000]: advertised as /navigation/registered_scan
+
+... logging to /home/zzf/.ros/log/ce24d396-8705-11f1-ac8c-bdece02cfe94/roslaunch-zzf-Legion-Y9000P-IRX9-17558.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/navigation/simenv_navigation_bringup/launch/runtime_real_data.launch
+[1mstarted roslaunch server http://zzf-Legion-Y9000P-IRX9:34545/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /cmd_vel_bridge/command_timeout: 0.5
+ * /cmd_vel_bridge/enable_lateral_velocity: False
+ * /cmd_vel_bridge/enabled_topic: /navigation/enabled
+ * /cmd_vel_bridge/input_topic: /navigation/falco...
+ * /cmd_vel_bridge/max_angular_z: 0.2
+ * /cmd_vel_bridge/max_linear_x: 0.1
+ * /cmd_vel_bridge/max_linear_y: 0.0
+ * /cmd_vel_bridge/output_topic: /cmd_vel
+ * /cmd_vel_bridge/publish_rate: 20.0
+ * /cmd_vel_bridge/publish_zero_when_disabled: True
+ * /cmd_vel_bridge/require_navigation_enabled: True
+ * /cmd_vel_bridge/require_trotting_state_cmd: True
+ * /cmd_vel_bridge/state_cmd_topic: /fsm/state_cmd
+ * /cmd_vel_bridge/stop_topic: /navigation/stop_...
+ * /cmd_vel_bridge/trotting_state_value: 4
+ * /localPlanner/adjacentRange: 3.5
+ * /localPlanner/autonomyMode: True
+ * /localPlanner/autonomySpeed: 0.1
+ * /localPlanner/checkObstacle: True
+ * /localPlanner/checkRotObstacle: False
+ * /localPlanner/costHeightThre: 0.1
+ * /localPlanner/costScore: 0.02
+ * /localPlanner/dirDiffThre: 0.1
+ * /localPlanner/dirThre: 90.0
+ * /localPlanner/dirToVehicle: False
+ * /localPlanner/dirWeight: 0.02
+ * /localPlanner/goalClearRange: 0.5
+ * /localPlanner/goalX: 0.0
+ * /localPlanner/goalY: 0.0
+ * /localPlanner/groundHeightThre: 0.1
+ * /localPlanner/inclRateThre: 120.0
+ * /localPlanner/inclThre: 45.0
+ * /localPlanner/joyToCheckObstacleDelay: 5.0
+ * /localPlanner/joyToSpeedDelay: 0.0
+ * /localPlanner/laserVoxelSize: 0.05
+ * /localPlanner/lookAheadDis: 0.5
+ * /localPlanner/maxAccel: 0.5
+ * /localPlanner/maxRelZ: 0.25
+ * /localPlanner/maxSpeed: 0.2
+ * /localPlanner/maxYawRate: 45.0
+ * /localPlanner/minPathRange: 1.0
+ * /localPlanner/minPathScale: 0.75
+ * /localPlanner/minRelZ: -0.5
+ * /localPlanner/noRotAtGoal: True
+ * /localPlanner/noRotAtStop: False
+ * /localPlanner/obstacleHeightThre: 0.15
+ * /localPlanner/pathCropByGoal: True
+ * /localPlanner/pathFolder: /home/zzf/search_...
+ * /localPlanner/pathRangeBySpeed: True
+ * /localPlanner/pathRangeStep: 0.5
+ * /localPlanner/pathScale: 1.0
+ * /localPlanner/pathScaleBySpeed: True
+ * /localPlanner/pathScaleStep: 0.25
+ * /localPlanner/pointPerPathThre: 2
+ * /localPlanner/pubSkipNum: 1
+ * /localPlanner/sensorOffsetX: 0.0
+ * /localPlanner/sensorOffsetY: 0.0
+ * /localPlanner/slowDwnDisThre: 1.0
+ * /localPlanner/slowRate1: 0.25
+ * /localPlanner/slowRate2: 0.5
+ * /localPlanner/slowTime1: 2.0
+ * /localPlanner/slowTime2: 2.0
+ * /localPlanner/stopDisThre: 0.2
+ * /localPlanner/stopTime: 5.0
+ * /localPlanner/stopYawRateGain: 7.5
+ * /localPlanner/switchTimeThre: 1.0
+ * /localPlanner/terrainVoxelSize: 0.2
+ * /localPlanner/twoWayDrive: True
+ * /localPlanner/useCost: False
+ * /localPlanner/useInclRateToSlow: False
+ * /localPlanner/useInclToStop: False
+ * /localPlanner/useTerrainAnalysis: False
+ * /localPlanner/vehicleLength: 0.6
+ * /localPlanner/vehicleWidth: 0.6
+ * /localPlanner/yawRateGain: 7.5
+ * /pathFollower/adjacentRange: 3.5
+ * /pathFollower/autonomyMode: True
+ * /pathFollower/autonomySpeed: 0.1
+ * /pathFollower/checkObstacle: True
+ * /pathFollower/checkRotObstacle: False
+ * /pathFollower/costHeightThre: 0.1
+ * /pathFollower/costScore: 0.02
+ * /pathFollower/dirDiffThre: 0.1
+ * /pathFollower/dirThre: 90.0
+ * /pathFollower/dirToVehicle: False
+ * /pathFollower/dirWeight: 0.02
+ * /pathFollower/goalClearRange: 0.5
+ * /pathFollower/goalX: 0.0
+ * /pathFollower/goalY: 0.0
+ * /pathFollower/groundHeightThre: 0.1
+ * /pathFollower/inclRateThre: 120.0
+ * /pathFollower/inclThre: 45.0
+ * /pathFollower/joyToCheckObstacleDelay: 5.0
+ * /pathFollower/joyToSpeedDelay: 0.0
+ * /pathFollower/laserVoxelSize: 0.05
+ * /pathFollower/lookAheadDis: 0.5
+ * /pathFollower/maxAccel: 0.5
+ * /pathFollower/maxRelZ: 0.25
+ * /pathFollower/maxSpeed: 0.2
+ * /pathFollower/maxYawRate: 45.0
+ * /pathFollower/minPathRange: 1.0
+ * /pathFollower/minPathScale: 0.75
+ * /pathFollower/minRelZ: -0.5
+ * /pathFollower/noRotAtGoal: True
+ * /pathFollower/noRotAtStop: False
+ * /pathFollower/obstacleHeightThre: 0.15
+ * /pathFollower/pathCropByGoal: True
+ * /pathFollower/pathRangeBySpeed: True
+ * /pathFollower/pathRangeStep: 0.5
+ * /pathFollower/pathScale: 1.0
+ * /pathFollower/pathScaleBySpeed: True
+ * /pathFollower/pathScaleStep: 0.25
+ * /pathFollower/pointPerPathThre: 2
+ * /pathFollower/pubSkipNum: 1
+ * /pathFollower/sensorOffsetX: 0.0
+ * /pathFollower/sensorOffsetY: 0.0
+ * /pathFollower/slowDwnDisThre: 1.0
+ * /pathFollower/slowRate1: 0.25
+ * /pathFollower/slowRate2: 0.5
+ * /pathFollower/slowTime1: 2.0
+ * /pathFollower/slowTime2: 2.0
+ * /pathFollower/stopDisThre: 0.2
+ * /pathFollower/stopTime: 5.0
+ * /pathFollower/stopYawRateGain: 7.5
+ * /pathFollower/switchTimeThre: 1.0
+ * /pathFollower/terrainVoxelSize: 0.2
+ * /pathFollower/twoWayDrive: True
+ * /pathFollower/useCost: False
+ * /pathFollower/useInclRateToSlow: False
+ * /pathFollower/useInclToStop: False
+ * /pathFollower/useTerrainAnalysis: False
+ * /pathFollower/vehicleLength: 0.6
+ * /pathFollower/vehicleWidth: 0.6
+ * /pathFollower/yawRateGain: 7.5
+ * /rosdistro: noetic
+ * /rosversion: 1.16.0
+
+NODES
+  /
+    cmd_vel_bridge (simenv_navigation_bridge/cmd_vel_bridge.py)
+    localPlanner (local_planner/localPlanner)
+    navigation_registered_scan_relay (topic_tools/relay)
+    navigation_state_estimation_relay (topic_tools/relay)
+    pathFollower (local_planner/pathFollower)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/navigation/simenv_navigation_bringup/launch/runtime_real_data.launch http://localhost:11311
+[1mprocess[navigation_state_estimation_relay-1]: started with pid [17606][0m
+[1mprocess[navigation_registered_scan_relay-2]: started with pid [17607][0m
+[1mprocess[localPlanner-3]: started with pid [17609][0m
+[1mprocess[pathFollower-4]: started with pid [17614][0m
+[1mprocess[cmd_vel_bridge-5]: started with pid [17620][0m
+[cmd_vel_bridge-5] killing on exit
+[pathFollower-4] killing on exit
+[localPlanner-3] killing on exit
+[navigation_registered_scan_relay-2] killing on exit
+[navigation_state_estimation_relay-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

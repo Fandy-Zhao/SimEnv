@@ -1,0 +1,121 @@
+## info /navigation/state_estimation
+Type: nav_msgs/Odometry
+
+Publishers:
+ * /navigation_state_estimation_relay (http://zzf-Legion-Y9000P-IRX9:40997/)
+
+Subscribers:
+ * /pathFollower (http://zzf-Legion-Y9000P-IRX9:33483/)
+ * /localPlanner (http://zzf-Legion-Y9000P-IRX9:37843/)
+
+
+## info /navigation/registered_scan
+Type: sensor_msgs/PointCloud2
+
+Publishers:
+ * /navigation_registered_scan_relay (http://zzf-Legion-Y9000P-IRX9:40869/)
+
+Subscribers:
+ * /localPlanner (http://zzf-Legion-Y9000P-IRX9:37843/)
+
+
+## hz /navigation/state_estimation
+WARNING: may be using simulated time
+subscribed to [/navigation/state_estimation]
+no new messages
+no new messages
+no new messages
+no new messages
+## hz /navigation/registered_scan
+WARNING: may be using simulated time
+subscribed to [/navigation/registered_scan]
+no new messages
+no new messages
+no new messages
+no new messages
+## hz /navigation/path
+WARNING: may be using simulated time
+subscribed to [/navigation/path]
+no new messages
+no new messages
+no new messages
+no new messages
+## path sample
+WARNING: no messages received and simulated time is active.
+Is /clock being published?
+## hz /navigation/falco/cmd_vel_stamped
+WARNING: may be using simulated time
+subscribed to [/navigation/falco/cmd_vel_stamped]
+no new messages
+no new messages
+average rate: 50.000
+	min: 0.020s max: 0.020s std dev: 0.00000s window: 5
+no new messages
+## falco cmd samples
+header:
+  seq: 508
+  stamp:
+    secs: 11
+    nsecs: 554000000
+  frame_id: "vehicle"
+twist:
+  linear:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---
+header:
+  seq: 509
+  stamp:
+    secs: 11
+    nsecs: 554000000
+  frame_id: "vehicle"
+twist:
+  linear:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---
+header:
+  seq: 510
+  stamp:
+    secs: 11
+    nsecs: 554000000
+  frame_id: "vehicle"
+twist:
+  linear:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---
+header:
+  seq: 511
+  stamp:
+    secs: 11
+    nsecs: 554000000
+  frame_id: "vehicle"
+twist:
+  linear:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---
+## gated /cmd_vel samples
+WARNING: no messages received and simulated time is active.
+Is /clock being published?

@@ -1,0 +1,17 @@
+<launch>
+  <arg name="ns" default="navigation"/>
+  <arg name="config" default="$(find simenv_navigation_bringup)/config/navigation_safety.yaml"/>
+  <arg name="max_linear_x" default="$(optenv NAV_MAX_LINEAR_X 0.20)"/>
+  <arg name="max_linear_y" default="$(optenv NAV_MAX_LINEAR_Y 0.00)"/>
+  <arg name="max_angular_z" default="$(optenv NAV_MAX_ANGULAR_Z 0.30)"/>
+  <arg name="command_timeout" default="$(optenv NAV_COMMAND_TIMEOUT 0.5)"/>
+
+  <node pkg="simenv_navigation_bridge" type="cmd_vel_bridge.py"
+        name="cmd_vel_bridge" output="screen" launch-prefix="/usr/bin/python3">
+    <rosparam command="load" file="$(arg config)"/>
+    <param name="max_linear_x" value="$(arg max_linear_x)"/>
+    <param name="max_linear_y" value="$(arg max_linear_y)"/>
+    <param name="max_angular_z" value="$(arg max_angular_z)"/>
+    <param name="command_timeout" value="$(arg command_timeout)"/>
+  </node>
+</launch>

@@ -1,0 +1,8 @@
+Date: 2026-07-23
+
+R4 FALCO + Trotting closed-loop validation was not executed.
+
+Reason:
+R3_FALCO_REAL_INPUT_FAIL. FALCO did not produce a useful nonzero path or raw
+velocity from real registered clouds and the manual waypoint, so robot motion
+was not enabled.

@@ -1,0 +1,14 @@
+/a1_gazebo/controller_spawner
+/cmd_vel_bridge
+/gazebo
+/localPlanner
+/navigation_registered_scan_relay
+/navigation_state_estimation_relay
+/pathFollower
+/robot_state_publisher
+/rosout
+/rosservice_534794_1784821289181
+/rostopic_534903_1784821295912
+/state_from_gazebo
+/unitree_gazebo_servo
+/urdf_spawner

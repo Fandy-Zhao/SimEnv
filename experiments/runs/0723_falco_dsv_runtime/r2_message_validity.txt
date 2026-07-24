@@ -1,0 +1,17 @@
+odom_frame=camera_init
+odom_child=body
+odom_stamp_1=25.160000
+odom_stamp_2=25.258000
+odom_stamp_increases=True
+odom_position=0.081194,0.025655,0.158306
+odom_quaternion=-0.000505,0.086566,0.011561,0.996179
+odom_quaternion_norm=1.000000
+odom_finite=True
+cloud_frame=camera_init
+cloud_stamp=25.360000
+cloud_width=23148
+cloud_height=1
+cloud_point_step=48
+cloud_fields=x,y,z,normal_x,normal_y,normal_z,intensity,curvature
+cloud_nonempty=True
+validity_pass=True

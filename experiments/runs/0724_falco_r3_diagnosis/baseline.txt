@@ -1,0 +1,13 @@
+2026-07-24T10:15:18+08:00
+worktree:
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation
+branch:
+feat/0723-falco-dsv-navigation-integration
+head:
+569e4ff7a49f594c8f005a0a7f82daf61acaee22
+status:
+?? experiments/runs/0724_falco_r3_diagnosis/
+log -3:
+569e4ff7 test(navigation): refresh falco dsv runtime evidence
+6132611c test(navigation): validate falco dsv runtime interfaces
+23ef7ef6 fix(navigation): add real-data runtime launch

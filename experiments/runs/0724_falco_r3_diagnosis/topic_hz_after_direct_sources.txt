@@ -1,0 +1,64 @@
+WARNING: may be using simulated time
+subscribed to [/Odometry]
+subscribed to [/cloud_registered]
+subscribed to [/navigation/state_estimation]
+subscribed to [/navigation/registered_scan]
+subscribed to [/navigation/path]
+subscribed to [/navigation/falco/cmd_vel_stamped]
+no new messages
+              topic                 rate   min_delta   max_delta   std_dev   window
+===================================================================================
+/navigation/falco/cmd_vel_stamped   50.0   0.02        0.02        0.0       2     
+
+              topic                 rate   min_delta   max_delta    std_dev    window
+=====================================================================================
+/navigation/falco/cmd_vel_stamped   50.0   0.02        0.02        3.553e-15   5     
+
+no new messages
+no new messages
+              topic                  rate   min_delta   max_delta    std_dev    window
+======================================================================================
+/Odometry                           10.64   0.094       0.094       0.0         2     
+/cloud_registered                   10.64   0.094       0.094       0.0         2     
+/navigation/state_estimation        10.64   0.094       0.094       0.0         2     
+/navigation/registered_scan         10.87   0.092       0.092       0.0         2     
+/navigation/path                    12.82   0.078       0.078       0.0         2     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        3.553e-15   2     
+
+no new messages
+              topic                 rate   min_delta   max_delta    std_dev    window
+=====================================================================================
+/navigation/falco/cmd_vel_stamped   50.0   0.02        0.02        3.553e-15   5     
+
+no new messages
+              topic                  rate   min_delta   max_delta    std_dev    window
+======================================================================================
+/Odometry                           10.2    0.094       0.102       0.004       3     
+/cloud_registered                   10.31   0.094       0.1         0.003       3     
+/navigation/state_estimation        10.2    0.094       0.102       0.004       3     
+/navigation/registered_scan         10.42   0.092       0.1         0.004       3     
+/navigation/path                    11.11   0.078       0.102       0.012       3     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        3.553e-15   3     
+
+no new messages
+              topic                 rate   min_delta   max_delta    std_dev    window
+=====================================================================================
+/navigation/falco/cmd_vel_stamped   50.0   0.02        0.02        3.077e-15   5     
+
+no new messages
+no new messages
+              topic                  rate   min_delta   max_delta    std_dev    window
+======================================================================================
+/Odometry                           10.2    0.094       0.102       0.003266    4     
+/cloud_registered                   10.34   0.094       0.1         0.002494    4     
+/navigation/state_estimation        10.2    0.094       0.102       0.003266    4     
+/navigation/registered_scan         10.42   0.092       0.1         0.003266    4     
+/navigation/falco/cmd_vel_stamped   50.0    0.02        0.02        3.553e-15   4     
+
+              topic                  rate   min_delta   max_delta   std_dev    window
+=====================================================================================
+/navigation/path                    10.27   0.078       0.112       0.01427    4     
+/navigation/falco/cmd_vel_stamped   50.0    0.018       0.022       0.001414   4     
+
+no new messages
+no new messages

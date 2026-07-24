@@ -176,7 +176,7 @@ CATKIN_CMAKE_ARGS=(
 # - livox_ros_driver is kept for CustomMsg / CustomPoint message definitions.
 # - BUILD_LIVOX_DRIVER_NODE=OFF means the real Livox hardware driver node is skipped.
 if [[ -z "${SIMENV_CATKIN_WHITELIST+x}" ]]; then
-  SIMENV_CATKIN_WHITELIST="livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo"
+  SIMENV_CATKIN_WHITELIST="livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup"
 fi
 
 if [[ -n "$SIMENV_CATKIN_WHITELIST" ]]; then

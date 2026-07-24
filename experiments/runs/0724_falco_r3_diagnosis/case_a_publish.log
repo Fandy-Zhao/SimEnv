@@ -1,0 +1,11 @@
+case: A_real_cloud_obstacle_on_direct_waypoint
+odom_frame: camera_init
+odom_x: -0.0816852751548217
+odom_y: 0.01908889873394329
+odom_yaw_approx: -0.000746
+goal_x: 0.718314501984
+goal_y: 0.018492099
+publishing and latching message for 3.0 seconds
+publishing and latching message for 3.0 seconds
+[WARN] [1784860624.028520]: Could not process inbound connection: topic types do not match: [geometry_msgs/PointStamped] vs. [geometry_msgs/PoseStamped]{'callerid': '/localPlanner', 'md5sum': 'c63aecb41bfdfd6b7e1fac37c7cbe7bf', 'tcp_nodelay': '0', 'topic': '/navigation/way_point', 'type': 'geometry_msgs/PointStamped'}
+publishing and latching message for 3.0 seconds

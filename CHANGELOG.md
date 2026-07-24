@@ -1,5 +1,58 @@
 # Changelog
 
+## 2026-07-24 — FALCO A1 real-cloud R3 tuning
+
+- Added `falco_a1.yaml` as the default FALCO profile for SimEnv Unitree A1
+  real FAST-LIO2 `/cloud_registered` validation with `checkObstacle=true`.
+- Added launch-time overrides for A1 footprint, height band, path scale/range,
+  obstacle threshold, and opt-in FALCO diagnostics.
+- Added throttled `falco_diag` logging in FALCO local planner to record cloud
+  filtering, candidate/free path counts, selected path, collision score
+  distribution, and output command/path state.
+- Recorded selected-parameter, pointcloud, candidate-path, and obstacle
+  regression evidence under `experiments/runs/0724_falco_a1_tuning/`.
+- Kept `/navigation/enabled=false` command gating during all R3 checks; R4-R6
+  were not run.
+
+## 2026-07-24 — FALCO R3 real-data diagnosis
+
+- Updated `runtime_real_data.launch` to relay directly from FAST-LIO2
+  `/Odometry` and `/cloud_registered` by default, avoiding a runtime dependency
+  on intermediate Stage 2 relay nodes for R3 FALCO validation.
+- Recorded R3 A/B evidence under
+  `experiments/runs/0724_falco_r3_diagnosis/`: direct-source inputs publish
+  at about 10 Hz, `checkObstacle=true` yields the zero one-pose path, and
+  temporary `checkObstacle=false` yields a multi-pose path plus nonzero raw
+  FALCO velocity while `/cmd_vel` remains gated to zero.
+- Did not run R4 Trotting, R5 DSV, or R6 full exploration.
+
+## 2026-07-23 — FALCO + DSV real runtime validation
+
+- Added `runtime_real_data.launch` for connecting an already running
+  SimEnv + FAST-LIO2 stack to the `/navigation` namespace without starting
+  Gazebo, FAST-LIO2, robot models, joystick, RViz, or rosbag.
+- Added launch-time command bridge limit overrides for low-speed validation.
+- Recorded real runtime evidence through R3 under
+  `experiments/runs/0723_falco_dsv_runtime/`.
+- Confirmed R2 real FAST-LIO2 data and TF pass; R3 remains blocked because
+  FALCO did not produce a useful path from real registered clouds under low RTF.
+- Refreshed the evidence bundle on 2026-07-24 with `baseline.txt`, latest R0/R1
+  command outputs, and audited `tf_frames.gv`/`tf_frames.pdf` artifacts.
+
+## 2026-07-23 — FALCO + DSV-Planner source integration
+
+- Added minimum navigation vendor sources under `src/navigation/vendor/`:
+  FALCO `local_planner` plus the DSV-Planner package closure.
+- Added `simenv_navigation_bridge` with a gated, rate-limited
+  `TwistStamped -> Twist` command bridge for Trotting `/cmd_vel`.
+- Added `simenv_navigation_bringup` launch/config files for FALCO-only,
+  DSV-only, and combined DSV + FALCO startup without launching Gazebo,
+  FAST-LIO2, robot models, joystick, RViz, or rosbag recording by default.
+- Added source vendored ROS1 `octomap_msgs` and `octomap_ros` dependencies
+  because this host's apt sources do not provide Noetic binary packages.
+- Extended `tools/build_with_venv.sh` package whitelist for the navigation
+  packages while preserving the existing runtime whitelist entries.
+
 ## 2026-07-23 — FAST-LIO2 clean runtime validation
 
 - Added governed runtime evidence for the clean external FAST-LIO2 build under
