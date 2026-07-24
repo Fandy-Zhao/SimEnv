@@ -1,0 +1,2 @@
+timestamp,gate,status,duration_s,max_raw_linear_x,max_raw_angular_z,max_bridge_linear_x,max_bridge_angular_z,reason
+2026-07-24T18:03:00+08:00,FAST_LIO_INPUT_BLOCKED,not_run,0,0,0,0,0,No motion entered because FAST-LIO2 did not publish /Odometry

@@ -1,0 +1,38 @@
+WARNING: may be using simulated time
+subscribed to [/Odometry]
+subscribed to [/cloud_registered]
+subscribed to [/navigation/state_estimation]
+subscribed to [/navigation/registered_scan]
+subscribed to [/navigation/terrain_map]
+subscribed to [/navigation/boundary]
+       topic           rate   min_delta   max_delta   std_dev   window
+======================================================================
+/navigation/boundary   62.5   0.016       0.016       0.0       2
+
+       topic            rate   min_delta   max_delta   std_dev   window
+=======================================================================
+/navigation/boundary   15.15   0.016       0.104       0.03691   4
+
+       topic            rate   min_delta   max_delta   std_dev   window
+=======================================================================
+/navigation/boundary   15.92   0.016       0.104       0.03019   6
+
+       topic           rate   min_delta   max_delta   std_dev   window
+======================================================================
+/navigation/boundary   14.0   0.016       0.108       0.03002   8
+
+       topic            rate   min_delta   max_delta   std_dev   window
+=======================================================================
+/navigation/boundary   14.66   0.016       0.108       0.03177   10
+
+       topic            rate   min_delta   max_delta   std_dev   window
+=======================================================================
+/navigation/boundary   13.82   0.016       0.108       0.03056   12
+
+       topic            rate   min_delta   max_delta   std_dev   window
+=======================================================================
+/navigation/boundary   14.29   0.016       0.108       0.03177   14
+
+       topic            rate   min_delta   max_delta   std_dev   window
+=======================================================================
+/navigation/boundary   14.03   0.016       0.108       0.03096   15

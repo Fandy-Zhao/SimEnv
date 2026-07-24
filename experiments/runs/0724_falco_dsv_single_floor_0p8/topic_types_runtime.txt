@@ -1,0 +1,2 @@
+usage: rostopic type [-h] topic_or_field
+rostopic type: error: unrecognized arguments: /cloud_registered /navigation/state_estimation /navigation/registered_scan /navigation/terrain_map /navigation/boundary /cmd_vel

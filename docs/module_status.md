@@ -10,6 +10,15 @@
 > services, and clamps single-floor goal Z. Build and isolated FALCO speed
 > probes pass; real Gazebo S2-S5 closed-loop exploration is pending.
 
+> **2026-07-24 `src/navigation` runtime gate update**:
+> real `auto.sh` + `single_floor_exploration.launch` validation stopped before
+> motion at `FAST_LIO_INPUT_BLOCKED`. The task worktree can find
+> `simenv_fast_lio2_integration`, but `rospack find fast_lio` fails, and
+> `fast_lio/fastlio_mapping` cannot launch. Terrain map, DSV frontier/waypoint,
+> FALCO real raw speed, bridge motion, short loop, full exploration, and return
+> home remain unvalidated until the `fast_lio` package is restored or staged for
+> this worktree.
+
 > **2026-07-24 `src/navigation` FALCO A1 tuning**:
 > `falco_only.launch` and `runtime_real_data.launch` now default to
 > `falco_a1.yaml`, an A1-specific local-planner profile for real FAST-LIO2

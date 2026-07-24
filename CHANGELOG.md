@@ -16,6 +16,10 @@
   parameterized planner services.
 - Formal `./tools/build_with_venv.sh` passed; isolated FALCO path follower
   probes passed. Full `auto.sh` closed-loop exploration was not run.
+- Runtime validation was then attempted with the required launch entries and
+  stopped at `FAST_LIO_INPUT_BLOCKED`: this worktree does not expose a
+  discoverable `fast_lio` ROS package, so `fast_lio/fastlio_mapping` could not
+  launch and `/Odometry` timed out. No motion stage was entered.
 
 ## 2026-07-24 — FALCO A1 real-cloud R3 tuning
 

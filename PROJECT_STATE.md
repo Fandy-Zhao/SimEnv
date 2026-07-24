@@ -13,6 +13,16 @@
 > `0.219911486 rad/s`. Verdict: `FALCO_DSV_DATA_PATH_READY`; S2-S5 `auto.sh`
 > Gazebo/Trotting closed-loop validation remains next and is not claimed.
 
+> **2026-07-24 runtime validation update**: the required real entry points were
+> started from the same worktree (`FLOOR_COUNT=1 GUI=false ./auto.sh` and
+> `roslaunch simenv_navigation_bringup single_floor_exploration.launch`), with
+> `/navigation/enabled=false`. The run stopped at the first gate:
+> `FAST_LIO_INPUT_BLOCKED`. `auto.sh` reported `fast_lio: NOT_FOUND`;
+> `logs/fast_lio2.log` reports `cannot launch node of type
+> [fast_lio/fastlio_mapping]`; `rospack find fast_lio` fails after sourcing the
+> task worktree. No navigation motion, short loop, full exploration, or return
+> home was executed. Current runtime verdict: `FALCO_DSV_EXPLORATION_BLOCKED`.
+
 > **2026-07-24 FALCO A1 real-cloud R3 tuning**: branch
 > `feat/0723-falco-dsv-navigation-integration` continued only the R3 FALCO
 > local-planner gate from baseline `8f5c89ee`. Added an A1-specific
