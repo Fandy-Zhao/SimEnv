@@ -1,10 +1,1 @@
-2026-07-24T18:38:50+08:00
-FAST_LIO_BUILD_BLOCKED
-build_with_venv exit code: 20
-Shared dependency links PASS
-Formal build blocked before catkin_make to avoid modifying /home/zzf/search_ws/livox_ros_driver
-FAST-LIO runtime: NOT_RUN
-Terrain map: NOT_RUN
-DSV/FALCO: NOT_RUN
-Short closed loop: NOT_RUN
-Full exploration: NOT_RUN
+NAVIGATION_DATA_CHAIN_NOT_RUN: blocked at formal build (FAST_LIO_BUILD_BLOCKED).

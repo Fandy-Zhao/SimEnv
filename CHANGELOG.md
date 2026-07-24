@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-07-24 — External Livox-SDK prefix retry
+
+- Extended `tools/prepare_shared_ros_deps.sh` to prepare an independent
+  Livox-SDK prefix outside SimEnv and outside the shared public
+  `livox_ros_driver` checkout.
+- Pinned the SDK source to `Livox-SDK`
+  `9306596a2bf15c1343bc023b497465ed0a32909d`
+  (`v2.3.0-8-g9306596`, version macros `2.3.0`) based on the fixed
+  `livox_ros_driver` major-version requirement and local historical
+  auto-clone evidence.
+- Updated `tools/build_with_venv.sh` to consume the prepared SDK prefix through
+  build environment paths and to check shared dependencies without cloning
+  during formal build.
+- Formal build now resolves SDK discovery but remains blocked at
+  `FAST_LIO_BUILD_BLOCKED` by unmodified shared-source compatibility errors in
+  FAST_LIO C++14/log4cxx and the livox hardware node. Runtime and exploration
+  stages were not run.
+
 ## 2026-07-24 — Shared FAST-LIO2 dependency retry
 
 - Added `tools/prepare_shared_ros_deps.sh` to validate fixed shared FAST-LIO2

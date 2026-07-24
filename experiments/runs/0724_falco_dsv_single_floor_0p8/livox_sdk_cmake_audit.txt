@@ -1,0 +1,80 @@
+2026-07-24T18:49:11+08:00
+## livox cmake grep
+/home/zzf/search_ws/livox_ros_driver/README.md:1:# Livox ROS Driver([览沃ROS驱动程序中文说明](https://github.com/Livox-SDK/livox_ros_driver/blob/master/README_CN.md))
+/home/zzf/search_ws/livox_ros_driver/README.md:9:[v2.6.0](https://github.com/Livox-SDK/livox_ros_driver/releases)
+/home/zzf/search_ws/livox_ros_driver/README.md:13:[Release History](https://github.com/Livox-SDK/livox_ros_driver/releases)
+/home/zzf/search_ws/livox_ros_driver/README.md:17:Before running livox_ros_driver, ROS and Livox-SDK must be installed.
+/home/zzf/search_ws/livox_ros_driver/README.md:31:### 1.2 Livox-SDK Installation
+/home/zzf/search_ws/livox_ros_driver/README.md:33:1. Download or clone [Livox-SDK](https://github.com/Livox-SDK/Livox-SDK) from Github to local;
+/home/zzf/search_ws/livox_ros_driver/README.md:35:2. Refer to the corresponding [README.md](https://github.com/Livox-SDK/Livox-SDK/blob/master/README.md) document to install and run Livox-SDK;
+/home/zzf/search_ws/livox_ros_driver/README.md:41:　　`git clone https://github.com/Livox-SDK/livox_ros_driver.git ws_livox/src`
+/home/zzf/search_ws/livox_ros_driver/README.md:237:[Timestamp synchronization](https://github.com/Livox-SDK/Livox-SDK/wiki/Timestamp-Synchronization)
+/home/zzf/search_ws/livox_ros_driver/README.md:241:&ensp;&ensp;&ensp;&ensp;(1) The time stamp synchronization function of livox_ros_driver is based on the LidarSetUtcSyncTime interface of Livox-SDK, and only supports GPS synchronization, which is one of many synchronization methods of livox devices.
+/home/zzf/search_ws/livox_ros_driver/README.md:278:* [How to use lvx file in ros](https://github.com/Livox-SDK/Livox-SDK/wiki/How-to-use-lvx-file-under-ros)
+/home/zzf/search_ws/livox_ros_driver/README.md:279:* [Set publish frequency](https://github.com/Livox-SDK/Livox-SDK/wiki/Set-publish-frequency)
+/home/zzf/search_ws/livox_ros_driver/README.md:280:* [外参标定与点云显示](https://github.com/Livox-SDK/Livox-SDK/wiki/Calibrate-extrinsic-and-display-under-ros-cn)
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lvx_file.h:33:#include "livox_sdk.h"
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_hub.h:34:#include "livox_sdk.h"
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_hub.cpp:73:    printf("Livox-SDK init fail!\n");
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_hub.cpp:110:    printf("Livox-SDK init fail!\n");
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_hub.cpp:119:  printf("Livox-SDK init success!\n");
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.h:28:#include "livox_sdk.h"
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_lidar.h:35:#include "livox_sdk.h"
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_lidar.cpp:71:    printf("Livox-SDK init fail!\n");
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_lidar.cpp:123:    printf("Livox-SDK init fail!\n");
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_lidar.cpp:132:  printf("Livox-SDK init success!\n");
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/livox_ros_driver/livox_ros_driver.cpp:36:#include "livox_sdk.h"
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:85:## make sure the livox_sdk_static library is installed
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:86:find_library(LIVOX_SDK_LIBRARY liblivox_sdk_static.a /usr/local/lib)
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:91:	message("Download Livox-SDK from github and build&install it please!")
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:92:	message("Download Livox-SDK from github and build&install it please!")
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:93:	message("Download Livox-SDK from github and build&install it please!")
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:95:	message("git clone Livox-SDK from github temporarily, only for ROS distro jenkins build!")
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:98:	execute_process(COMMAND rm -rf ${CMAKE_CURRENT_SOURCE_DIR}/Livox-SDK OUTPUT_VARIABLE cmd_res)
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:104:	execute_process(COMMAND git clone https://github.com/Livox-SDK/Livox-SDK.git ${CMAKE_CURRENT_SOURCE_DIR}/Livox-SDK OUTPUT_VARIABLE cmd_res)
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:109:	execute_process(COMMAND cmake .. WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Livox-SDK/build OUTPUT_VARIABLE cmd_res)
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:114:	execute_process(COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Livox-SDK/build OUTPUT_VARIABLE cmd_res)
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:121:		${CMAKE_CURRENT_SOURCE_DIR}/Livox-SDK/sdk_core/include
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:126:		${CMAKE_CURRENT_SOURCE_DIR}/Livox-SDK/build/sdk_core
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/CMakeLists.txt:197:	livox_sdk_static.a
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:1:# 览沃 ROS 驱动程序（ [livox_ros_driver English README](https://github.com/Livox-SDK/livox_ros_driver/) ）
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:14:[发布记录](https://github.com/Livox-SDK/livox_ros_driver/releases)
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:18:运行览沃 ROS 驱动程序之前，必须安装 ROS 和 Livox-SDK。
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:34:### 1.2 Livox-SDK 安装
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:36:1. 从 Github 下载或者克隆 Livox-SDK 到本地；
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:38:2. 参考对应的 README.md 文档安装和运行 Livox-SDK；
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:44:   `git clone https://github.com/Livox-SDK/livox_ros_driver.git ws_livox/src`
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:244:[时间戳同步](https://github.com/Livox-SDK/Livox-SDK/wiki/Timestamp-Synchronization)
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:248:&ensp;&ensp;&ensp;&ensp;（1）览沃 ROS 驱动程序的时间戳同步功能是基于 Livox-SDK 的 LidarSetUtcSyncTime 接口实现，且只支持 GPS 同步，是览沃设备多种同步方式的一种；
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:287:* [How to use lvx file in ros](https://github.com/Livox-SDK/Livox-SDK/wiki/How-to-use-lvx-file-under-ros)
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:288:* [Set publish frequency](https://github.com/Livox-SDK/Livox-SDK/wiki/Set-publish-frequency)
+/home/zzf/search_ws/livox_ros_driver/README_CN.md:289:* [外参标定与点云显示](https://github.com/Livox-SDK/Livox-SDK/wiki/Calibrate-extrinsic-and-display-under-ros-cn)
+/home/zzf/search_ws/livox_ros_driver/.git/logs/HEAD:1:0000000000000000000000000000000000000000 3d240d5666129e1a3052e78ee8487a04b08fdda3 1 <1> 1784791487 +0800	clone: from https://github.com/Livox-SDK/livox_ros_driver.git
+/home/zzf/search_ws/livox_ros_driver/.git/logs/refs/heads/master:1:0000000000000000000000000000000000000000 3d240d5666129e1a3052e78ee8487a04b08fdda3 1 <1> 1784791487 +0800	clone: from https://github.com/Livox-SDK/livox_ros_driver.git
+/home/zzf/search_ws/livox_ros_driver/.git/logs/refs/remotes/origin/HEAD:1:0000000000000000000000000000000000000000 3d240d5666129e1a3052e78ee8487a04b08fdda3 1 <1> 1784791487 +0800	clone: from https://github.com/Livox-SDK/livox_ros_driver.git
+/home/zzf/search_ws/livox_ros_driver/.git/config:7:	url = https://github.com/Livox-SDK/livox_ros_driver.git
+/home/zzf/search_ws/livox_ros_driver/.gitignore:4:livox_ros_driver/Livox-SDK
+## SimEnv docs/history grep
+tools/external_deps/README.md:28:  `BUILD_LIVOX_DRIVER_NODE=ON`.
+tools/external_deps/patches/livox-driver-message-only.patch:10:+  BUILD_LIVOX_DRIVER_NODE
+tools/external_deps/patches/livox-driver-message-only.patch:22:+if(BUILD_LIVOX_DRIVER_NODE)
+tools/external_deps/patches/livox-driver-message-only.patch:24: ## make sure the livox_sdk_static library is installed
+tools/external_deps/patches/livox-driver-message-only.patch:25: find_library(LIVOX_SDK_LIBRARY liblivox_sdk_static.a /usr/local/lib)
+tools/external_deps/prepare_fast_lio2_deps.sh:74:    --exclude='Livox-SDK' \
+tools/build_with_venv.sh:158:  -DBUILD_LIVOX_DRIVER_NODE=OFF
+tools/build_with_venv.sh:177:# - BUILD_LIVOX_DRIVER_NODE=OFF means the real Livox hardware driver node is skipped.
+tools/build_with_venv.sh:245:  if ! grep -q "BUILD_LIVOX_DRIVER_NODE" "$SHARED_LIVOX_CMAKELISTS"; then
+tools/build_with_venv.sh:247:      -name "liblivox_sdk_static.a" 2>/dev/null | grep -q .; then
+tools/build_with_venv.sh:248:      echo "[build_with_venv] ERROR: shared livox_ros_driver requires Livox-SDK for its hardware node." >&2
+tools/build_with_venv.sh:249:      echo "[build_with_venv] ERROR: its CMakeLists.txt has no BUILD_LIVOX_DRIVER_NODE guard and would try to clone/build Livox-SDK inside the shared source checkout." >&2
+tools/build_with_venv.sh:251:      echo "[build_with_venv] ERROR: use a clean message-only upstream commit/patch strategy that does not mutate the shared source, or install a real Livox-SDK system library." >&2
+docs/reports/0724_falco_dsv_single_floor_0p8.md:47:Livox-SDK into `/home/zzf/search_ws/livox_ros_driver`; that mutation is
+docs/module_status.md:10:> auto-cloning Livox-SDK; `tools/build_with_venv.sh` now refuses that unsafe
+docs/slam/fast_lio2_deployment_guide.md:66:| livox_ros_driver (ROS1) | `SimEnv/src/livox_ros_driver` | `git clone https://github.com/Livox-SDK/livox_ros_driver.git` |
+docs/slam/fast_lio2_deployment_guide.md:417:| `livox_ros_driverConfig.cmake not found` | livox_ros_driver 未 clone | `cd src && git clone https://github.com/Livox-SDK/livox_ros_driver.git` |
+PROJECT_STATE.md:13:> `BUILD_LIVOX_DRIVER_NODE` guard and would try to clone/build Livox-SDK inside
+PROJECT_STATE.md:14:> the shared checkout when no system `liblivox_sdk_static.a` exists. The build
+PROJECT_STATE.md:112:> defaults to message-only (`BUILD_LIVOX_DRIVER_NODE=OFF`) without Livox-SDK
+CHANGELOG.md:12:  shared `livox_ros_driver` when its CMake would auto-clone/build Livox-SDK
+CHANGELOG.md:110:  simulation builds do not require Livox-SDK hardware-node linkage or network
+CHANGELOG.md:633:- Build fixes: unitree PIE linker (`-no-pie`), FAST_LIO C++14→17, livox_ros_driver C++11→17, PCL shared_ptr serialization, missing `<memory>` includes in Livox-SDK.

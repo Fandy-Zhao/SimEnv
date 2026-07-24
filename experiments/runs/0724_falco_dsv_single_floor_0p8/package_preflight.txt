@@ -1,0 +1,12 @@
+2026-07-24T18:57:07+08:00
+## rospack with source path
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver
+## formal build verdict
+build_with_venv_exit_code=1
+build_verdict=FAST_LIO_BUILD_BLOCKED
+## executable status
+stale_fastlio_mapping=2026-07-24 18:23:59.751082711 +0800 devel/lib/fast_lio/fastlio_mapping
+stale_fastlio_mapping_note=not accepted because formal build_with_shared_sdk.log failed after this artifact was produced by an earlier staging build
+## ldd check
+NOT_ACCEPTED_FORMAL_BUILD_FAILED

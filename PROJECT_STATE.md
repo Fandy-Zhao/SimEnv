@@ -1,5 +1,26 @@
 # Project State
 
+> **2026-07-24 external Livox-SDK prefix retry**: fixed shared resources remain
+> `/home/zzf/search_ws/FAST_LIO`
+> `7cc4175de6f8ba2edf34bab02a42195b141027e9`,
+> `ikd-Tree` `e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4`, and
+> `/home/zzf/search_ws/livox_ros_driver`
+> `3d240d5666129e1a3052e78ee8487a04b08fdda3`. Added an independent
+> Livox-SDK install prefix under
+> `/home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install`
+> from fixed upstream commit `9306596a2bf15c1343bc023b497465ed0a32909d`
+> (`v2.3.0-8-g9306596`, SDK version macros `2.3.0`). The SDK source/build/install
+> are outside SimEnv and outside the shared `livox_ros_driver` checkout; shared
+> FAST_LIO and livox status remained clean before and after formal build.
+> `livox_ros_driver` found `liblivox_sdk_static.a`, so the previous SDK
+> discovery blocker is resolved. Formal `./tools/build_with_venv.sh` now enters
+> catkin and fails with exit code `1` on unmodified shared-source build
+> compatibility: public FAST_LIO still forces C++14 and public
+> `livox_ros_driver` still builds its hardware node, causing Noetic/log4cxx
+> C++17 and ROS/PCL shared-pointer compile errors. First failed gate remains
+> `FAST_LIO_BUILD_BLOCKED`; FAST-LIO runtime, terrain map, DSV/FALCO, short
+> loop, full exploration, and return home were not run.
+
 > **2026-07-24 shared FAST-LIO2 dependency retry**: the task worktree now uses
 > `tools/prepare_shared_ros_deps.sh` to validate and link the fixed shared
 > public sources under `src/external/`:

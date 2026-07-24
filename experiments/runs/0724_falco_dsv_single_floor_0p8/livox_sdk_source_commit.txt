@@ -1,0 +1,8 @@
+2026-07-24T18:54:31+08:00
+url=https://github.com/Livox-SDK/Livox-SDK.git
+ref=v2.3.0-8-g9306596
+commit=9306596a2bf15c1343bc023b497465ed0a32909d
+subject=fix: wakeup pipe create failed
+date=2021-09-06T10:52:21+08:00
+describe=v2.3.0-8-g9306596
+status:

@@ -18,6 +18,10 @@ Shared dependency retry: `FALCO_DSV_EXPLORATION_BLOCKED`.
 
 First failed retry gate: `FAST_LIO_BUILD_BLOCKED`.
 
+Livox-SDK prefix retry: `FALCO_DSV_EXPLORATION_BLOCKED`.
+
+First failed prefix retry gate: `FAST_LIO_BUILD_BLOCKED`.
+
 ## Validation
 
 - `./tools/build_with_venv.sh`: PASS.
@@ -48,6 +52,17 @@ Livox-SDK into `/home/zzf/search_ws/livox_ros_driver`; that mutation is
 forbidden for this task. FAST-LIO runtime, terrain map, DSV/FALCO chain, short
 closed loop, full exploration, and return home were not run in this retry.
 
+The Livox-SDK prefix retry prepared a separate SDK install prefix under
+`/home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install`
+from fixed commit `9306596a2bf15c1343bc023b497465ed0a32909d`. This resolved the
+SDK discovery blocker: `livox_ros_driver` reported `find livox sdk library
+success` during formal build, while shared FAST_LIO and livox checkout status
+remained clean. The build then failed later because the unmodified shared
+FAST_LIO source forces C++14 and the unmodified shared `livox_ros_driver`
+hardware node still hits ROS Noetic/PCL compile errors. No runtime, navigation,
+short-loop, full-exploration, or return-home stage was run after this build
+failure.
+
 ## Runtime Evidence
 
 - `fast_lio_input_blocked.txt`
@@ -66,6 +81,14 @@ closed loop, full exploration, and return home were not run in this retry.
 - `bridge_cmd.csv`
 - `closed_loop_metrics.csv`
 - `full_exploration_metrics.csv`
+- `livox_sdk_cmake_audit.txt`
+- `livox_sdk_source_commit.txt`
+- `livox_sdk_install_manifest.txt`
+- `shared_source_status_before.txt`
+- `shared_source_status_after.txt`
+- `build_livox_sdk_prefix.log`
+- `build_with_shared_sdk.log`
+- `package_preflight.txt`
 
 ## Evidence
 

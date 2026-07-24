@@ -1,5 +1,17 @@
 # Module Status
 
+> **2026-07-24 shared dependency SDK prefix retry**:
+> shared public resources are fixed at FAST_LIO
+> `7cc4175de6f8ba2edf34bab02a42195b141027e9`, ikd-Tree
+> `e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4`, and `livox_ros_driver`
+> `3d240d5666129e1a3052e78ee8487a04b08fdda3`. An independent Livox-SDK prefix
+> is now prepared at commit `9306596a2bf15c1343bc023b497465ed0a32909d` under
+> `/home/zzf/search_ws/shared_ros_deps/`, and `livox_ros_driver` discovers the
+> static SDK library without mutating its public checkout. Formal build now
+> blocks later, at unmodified shared FAST_LIO/livox source compatibility
+> errors (`FAST_LIO_BUILD_BLOCKED`). Runtime navigation stages remain
+> unvalidated in this retry.
+
 > **2026-07-24 shared FAST-LIO2 dependency retry**:
 > `tools/prepare_shared_ros_deps.sh` now links the fixed public FAST_LIO and
 > `livox_ros_driver` checkouts into the task worktree under ignored
