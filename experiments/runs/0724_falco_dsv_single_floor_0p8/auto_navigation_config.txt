@@ -1,0 +1,35 @@
+auto.sh Navigation Configuration
+=================================
+Date: 2026-07-24
+
+New Environment Variables:
+
+  ENABLE_NAVIGATION         (default: false)   Master switch for navigation bringup
+  NAV_MODE                  (default: falco)   falco | dsv_falco
+  NAV_MAX_LINEAR_X          (default: 0.80)    Max forward speed for cmd_vel_bridge
+  NAV_MAX_LINEAR_Y          (default: 0.00)    Max lateral speed
+  NAV_MAX_ANGULAR_Z         (default: 0.22)    Max angular speed
+  NAV_COMMAND_TIMEOUT       (default: 0.50)    Bridge command timeout (seconds)
+  NAV_AUTO_TROTTING         (default: false)   Auto-command Trotting via /fsm/state_cmd
+  NAV_AUTO_ENABLE           (default: false)   Auto-enable /navigation/enabled
+  NAV_AUTO_START_EXPLORATION(default: false)   Auto-start DSV exploration
+  NAV_WAIT_ODOM_TIMEOUT     (default: 60)      Wait for /Odometry topic (seconds)
+  NAV_WAIT_CLOUD_TIMEOUT    (default: 60)      Wait for /cloud_registered topic
+  NAV_WAIT_TERRAIN_TIMEOUT  (default: 60)      Wait for terrain map
+
+Safety Guards:
+  - Default state: /navigation/enabled=false, /navigation/start_exploring=false
+  - NAV_AUTO_START_EXPLORATION requires: NAV_MODE=dsv_falco + NAV_AUTO_TROTTING + NAV_AUTO_ENABLE
+  - ENABLE_NAVIGATION requires ENABLE_FAST_LIO2=1
+
+Launch Integration:
+  - Navigation launches after FAST-LIO2 confirmed ready
+  - Waits for /Odometry and /cloud_registered topics
+  - Uses single_floor_exploration.launch with start_falco, start_dsv, start_bridge args
+  - Navigation log: logs/navigation.log
+  - Navigation PID: logs/navigation.pid
+
+Lifecycle:
+  - Pre-startup cleanup: kills stale navigation processes
+  - Main cleanup: disables navigation before killing nodes
+  - Ctrl-C: triggers /navigation/enabled=false before process kill

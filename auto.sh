@@ -121,6 +121,23 @@ WRITE_GENERATED_TRUTH_COPY="$(as_ros_bool "${WRITE_GENERATED_TRUTH_COPY:-1}")"
 ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-1}")"
 FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-5}"
 ENABLE_RVIZ="$(as_ros_bool "${ENABLE_RVIZ:-1}")"
+
+# Navigation bringup — single-floor exploration with DSV + FALCO.
+# Requires ENABLE_FAST_LIO2=1.
+# NAV_MODE=falco:       FALCO-only (waypoint from external source)
+# NAV_MODE=dsv_falco:   DSV generates exploration waypoints, FALCO executes
+ENABLE_NAVIGATION="$(as_ros_bool "${ENABLE_NAVIGATION:-0}")"
+NAV_MODE="${NAV_MODE:-falco}"
+NAV_MAX_LINEAR_X="${NAV_MAX_LINEAR_X:-0.80}"
+NAV_MAX_LINEAR_Y="${NAV_MAX_LINEAR_Y:-0.00}"
+NAV_MAX_ANGULAR_Z="${NAV_MAX_ANGULAR_Z:-0.22}"
+NAV_COMMAND_TIMEOUT="${NAV_COMMAND_TIMEOUT:-0.50}"
+NAV_AUTO_TROTTING="$(as_ros_bool "${NAV_AUTO_TROTTING:-0}")"
+NAV_AUTO_ENABLE="$(as_ros_bool "${NAV_AUTO_ENABLE:-0}")"
+NAV_AUTO_START_EXPLORATION="$(as_ros_bool "${NAV_AUTO_START_EXPLORATION:-0}")"
+NAV_WAIT_ODOM_TIMEOUT="${NAV_WAIT_ODOM_TIMEOUT:-60}"
+NAV_WAIT_CLOUD_TIMEOUT="${NAV_WAIT_CLOUD_TIMEOUT:-60}"
+NAV_WAIT_TERRAIN_TIMEOUT="${NAV_WAIT_TERRAIN_TIMEOUT:-60}"
 TIMING_DIAGNOSTICS_ENABLED="$(as_ros_bool "${TIMING_DIAGNOSTICS_ENABLED:-0}")"
 TIMING_DIAGNOSTICS_PATH="${TIMING_DIAGNOSTICS_PATH:-$WORKSPACE_DIR/logs/unitree_timing.csv}"
 TERMINAL_BACKEND="${TERMINAL_BACKEND:-tmux}"
@@ -181,6 +198,33 @@ schedule_unpause_physics() {
       sleep 0.25
     done
   ) &
+}
+
+# ---------------------------------------------------------------------------
+# Helper: wait for a ROS topic to publish at least one message.
+# Usage: wait_for_topic <topic> [timeout_sec]
+# Returns: 0 on success, 1 on timeout.
+# ---------------------------------------------------------------------------
+wait_for_topic() {
+  local topic="$1"
+  local timeout_sec="${2:-30}"
+  local start_time
+
+  start_time="$(date +%s)"
+
+  while true; do
+    if timeout 2 rostopic echo -n 1 "$topic" >/dev/null 2>&1; then
+      echo "[READY] topic: $topic"
+      return 0
+    fi
+
+    if [ $(( $(date +%s) - start_time )) -ge "$timeout_sec" ]; then
+      echo "[ERROR] timed out waiting for topic: $topic" >&2
+      return 1
+    fi
+
+    sleep 0.5
+  done
 }
 
 # ---------------------------------------------------------------------------
@@ -357,6 +401,19 @@ pkill -9 -f "fastlio_mapping"       2>/dev/null || true
 pkill -9 -f "scan_to_pointcloud2"   2>/dev/null || true
 pkill -9 -f "laserMapping"          2>/dev/null || true
 
+# ---- Navigation bringup ----
+pkill -9 -f "roslaunch.*simenv_navigation_bringup" 2>/dev/null || true
+pkill -9 -f "cmd_vel_bridge"         2>/dev/null || true
+pkill -9 -f "localPlanner"           2>/dev/null || true
+pkill -9 -f "pathFollower"           2>/dev/null || true
+pkill -9 -f "exploration"           2>/dev/null || true
+pkill -9 -f "dsvplanner"            2>/dev/null || true
+pkill -9 -f "graph_planner"         2>/dev/null || true
+pkill -9 -f "navigation_boundary"   2>/dev/null || true
+pkill -9 -f "registered_cloud_to_terrain_map" 2>/dev/null || true
+pkill -9 -f "navigation_registered_scan_relay" 2>/dev/null || true
+pkill -9 -f "navigation_state_estimation_relay" 2>/dev/null || true
+
 # ---- Sensor / state bridge nodes ----
 pkill -9 -f "pointcloud2livox"      2>/dev/null || true
 pkill -9 -f "state_from_gazebo"     2>/dev/null || true
@@ -512,6 +569,23 @@ echo "  Ground truth topics: $ENABLE_GROUND_TRUTH"
 echo "  Referee odom: $ENABLE_REFEREE_ODOM"
 echo "  FAST-LIO2 mapping: $ENABLE_FAST_LIO2"
 echo "  RViz: $ENABLE_RVIZ"
+if [ "$ENABLE_NAVIGATION" = "true" ]; then
+echo "  ---- Navigation ----"
+echo "  Navigation enabled: $ENABLE_NAVIGATION"
+echo "  Navigation mode: $NAV_MODE"
+if [ "$NAV_MODE" = "dsv_falco" ]; then
+echo "  DSV enabled: true"
+else
+echo "  DSV enabled: false"
+fi
+echo "  Max linear x: $NAV_MAX_LINEAR_X"
+echo "  Max angular z: $NAV_MAX_ANGULAR_Z"
+echo "  Command timeout: $NAV_COMMAND_TIMEOUT"
+echo "  Auto trotting: $NAV_AUTO_TROTTING"
+echo "  Auto navigation enable: $NAV_AUTO_ENABLE"
+echo "  Auto exploration start: $NAV_AUTO_START_EXPLORATION"
+echo "  Navigation log: $WORKSPACE_DIR/logs/navigation.log"
+fi
 echo "  Building controller: $START_BUILDING_CONTROL"
 echo "  Virtual joystick: $START_VIRTUAL_JOY"
 echo "  Timing diagnostics: $TIMING_DIAGNOSTICS_ENABLED"
@@ -680,15 +754,109 @@ if [ "$ENABLE_FAST_LIO2" = "true" ]; then
 fi
 
 # ---------------------------------------------------------------------------
+# Navigation bringup -- DSV + FALCO exploration stack.
+# Launched after FAST-LIO2 is confirmed ready.  Nodes are started but
+# motion is NOT enabled until the user explicitly commands it.
+# ---------------------------------------------------------------------------
+if [ "$ENABLE_NAVIGATION" = "true" ]; then
+  if [ "$ENABLE_FAST_LIO2" != "true" ]; then
+    echo "[ERROR] Navigation requires ENABLE_FAST_LIO2=1 (currently ENABLE_FAST_LIO2=$ENABLE_FAST_LIO2)." >&2
+    exit 1
+  fi
+
+  case "$NAV_MODE" in
+    falco)     START_DSV="false" ;;
+    dsv_falco) START_DSV="true"  ;;
+    *)
+      echo "[ERROR] Unsupported NAV_MODE='$NAV_MODE'. Allowed: falco, dsv_falco" >&2
+      exit 1
+      ;;
+  esac
+
+  if [ "$NAV_AUTO_START_EXPLORATION" = "true" ]; then
+    if [ "$NAV_AUTO_TROTTING" != "true" ] || [ "$NAV_AUTO_ENABLE" != "true" ] || [ "$NAV_MODE" != "dsv_falco" ]; then
+      echo "[ERROR] NAV_AUTO_START_EXPLORATION=true requires:" >&2
+      echo "  NAV_AUTO_TROTTING=true (currently $NAV_AUTO_TROTTING)" >&2
+      echo "  NAV_AUTO_ENABLE=true (currently $NAV_AUTO_ENABLE)" >&2
+      echo "  NAV_MODE=dsv_falco (currently $NAV_MODE)" >&2
+      exit 1
+    fi
+  fi
+
+  echo "Waiting for navigation prerequisites..."
+  wait_for_topic /Odometry "$NAV_WAIT_ODOM_TIMEOUT" || exit 1
+  wait_for_topic /cloud_registered "$NAV_WAIT_CLOUD_TIMEOUT" || exit 1
+
+  # Export speed limits so navigation_bridge.launch picks them up via $(optenv).
+  export NAV_MAX_LINEAR_X
+  export NAV_MAX_LINEAR_Y
+  export NAV_MAX_ANGULAR_Z
+  export NAV_COMMAND_TIMEOUT
+
+  echo "Launching navigation bringup (mode=$NAV_MODE, dsv=$START_DSV)..."
+  roslaunch simenv_navigation_bringup single_floor_exploration.launch \
+    start_falco:=true \
+    start_dsv:="$START_DSV" \
+    start_bridge:=true \
+    > "$WORKSPACE_DIR/logs/navigation.log" 2>&1 &
+
+  NAVIGATION_PID=$!
+  echo "$NAVIGATION_PID" > "$WORKSPACE_DIR/logs/navigation.pid"
+  echo "Navigation bringup launched (pid=$NAVIGATION_PID, logs: logs/navigation.log)"
+
+  sleep 6
+
+  echo "Setting default safe navigation state (enabled=false, start_exploring=false)..."
+  rostopic pub /navigation/enabled       std_msgs/Bool  "data: false" -1 2>/dev/null || true
+  rostopic pub /navigation/start_exploring std_msgs/Bool "data: false" -1 2>/dev/null || true
+  echo "Navigation nodes are running but motion is DISABLED."
+  echo "  Enable motion manually:"
+  echo "    rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\" -1"
+  echo "    rostopic pub /navigation/enabled std_msgs/Bool \"data: true\" -1"
+  echo "    rostopic pub /navigation/start_exploring std_msgs/Bool \"data: true\" -1"
+
+  if [ "$NAV_AUTO_TROTTING" = "true" ]; then
+    sleep 2
+    echo "NAV_AUTO_TROTTING=true: commanding Trotting via /fsm/state_cmd..."
+    rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 4" -1 2>/dev/null || true
+  fi
+  if [ "$NAV_AUTO_ENABLE" = "true" ]; then
+    sleep 2
+    echo "NAV_AUTO_ENABLE=true: publishing /navigation/enabled=true..."
+    rostopic pub /navigation/enabled std_msgs/Bool "data: true" -1 2>/dev/null || true
+  fi
+  if [ "$NAV_AUTO_START_EXPLORATION" = "true" ]; then
+    sleep 2
+    echo "NAV_AUTO_START_EXPLORATION=true: publishing /navigation/start_exploring=true..."
+    rostopic pub /navigation/start_exploring std_msgs/Bool "data: true" -1 2>/dev/null || true
+  fi
+fi
+
+# ---------------------------------------------------------------------------
 # Post-startup summary
 # ---------------------------------------------------------------------------
 echo "Simulation startup command completed."
-echo "Publish geometry_msgs/Twist to /cmd_vel for velocity control (Trotting/RL mode only;"
-echo "  Trotting and RL require a Torch-enabled build: set UNITREE_ENABLE_TORCH_POLICY=ON)."
-echo "Use rostopic to switch FSM states:"
-echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 2\"  # FixedStand"
-echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\"  # Trotting   (needs Torch)"
-echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL         (needs Torch)"
+if [ "$ENABLE_NAVIGATION" = "true" ]; then
+  echo ""
+  echo "  ---- Navigation Control ----"
+  echo "  Nodes: DSV=$START_DSV  FALCO=true  Bridge=true"
+  echo "  State: nodes alive, motion DISABLED (safe)"
+  echo ""
+  echo "  To enable exploration:"
+  echo "    rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\" -1"
+  echo "    rostopic pub /navigation/enabled std_msgs/Bool \"data: true\" -1"
+  echo "    rostopic pub /navigation/start_exploring std_msgs/Bool \"data: true\" -1"
+  echo ""
+  echo "  To stop motion immediately:"
+  echo "    rostopic pub /navigation/enabled std_msgs/Bool \"data: false\" -1"
+else
+  echo "Publish geometry_msgs/Twist to /cmd_vel for velocity control (Trotting/RL mode only;"
+  echo "  Trotting and RL require a Torch-enabled build: set UNITREE_ENABLE_TORCH_POLICY=ON)."
+  echo "Use rostopic to switch FSM states:"
+  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 2\"  # FixedStand"
+  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\"  # Trotting   (needs Torch)"
+  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL         (needs Torch)"
+fi
 
 # Keep the script alive so the user can read the summary and press Ctrl-C to
 # stop all processes.  The controller and rviz run in their own terminals.
@@ -707,6 +875,27 @@ echo "=============================================="
 cleanup() {
   echo ""
   echo "Shutting down..."
+
+  # ── Disable navigation motion before killing nodes ──
+  if [ "${ENABLE_NAVIGATION:-false}" = "true" ]; then
+    rostopic pub /navigation/enabled std_msgs/Bool "data: false" -1 2>/dev/null || true
+    sleep 0.5
+  fi
+
+  # ── Navigation bringup ──
+  pkill -9 -f "roslaunch.*simenv_navigation_bringup" 2>/dev/null || true
+  pkill -9 -f "cmd_vel_bridge"         2>/dev/null || true
+  pkill -9 -f "localPlanner"           2>/dev/null || true
+  pkill -9 -f "pathFollower"           2>/dev/null || true
+  pkill -9 -f "exploration"           2>/dev/null || true
+  pkill -9 -f "dsvplanner"            2>/dev/null || true
+  pkill -9 -f "graph_planner"         2>/dev/null || true
+  pkill -9 -f "navigation_boundary"   2>/dev/null || true
+  pkill -9 -f "registered_cloud_to_terrain_map" 2>/dev/null || true
+  pkill -9 -f "navigation_registered_scan_relay" 2>/dev/null || true
+  pkill -9 -f "navigation_state_estimation_relay" 2>/dev/null || true
+
+  # ── Gazebo and core infrastructure ──
   pkill -9 -f "gzserver"     2>/dev/null || true
   pkill -9 -f "gzclient"     2>/dev/null || true
   pkill -9 -f "gazebo"       2>/dev/null || true
@@ -714,6 +903,7 @@ cleanup() {
   pkill -9 -f "rosout"       2>/dev/null || true
   pkill -9 -f "junior_ctrl"  2>/dev/null || true
   pkill -9 -f "fastlio_mapping" 2>/dev/null || true
+  pkill -9 -f "laserMapping" 2>/dev/null || true
   pkill -9 -f "scan_to_pointcloud2" 2>/dev/null || true
   pkill -9 -f "building_generator_classic_control" 2>/dev/null || true
   pkill -9 -f "rviz"         2>/dev/null || true
