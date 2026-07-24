@@ -1,5 +1,16 @@
 # Module Status
 
+> **2026-07-24 shared FAST-LIO2 dependency retry**:
+> `tools/prepare_shared_ros_deps.sh` now links the fixed public FAST_LIO and
+> `livox_ros_driver` checkouts into the task worktree under ignored
+> `src/external/` symlinks after validating clean commits. Package discovery
+> via `ROS_PACKAGE_PATH=$PWD/src` passes for both `fast_lio` and
+> `livox_ros_driver`. Formal build remains blocked before catkin because the
+> shared pinned `livox_ros_driver` would mutate its public checkout by
+> auto-cloning Livox-SDK; `tools/build_with_venv.sh` now refuses that unsafe
+> path. First failed gate: `FAST_LIO_BUILD_BLOCKED`. Navigation runtime stages
+> remain unvalidated in this retry.
+
 > **2026-07-24 `src/navigation` single-floor FALCO + DSV data path**:
 > `simenv_navigation_bridge` now provides `registered_cloud_to_terrain_map.py`
 > and `simenv_navigation_boundary.py`; `simenv_navigation_bringup` now provides

@@ -1,56 +1,33 @@
-# Summary
+# 2026-07-24 Shared FAST-LIO2 Dependency Retry
 
-Final verdict: `FALCO_DSV_EXPLORATION_BLOCKED`
+Verdict: `FALCO_DSV_EXPLORATION_BLOCKED`
 
-First failed runtime gate: `FAST_LIO_INPUT_BLOCKED`
+First failed gate: `FAST_LIO_BUILD_BLOCKED`
 
-The 2026-07-24 real run used the required entry points:
+## Shared Resources
 
-- `FLOOR_COUNT=1 GUI=false ./auto.sh`
-- `roslaunch simenv_navigation_bringup single_floor_exploration.launch`
+- FAST_LIO: `/home/zzf/search_ws/FAST_LIO`
+- ikd-Tree: `/home/zzf/search_ws/FAST_LIO/include/ikd-Tree`
+- livox_ros_driver: `/home/zzf/search_ws/livox_ros_driver`
 
-The run stopped before motion because `fast_lio` was not discoverable in this worktree, so `fast_lio/fastlio_mapping` did not start and `/Odometry` timed out.
+## Commits
 
-## Completed
+- FAST_LIO: `7cc4175de6f8ba2edf34bab02a42195b141027e9`
+- ikd-Tree: `e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4`
+- livox_ros_driver: `3d240d5666129e1a3052e78ee8487a04b08fdda3`
 
-- Formal build passed with `./tools/build_with_venv.sh`.
-- Added terrain-map and runtime-boundary adapters.
-- Added `single_floor_exploration.launch`.
-- Added FALCO heading-aware speed scheduling and diagnostics.
-- Fixed DSV zero-initialization deadlock risk and replaced single-step movement threshold with windowed stuck detection.
-- Tuned initial A1/single-floor DSV/FALCO/bridge parameters.
-- Real runtime startup was attempted and failed at the FAST-LIO2 input gate.
+## Result
 
-## Validation
+`tools/prepare_shared_ros_deps.sh` created ignored `src/external/FAST_LIO` and
+`src/external/livox_ros_driver` symlinks to the fixed shared sources. Package
+discovery through `ROS_PACKAGE_PATH=$PWD/src` can find both `fast_lio` and
+`livox_ros_driver`.
 
-- `python3 -m py_compile`: PASS.
-- `xmllint` launch XML: PASS.
-- `roslaunch --nodes/--files simenv_navigation_bringup single_floor_exploration.launch`: PASS.
-- FALCO interface smoke: PASS.
-- FALCO path follower speed probes: PASS.
-- Residual ROS process check after smoke: clean.
+Formal `./tools/build_with_venv.sh` stopped before `catkin_make` with exit code
+`20`. The pinned shared `livox_ros_driver` CMake lacks the local message-only
+guard and would auto-clone/build Livox-SDK inside the public shared checkout
+when no system `liblivox_sdk_static.a` exists. The build preflight refused that
+mutation to preserve the shared source.
 
-## Gate Verdicts
-
-- `BASELINE_PASS`
-- `SCOPE_AUDIT_PASS`
-- `BUILD_PASS`
-- `FALCO_SPEED_PROFILE_PASS`
-- `FALCO_OBSTACLE_CHECK_PASS` for configuration/static preservation (`checkObstacle=true`); real-cloud obstacle runtime remains pending.
-- `DSV_INIT_PASS` by build/static code path and parameter audit; full DSV runtime smoke with real planner not run.
-- `DSV_MOVEMENT_DETECTION_PASS` by build/static code path and parameter audit; real stuck behavior pending.
-- `TERRAIN_MAP_PASS` for node build/launch/interface; real cloud statistics pending.
-- `SINGLE_FLOOR_CONSTRAINT_PASS` for config/code launch audit; real frontier/waypoint distribution pending.
-- `BOUNDARY_PASS` for node build/launch/topic interface.
-- `NO_MOTION_GATE_PASS` for bridge gating logic/static launch; disabled state does not continuously emit samples.
-- `FAST_LIO_INPUT_BLOCKED`: first runtime failure.
-- `TERRAIN_MAP_BLOCKED`: downstream of missing FAST-LIO2 input.
-- `DSV_FRONTIER_BLOCKED`: downstream of missing FAST-LIO2 input.
-- `FALCO_INTERFACE_BLOCKED`: downstream of missing DSV/FALCO real data path.
-- `SHORT_CLOSED_LOOP_FAIL`: not executed.
-- `FULL_EXPLORATION_FAIL`: not executed.
-- `RETURN_HOME_FAIL`: not executed.
-
-## Next
-
-Restore or stage the `fast_lio` ROS package for this task worktree without modifying FAST-LIO2 core behavior, rebuild with `./tools/build_with_venv.sh`, and rerun the runtime gate from `/Odometry` and `/cloud_registered`.
+FAST-LIO runtime, terrain map, DSV/FALCO data chain, short closed loop, full
+exploration, and return home were not run after this build blocker.

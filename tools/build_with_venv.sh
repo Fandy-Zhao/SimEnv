@@ -238,6 +238,23 @@ if [[ -f "$REPO_ROOT/build/CMakeCache.txt" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# Shared dependency safety checks
+# ---------------------------------------------------------------------------
+SHARED_LIVOX_CMAKELISTS="$REPO_ROOT/src/external/livox_ros_driver/livox_ros_driver/CMakeLists.txt"
+if [[ -f "$SHARED_LIVOX_CMAKELISTS" ]]; then
+  if ! grep -q "BUILD_LIVOX_DRIVER_NODE" "$SHARED_LIVOX_CMAKELISTS"; then
+    if ! find /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu -maxdepth 2 \
+      -name "liblivox_sdk_static.a" 2>/dev/null | grep -q .; then
+      echo "[build_with_venv] ERROR: shared livox_ros_driver requires Livox-SDK for its hardware node." >&2
+      echo "[build_with_venv] ERROR: its CMakeLists.txt has no BUILD_LIVOX_DRIVER_NODE guard and would try to clone/build Livox-SDK inside the shared source checkout." >&2
+      echo "[build_with_venv] ERROR: refusing to modify /home/zzf/search_ws/livox_ros_driver from this worktree." >&2
+      echo "[build_with_venv] ERROR: use a clean message-only upstream commit/patch strategy that does not mutate the shared source, or install a real Livox-SDK system library." >&2
+      exit 20
+    fi
+  fi
+fi
+
+# ---------------------------------------------------------------------------
 # Build
 # ---------------------------------------------------------------------------
 echo "[build_with_venv] Starting catkin_make..."

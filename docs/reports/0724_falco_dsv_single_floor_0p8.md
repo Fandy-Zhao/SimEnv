@@ -14,6 +14,10 @@ Runtime validation update: `FALCO_DSV_EXPLORATION_BLOCKED`.
 
 First failed runtime gate: `FAST_LIO_INPUT_BLOCKED`.
 
+Shared dependency retry: `FALCO_DSV_EXPLORATION_BLOCKED`.
+
+First failed retry gate: `FAST_LIO_BUILD_BLOCKED`.
+
 ## Validation
 
 - `./tools/build_with_venv.sh`: PASS.
@@ -35,6 +39,15 @@ not launch and `/Odometry` timed out. No claim is made for short closed-loop,
 full exploration, collision-free operation, complete floor coverage, or return
 home.
 
+The shared dependency retry linked the fixed public FAST_LIO and
+`livox_ros_driver` sources under ignored `src/external/` symlinks and confirmed
+package discovery through `ROS_PACKAGE_PATH=$PWD/src`. Formal
+`./tools/build_with_venv.sh` then stopped before `catkin_make` with exit code
+`20` because the pinned shared `livox_ros_driver` CMake would auto-clone/build
+Livox-SDK into `/home/zzf/search_ws/livox_ros_driver`; that mutation is
+forbidden for this task. FAST-LIO runtime, terrain map, DSV/FALCO chain, short
+closed loop, full exploration, and return home were not run in this retry.
+
 ## Runtime Evidence
 
 - `fast_lio_input_blocked.txt`
@@ -42,6 +55,17 @@ home.
 - `navigation_runtime.log`
 - `topic_hz_runtime.txt`
 - `tf_snapshot_runtime.txt`
+- `shared_dependency_audit.txt`
+- `shared_dependency_commits.txt`
+- `shared_dependency_links.txt`
+- `build_shared_dependencies.log`
+- `navigation_data_chain.txt`
+- `terrain_map_metrics.csv`
+- `dsv_frontier_metrics.csv`
+- `falco_raw_cmd.csv`
+- `bridge_cmd.csv`
+- `closed_loop_metrics.csv`
+- `full_exploration_metrics.csv`
 
 ## Evidence
 

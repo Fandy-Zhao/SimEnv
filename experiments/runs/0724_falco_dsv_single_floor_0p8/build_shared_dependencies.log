@@ -1,0 +1,20 @@
+[build_with_venv] CUDA_HOME: /usr/local/cuda-11.8
+[build_with_venv] Repository root: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8
+[build_with_venv] Selected CC : /usr/bin/gcc-11
+[build_with_venv] Selected CXX: /usr/bin/g++-11
+[build_with_venv] CUDAHOSTCXX : /usr/bin/g++-11
+[build_with_venv] ROS setup: /opt/ros/noetic/setup.bash
+[build_with_venv] Python executable: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/.venv/bin/python
+[build_with_venv] Active python: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/.venv/bin/python
+Python 3.10.12
+[build_with_venv] Catkin whitelist: livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup
+WARN: Python torch is not importable from venv.
+      If a package needs LibTorch, install a compatible torch wheel:
+      source .venv/bin/activate
+      python -m pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+[build_with_venv] CMAKE_PREFIX_PATH=/opt/ros/noetic:/usr/local/cuda-11.8
+[build_with_venv] ERROR: shared livox_ros_driver requires Livox-SDK for its hardware node.
+[build_with_venv] ERROR: its CMakeLists.txt has no BUILD_LIVOX_DRIVER_NODE guard and would try to clone/build Livox-SDK inside the shared source checkout.
+[build_with_venv] ERROR: refusing to modify /home/zzf/search_ws/livox_ros_driver from this worktree.
+[build_with_venv] ERROR: use a clean message-only upstream commit/patch strategy that does not mutate the shared source, or install a real Livox-SDK system library.
+build_with_venv_exit_code=20

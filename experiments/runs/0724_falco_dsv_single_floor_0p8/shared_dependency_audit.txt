@@ -1,0 +1,177 @@
+2026-07-24T18:31:41+08:00
+## governance baseline
+feat/0724-falco-dsv-single-floor-exploration-0p8
+73319c447c63bd8901608b3cef7da8ec34c784fa
+ M generated_building/building_config.json
+ M generated_building/competition_scene.world
+ M generated_building/danger_truth.json
+ M generated_building/door_config.yaml
+ M generated_building/elevator_config.yaml
+ M generated_building/generation_checks.json
+ M generated_building/layout_metadata.json
+ M generated_building/model.sdf
+ M generated_building/scene_manifest.json
+ M generated_building/scene_manifest.stdout.json
+ M generated_building/team_scene_info.json
+ M generated_building/world.sdf
+ M logs/building_control.log
+ M logs/building_control.pid
+ M logs/competition_gazebo.log
+ M logs/competition_gazebo.pid
+ M results/danger_truth.json
+?? experiments/runs/0724_falco_dsv_single_floor_0p8/fast_lio_dependency_audit.txt
+?? experiments/runs/0724_falco_dsv_single_floor_0p8/fast_lio_post_build_discovery.txt
+?? experiments/runs/0724_falco_dsv_single_floor_0p8/fast_lio_source_commits.txt
+?? experiments/runs/0724_falco_dsv_single_floor_0p8/shared_dependency_audit.txt
+## shared FAST_LIO
+7cc4175de6f8ba2edf34bab02a42195b141027e9
+ e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4 include/ikd-Tree (remotes/origin/fast_lio)
+/home/zzf/search_ws/FAST_LIO/package.xml
+## shared livox_ros_driver
+3d240d5666129e1a3052e78ee8487a04b08fdda3
+/home/zzf/search_ws/livox_ros_driver/livox_ros_driver/package.xml
+## existing dependency references
+tools/build_rl_fast.sh
+tools/build_with_venv.sh
+tools/check_repo_clean.py
+tools/diagnostics/check_fast_lio2_input.py
+tools/diagnostics/check_mapping_pipeline.py
+tools/diagnostics/run_competition_rl_rtf_matrix.sh
+tools/diagnostics/run_core_runtime_matrix.py
+tools/diagnostics/sample_runtime_metrics.py
+tools/diagnostics/test_check_fast_lio2_input.py
+tools/external_deps/README.md
+tools/external_deps/prepare_fast_lio2_deps.sh
+tools/external_deps/README.md:6:- `/home/zzf/search_ws/FAST_LIO`
+tools/external_deps/README.md:7:- `/home/zzf/search_ws/livox_ros_driver`
+tools/external_deps/README.md:24:- `fast_lio-cxx17.patch` removes FAST_LIO's hard-coded C++14 flags and sets
+tools/external_deps/patches/livox-driver-message-only.patch:1:diff --git a/livox_ros_driver/CMakeLists.txt b/livox_ros_driver/CMakeLists.txt
+tools/external_deps/patches/livox-driver-message-only.patch:3:--- a/livox_ros_driver/CMakeLists.txt
+tools/external_deps/patches/livox-driver-message-only.patch:4:+++ b/livox_ros_driver/CMakeLists.txt
+tools/external_deps/patches/livox-driver-message-only.patch:6: project(livox_ros_driver VERSION ${LIVOX_ROS_DRIVER_VERSION} LANGUAGES CXX)
+tools/external_deps/patches/livox-driver-message-only.patch:7: message(STATUS "livox_ros_driver version: ${LIVOX_ROS_DRIVER_VERSION}")
+tools/external_deps/prepare_fast_lio2_deps.sh:4:FAST_LIO_SOURCE="${FAST_LIO_SOURCE:-/home/zzf/search_ws/FAST_LIO}"
+tools/external_deps/prepare_fast_lio2_deps.sh:5:LIVOX_SOURCE="${LIVOX_SOURCE:-/home/zzf/search_ws/livox_ros_driver}"
+tools/external_deps/prepare_fast_lio2_deps.sh:6:FAST_LIO_SHA="7cc4175de6f8ba2edf34bab02a42195b141027e9"
+tools/external_deps/prepare_fast_lio2_deps.sh:9:STAGING_ROOT="${SIMENV_FAST_LIO2_STAGING_ROOT:-/tmp/simenv-fast-lio2-deps/${FAST_LIO_SHA}-${LIVOX_SHA}}"
+tools/external_deps/prepare_fast_lio2_deps.sh:43:  [[ -d "$FAST_LIO_SOURCE" ]] || fail "FAST_LIO source not found: $FAST_LIO_SOURCE"
+tools/external_deps/prepare_fast_lio2_deps.sh:44:  [[ -d "$LIVOX_SOURCE" ]] || fail "livox_ros_driver source not found: $LIVOX_SOURCE"
+tools/external_deps/prepare_fast_lio2_deps.sh:45:  require_clean_git "$FAST_LIO_SOURCE" FAST_LIO "$FAST_LIO_SHA"
+tools/external_deps/prepare_fast_lio2_deps.sh:46:  require_clean_git "$LIVOX_SOURCE" livox_ros_driver "$LIVOX_SHA"
+tools/external_deps/prepare_fast_lio2_deps.sh:49:  ikd_status="$(git -C "$FAST_LIO_SOURCE" submodule status --recursive include/ikd-Tree | awk '{print $1}')"
+tools/external_deps/prepare_fast_lio2_deps.sh:53:  [[ -f "$PATCH_DIR/fast_lio-cxx17.patch" ]] || fail "missing FAST_LIO patch"
+tools/external_deps/prepare_fast_lio2_deps.sh:56:  echo "FAST_LIO_SOURCE=$FAST_LIO_SOURCE"
+tools/external_deps/prepare_fast_lio2_deps.sh:57:  echo "FAST_LIO_SHA=$FAST_LIO_SHA"
+tools/external_deps/prepare_fast_lio2_deps.sh:91:  for entry in "/src/FAST_LIO" "/src/livox_ros_driver"; do
+tools/external_deps/prepare_fast_lio2_deps.sh:100:  for link in "$REPO_ROOT/src/FAST_LIO" "$REPO_ROOT/src/livox_ros_driver"; do
+tools/external_deps/prepare_fast_lio2_deps.sh:105:  ln -sfn "$STAGING_ROOT/FAST_LIO" "$REPO_ROOT/src/FAST_LIO"
+tools/external_deps/prepare_fast_lio2_deps.sh:106:  ln -sfn "$STAGING_ROOT/livox_ros_driver/livox_ros_driver" "$REPO_ROOT/src/livox_ros_driver"
+tools/external_deps/prepare_fast_lio2_deps.sh:112:  copy_source "$FAST_LIO_SOURCE" "$STAGING_ROOT/FAST_LIO"
+tools/external_deps/prepare_fast_lio2_deps.sh:113:  copy_source "$LIVOX_SOURCE" "$STAGING_ROOT/livox_ros_driver"
+tools/external_deps/prepare_fast_lio2_deps.sh:114:  apply_patch_file "$STAGING_ROOT/FAST_LIO" "$PATCH_DIR/fast_lio-cxx17.patch"
+tools/external_deps/prepare_fast_lio2_deps.sh:115:  apply_patch_file "$STAGING_ROOT/livox_ros_driver" "$PATCH_DIR/livox-driver-message-only.patch"
+tools/external_deps/prepare_fast_lio2_deps.sh:118:  readlink -f "$REPO_ROOT/src/FAST_LIO"
+tools/external_deps/prepare_fast_lio2_deps.sh:119:  readlink -f "$REPO_ROOT/src/livox_ros_driver"
+tools/external_deps/prepare_fast_lio2_deps.sh:123:  for link in "$REPO_ROOT/src/FAST_LIO" "$REPO_ROOT/src/livox_ros_driver"; do
+tools/build_with_venv.sh:173:#   SIMENV_CATKIN_WHITELIST="livox_ros_driver;fast_lio" ./tools/build_with_venv.sh
+tools/build_with_venv.sh:176:# - livox_ros_driver is kept for CustomMsg / CustomPoint message definitions.
+tools/build_with_venv.sh:179:  SIMENV_CATKIN_WHITELIST="livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup"
+tools/diagnostics/run_competition_rl_rtf_matrix.sh:21:MATRIX[M1]="WORLD_MODE=competition PHYSICS_PROFILE=normal GUI=false START_CONTROLLER=1 ENABLE_SENSOR_DATA=0 ENABLE_POINTCLOUD_CONVERTER=0 ENABLE_FAST_LIO2=0 ENABLE_RVIZ=0 ENABLE_REFEREE_ODOM=0 ENABLE_GROUND_TRUTH=0 START_BUILDING_CONTROL=0"
+tools/diagnostics/run_competition_rl_rtf_matrix.sh:22:MATRIX[M2]="WORLD_MODE=competition PHYSICS_PROFILE=normal GUI=false START_CONTROLLER=1 ENABLE_SENSOR_DATA=1 ENABLE_POINTCLOUD_CONVERTER=0 ENABLE_FAST_LIO2=0 ENABLE_RVIZ=0 ENABLE_REFEREE_ODOM=0 ENABLE_GROUND_TRUTH=0 START_BUILDING_CONTROL=0"
+tools/diagnostics/run_competition_rl_rtf_matrix.sh:23:MATRIX[M3]="WORLD_MODE=competition PHYSICS_PROFILE=normal GUI=false START_CONTROLLER=1 ENABLE_SENSOR_DATA=1 ENABLE_POINTCLOUD_CONVERTER=1 ENABLE_FAST_LIO2=0 ENABLE_RVIZ=0 ENABLE_REFEREE_ODOM=0 ENABLE_GROUND_TRUTH=0 START_BUILDING_CONTROL=0"
+tools/diagnostics/run_competition_rl_rtf_matrix.sh:24:MATRIX[M4]="WORLD_MODE=competition PHYSICS_PROFILE=normal GUI=false START_CONTROLLER=1 ENABLE_SENSOR_DATA=1 ENABLE_POINTCLOUD_CONVERTER=1 ENABLE_FAST_LIO2=1 ENABLE_RVIZ=0 ENABLE_REFEREE_ODOM=0 ENABLE_GROUND_TRUTH=0 START_BUILDING_CONTROL=0"
+tools/diagnostics/run_competition_rl_rtf_matrix.sh:25:MATRIX[M5]="WORLD_MODE=competition PHYSICS_PROFILE=normal GUI=false START_CONTROLLER=1 ENABLE_SENSOR_DATA=1 ENABLE_POINTCLOUD_CONVERTER=1 ENABLE_FAST_LIO2=1 ENABLE_RVIZ=0 ENABLE_REFEREE_ODOM=0 ENABLE_GROUND_TRUTH=0 START_BUILDING_CONTROL=0 RL_POLICY_PATH=$POLICY_PATH_DEFAULT"
+tools/diagnostics/run_competition_rl_rtf_matrix.sh:26:MATRIX[M6]="WORLD_MODE=competition PHYSICS_PROFILE=normal GUI=false START_CONTROLLER=1 ENABLE_SENSOR_DATA=0 ENABLE_POINTCLOUD_CONVERTER=0 ENABLE_FAST_LIO2=0 ENABLE_RVIZ=0 ENABLE_REFEREE_ODOM=0 ENABLE_GROUND_TRUTH=0 START_BUILDING_CONTROL=0 RL_POLICY_PATH=$POLICY_PATH_DEFAULT"
+tools/diagnostics/run_competition_rl_rtf_matrix.sh:27:MATRIX[M7]="WORLD_MODE=competition PHYSICS_PROFILE=normal GUI=false START_CONTROLLER=1 ENABLE_SENSOR_DATA=1 ENABLE_POINTCLOUD_CONVERTER=1 ENABLE_FAST_LIO2=1 ENABLE_RVIZ=0 ENABLE_REFEREE_ODOM=1 ENABLE_GROUND_TRUTH=1 START_BUILDING_CONTROL=1 RL_POLICY_PATH=$POLICY_PATH_DEFAULT"
+tools/diagnostics/run_competition_rl_rtf_matrix.sh:28:MATRIX[M8]="WORLD_MODE=competition PHYSICS_PROFILE=normal GUI=false START_CONTROLLER=1 ENABLE_SENSOR_DATA=1 ENABLE_POINTCLOUD_CONVERTER=1 ENABLE_FAST_LIO2=1 ENABLE_RVIZ=0 ENABLE_REFEREE_ODOM=1 ENABLE_GROUND_TRUTH=1 START_BUILDING_CONTROL=1 RL_POLICY_PATH=$POLICY_PATH_DEFAULT OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1"
+tools/diagnostics/run_core_runtime_matrix.py:52:            "ENABLE_FAST_LIO2": "0",
+tools/diagnostics/run_core_runtime_matrix.py:72:            "ENABLE_FAST_LIO2": "1",
+tools/diagnostics/run_core_runtime_matrix.py:132:CORE_CASES["M2"]["env"]["ENABLE_FAST_LIO2"] = "0"
+tools/diagnostics/run_core_runtime_matrix.py:133:CORE_CASES["M3"]["env"]["ENABLE_FAST_LIO2"] = "0"
+.gitignore:40:src/FAST_LIO/
+.gitignore:41:src/livox_ros_driver/
+docs/reports/0704_fast-lio2-mapping.md:12:- 未完成: 运行时验证 (需要完整的 Gazebo + FAST_LIO 环境)
+docs/reports/0704_fast-lio2-mapping.md:16:- FAST-LIO2 依赖方式: 不 vendor。FAST_LIO 作为外部源码放在 `SimEnv/src/FAST_LIO` 构建。
+docs/reports/0704_fast-lio2-mapping.md:17:- 是否 vendor FAST_LIO: 否
+docs/reports/0704_fast-lio2-mapping.md:42:| `rospack find fast_lio` | ✅ PASS | FAST_LIO at `src/FAST_LIO` |
+docs/reports/0704_fast-lio2-mapping.md:44:| `catkin_make` / `build_with_venv.sh` | ⚠️ PROGRESS | CUDA host compiler FIXED; blocked by CMakeCache mismatch + livox_ros_driver C++11 |
+docs/reports/0704_fast-lio2-mapping.md:59:- 需要用户确认: FAST_LIO 已存在于 `SimEnv/src/FAST_LIO`；当前阻塞点是 CUDA toolkit (torch cu118 需要) + livox_ros_driver C++11 编译问题
+docs/reports/0704_fast-lio2-mapping.md:60:- 运行时验证限制: 需要 Gazebo + A1 模型 + FAST_LIO 编译
+docs/reports/0724_falco_dsv_single_floor_0p8.md:15:First failed runtime gate: `FAST_LIO_INPUT_BLOCKED`.
+docs/reports/0713_fast-lio2-stage01-runtime.md:68:- **Next**: restart machine, run `ENABLE_FAST_LIO2=1 GUI=false ./auto.sh` → Trotting → `/cmd_vel`
+docs/reports/0713_fast-lio2-stage01-runtime.md:94:2. `ENABLE_FAST_LIO2=1 GUI=false ./auto.sh` → FAST-LIO2 convergence
+docs/reports/0718_runtime-pointcloud-orientation.md:73:  `src/FAST_LIO` as a read-only overlay, while SimEnv integration and robot
+docs/reports/0706_fast-lio2-deploy-guide.md:40:- livox_ros_driver 需要 C++17
+docs/reports/0706_fast-lio2-deploy-guide.md:54:| FAST_LIO path | ✅ | §2 |
+docs/reports/0706_fast-lio2-deploy-guide.md:55:| livox_ros_driver | ✅ | §3 |
+docs/quick-start.md:120:| `ENABLE_FAST_LIO2` | `1` | 是否启动 FAST-LIO2 建图（需编译 FAST_LIO）；`WORLD_MODE=earth` 默认改为 `0` |
+docs/quick-start.md:139:`ENABLE_FAST_LIO2=0`、`ENABLE_RVIZ=0`、`ENABLE_SENSOR_DATA=0`、
+docs/quick-start.md:176:启动 FAST-LIO2 LiDAR-Inertial SLAM 建图（需要先编译 FAST_LIO）：
+docs/quick-start.md:179:ENABLE_FAST_LIO2=1 GUI=false ./auto.sh
+docs/decisions/ADR-0704-fast-lio2-mapping.md:11:### 1. 不 vendor FAST_LIO 源码
+docs/decisions/ADR-0704-fast-lio2-mapping.md:12:**决定**: 不 vendor FAST_LIO。FAST_LIO 作为外部源码 ROS package，放在 `SimEnv/src/FAST_LIO`（SimEnv 仓库本身就是 catkin workspace 根目录）。用户通过 `git clone` 自行安装。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:34:1. **Vendor FAST_LIO**: 被拒绝——带来许可证、维护和仓库膨胀问题。
+docs/decisions/ADR-0704-fast-lio2-mapping.md:39:- 用户需手动安装 FAST_LIO: 将 FAST_LIO clone 到 `SimEnv/src/FAST_LIO`，然后使用 `./tools/build_with_venv.sh` 构建
+docs/decisions/ADR-0706-fast-lio2-deploy-guide.md:15:### 2. 确认 FAST_LIO 不 vendor
+docs/decisions/ADR-0706-fast-lio2-deploy-guide.md:16:**决定**: 重申 FAST_LIO 作为外部源码放在 `SimEnv/src/FAST_LIO`，不 vendor 到 SimEnv 仓库或 `simenv_fast_lio2_integration` 内。
+docs/architecture.md:61:simenv_fast_lio2_integration (FAST_LIO in SimEnv/src/)
+docs/architecture.md:86:4. **SLAM** (FAST-LIO2, optional via `ENABLE_FAST_LIO2=1`): `/scan_pointcloud2` + `/livox/imu` → map + odometry
+docs/module_status.md:15:> motion at `FAST_LIO_INPUT_BLOCKED`. The task worktree can find
+docs/module_status.md:64:> from fixed external source commits. Staged FAST_LIO uses C++17; staged
+docs/module_status.md:65:> `livox_ros_driver` keeps message generation active while skipping the real
+docs/slam/fast_lio2_deployment_guide.md:25:│   ├── FAST_LIO/                # 外部源码，需 git clone
+docs/slam/fast_lio2_deployment_guide.md:26:│   ├── livox_ros_driver/        # 外部源码，需 git clone
+docs/slam/fast_lio2_deployment_guide.md:45:- FAST_LIO 应放在 `SimEnv/src/FAST_LIO`，由用户自行 `git clone`。
+docs/slam/fast_lio2_deployment_guide.md:46:- livox_ros_driver (ROS1 版本) 应放在 `SimEnv/src/livox_ros_driver`，或通过外部 workspace source。
+docs/slam/fast_lio2_deployment_guide.md:47:- `simenv_fast_lio2_integration` 是适配包，**不包含** FAST_LIO 源码（不 vendor）。仅提供 SimEnv 适配配置、launch、adapter、检查脚本和文档。
+docs/slam/fast_lio2_deployment_guide.md:65:| FAST_LIO | `SimEnv/src/FAST_LIO` | `git clone https://github.com/hku-mars/FAST_LIO.git` |
+docs/slam/fast_lio2_deployment_guide.md:66:| livox_ros_driver (ROS1) | `SimEnv/src/livox_ros_driver` | `git clone https://github.com/Livox-SDK/livox_ros_driver.git` |
+docs/slam/fast_lio2_deployment_guide.md:68:FAST_LIO 依赖 `livox_ros_driver`（在其 CMakeLists.txt 中声明），因此两者都需要存在于 workspace 中。
+docs/slam/fast_lio2_deployment_guide.md:114:> **注**: 上述 "待确认" 字段表示在 `simenv_mid360.yaml` 中未显式配置，沿用 FAST_LIO 内部默认值。
+docs/slam/fast_lio2_deployment_guide.md:301:- `livox_ros_driver` 需要 C++17（已在 `fix/0704-fast-lio2-build-errors` 分支中修复）。
+docs/slam/fast_lio2_deployment_guide.md:307:1. 确认 FAST_LIO 存在于 `src/FAST_LIO`
+docs/slam/fast_lio2_deployment_guide.md:308:2. 确认 livox_ros_driver 存在于 `src/livox_ros_driver`
+docs/slam/fast_lio2_deployment_guide.md:324:# === Step 3: 确认 FAST_LIO 和 livox_ros_driver 已安装 ===
+docs/slam/fast_lio2_deployment_guide.md:325:ls src/FAST_LIO/CMakeLists.txt && echo "OK: FAST_LIO" || echo "MISSING: clone FAST_LIO first"
+docs/slam/fast_lio2_deployment_guide.md:326:ls src/livox_ros_driver/CMakeLists.txt 2>/dev/null && echo "OK: livox_ros_driver" || echo "MISSING: clone livox_ros_driver first"
+docs/slam/fast_lio2_deployment_guide.md:334:rospack find livox_ros_driver
+docs/slam/fast_lio2_deployment_guide.md:358:# PCD 默认保存在 FAST_LIO/PCD/ 目录下
+docs/slam/fast_lio2_deployment_guide.md:364:ENABLE_FAST_LIO2=1 ./auto.sh
+docs/slam/fast_lio2_deployment_guide.md:369:> **注意**：当前集成 launch 已启用 FAST-LIO2 节点；需先保证 `FAST_LIO` 已成功编译并被当前 shell source。
+docs/slam/fast_lio2_deployment_guide.md:386:- [ ] PCD saved（若启用，检查 `FAST_LIO/PCD/` 目录）
+docs/slam/fast_lio2_deployment_guide.md:391:`last_lidar_end_time_=-1` 初始化修复的 FAST_LIO 构建。
+docs/slam/fast_lio2_deployment_guide.md:401:FAST_LIO_P0_DURATION_SECONDS=10 \
+docs/slam/fast_lio2_deployment_guide.md:402:FAST_LIO_P0_RUN_TAG=p0_stand_sim10_rtf068 \
+docs/slam/fast_lio2_deployment_guide.md:417:| `livox_ros_driverConfig.cmake not found` | livox_ros_driver 未 clone | `cd src && git clone https://github.com/Livox-SDK/livox_ros_driver.git` |
+docs/slam/fast_lio2_deployment_guide.md:419:| `std::shared_mutex only available from C++17` | livox_ros_driver C++ 标准过低 | 设置 `-std=c++17`（已在 fix 分支修复） |
+docs/slam/fast_lio2_deployment_guide.md:421:| `rospack find fast_lio` failed | FAST_LIO 未 clone 或未 source | `cd src && git clone https://github.com/hku-mars/FAST_LIO.git && cd FAST_LIO && git submodule update --init` |
+docs/slam/fast_lio2_deployment_guide.md:462:| PCD | `FAST_LIO/PCD/` | offline map debug | 待确认路径 |
+docs/slam/fast_lio2_deployment_guide.md:484:| 10 | FAST_LIO launch 中的 node 块当前为注释状态，实际运行时需取消注释 | 代码层面已准备好 | 确认 FAST_LIO 编译后取消注释 |
+docs/active/0718-g2-trotting-motion-baseline/g2-baseline-report.md:27:- `ENABLE_FAST_LIO2=0`
+docs/active/0717-motion-capability-recovery/g1-final-report.md:130:  "ENABLE_FAST_LIO2": 0,
+docs/cli-reference.md:40:ENABLE_FAST_LIO2=1 GUI=false ./auto.sh                    # 启动 FAST-LIO2 建图
+docs/cli-reference.md:108:| `ENABLE_FAST_LIO2` | `0` | 是否启动 FAST-LIO2 建图 |
+docs/cli-reference.md:127:# 确保 FAST_LIO 已克隆到 src/
+docs/cli-reference.md:128:ls src/FAST_LIO/CMakeLists.txt
+docs/cli-reference.md:137:ENABLE_FAST_LIO2=1 GUI=false ./auto.sh
+docs/diagnostics/earth_world_a1_rtf_diagnosis.md:55:- `ENABLE_FAST_LIO2=0`
+PROJECT_STATE.md:20:> `FAST_LIO_INPUT_BLOCKED`. `auto.sh` reported `fast_lio: NOT_FOUND`;
+PROJECT_STATE.md:85:> empty-pointcloud failure. Verdict: `FAST_LIO2_RUNTIME_VALIDATION_PASS`; no
+PROJECT_STATE.md:92:> remain clean and read-only (`FAST_LIO` `7cc4175`, `ikd-Tree` `e2e3f4e`,
+PROJECT_STATE.md:93:> `livox_ros_driver` `3d240d5`). Staging under `/tmp/simenv-fast-lio2-deps`
+PROJECT_STATE.md:94:> patches only copies: FAST_LIO builds with C++17 and `livox_ros_driver`
+PROJECT_STATE.md:119:> is resolved as an external dependency (`hku-mars/FAST_LIO`
+PROJECT_STATE.md:121:> `e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4`, `livox_ros_driver`
+PROJECT_STATE.md:416:- build_with_venv.sh: 现已支持自动检测 torch CMake prefix，TorchConfig.cmake 路径问题已解决；剩余阻塞: CUDA toolkit + livox_ros_driver
+PROJECT_STATE.md:418:- 编译修复: unitree PIE, FAST_LIO C++17, livox shared_ptr/serialization/missing-includes 共6个文件修复 (fix/0704-fast-lio2-build-errors)
+CHANGELOG.md:20:  stopped at `FAST_LIO_INPUT_BLOCKED`: this worktree does not expose a
+CHANGELOG.md:91:  clean external FAST_LIO and `livox_ros_driver` sources outside the worktree,
+CHANGELOG.md:94:- Added FAST_LIO C++17 and `livox_ros_driver` message-only staging patches so
+CHANGELOG.md:512:- **Controller before FAST-LIO2**: `auto.sh` now starts `junior_ctrl` BEFORE FAST-LIO2 when `ENABLE_FAST_LIO2=1`. Controller is forced to background mode, FixedStand is auto-commanded via `/fsm/state_cmd` (`data: 2`), and the script waits for IMU confirmation (gravity aligned to Z, `linear_acceleration.z >= 9`) before launching FAST-LIO2. Prevents incorrect gravity initialization that caused continuous Z drift in `/cloud_registered`.
+CHANGELOG.md:515:- **Controller foreground**: Default `CONTROLLER_FOREGROUND=1`. When `ENABLE_FAST_LIO2=1`, controller starts in background for auto-stabilisation, then `fg` pulls it back after FAST-LIO2 is running. Simple foreground when FAST-LIO2 is disabled.
+CHANGELOG.md:536:- **Updated `docs/quick-start.md`**: added `ENABLE_FAST_LIO2=1` usage, FAST-LIO2 related env vars, fixed `ROBOT_Y` default from `-2.2` to `2.3`.
+CHANGELOG.md:542:  - YAML config loaded in wrong namespace (`ns="laserMapping"`) — FAST_LIO uses public `NodeHandle`, reads from `/common/lid_topic`; fixed to root-level `<rosparam>`
+CHANGELOG.md:563:  `last_lidar_end_time_` in the external FAST_LIO `ImuProcess` constructor and
+CHANGELOG.md:614:- Fixed FAST-LIO2 workspace layout documentation: SimEnv is the catkin workspace root, FAST_LIO belongs at `SimEnv/src/FAST_LIO`, not nested under another `catkin_ws/`.
+CHANGELOG.md:618:- Build fixes: unitree PIE linker (`-no-pie`), FAST_LIO C++14→17, livox_ros_driver C++11→17, PCL shared_ptr serialization, missing `<memory>` includes in Livox-SDK.
+CHANGELOG.md:631:- Added `ENABLE_FAST_LIO2` optional flag in auto.sh.

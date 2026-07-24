@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-07-24 — Shared FAST-LIO2 dependency retry
+
+- Added `tools/prepare_shared_ros_deps.sh` to validate fixed shared FAST-LIO2
+  source checkouts and wire them into the task worktree under ignored
+  `src/external/` symlinks without cloning, pulling, patching, or modifying the
+  public sources.
+- Added `/src/external/` to `.gitignore` so the shared dependency symlinks stay
+  out of the SimEnv Git index.
+- Added a `tools/build_with_venv.sh` preflight that refuses to build the pinned
+  shared `livox_ros_driver` when its CMake would auto-clone/build Livox-SDK
+  inside `/home/zzf/search_ws/livox_ros_driver`.
+- Current gate remains blocked at `FAST_LIO_BUILD_BLOCKED`; FAST-LIO runtime,
+  DSV/FALCO, short loop, full exploration, and return-home validation were not
+  executed in this retry.
+
 ## 2026-07-24 — FALCO + DSV single-floor data path
 
 - Added `single_floor_exploration.launch` for an already running `auto.sh` +

@@ -1,5 +1,22 @@
 # Project State
 
+> **2026-07-24 shared FAST-LIO2 dependency retry**: the task worktree now uses
+> `tools/prepare_shared_ros_deps.sh` to validate and link the fixed shared
+> public sources under `src/external/`:
+> `/home/zzf/search_ws/FAST_LIO` `7cc4175de6f8ba2edf34bab02a42195b141027e9`,
+> `ikd-Tree` `e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4`, and
+> `/home/zzf/search_ws/livox_ros_driver`
+> `3d240d5666129e1a3052e78ee8487a04b08fdda3`. Shared package discovery through
+> `ROS_PACKAGE_PATH=$PWD/src` passes for `fast_lio` and `livox_ros_driver`.
+> Formal `./tools/build_with_venv.sh` is blocked before `catkin_make` with exit
+> code `20`: the pinned shared `livox_ros_driver` CMake lacks the
+> `BUILD_LIVOX_DRIVER_NODE` guard and would try to clone/build Livox-SDK inside
+> the shared checkout when no system `liblivox_sdk_static.a` exists. The build
+> script now refuses that mutation. First failed gate: `FAST_LIO_BUILD_BLOCKED`.
+> FAST-LIO runtime, terrain map, DSV/FALCO data chain, short closed loop, full
+> exploration, and return home were not run. Current verdict:
+> `FALCO_DSV_EXPLORATION_BLOCKED`.
+
 > **2026-07-24 FALCO + DSV single-floor data path**: branch
 > `feat/0724-falco-dsv-single-floor-exploration-0p8` starts from local
 > `master` `ce73018c9ecc220bf01351a295a534ca56e67100` in isolated worktree
