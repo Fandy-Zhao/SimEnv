@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-24 — FALCO R3 real-data diagnosis
+
+- Updated `runtime_real_data.launch` to relay directly from FAST-LIO2
+  `/Odometry` and `/cloud_registered` by default, avoiding a runtime dependency
+  on intermediate Stage 2 relay nodes for R3 FALCO validation.
+- Recorded R3 A/B evidence under
+  `experiments/runs/0724_falco_r3_diagnosis/`: direct-source inputs publish
+  at about 10 Hz, `checkObstacle=true` yields the zero one-pose path, and
+  temporary `checkObstacle=false` yields a multi-pose path plus nonzero raw
+  FALCO velocity while `/cmd_vel` remains gated to zero.
+- Did not run R4 Trotting, R5 DSV, or R6 full exploration.
+
 ## 2026-07-23 — FALCO + DSV real runtime validation
 
 - Added `runtime_real_data.launch` for connecting an already running

@@ -1,5 +1,18 @@
 # Project State
 
+> **2026-07-24 FALCO R3 real-data diagnosis**: branch
+> `feat/0723-falco-dsv-navigation-integration` re-tested only R3 in the
+> isolated worktree. Build passes with `./tools/build_with_venv.sh`. Runtime
+> diagnosis found two direct blockers: `runtime_real_data.launch` depended on
+> intermediate `/state_estimation` and `/registered_scan` relays that were not
+> alive in the recovered FAST-LIO2 run, so it now defaults directly to
+> FAST-LIO2 `/Odometry` and `/cloud_registered`; with direct sources, Case A
+> (`checkObstacle=true`) still publishes the zero one-pose path, while Case B
+> (`checkObstacle=false`) publishes a multi-pose path and finite nonzero raw
+> FALCO TwistStamped. Motion remains gated: `/navigation/enabled=false` keeps
+> `/cmd_vel` zero. Verdict: `FALCO_POINTCLOUD_FILTER_BLOCKED`; R4-R6 were not
+> entered.
+
 > **2026-07-23 FALCO + DSV real runtime validation**: branch
 > `feat/0723-falco-dsv-navigation-integration` now has staged runtime evidence
 > under `experiments/runs/0723_falco_dsv_runtime/`. R2 passed with real Gazebo,

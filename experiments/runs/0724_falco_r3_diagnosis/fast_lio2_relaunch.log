@@ -1,0 +1,76 @@
+[WARN] [1784859594.598534410]: Shutdown request received.
+[WARN] [1784859594.606710766]: Reason given for shutdown: [[/state_estimation_relay] Reason: new node registered with same name]
+[WARN] [1784859594.664595887]: Shutdown request received.
+[WARN] [1784859594.672473064]: Reason given for shutdown: [[/registered_scan_relay] Reason: new node registered with same name]
+Multi thread started 
+p_pre->lidar_type 4
+~~~~/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/FAST_LIO/ file opened
+[WARN] [1784859605.020707048, 6.430000000]: No point, skip this scan!
+
+[WARN] [1784861295.038954648, 44.092000000]: catch sig 2
+[INFO] [1784859596.385458, 0.000000]: Waiting for first /Odometry from FAST-LIO2 ...
+[INFO] [1784859613.903906, 6.642000]: First Odometry at sim time 6.548 s
+[INFO] [1784859613.918004, 6.646000]: Published static TF: map -> camera_init  (direct copy of map -> imu_link)
+[INFO] [1784859613.928553, 6.650000]:   translation: (-0.009, 2.307, 0.326)
+... logging to /home/zzf/.ros/log/ce24d396-8705-11f1-ac8c-bdece02cfe94/roslaunch-zzf-Legion-Y9000P-IRX9-14848.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch
+[1mstarted roslaunch server http://zzf-Legion-Y9000P-IRX9:41689/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /common/imu_topic: /trunk_imu
+ * /common/lid_topic: /scan_pointcloud2
+ * /mapping/acc_cov: 0.1
+ * /mapping/b_acc_cov: 0.0001
+ * /mapping/b_gyr_cov: 0.0001
+ * /mapping/cube_side_length: 1000.0
+ * /mapping/det_range: 40.0
+ * /mapping/extrinsic_R: [0.7071, 0, 0.707...
+ * /mapping/extrinsic_T: [0.2, 0.0, 0.08]
+ * /mapping/extrinsic_est_en: False
+ * /mapping/filter_size_map: 0.5
+ * /mapping/filter_size_surf: 0.5
+ * /mapping/fov_degree: 180
+ * /mapping/gyr_cov: 0.1
+ * /mapping/pcd_save/interval: -1
+ * /mapping/pcd_save/pcd_save_en: True
+ * /mapping/publish/dense_publish_en: True
+ * /mapping/publish/path_en: True
+ * /mapping/publish/scan_bodyframe_pub_en: True
+ * /mapping/publish/scan_publish_en: True
+ * /mapping/runtime_pos_log_enable: True
+ * /preprocess/blind: 0.5
+ * /preprocess/lidar_type: 4
+ * /preprocess/scan_line: 4
+ * /preprocess/time_scale: 0.0
+ * /preprocess/timestamp_unit: 0.0
+ * /rosdistro: noetic
+ * /rosversion: 1.16.0
+
+NODES
+  /
+    laserMapping (fast_lio/fastlio_mapping)
+    map_to_camera_init_bridge (simenv_fast_lio2_integration/map_to_camera_init_bridge.py)
+    registered_scan_relay (topic_tools/relay)
+    state_estimation_relay (topic_tools/relay)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-navigation/src/simenv_fast_lio2_integration/launch/simenv_fast_lio2_mapping.launch http://localhost:11311
+[1mprocess[laserMapping-1]: started with pid [14897][0m
+[1mprocess[state_estimation_relay-2]: started with pid [14898][0m
+[1mprocess[registered_scan_relay-3]: started with pid [14899][0m
+[1mprocess[map_to_camera_init_bridge-4]: started with pid [14900][0m
+[1m[state_estimation_relay-2] process has finished cleanly
+log file: /home/zzf/.ros/log/ce24d396-8705-11f1-ac8c-bdece02cfe94/state_estimation_relay-2*.log[0m
+[1m[registered_scan_relay-3] process has finished cleanly
+log file: /home/zzf/.ros/log/ce24d396-8705-11f1-ac8c-bdece02cfe94/registered_scan_relay-3*.log[0m
+[map_to_camera_init_bridge-4] killing on exit
+[laserMapping-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

@@ -14,8 +14,8 @@ for FALCO and DSV-Planner.
 
 ## Topic Contract
 
-- FAST-LIO2 odometry: `/state_estimation` -> `/navigation/state_estimation`
-- FAST-LIO2 registered scan: `/registered_scan` -> `/navigation/registered_scan`
+- FAST-LIO2 odometry: `/Odometry` -> `/navigation/state_estimation`
+- FAST-LIO2 registered scan: `/cloud_registered` -> `/navigation/registered_scan`
 - DSV waypoint output: `/navigation/way_point`
 - FALCO path output: `/navigation/path`
 - FALCO speed output: `/navigation/falco/cmd_vel_stamped`
@@ -40,6 +40,6 @@ NAV_MAX_LINEAR_X=0.10 NAV_MAX_ANGULAR_Z=0.20 \
   roslaunch simenv_navigation_bringup runtime_real_data.launch
 ```
 
-This launch relays global FAST-LIO2 `/state_estimation` and `/registered_scan`
+This launch relays global FAST-LIO2 `/Odometry` and `/cloud_registered`
 into `/navigation/state_estimation` and `/navigation/registered_scan` before
 starting FALCO, optional DSV, and the gated command bridge.

@@ -5,8 +5,8 @@
   <arg name="start_falco" default="true"/>
   <arg name="start_dsv" default="false"/>
   <arg name="start_bridge" default="true"/>
-  <arg name="state_estimation_source" default="/state_estimation"/>
-  <arg name="registered_scan_source" default="/registered_scan"/>
+  <arg name="state_estimation_source" default="/Odometry"/>
+  <arg name="registered_scan_source" default="/cloud_registered"/>
   <arg name="state_estimation_topic" default="/$(arg ns)/state_estimation"/>
   <arg name="registered_scan_topic" default="/$(arg ns)/registered_scan"/>
   <arg name="max_linear_x" default="$(optenv NAV_MAX_LINEAR_X 0.10)"/>

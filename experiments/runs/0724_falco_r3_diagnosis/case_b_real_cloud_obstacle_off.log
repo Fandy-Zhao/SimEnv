@@ -1,0 +1,258 @@
+case: B_real_cloud_obstacle_off_pointstamped
+publish_sim_before:
+clock: 
+  secs: 33
+  nsecs: 580000000
+---
+publishing and latching message for 3.0 seconds
+publishing and latching message for 3.0 seconds
+publishing and latching message for 3.0 seconds
+wall_sleep_90s_for_low_rtf
+publish_sim_after:
+clock: 
+  secs: 36
+  nsecs:  74000000
+---
+path sample
+header: 
+  seq: 197
+  stamp: 
+    secs: 36
+    nsecs:  72000000
+  frame_id: "vehicle"
+poses: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.007499999832361937
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.014999999664723873
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.02249999949708581
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.029999999329447746
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.037500000558793545
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.04499999899417162
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.05250000022351742
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.05999999865889549
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.06750000268220901
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.07500000111758709
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.08249999955296516
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+cmd stamped sample
+header: 
+  seq: 989
+  stamp: 
+    secs: 36
+    nsecs:  72000000
+  frame_id: "vehicle"
+twist: 
+  linear: 
+    x: 0.0950000137090683
+    y: 0.0
+    z: 0.0
+  angular: 
+    x: 0.0
+    y: 0.0
+    z: -0.0
+---
+cmd_vel gate sample
+WARNING: no messages received and simulated time is active.
+Is /clock being published?
+restore checkObstacle true
+publishing and latching message for 3.0 seconds

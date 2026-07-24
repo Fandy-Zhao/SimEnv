@@ -1,5 +1,16 @@
 # Module Status
 
+> **2026-07-24 `src/navigation` FALCO R3 diagnosis**:
+> `runtime_real_data.launch` now defaults to FAST-LIO2's native `/Odometry` and
+> `/cloud_registered` topics before relaying into `/navigation`. R3 direct-source
+> runtime input frequency passes at about 10 Hz. Case A with real cloud obstacle
+> checking still returns the zero one-pose FALCO path. Case B with only temporary
+> `checkObstacle=false` returns a multi-pose path and finite nonzero
+> `/navigation/falco/cmd_vel_stamped`, proving the current blocker is FALCO's
+> obstacle filtering against the real registered cloud rather than
+> `pathFollower/autonomyMode` or the command bridge. `/navigation/enabled=false`
+> keeps `/cmd_vel` zero. R4-R6 remain gated off.
+
 > **2026-07-23 `src/navigation` real runtime validation**:
 > `runtime_real_data.launch` connects an already running SimEnv + FAST-LIO2
 > stack to `/navigation/state_estimation` and `/navigation/registered_scan` and

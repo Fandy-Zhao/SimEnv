@@ -1,0 +1,60 @@
+case: A_real_cloud_obstacle_on_pointstamped
+publish_sim_before:
+clock: 
+  secs: 41
+  nsecs: 658000000
+---
+publishing and latching message for 3.0 seconds
+publishing and latching message for 3.0 seconds
+publishing and latching message for 3.0 seconds
+wall_sleep_60s_for_low_rtf
+publish_sim_after:
+clock: 
+  secs: 43
+  nsecs: 482000000
+---
+path sample
+WARNING: no messages received and simulated time is active.
+Is /clock being published?
+header: 
+  seq: 272
+  stamp: 
+    secs: 43
+    nsecs: 594000000
+  frame_id: "vehicle"
+poses: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    pose: 
+      position: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+---
+cmd stamped sample
+header: 
+  seq: 1366
+  stamp: 
+    secs: 43
+    nsecs: 682000000
+  frame_id: "vehicle"
+twist: 
+  linear: 
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  angular: 
+    x: 0.0
+    y: 0.0
+    z: 0.0
+---

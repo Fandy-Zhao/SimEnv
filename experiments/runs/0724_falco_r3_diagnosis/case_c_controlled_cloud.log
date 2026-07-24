@@ -1,0 +1,13 @@
+Case C was not executed.
+
+Reason:
+Case A/B already localized the blocker. With real FAST-LIO2 odometry and real
+registered cloud, Case A (`checkObstacle=true`) produced the zero one-pose path
+and zero raw TwistStamped. With the same odometry and waypoint but temporary
+`checkObstacle=false`, Case B produced a multi-pose path and finite nonzero raw
+TwistStamped. This matches the required diagnostic branch:
+
+Case B effective, Case A ineffective -> point cloud filtering, robot size, or
+obstacle threshold problem.
+
+Obstacle checking was restored to true after Case B.
