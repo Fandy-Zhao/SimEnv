@@ -77,6 +77,9 @@ bool single_floor_enabled = false;
 double floor_reference_z = 0.0;
 double max_goal_z_deviation = 0.20;
 bool floor_reference_initialized = false;
+int min_exploration_iterations = 5;
+int valid_goal_count = 0;
+bool map_warmed_up = false;
 std::string map_frame = "map";
 std::string waypoint_topic = "/way_point";
 std::string cmd_vel_topic = "/cmd_vel";
@@ -282,6 +285,7 @@ int main(int argc, char** argv)
   nhPrivate.getParam("/planner/cleanFrontierServiceName", clean_frontier_service_name);
   nhPrivate.getParam("/single_floor/enabled", single_floor_enabled);
   nhPrivate.getParam("/single_floor/max_goal_z_deviation", max_goal_z_deviation);
+  nhPrivate.getParam("/single_floor/min_exploration_iterations", min_exploration_iterations);
 
   waypoint_pub = nh.advertise<geometry_msgs::PointStamped>(waypoint_topic, 5);
   gp_command_pub = nh.advertise<graph_planner::GraphPlannerCommand>(gp_command_topic, 1);
@@ -354,6 +358,14 @@ int main(int argc, char** argv)
 
         if (planSrv.response.mode.data == 2)
         {
+          if (!map_warmed_up && valid_goal_count < min_exploration_iterations)
+          {
+            ROS_WARN("DSV map warming: ignoring exploration-complete (mode=2)."
+                     " valid_goals=%d min=%d",
+                     valid_goal_count, min_exploration_iterations);
+            ros::Duration(0.5).sleep();
+            continue;
+          }
           return_home = true;
           goal_point = home_point;
           enforceSingleFloor(goal_point);
@@ -364,6 +376,9 @@ int main(int argc, char** argv)
         else
         {
           return_home = false;
+          valid_goal_count++;
+          if (valid_goal_count >= min_exploration_iterations)
+            map_warmed_up = true;
           goal_point = planSrv.response.goal[0];
           enforceSingleFloor(goal_point);
           plan_over = steady_clock::now();
