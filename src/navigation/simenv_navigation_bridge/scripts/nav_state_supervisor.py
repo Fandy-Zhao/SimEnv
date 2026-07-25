@@ -1,21 +1,29 @@
 #!/usr/bin/env python3
-"""Navigation State Supervisor — latched state owner for recovery after restart.
+"""Navigation State Supervisor — persistent latched state owner.
 
-Maintains authority over three topics so that bridge / navigation sub-stack
-restarts do not require manual re-publishing:
+Accepts user requests on dedicated request topics, publishes authoritative
+latched state on output topics.  Survives bridge / navigation sub-stack
+restarts.  State is persisted to ROS parameter server for cross-restart
+recovery.
 
-  /navigation/enabled       — enables / disables cmd_vel forwarding
-  /navigation/start_exploring — enables / disables DSV exploration
-  /fsm/state_cmd            — tracks last commanded FSM state
+Request topics (user-facing):
+  /navigation/request_enabled       std_msgs/Bool
+  /navigation/request_exploring     std_msgs/Bool
+  /navigation/request_fsm_state     std_msgs/Int8
+
+Output topics (consumed by bridge, exploration, controller):
+  /navigation/enabled               std_msgs/Bool   (latch)
+  /navigation/start_exploring       std_msgs/Bool   (latch)
+  /fsm/state_cmd                    std_msgs/Int8   (latch)
 
 Safety semantics:
   - Default disabled on first start (enabled=false, exploring=false, fsm=2)
-  - Only user-explicit publish changes the remembered state
-  - State is persisted to ROS parameter server for true cross-restart recovery
-  - Feedback guard: ignores self-published latched echoes
-  - Periodic re-publish ensures late-joining subscribers see current state
+  - Only user-explicit request changes the remembered state
+  - State persisted to ROS param server for true cross-restart recovery
+  - Periodic re-publish (1 Hz) ensures late-joining subscribers always
+    see current state — no reliance on rostopic pub one-shots
   - On restart, recovers previous state from param server
-  - FSM state is re-published ONLY after a short readiness delay
+  - FSM=Trotting(4) is re-published only after a short readiness delay
 """
 
 import rospy
@@ -23,10 +31,14 @@ from std_msgs.msg import Bool, Int8
 
 _PARAM_NS = "/nav_state_supervisor"
 
+# FSM values
+FSM_FIXED_STAND = 2
+FSM_TROTTING = 4
+
 
 class NavStateSupervisor:
     def __init__(self):
-        # Latched publishers.
+        # ── Output publishers (latched — every subscriber sees current state) ──
         self._pub_enabled = rospy.Publisher(
             "/navigation/enabled", Bool, latch=True, queue_size=1)
         self._pub_exploring = rospy.Publisher(
@@ -34,85 +46,81 @@ class NavStateSupervisor:
         self._pub_fsm = rospy.Publisher(
             "/fsm/state_cmd", Int8, latch=True, queue_size=1)
 
-        # Attempt to recover persisted state from parameter server.
+        # ── Recover persisted state from parameter server ──
         self._enabled = rospy.get_param(_PARAM_NS + "/enabled", False)
         self._exploring = rospy.get_param(_PARAM_NS + "/exploring", False)
-        # FSM: default FixedStand (2).  Recover only if explicitly persisted.
-        self._fsm_state = rospy.get_param(_PARAM_NS + "/fsm_state", 2)
+        self._fsm_state = rospy.get_param(_PARAM_NS + "/fsm_state",
+                                          FSM_FIXED_STAND)
 
-        # Subscribers — listen on the SAME topics to learn user intent.
-        # Feedback guard: ignore messages identical to our current state.
-        rospy.Subscriber("/navigation/enabled", Bool, self._enabled_cb, queue_size=1)
-        rospy.Subscriber("/navigation/start_exploring", Bool, self._exploring_cb, queue_size=1)
-        rospy.Subscriber("/fsm/state_cmd", Int8, self._fsm_cb, queue_size=5)
+        # ── Subscribers: dedicated REQUEST topics (no feedback loop) ──
+        rospy.Subscriber("/navigation/request_enabled", Bool,
+                         self._req_enabled_cb, queue_size=1)
+        rospy.Subscriber("/navigation/request_exploring", Bool,
+                         self._req_exploring_cb, queue_size=1)
+        rospy.Subscriber("/navigation/request_fsm_state", Int8,
+                         self._req_fsm_cb, queue_size=5)
 
-        # Publish enabled / exploring immediately (safe — bridge won't forward
-        # unless FSM also commands Trotting and cmd_vel is fresh).
+        # ── Publish initial state immediately ──
         self._pub_enabled.publish(Bool(data=self._enabled))
         self._pub_exploring.publish(Bool(data=self._exploring))
 
-        # For FSM, defer re-publish by a short interval so that restarting
-        # navigation nodes have time to initialise and the bridge can apply
-        # its safety gating (require_trotting_state_cmd, command_timeout, etc.).
-        # If the recovered state is NOT Trotting, publish immediately.
-        if self._fsm_state != 4:
+        if self._fsm_state != FSM_TROTTING:
             self._pub_fsm.publish(Int8(data=self._fsm_state))
         else:
-            rospy.Timer(rospy.Duration(4.0), self._deferred_fsm_publish, oneshot=True)
+            # Defer Trotting re-publish — safety gate after restart
+            rospy.Timer(rospy.Duration(4.0),
+                        self._deferred_fsm_publish, oneshot=True)
 
-        # Periodic re-publish.
+        # ── Periodic re-publish at 1 Hz — keeps subscriber connections alive ──
         self._republish_timer = rospy.Timer(
-            rospy.Duration(3.0), self._republish_cb)
+            rospy.Duration(1.0), self._republish_cb)
 
-        rospy.loginfo("NavStateSupervisor: latched ready "
+        rospy.loginfo("NavStateSupervisor: ready "
                        "(enabled=%s, exploring=%s, fsm=%d)%s",
                        self._enabled, self._exploring, self._fsm_state,
-                       " [fsm deferred]" if self._fsm_state == 4 else "")
+                       " [fsm deferred]" if self._fsm_state == FSM_TROTTING
+                       else "")
 
-    # ------------------------------------------------------------------
-    # Callbacks
-    # ------------------------------------------------------------------
+    # ── Request callbacks ────────────────────────────────────────────────
 
-    def _enabled_cb(self, msg):
+    def _req_enabled_cb(self, msg):
         new_val = bool(msg.data)
         if new_val == self._enabled:
             return
         self._enabled = new_val
         self._pub_enabled.publish(Bool(data=self._enabled))
         rospy.set_param(_PARAM_NS + "/enabled", self._enabled)
-        rospy.loginfo("NavStateSupervisor: /navigation/enabled <- %s", self._enabled)
+        rospy.loginfo("NavStateSupervisor: request enabled <- %s",
+                       self._enabled)
 
-    def _exploring_cb(self, msg):
+    def _req_exploring_cb(self, msg):
         new_val = bool(msg.data)
         if new_val == self._exploring:
             return
         self._exploring = new_val
         self._pub_exploring.publish(Bool(data=self._exploring))
         rospy.set_param(_PARAM_NS + "/exploring", self._exploring)
-        rospy.loginfo("NavStateSupervisor: /navigation/start_exploring <- %s",
+        rospy.loginfo("NavStateSupervisor: request exploring <- %s",
                        self._exploring)
 
-    def _fsm_cb(self, msg):
+    def _req_fsm_cb(self, msg):
         new_val = int(msg.data)
         if new_val == self._fsm_state:
             return
         self._fsm_state = new_val
         self._pub_fsm.publish(Int8(data=self._fsm_state))
         rospy.set_param(_PARAM_NS + "/fsm_state", self._fsm_state)
-        rospy.loginfo("NavStateSupervisor: /fsm/state_cmd <- %d", self._fsm_state)
+        rospy.loginfo("NavStateSupervisor: request fsm_state <- %d",
+                       self._fsm_state)
 
-    # ------------------------------------------------------------------
-    # Deferred FSM publish (safety gate after restart)
-    # ------------------------------------------------------------------
+    # ── Deferred FSM publish ─────────────────────────────────────────────
 
     def _deferred_fsm_publish(self, _event):
         self._pub_fsm.publish(Int8(data=self._fsm_state))
         rospy.loginfo("NavStateSupervisor: deferred /fsm/state_cmd <- %d",
                        self._fsm_state)
 
-    # ------------------------------------------------------------------
-    # Re-publish helpers
-    # ------------------------------------------------------------------
+    # ── Periodic re-publish (keeps subscriber connections persistent) ─────
 
     def _publish_all(self):
         self._pub_enabled.publish(Bool(data=self._enabled))
@@ -122,9 +130,7 @@ class NavStateSupervisor:
     def _republish_cb(self, _event):
         self._publish_all()
 
-    # ------------------------------------------------------------------
-    # Public diagnostics
-    # ------------------------------------------------------------------
+    # ── Public diagnostics ────────────────────────────────────────────────
 
     @property
     def navigation_enabled(self):
