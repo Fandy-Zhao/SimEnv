@@ -106,6 +106,11 @@ GUI="${GUI:-false}"
 PAUSED="${PAUSED:-true}"
 AUTO_UNPAUSE="$(as_ros_bool "${AUTO_UNPAUSE:-1}")"
 AUTO_UNPAUSE_DELAY="${AUTO_UNPAUSE_DELAY:-6}"
+# Optional watchdog: when true, gazebo_final_unpause will continuously monitor
+# /clock and re-unpause if stalled.  Default off for manual testing.
+AUTO_UNPAUSE_GAZEBO="${AUTO_UNPAUSE_GAZEBO:-false}"
+GAZEBO_CLOCK_STALE_TIMEOUT="${GAZEBO_CLOCK_STALE_TIMEOUT:-3.0}"
+GAZEBO_UNPAUSE_MAX_RETRIES="${GAZEBO_UNPAUSE_MAX_RETRIES:-3}"
 START_CONTROLLER="${START_CONTROLLER:-1}"
 START_VIRTUAL_JOY="${START_VIRTUAL_JOY:-0}"
 START_BUILDING_CONTROL="${START_BUILDING_CONTROL:-1}"
@@ -201,6 +206,49 @@ schedule_unpause_physics() {
 }
 
 # ---------------------------------------------------------------------------
+# GAZEBO_FINAL_UNPAUSE — call AFTER all nodes, controllers, and navigation
+# are fully initialised.  Verifies that /clock is advancing before returning.
+# ---------------------------------------------------------------------------
+gazebo_final_unpause() {
+  local unpause_max_retries="${GAZEBO_UNPAUSE_MAX_RETRIES:-3}"
+  local clock_stale_timeout="${GAZEBO_CLOCK_STALE_TIMEOUT:-3.0}"
+  local attempt
+
+  # ── Unpause ──
+  for attempt in $(seq 1 "$unpause_max_retries"); do
+    if rosservice list 2>/dev/null | grep -q '^/gazebo/unpause_physics$'; then
+      rosservice call /gazebo/unpause_physics >/dev/null 2>&1 || true
+      echo "[GAZEBO_FINAL_UNPAUSE] unpause called (attempt $attempt/$unpause_max_retries)"
+    else
+      echo "[GAZEBO_FINAL_UNPAUSE] /gazebo/unpause_physics not available (attempt $attempt)" >&2
+      sleep 1.0
+      continue
+    fi
+
+    # ── Verify /clock is advancing ──
+    sleep 0.5
+    local clock1 clock2 clock1_sec clock2_sec
+    clock1="$(rostopic echo /clock -n 1 2>/dev/null | grep "secs:" | head -1 | awk '{print $2}')" || true
+    sleep 1.0
+    clock2="$(rostopic echo /clock -n 1 2>/dev/null | grep "secs:" | head -1 | awk '{print $2}')" || true
+
+    if [ -n "$clock1" ] && [ -n "$clock2" ]; then
+      clock1_sec="$(echo "$clock1" | cut -d. -f1)"
+      clock2_sec="$(echo "$clock2" | cut -d. -f1)"
+      if [ "$clock2_sec" -gt "$clock1_sec" ] 2>/dev/null; then
+        echo "[GAZEBO_FINAL_UNPAUSE] PASS: /clock advancing ($clock1 → $clock2)"
+        return 0
+      fi
+    fi
+
+    echo "[GAZEBO_FINAL_UNPAUSE] WARNING: /clock appears stalled (clock1=$clock1 clock2=$clock2)" >&2
+  done
+
+  echo "[GAZEBO_FINAL_UNPAUSE] FAILED: /clock not advancing after $unpause_max_retries attempts" >&2
+  return 1
+}
+
+# ---------------------------------------------------------------------------
 # Helper: wait for a ROS topic to publish at least two consecutive messages
 # with incrementing timestamps (proves the publisher is alive, not a stale
 # latched message).
@@ -219,7 +267,7 @@ wait_for_topic() {
     cur_sec=""
     cur_nsec=""
     read -r cur_sec cur_nsec < <(
-      timeout 2 rostopic echo -n 1 "$topic" 2>/dev/null \
+      timeout --kill-after=1s 2 rostopic echo -n 1 "$topic" 2>/dev/null \
         | grep "secs:" | head -2 \
         | awk '{sec=$2; getline; nsec=$2; print sec, nsec}'
     ) 2>/dev/null || true
@@ -906,6 +954,9 @@ if [ "$TERMINAL_BACKEND" = "tmux" ]; then
 fi
 echo "  Press Ctrl-C in THIS terminal to stop all ROS processes."
 echo "=============================================="
+
+# ── GAZEBO_FINAL_UNPAUSE: ensure simulation clock is running ──
+gazebo_final_unpause || true
 
 # Cleanup trap: kill ROS processes when the user presses Ctrl-C.
 cleanup() {
