@@ -1,0 +1,23 @@
+Navigation Data Chain Verification
+===================================
+Date: 2026-07-24
+Sim time at check: ~40s
+
+Topic Verification:
+  /navigation/state_estimation       : Type: nav_msgs/Odometry           PUBLISHER: state_estimation_relay      PASS
+  /navigation/registered_scan         : Type: sensor_msgs/PointCloud2     PUBLISHER: registered_scan_relay        PASS
+  /navigation/terrain_map             : Type: sensor_msgs/PointCloud2     frame: map, 840-923 pts, updating      PASS
+  /navigation/boundary                : Type: geometry_msgs/PolygonStamped frame: map, [-9.6,-17.6] to [9.6,17.6] PASS
+  /navigation/dsv/occupancy_grid_map  : Type: sensor_msgs/PointCloud2     frame: map, 160801 cells (401x401)     PASS
+  /navigation/global_frontier         : Type: sensor_msgs/PointCloud2     frame: map, width=0 (empty)            PASS
+  /navigation/local_frontier          : Type: sensor_msgs/PointCloud2     frame: map, width=0 (empty)            PASS
+  /navigation/way_point               : Type: geometry_msgs/PointStamped  2 publishers                           PASS
+  /navigation/path                    : Type: nav_msgs/Path               publisher: pathFollower                PASS
+  /navigation/falco/cmd_vel_stamped   : Type: geometry_msgs/TwistStamped  publisher: pathFollower                PASS
+  /cmd_vel                            : Type: geometry_msgs/Twist         publisher: cmd_vel_bridge              PASS
+
+FALCO Diagnostics: free_paths=6174/6174, published_poses=2, planning_ms=1-4, collisions=0
+DSV: Active, not stuck in initialization. Frontiers empty (sparse terrain, 840 pts).
+/cmd_vel: Zero (safe state)
+
+Verdict: Navigation data chain ALIVE. All nodes running. All topics publishing.

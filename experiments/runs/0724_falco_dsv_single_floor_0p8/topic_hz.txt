@@ -1,0 +1,8 @@
+subscribed to [/navigation/boundary]
+average rate: 3.302
+	min: 0.100s max: 0.505s std dev: 0.20259s window: 3
+average rate: 2.492
+	min: 0.100s max: 0.505s std dev: 0.17382s window: 5
+average rate: 2.301
+	min: 0.100s max: 0.505s std dev: 0.14950s window: 7
+no new messages

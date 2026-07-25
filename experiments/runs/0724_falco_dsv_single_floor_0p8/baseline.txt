@@ -1,0 +1,42 @@
+Date: 2026-07-24
+Task worktree: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8
+Task branch: feat/0724-falco-dsv-single-floor-exploration-0p8
+
+Root workspace: /home/zzf/search_ws/SimEnv
+Root branch at baseline: master
+Root HEAD: ce73018c9ecc220bf01351a295a534ca56e67100
+Local master HEAD: ce73018c9ecc220bf01351a295a534ca56e67100
+
+Recent local master commits:
+- ce73018c merge: integrate validated falco dsv navigation baseline
+- 38a8baa3 fix(navigation): tune falco a1 real cloud pathing
+- 8f5c89ee fix(navigation): correct falco real-data path generation
+- 569e4ff7 test(navigation): refresh falco dsv runtime evidence
+- 6132611c test(navigation): validate falco dsv runtime interfaces
+- 23ef7ef6 fix(navigation): add real-data runtime launch
+- 01776ecd feat(navigation): integrate falco dsv planner sources
+- 5bc0f6fb merge: integrate validated fast-lio2 reproducible runtime
+- dbcd807d test(fast-lio2): validate clean pointcloud runtime
+- 30ea47bd build(deps): make fast-lio2 external build reproducible
+
+Root workspace dirty status preserved and not modified by this task:
+- M generated_building/building_config.json
+- M generated_building/competition_scene.world
+- M generated_building/danger_truth.json
+- M generated_building/door_config.yaml
+- M generated_building/elevator_config.yaml
+- M generated_building/generation_checks.json
+- M generated_building/layout_metadata.json
+- M generated_building/model.sdf
+- M generated_building/scene_manifest.json
+- M generated_building/scene_manifest.stdout.json
+- M generated_building/team_scene_info.json
+- M generated_building/world.sdf
+- M logs/building_control.log
+- M logs/building_control.pid
+- M logs/competition_gazebo.log
+- M logs/competition_gazebo.pid
+- M results/danger_truth.json
+- ?? docs/reports/0723_gpu-ray-async-sensor-rtf-0p6.md
+
+Baseline verdict: BASELINE_PASS

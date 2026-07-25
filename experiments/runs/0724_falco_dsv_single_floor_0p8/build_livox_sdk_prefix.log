@@ -1,0 +1,118 @@
+Repo root: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8
+
+=== Checking FAST_LIO ===
+  path: /home/zzf/search_ws/FAST_LIO
+  working tree: clean
+  HEAD: 7cc4175de6f8ba2edf34bab02a42195b141027e9
+
+=== Checking livox_ros_driver ===
+  path: /home/zzf/search_ws/livox_ros_driver
+  working tree: clean
+  HEAD: 3d240d5666129e1a3052e78ee8487a04b08fdda3
+
+=== Checking FAST_LIO submodule: include/ikd-Tree ===
+  path: /home/zzf/search_ws/FAST_LIO/include/ikd-Tree
+  HEAD: e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4
+
+=== Creating symlinks under src/external/ ===
+  /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO -> /home/zzf/search_ws/FAST_LIO
+  /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver -> /home/zzf/search_ws/livox_ros_driver
+
+=== Verifying package.xml presence ===
+  FAST_LIO package.xml:
+    /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO/package.xml
+  livox_ros_driver package.xml:
+    /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/package.xml
+
+=== Verifying git ignore coverage ===
+  git check-ignore src/external/FAST_LIO: OK (ignored)
+  git check-ignore src/external/livox_ros_driver: OK (ignored)
+
+=== Checking Livox-SDK external prefix ===
+  url: https://github.com/Livox-SDK/Livox-SDK.git
+  ref: v2.3.0-8-g9306596
+  commit: 9306596a2bf15c1343bc023b497465ed0a32909d
+  source: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/src
+  build: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/build
+  install: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install
+HEAD 目前位于 9306596 fix: wakeup pipe create failed
+-- main project dir: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/src
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/build
+Consolidate compiler generated dependencies of target livox_sdk_static
+[  2%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/third_party/FastCRC/FastCRCsw.cpp.o
+[  4%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/device_discovery.cpp.o
+[  6%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/io_loop.cpp.o
+[  8%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/thread_base.cpp.o
+[ 10%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/io_thread.cpp.o
+[ 12%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/network/unix/network_util.cpp.o
+[ 14%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/comm/comm_port.cpp.o
+[ 16%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/comm/sdk_protocol.cpp.o
+[ 18%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/logging.cpp.o
+[ 20%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/data_handler/data_handler.cpp.o
+[ 22%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/livox_sdk.cpp.o
+[ 25%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/data_handler/hub_data_handler.cpp.o
+[ 27%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/data_handler/lidar_data_handler.cpp.o
+[ 29%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/device_manager.cpp.o
+[ 31%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/command_handler/hub_command_handler.cpp.o
+[ 33%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/command_handler/command_handler.cpp.o
+[ 35%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/command_handler/lidar_command_handler.cpp.o
+[ 37%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/command_handler/command_impl.cpp.o
+[ 39%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/command_handler/command_channel.cpp.o
+[ 41%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/multiple_io/multiple_io_poll.cpp.o
+[ 45%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/multiple_io/multiple_io_epoll.cpp.o
+[ 43%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/multiple_io/multiple_io_base.cpp.o
+[ 47%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/multiple_io/multiple_io_select.cpp.o
+[ 50%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/wake_up/unix/wake_up_pipe.cpp.o
+[ 52%] Building CXX object sdk_core/CMakeFiles/livox_sdk_static.dir/src/base/multiple_io/multiple_io_kqueue.cpp.o
+[ 54%] Linking CXX static library liblivox_sdk_static.a
+[ 54%] Built target livox_sdk_static
+[ 56%] Building C object sample/lidar/CMakeFiles/lidar_sample.dir/main.c.o
+[ 58%] Building CXX object sample/lidar_lvx_file/CMakeFiles/lidar_lvx_sample.dir/main.cpp.o
+[ 60%] Building C object sample/hub/CMakeFiles/hub_sample.dir/main.c.o
+[ 62%] Building CXX object sample_cc/hub/CMakeFiles/hub_sample_cc.dir/lds_hub.cpp.o
+[ 64%] Building CXX object sample/hub_lvx_file/CMakeFiles/hub_lvx_sample.dir/lvx_file.cpp.o
+[ 66%] Building CXX object sample_cc/trouble_shooting/CMakeFiles/trouble_shooting.dir/main.cpp.o
+[ 68%] Building CXX object sample/lidar_lvx_file/CMakeFiles/lidar_lvx_sample.dir/lvx_file.cpp.o
+[ 70%] Building CXX object sample_cc/lidar/CMakeFiles/lidar_sample_cc.dir/main.cpp.o
+[ 72%] Building CXX object sample/hub_lvx_file/CMakeFiles/hub_lvx_sample.dir/main.cpp.o
+[ 75%] Building CXX object sample_cc/hub/CMakeFiles/hub_sample_cc.dir/main.cpp.o
+[ 77%] Building CXX object sample_cc/lidar/CMakeFiles/lidar_sample_cc.dir/lds_lidar.cpp.o
+[ 81%] Building CXX object sample_cc/lidar_utc_sync/CMakeFiles/lidar_utc_sync.dir/synchro.cpp.o
+[ 81%] Building CXX object sample_cc/lidar_utc_sync/CMakeFiles/lidar_utc_sync.dir/main.cpp.o
+[ 83%] Building CXX object sample_cc/lidar_utc_sync/CMakeFiles/lidar_utc_sync.dir/lds_lidar.cpp.o
+[ 85%] Linking CXX executable lidar_sample
+[ 87%] Linking CXX executable hub_sample
+[ 87%] Built target lidar_sample
+[ 87%] Built target hub_sample
+[ 89%] Linking CXX executable trouble_shooting
+[ 89%] Built target trouble_shooting
+[ 91%] Linking CXX executable lidar_sample_cc
+[ 91%] Built target lidar_sample_cc
+[ 93%] Linking CXX executable lidar_utc_sync
+[ 95%] Linking CXX executable hub_sample_cc
+[ 95%] Built target lidar_utc_sync
+[ 95%] Built target hub_sample_cc
+[ 97%] Linking CXX executable lidar_lvx_sample
+[100%] Linking CXX executable hub_lvx_sample
+[100%] Built target lidar_lvx_sample
+[100%] Built target hub_lvx_sample
+Install the project...
+-- Install configuration: "Release"
+-- Installing: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install/lib/liblivox_sdk_static.a
+-- Installing: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install/include/livox_def.h
+-- Installing: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install/include/livox_sdk.h
+
+=== Summary ===
+FAST_LIO:        /home/zzf/search_ws/FAST_LIO
+  commit:         7cc4175de6f8ba2edf34bab02a42195b141027e9
+  ikd-Tree:       e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4
+livox_ros_driver: /home/zzf/search_ws/livox_ros_driver
+  commit:         3d240d5666129e1a3052e78ee8487a04b08fdda3
+Livox-SDK:       /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install
+  source:         /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/src
+  commit:         9306596a2bf15c1343bc023b497465ed0a32909d
+
+Done.
+prepare_shared_ros_deps_exit_code=0

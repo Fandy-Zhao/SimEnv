@@ -1,5 +1,77 @@
 # Changelog
 
+## 2026-07-25 — FALCO turn-before-forward + waypoint body-frame monitor
+
+- **fix(falco)**: Added turn-in-place logic to pathFollower for A1 rear goals.
+  When `|heading_error| > turnInPlaceThresholdDeg` (90°) and `allowReverse=false`,
+  linear speed is forced to zero and only yaw rotation is allowed. Added
+  `reverseEscapeEnabled` for brief (1.5s) reverse escape when stuck.
+  Added params: `turnInPlaceThresholdDeg`, `forwardEnableThresholdDeg`,
+  `rearGoalSlowSpeed`, `allowReverse`, `reverseEscapeEnabled`,
+  `reverseEscapeMaxDuration`.
+- **fix(dsv)**: Gated standalone `octomap_manager` behind
+  `start_debug_octomap_manager:=false` (default OFF). Production chain uses only
+  the DSV-internal OctoMapManager.
+- **test(navigation)**: Added `waypoint_frame_monitor.py` — transforms DSV
+  waypoints from map to robot body frame via real TF, classifies as
+  FRONT/SIDE/REAR, and records to CSV.
+- **chore(build)**: Registered `waypoint_frame_monitor.py` in
+  `simenv_navigation_bridge` CMakeLists.txt install target.
+
+## 2026-07-24 — External Livox-SDK prefix retry
+
+- Extended `tools/prepare_shared_ros_deps.sh` to prepare an independent
+  Livox-SDK prefix outside SimEnv and outside the shared public
+  `livox_ros_driver` checkout.
+- Pinned the SDK source to `Livox-SDK`
+  `9306596a2bf15c1343bc023b497465ed0a32909d`
+  (`v2.3.0-8-g9306596`, version macros `2.3.0`) based on the fixed
+  `livox_ros_driver` major-version requirement and local historical
+  auto-clone evidence.
+- Updated `tools/build_with_venv.sh` to consume the prepared SDK prefix through
+  build environment paths and to check shared dependencies without cloning
+  during formal build.
+- Formal build now resolves SDK discovery but remains blocked at
+  `FAST_LIO_BUILD_BLOCKED` by unmodified shared-source compatibility errors in
+  FAST_LIO C++14/log4cxx and the livox hardware node. Runtime and exploration
+  stages were not run.
+
+## 2026-07-24 — Shared FAST-LIO2 dependency retry
+
+- Added `tools/prepare_shared_ros_deps.sh` to validate fixed shared FAST-LIO2
+  source checkouts and wire them into the task worktree under ignored
+  `src/external/` symlinks without cloning, pulling, patching, or modifying the
+  public sources.
+- Added `/src/external/` to `.gitignore` so the shared dependency symlinks stay
+  out of the SimEnv Git index.
+- Added a `tools/build_with_venv.sh` preflight that refuses to build the pinned
+  shared `livox_ros_driver` when its CMake would auto-clone/build Livox-SDK
+  inside `/home/zzf/search_ws/livox_ros_driver`.
+- Current gate remains blocked at `FAST_LIO_BUILD_BLOCKED`; FAST-LIO runtime,
+  DSV/FALCO, short loop, full exploration, and return-home validation were not
+  executed in this retry.
+
+## 2026-07-24 — FALCO + DSV single-floor data path
+
+- Added `single_floor_exploration.launch` for an already running `auto.sh` +
+  FAST-LIO2 stack, starting navigation relays, terrain-map adapter, runtime
+  boundary, DSV, FALCO, and the `/cmd_vel` bridge without launching Gazebo,
+  FAST-LIO2, controller, RViz, or rosbag.
+- Added SimEnv-owned terrain-map and boundary adapter nodes under
+  `simenv_navigation_bridge`.
+- Updated FALCO A1 speed semantics so raw path-following commands reach
+  `0.8 m/s` on straight paths, reduce near `0.6 m/s` for ordinary turns, and
+  reduce near `0.2 m/s` for large heading errors with `0.22 rad/s` angular cap.
+- Repaired DSV initialization and movement detection semantics for zero initial
+  motion, windowed stuck detection, bounded replanning, single-floor goal Z, and
+  parameterized planner services.
+- Formal `./tools/build_with_venv.sh` passed; isolated FALCO path follower
+  probes passed. Full `auto.sh` closed-loop exploration was not run.
+- Runtime validation was then attempted with the required launch entries and
+  stopped at `FAST_LIO_INPUT_BLOCKED`: this worktree does not expose a
+  discoverable `fast_lio` ROS package, so `fast_lio/fastlio_mapping` could not
+  launch and `/Odometry` timed out. No motion stage was entered.
+
 ## 2026-07-24 — FALCO A1 real-cloud R3 tuning
 
 - Added `falco_a1.yaml` as the default FALCO profile for SimEnv Unitree A1

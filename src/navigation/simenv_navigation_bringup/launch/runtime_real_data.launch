@@ -9,9 +9,9 @@
   <arg name="registered_scan_source" default="/cloud_registered"/>
   <arg name="state_estimation_topic" default="/$(arg ns)/state_estimation"/>
   <arg name="registered_scan_topic" default="/$(arg ns)/registered_scan"/>
-  <arg name="max_linear_x" default="$(optenv NAV_MAX_LINEAR_X 0.10)"/>
+  <arg name="max_linear_x" default="$(optenv NAV_MAX_LINEAR_X 0.80)"/>
   <arg name="max_linear_y" default="$(optenv NAV_MAX_LINEAR_Y 0.00)"/>
-  <arg name="max_angular_z" default="$(optenv NAV_MAX_ANGULAR_Z 0.20)"/>
+  <arg name="max_angular_z" default="$(optenv NAV_MAX_ANGULAR_Z 0.22)"/>
   <arg name="command_timeout" default="$(optenv NAV_COMMAND_TIMEOUT 0.5)"/>
   <arg name="enable_diagnostics" default="false"/>
   <arg name="diagnostic_throttle_sec" default="1.0"/>

@@ -1,0 +1,1148 @@
+[build_with_venv] Checking shared ROS dependency links...
+Repo root: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8
+
+=== Checking FAST_LIO ===
+  path: /home/zzf/search_ws/FAST_LIO
+  working tree: clean
+  HEAD: 7cc4175de6f8ba2edf34bab02a42195b141027e9
+
+=== Checking livox_ros_driver ===
+  path: /home/zzf/search_ws/livox_ros_driver
+  working tree: clean
+  HEAD: 3d240d5666129e1a3052e78ee8487a04b08fdda3
+
+=== Checking FAST_LIO submodule: include/ikd-Tree ===
+  path: /home/zzf/search_ws/FAST_LIO/include/ikd-Tree
+  HEAD: e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4
+
+=== Creating symlinks under src/external/ ===
+  /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO -> /home/zzf/search_ws/FAST_LIO
+  /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver -> /home/zzf/search_ws/livox_ros_driver
+
+=== Verifying package.xml presence ===
+  FAST_LIO package.xml:
+    /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO/package.xml
+  livox_ros_driver package.xml:
+    /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/package.xml
+
+=== Verifying git ignore coverage ===
+  git check-ignore src/external/FAST_LIO: OK (ignored)
+  git check-ignore src/external/livox_ros_driver: OK (ignored)
+
+=== Checking Livox-SDK external prefix ===
+  url: https://github.com/Livox-SDK/Livox-SDK.git
+  ref: v2.3.0-8-g9306596
+  commit: 9306596a2bf15c1343bc023b497465ed0a32909d
+  source: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/src
+  build: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/build
+  install: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install
+
+=== Summary ===
+FAST_LIO:        /home/zzf/search_ws/FAST_LIO
+  commit:         7cc4175de6f8ba2edf34bab02a42195b141027e9
+  ikd-Tree:       e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4
+livox_ros_driver: /home/zzf/search_ws/livox_ros_driver
+  commit:         3d240d5666129e1a3052e78ee8487a04b08fdda3
+Livox-SDK:       /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install
+  source:         /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/src
+  commit:         9306596a2bf15c1343bc023b497465ed0a32909d
+
+Done.
+[build_with_venv] CUDA_HOME: /usr/local/cuda-11.8
+[build_with_venv] Repository root: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8
+[build_with_venv] Selected CC : /usr/bin/gcc-11
+[build_with_venv] Selected CXX: /usr/bin/g++-11
+[build_with_venv] CUDAHOSTCXX : /usr/bin/g++-11
+[build_with_venv] ROS setup: /opt/ros/noetic/setup.bash
+[build_with_venv] Python executable: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/.venv/bin/python
+[build_with_venv] Active python: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/.venv/bin/python
+Python 3.10.12
+[build_with_venv] Catkin whitelist: livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup
+WARN: Python torch is not importable from venv.
+      If a package needs LibTorch, install a compatible torch wheel:
+      source .venv/bin/activate
+      python -m pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+[build_with_venv] CMAKE_PREFIX_PATH=/opt/ros/noetic:/usr/local/cuda-11.8:/home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install
+[build_with_venv] CMAKE_LIBRARY_PATH=/home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install/lib:
+[build_with_venv] Livox-SDK install: /home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install
+[build_with_venv] Starting catkin_make...
+-- Using CATKIN_DEVEL_PREFIX: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel
+-- Using CMAKE_PREFIX_PATH: /opt/ros/noetic;/usr/local/cuda-11.8;/home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install
+-- This workspace overlays: /opt/ros/noetic
+-- Using PYTHON_EXECUTABLE: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/.venv/bin/python
+-- Using Debian Python package layout
+-- Using empy: /usr/bin/empy
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/build/test_results
+-- Forcing gtest/gmock from source, though one was otherwise available.
+-- Found gtest sources under '/usr/src/googletest': gtests will be built
+-- Found gmock sources under '/usr/src/googletest': gmock will be built
+-- Using Python nosetests: /usr/bin/nosetests3
+-- catkin 0.8.10
+-- BUILD_SHARED_LIBS is on
+-- BUILD_SHARED_LIBS is on
+-- Using CATKIN_WHITELIST_PACKAGES: livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- ~~  traversing 25 packages in topological order:
+-- ~~  - catkin_simple
+-- ~~  - kdtree
+-- ~~  - minkindr
+-- ~~  - simenv_navigation_bridge
+-- ~~  - simenv_navigation_bringup
+-- ~~  - octomap_msgs
+-- ~~  - volumetric_msgs
+-- ~~  - livox_laser_simulation
+-- ~~  - octomap_ros
+-- ~~  - livox_ros_driver
+-- ~~  - fast_lio
+-- ~~  - local_planner
+-- ~~  - misc_utils
+-- ~~  - graph_utils
+-- ~~  - graph_planner
+-- ~~  - simenv_fast_lio2_integration
+-- ~~  - minkindr_conversions
+-- ~~  - unitree_legged_msgs
+-- ~~  - unitree_legged_control
+-- ~~  - unitree_gazebo
+-- ~~  - unitree_guide
+-- ~~  - volumetric_map_base
+-- ~~  - octomap_world
+-- ~~  - dsvplanner
+-- ~~  - dsvp_launch
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- +++ processing catkin package: 'catkin_simple'
+-- ==> add_subdirectory(navigation/vendor/dsv/catkin_simple)
+CMake Deprecation Warning at navigation/vendor/dsv/catkin_simple/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'kdtree'
+-- ==> add_subdirectory(navigation/vendor/dsv/kdtree)
+CMake Deprecation Warning at navigation/vendor/dsv/kdtree/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'minkindr'
+-- ==> add_subdirectory(navigation/vendor/dsv/minkindr/minkindr)
+CMake Deprecation Warning at navigation/vendor/dsv/minkindr/minkindr/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Marking HEADER FILES in "include" folder of package "minkindr" for installation
+-- +++ processing catkin package: 'simenv_navigation_bridge'
+-- ==> add_subdirectory(navigation/simenv_navigation_bridge)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/navigation/simenv_navigation_bridge/scripts/cmd_vel_bridge.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_navigation_bridge
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/navigation/simenv_navigation_bridge/scripts/registered_cloud_to_terrain_map.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_navigation_bridge
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/navigation/simenv_navigation_bridge/scripts/simenv_navigation_boundary.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_navigation_bridge
+-- +++ processing catkin package: 'simenv_navigation_bringup'
+-- ==> add_subdirectory(navigation/simenv_navigation_bringup)
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/navigation/simenv_navigation_bringup/scripts/test_falco_interface_smoke.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_navigation_bringup
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/navigation/simenv_navigation_bringup/scripts/test_dsv_interface_smoke.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_navigation_bringup
+-- +++ processing catkin package: 'octomap_msgs'
+-- ==> add_subdirectory(navigation/vendor/dsv/deps/octomap_msgs)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- octomap_msgs: 2 messages, 2 services
+-- +++ processing catkin package: 'volumetric_msgs'
+-- ==> add_subdirectory(navigation/vendor/dsv/volumetric_mapping/volumetric_msgs)
+CMake Deprecation Warning at navigation/vendor/dsv/volumetric_mapping/volumetric_msgs/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- volumetric_msgs: 0 messages, 4 services
+-- +++ processing catkin package: 'livox_laser_simulation'
+-- ==> add_subdirectory(Mid360_imu_sim)
+CMake Deprecation Warning at Mid360_imu_sim/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PkgConfig)
+  does not match the name of the calling package (gazebo).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
+  Mid360_imu_sim/CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.40.0") found components: thread system filesystem program_options regex iostreams date_time
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4")
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-transport8 -- found version 8.2.1
+-- Searching for dependencies of ignition-transport8
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3")
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.4
+-- Checking for module 'uuid'
+--   Found uuid, version 2.37.2
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Searching for dependencies of ignition-msgs5
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 9.0.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.14.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-fuel_tools4 -- found version 4.4.0
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.9.5
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.7.3
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- +++ processing catkin package: 'octomap_ros'
+-- ==> add_subdirectory(navigation/vendor/dsv/deps/octomap_ros)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'livox_ros_driver'
+-- ==> add_subdirectory(external/livox_ros_driver/livox_ros_driver)
+-- livox_ros_driver version: 2.6.0
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.54") found components: system thread chrono
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1")
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.65.0") found components: system filesystem date_time iostreams serialization
+-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+** WARNING ** io features related to pcap will be disabled
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+-- Found Qhull version 8.0.2
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- looking for PCL_COMMON
+-- looking for PCL_KDTREE
+-- looking for PCL_OCTREE
+-- looking for PCL_SEARCH
+-- looking for PCL_SAMPLE_CONSENSUS
+-- looking for PCL_FILTERS
+-- looking for PCL_2D
+-- looking for PCL_GEOMETRY
+-- looking for PCL_IO
+-- looking for PCL_FEATURES
+-- looking for PCL_ML
+-- looking for PCL_SEGMENTATION
+-- looking for PCL_VISUALIZATION
+-- looking for PCL_SURFACE
+-- looking for PCL_REGISTRATION
+-- looking for PCL_KEYPOINTS
+-- looking for PCL_TRACKING
+-- looking for PCL_RECOGNITION
+-- looking for PCL_STEREO
+-- looking for PCL_APPS
+-- looking for PCL_IN_HAND_SCANNER
+-- looking for PCL_MODELER
+-- looking for PCL_POINT_CLOUD_EDITOR
+-- looking for PCL_OUTOFCORE
+-- looking for PCL_PEOPLE
+-- livox_ros_driver: 2 messages, 0 services
+/usr/include/apr-1.0
+apr-1
+find livox sdk library success
+-- +++ processing catkin package: 'fast_lio'
+-- ==> add_subdirectory(external/FAST_LIO)
+CMake Deprecation Warning at external/FAST_LIO/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+Current CPU archtecture: x86_64
+Processer number:  32
+core for MP: 3
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+** WARNING ** io features related to pcap will be disabled
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+-- Found Qhull version 8.0.2
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- looking for PCL_COMMON
+-- looking for PCL_KDTREE
+-- looking for PCL_OCTREE
+-- looking for PCL_SEARCH
+-- looking for PCL_SAMPLE_CONSENSUS
+-- looking for PCL_FILTERS
+-- looking for PCL_2D
+-- looking for PCL_GEOMETRY
+-- looking for PCL_IO
+-- looking for PCL_FEATURES
+-- looking for PCL_ML
+-- looking for PCL_SEGMENTATION
+-- looking for PCL_VISUALIZATION
+-- looking for PCL_SURFACE
+-- looking for PCL_REGISTRATION
+-- looking for PCL_KEYPOINTS
+-- looking for PCL_TRACKING
+-- looking for PCL_RECOGNITION
+-- looking for PCL_STEREO
+-- looking for PCL_APPS
+-- looking for PCL_IN_HAND_SCANNER
+-- looking for PCL_MODELER
+-- looking for PCL_POINT_CLOUD_EDITOR
+-- looking for PCL_OUTOFCORE
+-- looking for PCL_PEOPLE
+-- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_visualization;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_recognition;pcl_stereo;pcl_apps;pcl_outofcore;pcl_people;Boost::system;Boost::filesystem;Boost::date_time;Boost::iostreams;Boost::serialization;/usr/lib/libOpenNI.so;libusb::libusb;/usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb;VTK::ChartsCore;VTK::CommonColor;VTK::CommonComputationalGeometry;VTK::CommonCore;VTK::CommonDataModel;VTK::CommonExecutionModel;VTK::CommonMath;VTK::CommonMisc;VTK::CommonTransforms;VTK::FiltersCore;VTK::FiltersExtraction;VTK::FiltersGeneral;VTK::FiltersGeometry;VTK::FiltersModeling;VTK::FiltersSources;VTK::ImagingCore;VTK::ImagingSources;VTK::InteractionImage;VTK::InteractionStyle;VTK::InteractionWidgets;VTK::IOCore;VTK::IOGeometry;VTK::IOImage;VTK::IOLegacy;VTK::IOPLY;VTK::RenderingAnnotation;VTK::RenderingCore;VTK::RenderingContext2D;VTK::RenderingLOD;VTK::RenderingFreeType;VTK::ViewsCore;VTK::ViewsContext2D;VTK::RenderingOpenGL2;VTK::GUISupportQt;FLANN::FLANN;QHULL::QHULL (Required is at least version "1.8")
+Eigen:/usr/include/eigen3
+-- fast_lio: 1 messages, 0 services
+-- +++ processing catkin package: 'local_planner'
+-- ==> add_subdirectory(navigation/vendor/falco/local_planner)
+CMake Deprecation Warning at navigation/vendor/falco/local_planner/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+** WARNING ** io features related to pcap will be disabled
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+-- Found Qhull version 8.0.2
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- looking for PCL_COMMON
+-- looking for PCL_KDTREE
+-- looking for PCL_OCTREE
+-- looking for PCL_SEARCH
+-- looking for PCL_SAMPLE_CONSENSUS
+-- looking for PCL_FILTERS
+-- looking for PCL_2D
+-- looking for PCL_GEOMETRY
+-- looking for PCL_IO
+-- looking for PCL_FEATURES
+-- looking for PCL_ML
+-- looking for PCL_SEGMENTATION
+-- looking for PCL_VISUALIZATION
+-- looking for PCL_SURFACE
+-- looking for PCL_REGISTRATION
+-- looking for PCL_KEYPOINTS
+-- looking for PCL_TRACKING
+-- looking for PCL_RECOGNITION
+-- looking for PCL_STEREO
+-- looking for PCL_APPS
+-- looking for PCL_IN_HAND_SCANNER
+-- looking for PCL_MODELER
+-- looking for PCL_POINT_CLOUD_EDITOR
+-- looking for PCL_OUTOFCORE
+-- looking for PCL_PEOPLE
+-- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_visualization;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_recognition;pcl_stereo;pcl_apps;pcl_outofcore;pcl_people;Boost::system;Boost::filesystem;Boost::date_time;Boost::iostreams;Boost::serialization;/usr/lib/libOpenNI.so;libusb::libusb;/usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb;VTK::ChartsCore;VTK::CommonColor;VTK::CommonComputationalGeometry;VTK::CommonCore;VTK::CommonDataModel;VTK::CommonExecutionModel;VTK::CommonMath;VTK::CommonMisc;VTK::CommonTransforms;VTK::FiltersCore;VTK::FiltersExtraction;VTK::FiltersGeneral;VTK::FiltersGeometry;VTK::FiltersModeling;VTK::FiltersSources;VTK::ImagingCore;VTK::ImagingSources;VTK::InteractionImage;VTK::InteractionStyle;VTK::InteractionWidgets;VTK::IOCore;VTK::IOGeometry;VTK::IOImage;VTK::IOLegacy;VTK::IOPLY;VTK::RenderingAnnotation;VTK::RenderingCore;VTK::RenderingContext2D;VTK::RenderingLOD;VTK::RenderingFreeType;VTK::ViewsCore;VTK::ViewsContext2D;VTK::RenderingOpenGL2;VTK::GUISupportQt;FLANN::FLANN;QHULL::QHULL
+-- +++ processing catkin package: 'misc_utils'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/misc_utils)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/misc_utils/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'graph_utils'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/graph_utils)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/graph_utils/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- graph_utils: 3 messages, 0 services
+-- +++ processing catkin package: 'graph_planner'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/graph_planner)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/graph_planner/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- graph_planner: 2 messages, 0 services
+-- +++ processing catkin package: 'simenv_fast_lio2_integration'
+-- ==> add_subdirectory(simenv_fast_lio2_integration)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration/scripts/pointcloud_fields_check.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration/scripts/map_to_camera_init_bridge.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration/scripts/odometry_tf_bridge.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration/scripts/check_fast_lio2_extrinsics.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_fast_lio2_integration
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration/scripts/runtime_pointcloud_smoke_check.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/simenv_fast_lio2_integration
+-- +++ processing catkin package: 'minkindr_conversions'
+-- ==> add_subdirectory(navigation/vendor/dsv/minkindr_ros/minkindr_conversions)
+CMake Deprecation Warning at navigation/vendor/dsv/minkindr_ros/minkindr_conversions/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Marking SHARED_LIBRARY "minkindr_conversions" of package "minkindr_conversions" for installation
+-- Marking HEADER FILES in "include" folder of package "minkindr_conversions" for installation
+-- +++ processing catkin package: 'unitree_legged_msgs'
+-- ==> add_subdirectory(unitree_guide/unitree_ros_to_real/unitree_legged_msgs)
+CMake Deprecation Warning at unitree_guide/unitree_ros_to_real/unitree_legged_msgs/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- unitree_legged_msgs: 11 messages, 0 services
+-- +++ processing catkin package: 'unitree_legged_control'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/unitree_legged_control)
+CMake Deprecation Warning at unitree_guide/unitree_ros/unitree_legged_control/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- +++ processing catkin package: 'unitree_gazebo'
+-- ==> add_subdirectory(unitree_guide/unitree_ros/unitree_gazebo)
+CMake Deprecation Warning at unitree_guide/unitree_ros/unitree_gazebo/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PkgConfig)
+  does not match the name of the calling package (gazebo).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
+  unitree_guide/unitree_ros/unitree_gazebo/CMakeLists.txt:17 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.40.0") found components: thread system filesystem program_options regex iostreams date_time
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4")
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-transport8 -- found version 8.2.1
+-- Searching for dependencies of ignition-transport8
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3")
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.4
+-- Checking for module 'uuid'
+--   Found uuid, version 2.37.2
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Searching for dependencies of ignition-msgs5
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 9.0.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.14.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-fuel_tools4 -- found version 4.4.0
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.9.5
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.7.3
+-- Looking for ignition-common3 -- found version 3.14.0
+-- Looking for ignition-math6 -- found version 6.10.0
+-- Looking for ignition-msgs5 -- found version 5.8.1
+-- +++ processing catkin package: 'unitree_guide'
+-- ==> add_subdirectory(unitree_guide/unitree_guide/unitree_guide)
+-- UNITREE_ENABLE_TORCH_POLICY=ON
+-- Caffe2: CUDA detected: 11.8
+-- Caffe2: CUDA nvcc is: /usr/local/cuda-11.8/bin/nvcc
+-- Caffe2: CUDA toolkit directory: /usr/local/cuda-11.8
+-- Caffe2: Header version is: 11.8
+-- /usr/local/cuda-11.8/lib64/libnvrtc.so shorthash is 672ee683
+-- USE_CUDNN is set to 0. Compiling without cuDNN support
+-- Added CUDA NVCC flags for: -gencode;arch=compute_52,code=sm_52
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0")
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- unitree_guide: 2 messages, 0 services
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/unitree_guide/unitree_guide/unitree_guide/scripts/virtual_joy.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/unitree_guide
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/unitree_guide/unitree_guide/unitree_guide/scripts/keyboard_teleop.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/unitree_guide
+-- Installing devel-space wrapper /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/unitree_guide/unitree_guide/unitree_guide/scripts/pointcloud2livox.py to /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib/unitree_guide
+-- +++ processing catkin package: 'volumetric_map_base'
+-- ==> add_subdirectory(navigation/vendor/dsv/volumetric_mapping/volumetric_map_base)
+CMake Deprecation Warning at navigation/vendor/dsv/volumetric_mapping/volumetric_map_base/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Marking SHARED_LIBRARY "volumetric_map_base" of package "volumetric_map_base" for installation
+-- Marking HEADER FILES in "include" folder of package "volumetric_map_base" for installation
+-- +++ processing catkin package: 'octomap_world'
+-- ==> add_subdirectory(navigation/vendor/dsv/volumetric_mapping/octomap_world)
+CMake Deprecation Warning at navigation/vendor/dsv/volumetric_mapping/octomap_world/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Marking SHARED_LIBRARY "octomap_world" of package "octomap_world" for installation
+-- Marking EXECUTABLE "octomap_manager" of package "octomap_world" for installation
+-- Marking HEADER FILES in "include" folder of package "octomap_world" for installation
+-- +++ processing catkin package: 'dsvplanner'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/dsvplanner)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/dsvplanner/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning at /opt/ros/noetic/share/cmake_modules/cmake/Modules/FindEigen.cmake:62 (message):
+  The FindEigen.cmake Module in the cmake_modules package is deprecated.
+
+  Please use the FindEigen3.cmake Module provided with Eigen.  Change
+  instances of find_package(Eigen) to find_package(Eigen3).  Check the
+  FindEigen3.cmake Module for the resulting CMake variable names.
+
+Call Stack (most recent call first):
+  navigation/vendor/dsv/dsvplanner/dsvplanner/CMakeLists.txt:22 (find_package)
+
+
+-- Found Eigen: /usr/include/eigen3
+-- Eigen found (include: /usr/include/eigen3)
+-- dsvplanner: 0 messages, 2 services
+-- +++ processing catkin package: 'dsvp_launch'
+-- ==> add_subdirectory(navigation/vendor/dsv/dsvplanner/dsvp_launch)
+CMake Deprecation Warning at navigation/vendor/dsv/dsvplanner/dsvp_launch/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/build
+[  0%] Built target geometry_msgs_generate_messages_nodejs
+[  0%] Built target geometry_msgs_generate_messages_cpp
+[  0%] Built target geometry_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target geometry_msgs_generate_messages_py
+[  0%] Built target _catkin_empty_exported_target
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target geometry_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target actionlib_msgs_generate_messages_nodejs
+[  0%] Built target actionlib_msgs_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[  0%] Built target tf_generate_messages_cpp
+[  0%] Built target tf_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target actionlib_msgs_generate_messages_py
+[  0%] Built target actionlib_msgs_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_eus
+[  0%] Built target actionlib_msgs_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_py
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_lisp
+Consolidate compiler generated dependencies of target livox_laser_simulation
+[  0%] Built target tf_generate_messages_nodejs
+[  0%] Built target tf_generate_messages_py
+[  0%] Built target roscpp_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_eus
+[  0%] Built target roscpp_generate_messages_py
+[  0%] Built target tf_generate_messages_lisp
+[  0%] Built target rosgraph_msgs_generate_messages_cpp
+[  0%] Built target roscpp_generate_messages_nodejs
+[  0%] Built target rosgraph_msgs_generate_messages_eus
+[  0%] Built target rosgraph_msgs_generate_messages_nodejs
+[  0%] Built target rosgraph_msgs_generate_messages_py
+[  0%] Built target rosgraph_msgs_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_cpp
+[  0%] Built target actionlib_generate_messages_nodejs
+[  0%] Built target actionlib_generate_messages_py
+[  0%] Built target actionlib_generate_messages_lisp
+[  0%] Built target actionlib_generate_messages_eus
+[  0%] Built target actionlib_generate_messages_cpp
+[  0%] Built target tf2_msgs_generate_messages_eus
+[  0%] Built target tf2_msgs_generate_messages_lisp
+[  0%] Built target tf2_msgs_generate_messages_cpp
+[  0%] Built target tf2_msgs_generate_messages_nodejs
+[  0%] Built target _octomap_msgs_generate_messages_check_deps_BoundingBoxQuery
+[  1%] Built target livox_laser_simulation
+Consolidate compiler generated dependencies of target localPlanner
+[  1%] Built target _octomap_msgs_generate_messages_check_deps_OctomapWithPose
+[  1%] Built target _octomap_msgs_generate_messages_check_deps_Octomap
+Consolidate compiler generated dependencies of target pathFollower
+Consolidate compiler generated dependencies of target misc_utils
+[  1%] Built target _octomap_msgs_generate_messages_check_deps_GetOctomap
+[  1%] Built target _volumetric_msgs_generate_messages_check_deps_SetBoxOccupancy
+[  1%] Built target _volumetric_msgs_generate_messages_check_deps_SetDisplayBounds
+[  1%] Built target _volumetric_msgs_generate_messages_check_deps_LoadMap
+[  1%] Built target _volumetric_msgs_generate_messages_check_deps_SaveMap
+[  1%] Built target nav_msgs_generate_messages_eus
+[  2%] Building CXX object external/FAST_LIO/CMakeFiles/fastlio_mapping.dir/src/laserMapping.cpp.o
+[  2%] Built target nav_msgs_generate_messages_nodejs
+[  2%] Built target nav_msgs_generate_messages_cpp
+[  2%] Built target nav_msgs_generate_messages_py
+[  2%] Building CXX object external/FAST_LIO/CMakeFiles/fastlio_mapping.dir/include/ikd-Tree/ikd_Tree.cpp.o
+[  2%] Built target tf2_msgs_generate_messages_py
+[  2%] Built target std_srvs_generate_messages_eus
+[  2%] Built target std_srvs_generate_messages_lisp
+[  2%] Building CXX object external/FAST_LIO/CMakeFiles/fastlio_mapping.dir/src/preprocess.cpp.o
+[  2%] Built target std_srvs_generate_messages_cpp
+[  2%] Built target nav_msgs_generate_messages_lisp
+[  2%] Built target std_srvs_generate_messages_nodejs
+[  2%] Built target std_srvs_generate_messages_py
+[  2%] Built target topic_tools_generate_messages_cpp
+[  3%] Built target localPlanner
+[  3%] Built target topic_tools_generate_messages_eus
+[  3%] Built target topic_tools_generate_messages_lisp
+[  3%] Built target topic_tools_generate_messages_py
+[  4%] Built target pathFollower
+[  4%] Built target misc_utils
+[  4%] Built target topic_tools_generate_messages_nodejs
+[  4%] Built target pcl_ros_gencfg
+[  4%] Built target dynamic_reconfigure_generate_messages_cpp
+[  4%] Built target dynamic_reconfigure_generate_messages_lisp
+[  4%] Built target dynamic_reconfigure_generate_messages_eus
+[  4%] Built target dynamic_reconfigure_generate_messages_nodejs
+[  4%] Built target nodelet_generate_messages_cpp
+[  4%] Built target nodelet_generate_messages_nodejs
+[  4%] Built target dynamic_reconfigure_generate_messages_py
+[  4%] Built target nodelet_generate_messages_eus
+[  4%] Built target bond_generate_messages_lisp
+[  4%] Built target bond_generate_messages_eus
+[  4%] Built target bond_generate_messages_cpp
+[  4%] Built target nodelet_generate_messages_py
+[  4%] Built target nodelet_generate_messages_lisp
+[  4%] Built target bond_generate_messages_nodejs
+[  4%] Built target _livox_ros_driver_generate_messages_check_deps_CustomMsg
+[  4%] Built target nodelet_topic_tools_gencfg
+[  4%] Built target bond_generate_messages_py
+[  4%] Built target _fast_lio_generate_messages_check_deps_Pose6D
+[  4%] Built target _livox_ros_driver_generate_messages_check_deps_CustomPoint
+[  4%] Built target _graph_utils_generate_messages_check_deps_TopologicalGraph
+[  4%] Built target pcl_msgs_generate_messages_eus
+[  4%] Built target pcl_msgs_generate_messages_cpp
+[  4%] Built target _graph_utils_generate_messages_check_deps_Vertex
+[  4%] Built target pcl_msgs_generate_messages_lisp
+[  4%] Built target pcl_msgs_generate_messages_nodejs
+[  4%] Built target pcl_msgs_generate_messages_py
+[  4%] Built target _graph_utils_generate_messages_check_deps_Edge
+[  4%] Built target visualization_msgs_generate_messages_cpp
+[  4%] Built target visualization_msgs_generate_messages_eus
+[  4%] Built target visualization_msgs_generate_messages_py
+Consolidate compiler generated dependencies of target minkindr_conversions
+[  4%] Built target visualization_msgs_generate_messages_nodejs
+Consolidate compiler generated dependencies of target unitreeFootContactPlugin
+Consolidate compiler generated dependencies of target unitreeDrawForcePlugin
+[  4%] Built target visualization_msgs_generate_messages_lisp
+[  5%] Built target minkindr_conversions
+Consolidate compiler generated dependencies of target kdtree
+[  5%] Built target stereo_msgs_generate_messages_eus
+Consolidate compiler generated dependencies of target state_from_gazebo
+[  5%] Built target stereo_msgs_generate_messages_lisp
+[  5%] Built target stereo_msgs_generate_messages_nodejs
+[  5%] Built target _graph_planner_generate_messages_check_deps_GraphPlannerStatus
+[  7%] Built target _unitree_legged_msgs_generate_messages_check_deps_MotorState
+[  7%] Built target octomap_msgs_generate_messages_py
+[  8%] Built target kdtree
+[  8%] Built target stereo_msgs_generate_messages_cpp
+[  8%] Built target stereo_msgs_generate_messages_py
+[  8%] Built target _graph_planner_generate_messages_check_deps_GraphPlannerCommand
+[  9%] Built target octomap_msgs_generate_messages_cpp
+[  9%] Built target _unitree_legged_msgs_generate_messages_check_deps_BmsCmd
+[  9%] Built target _unitree_legged_msgs_generate_messages_check_deps_LED
+[  9%] Built target _unitree_legged_msgs_generate_messages_check_deps_HighState
+[ 10%] Built target unitreeDrawForcePlugin
+[ 10%] Built target _unitree_legged_msgs_generate_messages_check_deps_LowState
+[ 12%] Built target octomap_msgs_generate_messages_eus
+[ 12%] Built target state_from_gazebo
+[ 12%] Built target _unitree_legged_msgs_generate_messages_check_deps_MotorCmd
+[ 12%] Built target _unitree_legged_msgs_generate_messages_check_deps_BmsState
+[ 13%] Built target octomap_msgs_generate_messages_lisp
+[ 13%] Built target _unitree_legged_msgs_generate_messages_check_deps_IMU
+[ 15%] Built target octomap_msgs_generate_messages_nodejs
+[ 15%] Built target _unitree_legged_msgs_generate_messages_check_deps_Cartesian
+[ 17%] Built target volumetric_msgs_generate_messages_py
+[ 17%] Built target _unitree_legged_msgs_generate_messages_check_deps_LowCmd
+[ 18%] Built target volumetric_msgs_generate_messages_cpp
+[ 18%] Built target unitreeFootContactPlugin
+[ 20%] Built target volumetric_msgs_generate_messages_eus
+[ 21%] Built target volumetric_msgs_generate_messages_lisp
+[ 21%] Generating Python from MSG livox_ros_driver/CustomMsg
+[ 23%] Generating Python from MSG livox_ros_driver/CustomPoint
+[ 24%] Built target volumetric_msgs_generate_messages_nodejs
+[ 25%] Generating C++ code from livox_ros_driver/CustomPoint.msg
+[ 26%] Generating EusLisp code from livox_ros_driver/CustomPoint.msg
+[ 26%] Built target _unitree_legged_msgs_generate_messages_check_deps_HighCmd
+[ 26%] Generating Lisp code from livox_ros_driver/CustomPoint.msg
+[ 26%] Generating Python from MSG fast_lio/Pose6D
+[ 26%] Built target _dsvplanner_generate_messages_check_deps_dsvplanner_srv
+[ 26%] Generating Lisp code from fast_lio/Pose6D.msg
+[ 26%] Generating C++ code from fast_lio/Pose6D.msg
+[ 27%] Generating Javascript code from fast_lio/Pose6D.msg
+[ 27%] Built target _dsvplanner_generate_messages_check_deps_clean_frontier_srv
+[ 29%] Built target _unitree_guide_generate_messages_check_deps_CustomMsg
+[ 29%] Generating EusLisp manifest code for fast_lio
+[ 29%] Built target _unitree_guide_generate_messages_check_deps_CustomPoint
+[ 29%] Generating EusLisp code from livox_ros_driver/CustomMsg.msg
+[ 30%] Built target graph_utils_generate_messages_py
+[ 31%] Built target graph_utils_generate_messages_cpp
+[ 32%] Built target graph_utils_generate_messages_lisp
+[ 32%] Generating EusLisp manifest code for livox_ros_driver
+[ 33%] Built target graph_utils_generate_messages_nodejs
+[ 33%] Generating Javascript code from livox_ros_driver/CustomPoint.msg
+[ 33%] Generating EusLisp code from fast_lio/Pose6D.msg
+[ 34%] Built target graph_planner_generate_messages_py
+Consolidate compiler generated dependencies of target volumetric_map_base
+[ 35%] Built target graph_utils_generate_messages_eus
+[ 37%] Built target graph_planner_generate_messages_eus
+[ 37%] Built target graph_planner_generate_messages_cpp
+[ 37%] Built target graph_planner_generate_messages_lisp
+[ 38%] Built target graph_planner_generate_messages_nodejs
+[ 38%] Generating Lisp code from livox_ros_driver/CustomMsg.msg
+[ 38%] Generating C++ code from livox_ros_driver/CustomMsg.msg
+[ 39%] Generating Javascript code from livox_ros_driver/CustomMsg.msg
+Consolidate compiler generated dependencies of target octomap_ros
+[ 39%] Built target octomap_msgs_generate_messages
+[ 39%] Built target volumetric_msgs_generate_messages
+[ 44%] Built target unitree_legged_msgs_generate_messages_py
+[ 48%] Built target unitree_legged_msgs_generate_messages_lisp
+[ 51%] Built target unitree_legged_msgs_generate_messages_nodejs
+[ 55%] Built target unitree_legged_msgs_generate_messages_eus
+[ 56%] Built target volumetric_map_base
+[ 61%] Built target unitree_legged_msgs_generate_messages_cpp
+[ 62%] Built target unitree_guide_generate_messages_cpp
+[ 63%] Built target octomap_ros
+[ 64%] Built target unitree_guide_generate_messages_eus
+[ 65%] Built target unitree_guide_generate_messages_py
+[ 66%] Built target unitree_guide_generate_messages_lisp
+[ 66%] Built target unitree_guide_generate_messages_nodejs
+[ 67%] Built target dsvplanner_generate_messages_cpp
+[ 68%] Built target dsvplanner_generate_messages_eus
+[ 68%] Built target dsvplanner_generate_messages_nodejs
+Consolidate compiler generated dependencies of target graph_utils
+[ 69%] Built target dsvplanner_generate_messages_py
+[ 69%] Built target graph_planner_generate_messages
+[ 69%] Built target fast_lio_generate_messages_lisp
+Consolidate compiler generated dependencies of target graph_visualization
+[ 69%] Built target graph_utils_generate_messages
+[ 69%] Built target livox_ros_driver_generate_messages_lisp
+[ 69%] Built target livox_ros_driver_generate_messages_nodejs
+[ 69%] Built target fast_lio_generate_messages_nodejs
+[ 69%] Built target unitree_legged_msgs_generate_messages
+[ 70%] Built target graph_utils
+Consolidate compiler generated dependencies of target octomap_world
+[ 72%] Built target unitree_legged_msgs_gencpp
+[ 72%] Built target unitree_guide_generate_messages
+[ 72%] Built target dsvplanner_generate_messages_lisp
+[ 73%] Built target graph_visualization
+Consolidate compiler generated dependencies of target graph_planner
+Consolidate compiler generated dependencies of target unitree_legged_control
+[ 73%] Built target dsvplanner_generate_messages
+[ 73%] Built target fast_lio_generate_messages_cpp
+[ 74%] Built target octomap_world
+[ 75%] Built target unitree_legged_control
+[ 75%] Built target livox_ros_driver_generate_messages_cpp
+[ 76%] Built target graph_planner
+Consolidate compiler generated dependencies of target navigationBoundary
+Consolidate compiler generated dependencies of target octomap_manager
+Consolidate compiler generated dependencies of target exploration
+[ 76%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/lds_lvx.cpp.o
+[ 76%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/lvx_file.cpp.o
+[ 77%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/ldq.cpp.o
+[ 77%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/lds.cpp.o
+[ 78%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/lds_lidar.cpp.o
+[ 78%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/lds_hub.cpp.o
+[ 79%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/livox_ros_driver.cpp.o
+[ 79%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/lddc.cpp.o
+[ 79%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/timesync/timesync.cpp.o
+[ 79%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/timesync/user_uart/user_uart.cpp.o
+[ 79%] Generating Python msg __init__.py for livox_ros_driver
+[ 80%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/common/comm/comm_protocol.cpp.o
+[ 80%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/common/comm/gps_protocol.cpp.o
+[ 81%] Built target navigationBoundary
+[ 81%] Building CXX object external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/common/comm/sdk_protocol.cpp.o
+[ 82%] Built target octomap_manager
+[ 83%] Built target exploration
+[ 83%] Generating Python msg __init__.py for fast_lio
+Consolidate compiler generated dependencies of target dsvPlannerLib
+[ 86%] Built target dsvPlannerLib
+Consolidate compiler generated dependencies of target dsvplanner
+[ 86%] Built target dsvplanner
+Consolidate compiler generated dependencies of target junior_ctrl
+In file included from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:25:
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.h:80:8: error: ‘shared_ptr’ in namespace ‘std’ does not name a template type
+   80 |   std::shared_ptr<std::thread> t_poll_state_;
+      |        ^~~~~~~~~~
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.h:32:1: note: ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+   31 | #include "user_uart.h"
+  +++ |+#include <memory>
+   32 |
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.h:84:8: error: ‘shared_ptr’ in namespace ‘std’ does not name a template type
+   84 |   std::shared_ptr<std::thread> t_poll_data_;
+      |        ^~~~~~~~~~
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.h:84:3: note: ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+   84 |   std::shared_ptr<std::thread> t_poll_data_;
+      |   ^~~
+[ 86%] Built target fast_lio_generate_messages_py
+[ 86%] Built target livox_ros_driver_generate_messages_py
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp: In member function ‘int32_t livox_ros::TimeSync::InitTimeSync(const livox_ros::TimeSyncConfig&)’:
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:73:3: error: ‘t_poll_state_’ was not declared in this scope; did you mean ‘exit_poll_state_’?
+   73 |   t_poll_state_ =
+      |   ^~~~~~~~~~~~~
+      |   exit_poll_state_
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:74:12: error: ‘make_shared’ is not a member of ‘std’
+   74 |       std::make_shared<std::thread>(std::bind(&TimeSync::PollStateLoop, this));
+      |            ^~~~~~~~~~~
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:32:1: note: ‘std::make_shared’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+   31 | #include <functional>
+  +++ |+#include <memory>
+   32 | #include <thread>
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:74:35: error: expected primary-expression before ‘>’ token
+   74 |       std::make_shared<std::thread>(std::bind(&TimeSync::PollStateLoop, this));
+      |                                   ^
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:75:3: error: ‘t_poll_data_’ was not declared in this scope; did you mean ‘exit_poll_data_’?
+   75 |   t_poll_data_ =
+      |   ^~~~~~~~~~~~
+      |   exit_poll_data_
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:76:12: error: ‘make_shared’ is not a member of ‘std’
+   76 |       std::make_shared<std::thread>(std::bind(&TimeSync::PollDataLoop, this));
+      |            ^~~~~~~~~~~
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:76:12: note: ‘std::make_shared’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:76:35: error: expected primary-expression before ‘>’ token
+   76 |       std::make_shared<std::thread>(std::bind(&TimeSync::PollDataLoop, this));
+      |                                   ^
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp: In member function ‘void livox_ros::TimeSync::StopTimesync()’:
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:97:7: error: ‘t_poll_state_’ was not declared in this scope; did you mean ‘exit_poll_state_’?
+   97 |   if (t_poll_state_) {
+      |       ^~~~~~~~~~~~~
+      |       exit_poll_state_
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/timesync/timesync.cpp:102:7: error: ‘t_poll_data_’ was not declared in this scope; did you mean ‘exit_poll_data_’?
+  102 |   if (t_poll_data_) {
+      |       ^~~~~~~~~~~~
+      |       exit_poll_data_
+[ 97%] Built target junior_ctrl
+make[2]: *** [external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/build.make:188：external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/timesync/timesync.cpp.o] 错误 1
+make[2]: *** 正在等待未完成的任务....
+[ 97%] Built target livox_ros_driver_generate_messages_eus
+[ 97%] Built target livox_ros_driver_generate_messages
+[ 97%] Built target fast_lio_generate_messages_eus
+[ 97%] Built target fast_lio_generate_messages
+In file included from /usr/include/string.h:535,
+                 from /usr/include/c++/11/cstring:42,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/common/rapidjson/rapidjson.h:45,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/common/rapidjson/stream.h:19,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/common/rapidjson/memorystream.h:22,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/common/rapidjson/encodedstream.h:22,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/common/rapidjson/document.h:26,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_lidar.h:36,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_lidar.cpp:25:
+In function ‘char* strncpy(char*, const char*, size_t)’,
+    inlined from ‘int livox_ros::LdsLidar::ParseTimesyncConfig(rapidjson::Document&)’ at /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_lidar.cpp:605:17:
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:95:34: warning: ‘char* __builtin_strncpy(char*, const char*, long unsigned int)’ specified bound 256 equals destination size [-Wstringop-truncation]
+   95 |   return __builtin___strncpy_chk (__dest, __src, __len,
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+   96 |                                   __glibc_objsize (__dest));
+      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~
+In function ‘char* strncpy(char*, const char*, size_t)’,
+    inlined from ‘int livox_ros::LdsLidar::ParseConfigFile(const char*)’ at /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lds_lidar.cpp:668:25:
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:95:34: warning: ‘char* __builtin_strncpy(char*, const char*, long unsigned int)’ specified bound 16 equals destination size [-Wstringop-truncation]
+   95 |   return __builtin___strncpy_chk (__dest, __src, __len,
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+   96 |                                   __glibc_objsize (__dest));
+      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/log4cxx/log4cxx.h:45,
+                 from /usr/include/log4cxx/logstring.h:28,
+                 from /usr/include/log4cxx/level.h:22,
+                 from /opt/ros/noetic/include/ros/console.h:46,
+                 from /opt/ros/noetic/include/ros/ros.h:40,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO/src/preprocess.h:5,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO/src/preprocess.cpp:1:
+/usr/include/log4cxx/boost-std-configuration.h:10:18: error: ‘shared_mutex’ in namespace ‘std’ does not name a type
+   10 |     typedef std::shared_mutex shared_mutex;
+      |                  ^~~~~~~~~~~~
+/usr/include/log4cxx/boost-std-configuration.h:10:13: note: ‘std::shared_mutex’ is only available from C++17 onwards
+   10 |     typedef std::shared_mutex shared_mutex;
+      |             ^~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO/src/preprocess.h:5,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO/src/preprocess.cpp:1:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/log4cxx/log4cxx.h:45,
+                 from /usr/include/log4cxx/logstring.h:28,
+                 from /usr/include/log4cxx/level.h:22,
+                 from /opt/ros/noetic/include/ros/console.h:46,
+                 from /opt/ros/noetic/include/ros/ros.h:40,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/livox_ros_driver.cpp:31:
+/usr/include/log4cxx/boost-std-configuration.h:10:18: error: ‘shared_mutex’ in namespace ‘std’ does not name a type
+   10 |     typedef std::shared_mutex shared_mutex;
+      |                  ^~~~~~~~~~~~
+/usr/include/log4cxx/boost-std-configuration.h:10:13: note: ‘std::shared_mutex’ is only available from C++17 onwards
+   10 |     typedef std::shared_mutex shared_mutex;
+      |             ^~~
+In file included from /usr/include/log4cxx/log4cxx.h:45,
+                 from /usr/include/log4cxx/logstring.h:28,
+                 from /usr/include/log4cxx/level.h:22,
+                 from /opt/ros/noetic/include/ros/console.h:46,
+                 from /opt/ros/noetic/include/ros/ros.h:40,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.h:30,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:25:
+/usr/include/log4cxx/boost-std-configuration.h:10:18: error: ‘shared_mutex’ in namespace ‘std’ does not name a type
+   10 |     typedef std::shared_mutex shared_mutex;
+      |                  ^~~~~~~~~~~~
+/usr/include/log4cxx/boost-std-configuration.h:10:13: note: ‘std::shared_mutex’ is only available from C++17 onwards
+   10 |     typedef std::shared_mutex shared_mutex;
+      |             ^~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/livox_ros_driver.cpp:31:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.h:30,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:25:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/log4cxx/log4cxx.h:45,
+                 from /usr/include/log4cxx/logstring.h:28,
+                 from /usr/include/log4cxx/level.h:22,
+                 from /opt/ros/noetic/include/ros/console.h:46,
+                 from /opt/ros/noetic/include/ros/ros.h:40,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO/src/laserMapping.cpp:44:
+/usr/include/log4cxx/boost-std-configuration.h:10:18: error: ‘shared_mutex’ in namespace ‘std’ does not name a type
+   10 |     typedef std::shared_mutex shared_mutex;
+      |                  ^~~~~~~~~~~~
+/usr/include/log4cxx/boost-std-configuration.h:10:13: note: ‘std::shared_mutex’ is only available from C++17 onwards
+   10 |     typedef std::shared_mutex shared_mutex;
+      |             ^~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /opt/ros/noetic/include/ros/forwards.h:37,
+                 from /opt/ros/noetic/include/ros/common.h:37,
+                 from /opt/ros/noetic/include/ros/ros.h:43,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/FAST_LIO/src/laserMapping.cpp:44:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+make[2]: *** [external/FAST_LIO/CMakeFiles/fastlio_mapping.dir/build.make:104：external/FAST_LIO/CMakeFiles/fastlio_mapping.dir/src/preprocess.cpp.o] 错误 1
+make[2]: *** 正在等待未完成的任务....
+In file included from /opt/ros/noetic/include/ros/serialization.h:37,
+                 from /opt/ros/noetic/include/ros/publisher.h:34,
+                 from /opt/ros/noetic/include/ros/node_handle.h:32,
+                 from /opt/ros/noetic/include/ros/ros.h:45,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.h:30,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:25:
+/opt/ros/noetic/include/ros/message_traits.h: In instantiation of ‘static const char* ros::message_traits::MD5Sum<M>::value(const M&) [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’:
+/opt/ros/noetic/include/ros/message_traits.h:254:102:   required from ‘const char* ros::message_traits::md5sum(const M&) [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’
+/opt/ros/noetic/include/ros/publisher.h:117:38:   required from ‘void ros::Publisher::publish(const M&) const [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:343:25:   required from here
+/opt/ros/noetic/include/ros/message_traits.h:125:14: error: ‘const class std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >’ has no member named ‘__getMD5Sum’
+  125 |     return m.__getMD5Sum().c_str();
+      |            ~~^~~~~~~~~~~
+/opt/ros/noetic/include/ros/message_traits.h: In instantiation of ‘static const char* ros::message_traits::DataType<M>::value(const M&) [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’:
+/opt/ros/noetic/include/ros/message_traits.h:263:104:   required from ‘const char* ros::message_traits::datatype(const M&) [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’
+/opt/ros/noetic/include/ros/publisher.h:119:11:   required from ‘void ros::Publisher::publish(const M&) const [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:343:25:   required from here
+/opt/ros/noetic/include/ros/message_traits.h:142:14: error: ‘const class std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >’ has no member named ‘__getDataType’
+  142 |     return m.__getDataType().c_str();
+      |            ~~^~~~~~~~~~~~~
+In file included from /opt/ros/noetic/include/ros/publisher.h:34,
+                 from /opt/ros/noetic/include/ros/node_handle.h:32,
+                 from /opt/ros/noetic/include/ros/ros.h:45,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.h:30,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:25:
+/opt/ros/noetic/include/ros/serialization.h: In instantiation of ‘static uint32_t ros::serialization::Serializer<T>::serializedLength(typename boost::call_traits<T>::param_type) [with T = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >; uint32_t = unsigned int; typename boost::call_traits<T>::param_type = const std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >&]’:
+/opt/ros/noetic/include/ros/serialization.h:180:41:   required from ‘uint32_t ros::serialization::serializationLength(const T&) [with T = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >; uint32_t = unsigned int]’
+/opt/ros/noetic/include/ros/serialization.h:815:37:   required from ‘ros::SerializedMessage ros::serialization::serializeMessage(const M&) [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’
+/opt/ros/noetic/include/ros/publisher.h:126:26:   required from ‘void ros::Publisher::publish(const M&) const [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:343:25:   required from here
+/opt/ros/noetic/include/ros/serialization.h:145:14: error: ‘const class std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >’ has no member named ‘serializationLength’
+  145 |     return t.serializationLength();
+      |            ~~^~~~~~~~~~~~~~~~~~~
+/opt/ros/noetic/include/ros/serialization.h: In instantiation of ‘static void ros::serialization::Serializer<T>::write(Stream&, typename boost::call_traits<T>::param_type) [with Stream = ros::serialization::OStream; T = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >; typename boost::call_traits<T>::param_type = const std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >&]’:
+/opt/ros/noetic/include/ros/serialization.h:155:23:   required from ‘void ros::serialization::serialize(Stream&, const T&) [with T = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >; Stream = ros::serialization::OStream]’
+/opt/ros/noetic/include/ros/serialization.h:822:12:   required from ‘ros::SerializedMessage ros::serialization::serializeMessage(const M&) [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’
+/opt/ros/noetic/include/ros/publisher.h:126:26:   required from ‘void ros::Publisher::publish(const M&) const [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:343:25:   required from here
+/opt/ros/noetic/include/ros/serialization.h:128:7: error: ‘const class std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >’ has no member named ‘serialize’
+  128 |     t.serialize(stream.getData(), 0);
+      |     ~~^~~~~~~~~
+In file included from /opt/ros/noetic/include/ros/serialization.h:37,
+                 from /opt/ros/noetic/include/ros/publisher.h:34,
+                 from /opt/ros/noetic/include/ros/node_handle.h:32,
+                 from /opt/ros/noetic/include/ros/ros.h:45,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.h:30,
+                 from /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:25:
+/opt/ros/noetic/include/ros/message_traits.h: In instantiation of ‘static const char* ros::message_traits::Definition<M>::value(const M&) [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’:
+/opt/ros/noetic/include/ros/message_traits.h:272:106:   required from ‘const char* ros::message_traits::definition(const M&) [with M = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >]’
+/opt/ros/noetic/include/rosbag/bag.h:579:84:   required from ‘void rosbag::Bag::doWrite(const string&, const ros::Time&, const T&, const boost::shared_ptr<std::map<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >&) [with T = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >; std::string = std::__cxx11::basic_string<char>]’
+/opt/ros/noetic/include/rosbag/bag.h:375:12:   required from ‘void rosbag::Bag::write(const string&, const ros::Time&, const T&, boost::shared_ptr<std::map<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >) [with T = std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >; std::string = std::__cxx11::basic_string<char>]’
+/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/external/livox_ros_driver/livox_ros_driver/livox_ros_driver/lddc.cpp:346:18:   required from here
+/opt/ros/noetic/include/ros/message_traits.h:159:14: error: ‘const class std::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >’ has no member named ‘__getMessageDefinition’
+  159 |     return m.__getMessageDefinition().c_str();
+      |            ~~^~~~~~~~~~~~~~~~~~~~~~
+make[2]: *** [external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/build.make:174：external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/livox_ros_driver.cpp.o] 错误 1
+make[2]: *** [external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/build.make:160：external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/livox_ros_driver/lddc.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:4987：external/livox_ros_driver/livox_ros_driver/CMakeFiles/livox_ros_driver_node.dir/all] 错误 2
+make[1]: *** 正在等待未完成的任务....
+make[2]: *** [external/FAST_LIO/CMakeFiles/fastlio_mapping.dir/build.make:76：external/FAST_LIO/CMakeFiles/fastlio_mapping.dir/src/laserMapping.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:5334：external/FAST_LIO/CMakeFiles/fastlio_mapping.dir/all] 错误 2
+make: *** [Makefile:146：all] 错误 2
+Base path: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8
+Source space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src
+Build space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/build
+Devel space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel
+Install space: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/install
+####
+#### Running command: "cmake /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src -DPYTHON_EXECUTABLE=/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/.venv/bin/python -DCMAKE_C_COMPILER=/usr/bin/gcc-11 -DCMAKE_CXX_COMPILER=/usr/bin/g++-11 -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-11 -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=ON -DCMAKE_EXE_LINKER_FLAGS=-no-pie -DBUILD_LIVOX_DRIVER_NODE=OFF -DCATKIN_WHITELIST_PACKAGES=livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.8 -DCUDAToolkit_ROOT=/usr/local/cuda-11.8 -DCMAKE_CUDA_FLAGS=-ccbin=/usr/bin/g++-11 -DCATKIN_DEVEL_PREFIX=/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel -DCMAKE_INSTALL_PREFIX=/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/install -G Unix Makefiles" in "/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/build"
+####
+####
+#### Running command: "make -j32 -l32" in "/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/build"
+####
+Invoking "make -j32 -l32" failed
+build_with_venv_exit_code=1

@@ -169,6 +169,19 @@ class OctomapManager : public OctomapWorld {
   // Transform queue, used only when use_tf_transforms is false.
   std::deque<geometry_msgs::TransformStamped> transform_queue_;
 
+  // DSV internal Octomap diagnostics — throttled counters.
+  void diagPrint(const ros::TimerEvent&);
+  ros::Timer diag_timer_;
+  uint32_t diag_callback_count_;
+  uint32_t diag_tf_attempt_;
+  uint32_t diag_tf_success_;
+  uint32_t diag_insert_attempt_;
+  uint32_t diag_insert_success_;
+  double diag_last_cloud_stamp_;
+  std::string diag_last_cloud_frame_;
+  uint32_t diag_last_cloud_points_;
+  std::string diag_last_tf_error_;
+
 };
 
 }  // namespace volumetric_mapping

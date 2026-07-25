@@ -1,0 +1,10 @@
+metric,value
+navigation_enabled,true
+fsm_state,4 (Trotting)
+cmd_vel_linear_x,0.0
+cmd_vel_angular_z,0.0
+falco_goal_distance_m,0.016
+frontier_points,0
+waypoint_published,false
+return_home_triggered,true
+blocked_reason,empty_frontiers_sparse_terrain_map

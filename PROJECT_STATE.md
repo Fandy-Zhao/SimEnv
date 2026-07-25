@@ -1,5 +1,66 @@
 # Project State
 
+> **2026-07-24 external Livox-SDK prefix retry**: fixed shared resources remain
+> `/home/zzf/search_ws/FAST_LIO`
+> `7cc4175de6f8ba2edf34bab02a42195b141027e9`,
+> `ikd-Tree` `e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4`, and
+> `/home/zzf/search_ws/livox_ros_driver`
+> `3d240d5666129e1a3052e78ee8487a04b08fdda3`. Added an independent
+> Livox-SDK install prefix under
+> `/home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install`
+> from fixed upstream commit `9306596a2bf15c1343bc023b497465ed0a32909d`
+> (`v2.3.0-8-g9306596`, SDK version macros `2.3.0`). The SDK source/build/install
+> are outside SimEnv and outside the shared `livox_ros_driver` checkout; shared
+> FAST_LIO and livox status remained clean before and after formal build.
+> `livox_ros_driver` found `liblivox_sdk_static.a`, so the previous SDK
+> discovery blocker is resolved. Formal `./tools/build_with_venv.sh` now enters
+> catkin and fails with exit code `1` on unmodified shared-source build
+> compatibility: public FAST_LIO still forces C++14 and public
+> `livox_ros_driver` still builds its hardware node, causing Noetic/log4cxx
+> C++17 and ROS/PCL shared-pointer compile errors. First failed gate remains
+> `FAST_LIO_BUILD_BLOCKED`; FAST-LIO runtime, terrain map, DSV/FALCO, short
+> loop, full exploration, and return home were not run.
+
+> **2026-07-24 shared FAST-LIO2 dependency retry**: the task worktree now uses
+> `tools/prepare_shared_ros_deps.sh` to validate and link the fixed shared
+> public sources under `src/external/`:
+> `/home/zzf/search_ws/FAST_LIO` `7cc4175de6f8ba2edf34bab02a42195b141027e9`,
+> `ikd-Tree` `e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4`, and
+> `/home/zzf/search_ws/livox_ros_driver`
+> `3d240d5666129e1a3052e78ee8487a04b08fdda3`. Shared package discovery through
+> `ROS_PACKAGE_PATH=$PWD/src` passes for `fast_lio` and `livox_ros_driver`.
+> Formal `./tools/build_with_venv.sh` is blocked before `catkin_make` with exit
+> code `20`: the pinned shared `livox_ros_driver` CMake lacks the
+> `BUILD_LIVOX_DRIVER_NODE` guard and would try to clone/build Livox-SDK inside
+> the shared checkout when no system `liblivox_sdk_static.a` exists. The build
+> script now refuses that mutation. First failed gate: `FAST_LIO_BUILD_BLOCKED`.
+> FAST-LIO runtime, terrain map, DSV/FALCO data chain, short closed loop, full
+> exploration, and return home were not run. Current verdict:
+> `FALCO_DSV_EXPLORATION_BLOCKED`.
+
+> **2026-07-24 FALCO + DSV single-floor data path**: branch
+> `feat/0724-falco-dsv-single-floor-exploration-0p8` starts from local
+> `master` `ce73018c9ecc220bf01351a295a534ca56e67100` in isolated worktree
+> `/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8`. Root
+> `master` dirty scene/log/result files were preserved untouched. Added a
+> single-floor navigation launch, runtime terrain-map and boundary adapters,
+> FALCO heading-aware raw speed scheduling, and DSV zero-initialization/windowed
+> movement fixes. Formal `./tools/build_with_venv.sh` passes. Isolated FALCO
+> path follower probes measured straight `0.803999543 m/s`, 30 deg
+> `0.600000143 m/s`, 70 deg `0.203999937 m/s`, and max angular
+> `0.219911486 rad/s`. Verdict: `FALCO_DSV_DATA_PATH_READY`; S2-S5 `auto.sh`
+> Gazebo/Trotting closed-loop validation remains next and is not claimed.
+
+> **2026-07-24 runtime validation update**: the required real entry points were
+> started from the same worktree (`FLOOR_COUNT=1 GUI=false ./auto.sh` and
+> `roslaunch simenv_navigation_bringup single_floor_exploration.launch`), with
+> `/navigation/enabled=false`. The run stopped at the first gate:
+> `FAST_LIO_INPUT_BLOCKED`. `auto.sh` reported `fast_lio: NOT_FOUND`;
+> `logs/fast_lio2.log` reports `cannot launch node of type
+> [fast_lio/fastlio_mapping]`; `rospack find fast_lio` fails after sourcing the
+> task worktree. No navigation motion, short loop, full exploration, or return
+> home was executed. Current runtime verdict: `FALCO_DSV_EXPLORATION_BLOCKED`.
+
 > **2026-07-24 FALCO A1 real-cloud R3 tuning**: branch
 > `feat/0723-falco-dsv-navigation-integration` continued only the R3 FALCO
 > local-planner gate from baseline `8f5c89ee`. Added an A1-specific

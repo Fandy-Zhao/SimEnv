@@ -1,0 +1,1 @@
+wall_time,sim_time,waypoint_region,heading_error_rad,goal_distance,raw_linear_x,raw_angular_z,bridge_linear_x,bridge_angular_z,actual_yaw_rate,actual_displacement,turn_in_place,allow_reverse,reverse_escape

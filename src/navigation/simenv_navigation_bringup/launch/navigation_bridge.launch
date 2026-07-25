@@ -1,9 +1,9 @@
 <launch>
   <arg name="ns" default="navigation"/>
   <arg name="config" default="$(find simenv_navigation_bringup)/config/navigation_safety.yaml"/>
-  <arg name="max_linear_x" default="$(optenv NAV_MAX_LINEAR_X 0.20)"/>
+  <arg name="max_linear_x" default="$(optenv NAV_MAX_LINEAR_X 0.80)"/>
   <arg name="max_linear_y" default="$(optenv NAV_MAX_LINEAR_Y 0.00)"/>
-  <arg name="max_angular_z" default="$(optenv NAV_MAX_ANGULAR_Z 0.30)"/>
+  <arg name="max_angular_z" default="$(optenv NAV_MAX_ANGULAR_Z 0.22)"/>
   <arg name="command_timeout" default="$(optenv NAV_COMMAND_TIMEOUT 0.5)"/>
 
   <node pkg="simenv_navigation_bridge" type="cmd_vel_bridge.py"

@@ -1,0 +1,16 @@
+Runtime failure gate: FAST_LIO_INPUT_BLOCKED
+
+fast_lio package discovery:
+[rospack] Error: package 'fast_lio' not found
+
+auto runtime fast_lio excerpts:
+experiments/runs/0724_falco_dsv_single_floor_0p8/auto_runtime.log:11:  Contains FAST-LIO2 pointcloud semantics fix 69ff34e7: yes
+experiments/runs/0724_falco_dsv_single_floor_0p8/auto_runtime.log:14:  simenv_fast_lio2_integration: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration
+experiments/runs/0724_falco_dsv_single_floor_0p8/auto_runtime.log:16:  fast_lio: NOT_FOUND
+experiments/runs/0724_falco_dsv_single_floor_0p8/auto_runtime.log:17:  scan_to_pointcloud2.py: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py
+experiments/runs/0724_falco_dsv_single_floor_0p8/auto_runtime.log:35:  FAST-LIO2 mapping: true
+experiments/runs/0724_falco_dsv_single_floor_0p8/auto_runtime.log:63:Starting FAST-LIO2 mapping (scan adapter + fastlio_mapping)...
+experiments/runs/0724_falco_dsv_single_floor_0p8/auto_runtime.log:64:FAST-LIO2 mapping launched in background (logs: logs/fast_lio2.log)
+logs/fast_lio2.log:1:[31mERROR: cannot launch node of type [fast_lio/fastlio_mapping]: fast_lio
+logs/fast_lio2.log:6:[ERROR] [1784887398.436475, 6.524000]: Timed out waiting for /Odometry.  Is FAST-LIO2 running?
+logs/fast_lio2.log:7:[INFO] [1784887368.422422, 0.000000]: Waiting for first /Odometry from FAST-LIO2 ...

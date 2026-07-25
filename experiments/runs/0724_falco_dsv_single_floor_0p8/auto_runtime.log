@@ -1,0 +1,82 @@
+Cleaning up all leftover processes from previous runs...
+Checking ROS Python environment for Conda contamination...
+ROS Python environment:
+/usr/bin/python3
+/usr/lib/python3.10/xml/dom/minidom.py
+Sourcing ROS environment...
+Runtime source diagnostics:
+  Workspace: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8
+  Git branch: feat/0724-falco-dsv-single-floor-exploration-0p8
+  Git HEAD:   ae865571
+  Contains FAST-LIO2 pointcloud semantics fix 69ff34e7: yes
+  ROS_PACKAGE_PATH: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src:/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src:/opt/ros/noetic/share
+  CMAKE_PREFIX_PATH: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel:/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel:/opt/ros/noetic:/usr/local/cuda-11.8
+  simenv_fast_lio2_integration: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration
+  a1_description: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/unitree_guide/unitree_ros/robots/a1_description
+  fast_lio: NOT_FOUND
+  scan_to_pointcloud2.py: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py
+Generating competition scene...
+==========================================
+Startup summary
+  World mode: competition
+  Physics profile: competition_legacy_default
+  Physics source:  competition legacy default (0.002/500/40)
+  Workspace: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8
+  World:   /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/generated_building/competition_scene.world
+  Robot spawn pose: x=0.0 y=2.3 z=0.6 yaw=1.5708
+  GUI: false
+  Truth:   /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/results/danger_truth.json
+  Manifest:/home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/generated_building/scene_manifest.json
+  Result:  /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/results/detected_danger.json
+  Sensor data: true
+  PointCloud2 converter: true
+  Ground truth topics: true
+  Referee odom: true
+  FAST-LIO2 mapping: true
+  RViz: true
+  Building controller: 1
+  Virtual joystick: 0
+  Timing diagnostics: false
+  RL policy override: unset (controller default; /rl_policy_path ROS param still has priority)
+  Gazebo starts paused: true
+  Auto unpause: true after 6s
+  Gazebo physics:
+    max_step_size:            0.002
+    real_time_update_rate:    500
+    ode_iters:                40
+    contact_max_correcting_vel: 5.0
+    theoretical target RTF:   1.000
+  Gazebo plugin path: /home/zzf/search_ws/SimEnv_worktrees/falco-dsv-single-floor-0p8/devel/lib:
+==========================================
+Launching Gazebo, Unitree A1 model, sensors, and ROS interfaces...
+Starting building door/elevator control service...
+Starting junior_ctrl in a dedicated terminal...
+UNITREE_CTRL_DT=0.002 seconds.
+Keyboard input in the controller terminal: 2=stand (4=trot, 6=RL need Torch build).
+tmux session ready: simenv-junior_ctrl
+  Reattach from any terminal: tmux attach-session -t simenv-junior_ctrl
+Waiting additional 5s (FAST_LIO2_DELAY)...
+Commanding FixedStand via /fsm/state_cmd...
+publishing and latching message for 3.0 seconds
+Waiting for IMU stabilisation (robot upright)...
+  IMU stabilised: linear_acceleration.z ≈ 9.810357229576697 m/s²
+Starting FAST-LIO2 mapping (scan adapter + fastlio_mapping)...
+FAST-LIO2 mapping launched in background (logs: logs/fast_lio2.log)
+Starting rviz in a dedicated terminal...
+tmux session ready: simenv-rviz
+  Reattach from any terminal: tmux attach-session -t simenv-rviz
+Simulation startup command completed.
+Publish geometry_msgs/Twist to /cmd_vel for velocity control (Trotting/RL mode only;
+  Trotting and RL require a Torch-enabled build: set UNITREE_ENABLE_TORCH_POLICY=ON).
+Use rostopic to switch FSM states:
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 2"  # FixedStand
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 4"  # Trotting   (needs Torch)
+  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 6"  # RL         (needs Torch)
+
+==============================================
+  auto.sh startup complete.
+  The controller and rviz are in separate tmux sessions.
+  Reattach if a GUI terminal closes: tmux attach-session -t simenv-junior_ctrl
+                                 tmux attach-session -t simenv-rviz
+  Press Ctrl-C in THIS terminal to stop all ROS processes.
+==============================================

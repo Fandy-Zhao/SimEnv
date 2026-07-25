@@ -1,5 +1,47 @@
 # Module Status
 
+> **2026-07-24 shared dependency SDK prefix retry**:
+> shared public resources are fixed at FAST_LIO
+> `7cc4175de6f8ba2edf34bab02a42195b141027e9`, ikd-Tree
+> `e2e3f4e9d3b95a9e66b1ba83dc98d4a05ed8a3c4`, and `livox_ros_driver`
+> `3d240d5666129e1a3052e78ee8487a04b08fdda3`. An independent Livox-SDK prefix
+> is now prepared at commit `9306596a2bf15c1343bc023b497465ed0a32909d` under
+> `/home/zzf/search_ws/shared_ros_deps/`, and `livox_ros_driver` discovers the
+> static SDK library without mutating its public checkout. Formal build now
+> blocks later, at unmodified shared FAST_LIO/livox source compatibility
+> errors (`FAST_LIO_BUILD_BLOCKED`). Runtime navigation stages remain
+> unvalidated in this retry.
+
+> **2026-07-24 shared FAST-LIO2 dependency retry**:
+> `tools/prepare_shared_ros_deps.sh` now links the fixed public FAST_LIO and
+> `livox_ros_driver` checkouts into the task worktree under ignored
+> `src/external/` symlinks after validating clean commits. Package discovery
+> via `ROS_PACKAGE_PATH=$PWD/src` passes for both `fast_lio` and
+> `livox_ros_driver`. Formal build remains blocked before catkin because the
+> shared pinned `livox_ros_driver` would mutate its public checkout by
+> auto-cloning Livox-SDK; `tools/build_with_venv.sh` now refuses that unsafe
+> path. First failed gate: `FAST_LIO_BUILD_BLOCKED`. Navigation runtime stages
+> remain unvalidated in this retry.
+
+> **2026-07-24 `src/navigation` single-floor FALCO + DSV data path**:
+> `simenv_navigation_bridge` now provides `registered_cloud_to_terrain_map.py`
+> and `simenv_navigation_boundary.py`; `simenv_navigation_bringup` now provides
+> `single_floor_exploration.launch`. FALCO `pathFollower` owns a heading-aware
+> raw speed profile (`0.8/0.6/0.2 m/s`, `0.22 rad/s` cap, timeout zeroing).
+> DSV `exploration` skips zero initialization, uses time-window movement/stuck
+> detection, requests replans before frontier cleaning, parameterizes planner
+> services, and clamps single-floor goal Z. Build and isolated FALCO speed
+> probes pass; real Gazebo S2-S5 closed-loop exploration is pending.
+
+> **2026-07-24 `src/navigation` runtime gate update**:
+> real `auto.sh` + `single_floor_exploration.launch` validation stopped before
+> motion at `FAST_LIO_INPUT_BLOCKED`. The task worktree can find
+> `simenv_fast_lio2_integration`, but `rospack find fast_lio` fails, and
+> `fast_lio/fastlio_mapping` cannot launch. Terrain map, DSV frontier/waypoint,
+> FALCO real raw speed, bridge motion, short loop, full exploration, and return
+> home remain unvalidated until the `fast_lio` package is restored or staged for
+> this worktree.
+
 > **2026-07-24 `src/navigation` FALCO A1 tuning**:
 > `falco_only.launch` and `runtime_real_data.launch` now default to
 > `falco_a1.yaml`, an A1-specific local-planner profile for real FAST-LIO2

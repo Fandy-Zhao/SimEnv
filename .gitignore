@@ -39,4 +39,5 @@ experiments/runs/*/M*/cleanup_pids.txt
 # External source restored for local validation only
 src/FAST_LIO/
 src/livox_ros_driver/
+/src/external/
 experiments/runs/*/external_src/

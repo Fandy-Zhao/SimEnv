@@ -1,0 +1,9 @@
+2026-07-24T18:01:55+08:00
+branch:
+feat/0724-falco-dsv-single-floor-exploration-0p8
+head:
+ae865571cd2076b2a2c3e45e71365bf4bcfff505
+status:
+?? experiments/runs/0724_falco_dsv_single_floor_0p8/runtime_startup.txt
+processes before:
+77119 /bin/bash -lc date -Is > experiments/runs/0724_falco_dsv_single_floor_0p8/runtime_startup.txt && { echo 'branch:'; git branch --show-current; echo 'head:'; git rev-parse HEAD; echo 'status:'; git status --short; echo 'processes before:'; pgrep -af 'roscore|rosmaster|roslaunch|gazebo|gzserver|gzclient|rviz|junior_ctrl|laserMapping|localPlanner|pathFollower|dsvplanner|graph_planner|cmd_vel_bridge' || true; } >> experiments/runs/0724_falco_dsv_single_floor_0p8/runtime_startup.txt

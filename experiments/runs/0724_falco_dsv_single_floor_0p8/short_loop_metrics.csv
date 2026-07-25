@@ -1,0 +1,3 @@
+timestamp,cmd_vel_linear_x,cmd_vel_angular_z,falco_linear_x,falco_angular_z,goal_dis_m
+266.77,-0.138,-0.220,-0.138,-0.220,5.84
+293.90,0.090,0.000,0.090,0.000,5.84

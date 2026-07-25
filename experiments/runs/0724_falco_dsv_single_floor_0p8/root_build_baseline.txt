@@ -1,0 +1,46 @@
+Root Workspace Build Baseline Summary
+======================================
+Date: 2026-07-24
+Root path: /home/zzf/search_ws/SimEnv
+Branch: master
+Commit: ce73018c9ecc220bf01351a295a534ca56e67100
+
+Q1: Which FAST_LIO source?
+  Path: /tmp/simenv-fast-lio2-deps/7cc4175de6f8ba2edf34bab02a42195b141027e9-3d240d5666129e1a3052e78ee8487a04b08fdda3/FAST_LIO
+  This is a COPY of public /home/zzf/search_ws/FAST_LIO with CMakeLists.txt PATCHED.
+  Patch: C++14 -> C++17, adds target_compile_features(fastlio_mapping PRIVATE cxx_std_17)
+  Symlink: src/FAST_LIO -> temp staging
+
+Q2: Which livox_ros_driver source?
+  Path: /tmp/simenv-fast-lio2-deps/7cc4175.../livox_ros_driver/livox_ros_driver
+  This is a COPY of public /home/zzf/search_ws/livox_ros_driver with CMakeLists.txt PATCHED.
+  Patch: Adds BUILD_LIVOX_DRIVER_NODE option guard around hardware node code
+  Symlink: src/livox_ros_driver -> temp staging
+
+Q3: Compiled livox_ros_driver hardware node?
+  NO. -DBUILD_LIVOX_DRIVER_NODE=OFF is set via catkin_make args.
+  The patch makes the hardware node build conditional on this option.
+
+Q4: C++ standard?
+  C++17. Both build_with_venv.sh (-DCMAKE_CXX_STANDARD=17) and
+  the patched FAST_LIO CMakeLists.txt (set(CMAKE_CXX_STANDARD 17)) agree.
+
+Q5: Depends on historical build/devel?
+  Yes, existing build/ and devel/ are preserved. But the build is reproducible
+  via tools/build_with_venv.sh after running tools/external_deps/prepare_fast_lio2_deps.sh --prepare.
+
+Q6: Uncommitted compatibility patches?
+  YES. Patches are applied to temp copies in /tmp/.
+  Patch files exist in tools/external_deps/patches/:
+  - fast_lio-cxx17.patch: C++14->C++17 for FAST_LIO CMakeLists.txt
+  - livox-driver-message-only.patch: BUILD_LIVOX_DRIVER_NODE guard for livox_ros_driver
+  These patches are NOT committed in the root workspace's master branch.
+
+Q7: Livox-SDK discovery?
+  Not needed for the root build. The patched livox_ros_driver makes the hardware
+  node conditional (BUILD_LIVOX_DRIVER_NODE=OFF), so Livox-SDK library is never linked.
+
+Q8: Binary from current public source?
+  NO. Binary built from PATCHED temp copies, not directly from public sources.
+  Binary: devel/lib/fast_lio/fastlio_mapping (74MB, 2026-07-23 20:31)
+  ldd: no missing libraries.
