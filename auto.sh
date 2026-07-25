@@ -796,7 +796,7 @@ if [ "$ENABLE_FAST_LIO2" = "true" ] && [ "$START_CONTROLLER" = "1" ]; then
   for i in $(seq 1 6); do
     sleep 0.5
     IMU_Z=$(timeout 5 rostopic echo /trunk_imu/linear_acceleration -n 1 2>/dev/null \
-      | grep "z:" | head -1 | awk '{print $2}')
+      | grep "z:" | head -1 | awk '{print $2}' || true)
     if [ -n "$IMU_Z" ]; then
       IMU_Z_INT=$(echo "$IMU_Z" | cut -d. -f1)
       if [ "$IMU_Z_INT" -ge 9 ] 2>/dev/null; then
