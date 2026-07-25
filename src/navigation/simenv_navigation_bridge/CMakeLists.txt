@@ -18,5 +18,6 @@ catkin_install_python(PROGRAMS
   scripts/nav_state_supervisor.py
   scripts/registered_cloud_to_terrain_map.py
   scripts/simenv_navigation_boundary.py
+  scripts/waypoint_frame_monitor.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
