@@ -71,18 +71,18 @@ interface:
 lb:
   kMinXLocal: -11.0
   kMinYLocal: -19.0
-  kMinZLocal: -0.25
+  kMinZLocal: -0.5
   kMaxXLocal: 11.0
   kMaxYLocal: 19.0
-  kMaxZLocal: 0.25
+  kMaxZLocal: 0.5
 
 gb:
   kMinXGlobal: -11.0
   kMinYGlobal: -19.0
-  kMinZGlobal: -0.25
+  kMinZGlobal: -1.0
   kMaxXGlobal: 11.0
   kMaxYGlobal: 19.0
-  kMaxZGlobal: 0.25
+  kMaxZGlobal: 2.5
 
 rm:
   kSensorPitch: 0.0
@@ -197,6 +197,7 @@ single_floor:
   max_frontier_z_deviation: 0.30
   max_extension_along_z: 0.08
   search_bounding_z: 0.25
+  min_exploration_iterations: 5
 
 terrain_map:
   output_frame: map
