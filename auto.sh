@@ -818,6 +818,17 @@ if [ "$ENABLE_NAVIGATION" = "true" ]; then
   export NAV_MAX_ANGULAR_Z
   export NAV_COMMAND_TIMEOUT
 
+  # Navigation state supervisor — latched state owner that survives
+  # bridge / navigation sub-stack restarts.  Launched independently so
+  # that killing the navigation roslaunch does not lose user-commanded
+  # state (enabled, exploring, fsm_state).
+  echo "Launching navigation state supervisor..."
+  rosrun simenv_navigation_bridge nav_state_supervisor.py \
+    > "$WORKSPACE_DIR/logs/nav_state_supervisor.log" 2>&1 &
+  SUPERVISOR_PID=$!
+  echo "$SUPERVISOR_PID" > "$WORKSPACE_DIR/logs/nav_state_supervisor.pid"
+  echo "Navigation state supervisor launched (pid=$SUPERVISOR_PID)"
+
   echo "Launching navigation bringup (mode=$NAV_MODE, dsv=$START_DSV)..."
   roslaunch simenv_navigation_bringup single_floor_exploration.launch \
     start_falco:=true \
@@ -909,6 +920,7 @@ cleanup() {
 
   # ── Navigation bringup ──
   pkill -9 -f "roslaunch.*simenv_navigation_bringup" 2>/dev/null || true
+  pkill -9 -f "nav_state_supervisor"  2>/dev/null || true
   pkill -9 -f "cmd_vel_bridge"         2>/dev/null || true
   pkill -9 -f "localPlanner"           2>/dev/null || true
   pkill -9 -f "pathFollower"           2>/dev/null || true

@@ -15,6 +15,7 @@ catkin_package()
 
 catkin_install_python(PROGRAMS
   scripts/cmd_vel_bridge.py
+  scripts/nav_state_supervisor.py
   scripts/registered_cloud_to_terrain_map.py
   scripts/simenv_navigation_boundary.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
