@@ -793,9 +793,9 @@ if [ "$ENABLE_FAST_LIO2" = "true" ] && [ "$START_CONTROLLER" = "1" ]; then
   # This confirms the robot is upright before FAST-LIO2 initialises.
   echo "Waiting for IMU stabilisation (robot upright)..."
   IMU_STABLE=0
-  for i in $(seq 1 40); do
+  for i in $(seq 1 20); do
     sleep 0.5
-    IMU_Z=$(rostopic echo /trunk_imu/linear_acceleration -n 1 2>/dev/null \
+    IMU_Z=$(timeout 10 rostopic echo /trunk_imu/linear_acceleration -n 1 2>/dev/null \
       | grep "z:" | head -1 | awk '{print $2}')
     if [ -n "$IMU_Z" ]; then
       IMU_Z_INT=$(echo "$IMU_Z" | cut -d. -f1)
