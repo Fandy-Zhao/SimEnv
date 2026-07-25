@@ -3,10 +3,26 @@
   <arg name="dsv_config" default="$(find simenv_navigation_bringup)/config/dsv_simenv.yaml"/>
   <arg name="simulation" default="false"/>
   <arg name="use_boundary" default="false"/>
+  <!-- Standalone octomap_manager is a diagnostic duplicate of the DSV-internal
+       OctomapManager inside dsvplanner.  Default OFF for production;
+       explicitly pass start_debug_octomap_manager:=true to enable. -->
+  <arg name="start_debug_octomap_manager" default="false"/>
 
   <rosparam command="load" file="$(arg dsv_config)"/>
 
   <group ns="$(arg ns)">
+    <!-- Standalone diagnostic octomap_manager: mirrors the DSV-internal
+         OctomapManager.  Only launched when start_debug_octomap_manager:=true. -->
+    <node if="$(arg start_debug_octomap_manager)"
+          name="octomap_manager" pkg="octomap_world" type="octomap_manager" output="screen">
+      <remap from="~occupied_nodes" to="/$(arg ns)/dsvplanner/octomap_occupied"/>
+      <remap from="~free_nodes" to="/$(arg ns)/dsvplanner/octomap_free"/>
+      <remap from="~octomap_binary" to="/$(arg ns)/dsvplanner/octomap_binary"/>
+      <remap from="~octomap_full" to="/$(arg ns)/dsvplanner/octomap_full"/>
+      <remap from="~octomap_pcl" to="/$(arg ns)/dsvplanner/octomap_pcl"/>
+      <remap from="~nearest_obstacle" to="/$(arg ns)/dsvplanner/nearest_obstacle"/>
+    </node>
+
     <node name="dsvplanner" pkg="dsvplanner" type="dsvplanner" output="screen"/>
 
     <group if="$(arg use_boundary)">
