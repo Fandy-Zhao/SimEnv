@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-07-25 — DSV/FALCO single-floor startup smoke
+
+- **test(navigation)**: Ran the real `auto.sh` single-floor DSV/FALCO startup
+  path with FAST-LIO2, Unitree A1 controller, terrain adapter, DSV, FALCO, and
+  `/cmd_vel` bridge enabled.
+- **fix(runtime)**: Corrected ROS timestamp readiness checks in `auto.sh` for
+  topic waits and final Gazebo unpause validation by comparing `secs+nsecs`.
+- **chore(build)**: Added the prepared Livox-SDK prefix handoff and
+  `building_generator_interfaces` to the formal build whitelist.
+- Result: startup chain passed through live `/Odometry`, live
+  `/cloud_registered`, navigation bringup, and advancing `/clock`; the short
+  smoke window did not confirm DSV/FALCO velocity command output.
+
 ## 2026-07-25 — FALCO turn-before-forward + waypoint body-frame monitor
 
 - **fix(falco)**: Added turn-in-place logic to pathFollower for A1 rear goals.

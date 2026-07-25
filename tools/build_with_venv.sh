@@ -103,6 +103,7 @@ export CUDAHOSTCXX="$SELECTED_CXX"
 # CUDA detection
 # ---------------------------------------------------------------------------
 CUDA_HOME="${CUDA_HOME:-/usr/local/cuda-11.8}"
+LIVOX_SDK_PREFIX="${LIVOX_SDK_PREFIX:-/home/zzf/search_ws/shared_ros_deps/Livox-SDK/9306596a2bf15c1343bc023b497465ed0a32909d/install}"
 
 if [[ -d "$CUDA_HOME" ]] && [[ -x "$CUDA_HOME/bin/nvcc" ]]; then
   export PATH="$CUDA_HOME/bin:$PATH"
@@ -121,6 +122,18 @@ echo "[build_with_venv] Selected CXX: $SELECTED_CXX"
 echo "[build_with_venv] CUDAHOSTCXX : $CUDAHOSTCXX"
 echo "[build_with_venv] ROS setup: $ROS_SETUP"
 echo "[build_with_venv] Python executable: $VENV_PYTHON"
+
+if [[ -f "$LIVOX_SDK_PREFIX/include/livox_sdk.h" && -f "$LIVOX_SDK_PREFIX/lib/liblivox_sdk_static.a" ]]; then
+  export CMAKE_INCLUDE_PATH="${LIVOX_SDK_PREFIX}/include:${CMAKE_INCLUDE_PATH:-}"
+  export CMAKE_LIBRARY_PATH="${LIVOX_SDK_PREFIX}/lib:${CMAKE_LIBRARY_PATH:-}"
+  export CPATH="${LIVOX_SDK_PREFIX}/include:${CPATH:-}"
+  export LIBRARY_PATH="${LIVOX_SDK_PREFIX}/lib:${LIBRARY_PATH:-}"
+  export LD_LIBRARY_PATH="${LIVOX_SDK_PREFIX}/lib:${LD_LIBRARY_PATH:-}"
+  echo "[build_with_venv] Livox-SDK prefix: $LIVOX_SDK_PREFIX"
+else
+  echo "[build_with_venv] WARN: Livox-SDK prefix incomplete: $LIVOX_SDK_PREFIX" >&2
+  echo "[build_with_venv]       livox_ros_driver may try its unsafe auto-clone fallback." >&2
+fi
 
 # shellcheck source=/opt/ros/noetic/setup.bash
 source "$ROS_SETUP"
@@ -158,6 +171,9 @@ CATKIN_CMAKE_ARGS=(
   -DBUILD_LIVOX_DRIVER_NODE=OFF
 )
 
+if [[ -f "$LIVOX_SDK_PREFIX/lib/liblivox_sdk_static.a" ]]; then
+  CATKIN_CMAKE_ARGS+=("-DLIVOX_SDK_LIBRARY=$LIVOX_SDK_PREFIX/lib/liblivox_sdk_static.a")
+fi
 
 # ---------------------------------------------------------------------------
 # Catkin package selection
@@ -176,7 +192,7 @@ CATKIN_CMAKE_ARGS=(
 # - livox_ros_driver is kept for CustomMsg / CustomPoint message definitions.
 # - BUILD_LIVOX_DRIVER_NODE=OFF means the real Livox hardware driver node is skipped.
 if [[ -z "${SIMENV_CATKIN_WHITELIST+x}" ]]; then
-  SIMENV_CATKIN_WHITELIST="livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup"
+  SIMENV_CATKIN_WHITELIST="building_generator_interfaces;livox_ros_driver;livox_laser_simulation;fast_lio;simenv_fast_lio2_integration;unitree_legged_msgs;unitree_guide;unitree_legged_control;unitree_gazebo;catkin_simple;kdtree;minkindr;octomap_msgs;octomap_ros;minkindr_conversions;volumetric_msgs;volumetric_map_base;octomap_world;misc_utils;graph_utils;graph_planner;dsvplanner;dsvp_launch;local_planner;simenv_navigation_bridge;simenv_navigation_bringup"
 fi
 
 if [[ -n "$SIMENV_CATKIN_WHITELIST" ]]; then

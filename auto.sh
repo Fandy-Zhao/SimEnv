@@ -227,15 +227,25 @@ gazebo_final_unpause() {
 
     # ── Verify /clock is advancing ──
     sleep 0.5
-    local clock1 clock2 clock1_sec clock2_sec
-    clock1="$(rostopic echo /clock -n 1 2>/dev/null | grep "secs:" | head -1 | awk '{print $2}')" || true
+    local clock1_sec clock1_nsec clock2_sec clock2_nsec clock1 clock2
+    read -r clock1_sec clock1_nsec < <(
+      rostopic echo /clock -n 1 2>/dev/null \
+        | grep -E "^[[:space:]]*(secs|nsecs):" | head -2 \
+        | awk '{sec=$2; getline; nsec=$2; print sec, nsec}'
+    ) || true
     sleep 1.0
-    clock2="$(rostopic echo /clock -n 1 2>/dev/null | grep "secs:" | head -1 | awk '{print $2}')" || true
+    read -r clock2_sec clock2_nsec < <(
+      rostopic echo /clock -n 1 2>/dev/null \
+        | grep -E "^[[:space:]]*(secs|nsecs):" | head -2 \
+        | awk '{sec=$2; getline; nsec=$2; print sec, nsec}'
+    ) || true
 
-    if [ -n "$clock1" ] && [ -n "$clock2" ]; then
-      clock1_sec="$(echo "$clock1" | cut -d. -f1)"
-      clock2_sec="$(echo "$clock2" | cut -d. -f1)"
-      if [ "$clock2_sec" -gt "$clock1_sec" ] 2>/dev/null; then
+    clock1="${clock1_sec:-?}.${clock1_nsec:-?}"
+    clock2="${clock2_sec:-?}.${clock2_nsec:-?}"
+    if [ -n "$clock1_sec" ] && [ -n "$clock1_nsec" ] && [ -n "$clock2_sec" ] && [ -n "$clock2_nsec" ]; then
+      if [ "$clock2_sec" -gt "$clock1_sec" ] 2>/dev/null || \
+         { [ "$clock2_sec" -eq "$clock1_sec" ] 2>/dev/null && \
+           [ "$clock2_nsec" -gt "$clock1_nsec" ] 2>/dev/null; }; then
         echo "[GAZEBO_FINAL_UNPAUSE] PASS: /clock advancing ($clock1 → $clock2)"
         return 0
       fi
@@ -268,7 +278,7 @@ wait_for_topic() {
     cur_nsec=""
     read -r cur_sec cur_nsec < <(
       timeout --kill-after=1s 2 rostopic echo -n 1 "$topic" 2>/dev/null \
-        | grep "secs:" | head -2 \
+        | grep -E "^[[:space:]]*(secs|nsecs):" | head -2 \
         | awk '{sec=$2; getline; nsec=$2; print sec, nsec}'
     ) 2>/dev/null || true
 
