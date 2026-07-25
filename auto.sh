@@ -277,7 +277,7 @@ wait_for_topic() {
     cur_sec=""
     cur_nsec=""
     read -r cur_sec cur_nsec < <(
-      timeout --kill-after=1s 2 rostopic echo -n 1 "$topic" 2>/dev/null \
+      timeout --kill-after=2s 8 rostopic echo -n 1 "$topic" 2>/dev/null \
         | grep -E "^[[:space:]]*(secs|nsecs):" | head -2 \
         | awk '{sec=$2; getline; nsec=$2; print sec, nsec}'
     ) 2>/dev/null || true
@@ -759,8 +759,8 @@ else
   schedule_unpause_physics
 fi
 
-# ── FAST-LIO2 preflight: wait for upright robot ──
-if [ "$ENABLE_FAST_LIO2" = "true" ] && [ "$START_CONTROLLER" = "1" ]; then
+# ── Command FixedStand (always, before any FAST-LIO2 / navigation) ──
+if [ "$START_CONTROLLER" = "1" ]; then
   # Wait for the controller node and its /fsm/state_cmd subscriber.
   sleep 3
 
@@ -771,9 +771,23 @@ if [ "$ENABLE_FAST_LIO2" = "true" ] && [ "$START_CONTROLLER" = "1" ]; then
     sleep "$FAST_LIO2_DELAY"
   fi
 
+  # Wait for /fsm/state_cmd subscriber before publishing (avoid lost message).
+  echo "Waiting for /fsm/state_cmd subscriber..."
+  for i in $(seq 1 15); do
+    if rostopic info /fsm/state_cmd 2>/dev/null | grep -q 'Subscribers.*http'; then
+      echo "  /fsm/state_cmd has subscriber(s)"
+      break
+    fi
+    sleep 1
+  done
+
   # Auto-command FixedStand: rostopic pub … std_msgs/Int8 "data: 2"
   echo "Commanding FixedStand via /fsm/state_cmd..."
   rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 2" -1 2>/dev/null || true
+fi
+
+# ── FAST-LIO2 preflight: wait for upright robot ──
+if [ "$ENABLE_FAST_LIO2" = "true" ] && [ "$START_CONTROLLER" = "1" ]; then
 
   # Wait for the IMU to report gravity aligned with Z (≥ 9 m/s²).
   # This confirms the robot is upright before FAST-LIO2 initialises.
@@ -857,12 +871,16 @@ if [ "$ENABLE_NAVIGATION" = "true" ]; then
   esac
 
   if [ "$NAV_AUTO_START_EXPLORATION" = "true" ]; then
-    if [ "$NAV_AUTO_TROTTING" != "true" ] || [ "$NAV_AUTO_ENABLE" != "true" ] || [ "$NAV_MODE" != "dsv_falco" ]; then
+    if [ "$NAV_AUTO_ENABLE" != "true" ] || [ "$NAV_MODE" != "dsv_falco" ]; then
       echo "[ERROR] NAV_AUTO_START_EXPLORATION=true requires:" >&2
-      echo "  NAV_AUTO_TROTTING=true (currently $NAV_AUTO_TROTTING)" >&2
       echo "  NAV_AUTO_ENABLE=true (currently $NAV_AUTO_ENABLE)" >&2
       echo "  NAV_MODE=dsv_falco (currently $NAV_MODE)" >&2
       exit 1
+    fi
+    if [ "$NAV_AUTO_TROTTING" != "true" ]; then
+      echo "NAV_AUTO_START_EXPLORATION=true with NAV_AUTO_TROTTING=false:"
+      echo "  DSV exploration will plan goals but robot will NOT auto-trot."
+      echo "  To enable auto-trotting, set NAV_AUTO_TROTTING=true."
     fi
   fi
 

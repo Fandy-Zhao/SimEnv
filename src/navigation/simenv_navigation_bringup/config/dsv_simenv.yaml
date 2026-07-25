@@ -56,7 +56,7 @@ interface:
   movementDistanceThreshold: 0.08
   stuckTimeout: 15.0
   maxReplansBeforeFrontierClean: 2
-  autoExp: false
+  autoExp: true
   tfFrame: map
   waypointTopic: /navigation/way_point
   cmdVelTopic: /navigation/falco/cmd_vel_stamped
