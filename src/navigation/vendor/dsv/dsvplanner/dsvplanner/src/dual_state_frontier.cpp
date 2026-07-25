@@ -85,6 +85,18 @@ void DualStateFrontier::getUnknowPointcloudInBoundingBox(const StateVec& center,
   StateVec bbx_min = -bounding_box_size / 2 - epsilon_3d;
   StateVec bbx_max = bounding_box_size / 2 + epsilon_3d;
 
+  // ── Diagnostic counters ──
+  int diag_nodes_checked = 0;
+  int diag_free_nodes = 0;
+  int diag_occupied_nodes = 0;
+  int diag_unknown_candidates = 0;
+  int diag_z_bound_reject = 0;
+  int diag_boundary_reject = 0;
+  int diag_frontier_pass = 0;
+  int diag_frontier_reject = 0;
+  double diag_raw_frontier_z_min = 1e9;
+  double diag_raw_frontier_z_max = -1e9;
+
   for (double x_position = bbx_min.x(); x_position <= bbx_max.x(); x_position += kFrontierResolution)
   {
     for (double y_position = bbx_min.y(); y_position <= bbx_max.y(); y_position += kFrontierResolution)
@@ -97,13 +109,38 @@ void DualStateFrontier::getUnknowPointcloudInBoundingBox(const StateVec& center,
       octomap::point3d point = octomap::point3d(x, y, z);
       octomap::OcTreeKey key = manager_->octree_->coordToKey(point);
       octomap::OcTreeNode* node = manager_->octree_->search(key);
+      diag_nodes_checked++;
+
       if (node == NULL)
       {
+        diag_unknown_candidates++;
         unknown_points_->push_back(pcl::PointXYZ(point.x(), point.y(), point.z()));
-        if (FrontierInBoundry(point) && frontierDetect(point))
+
+        bool in_boundary = FrontierInBoundry(point);
+        if (!in_boundary) {
+          // Check if Z was the rejection reason
+          if (point.z() > kGlobalMaxZ || point.z() < kGlobalMinZ)
+            diag_z_bound_reject++;
+          else
+            diag_boundary_reject++;
+        }
+
+        if (in_boundary && frontierDetect(point))
         {
           local_frontier_temp->push_back(pcl::PointXYZ(point.x(), point.y(), point.z()));
+          diag_frontier_pass++;
+          if (point.z() < diag_raw_frontier_z_min) diag_raw_frontier_z_min = point.z();
+          if (point.z() > diag_raw_frontier_z_max) diag_raw_frontier_z_max = point.z();
+        } else if (in_boundary) {
+          diag_frontier_reject++;
         }
+      }
+      else
+      {
+        if (manager_->octree_->isNodeOccupied(node))
+          diag_occupied_nodes++;
+        else
+          diag_free_nodes++;
       }
     }
   }
@@ -111,6 +148,31 @@ void DualStateFrontier::getUnknowPointcloudInBoundingBox(const StateVec& center,
   point_ds.setLeafSize(kFrontierFilterSize, kFrontierFilterSize, kFrontierFilterSize);
   point_ds.setInputCloud(local_frontier_temp);
   point_ds.filter(*local_frontier_);
+
+  // ── Throttled diagnostic log (≈ 0.2 Hz) ──
+  {
+    static int diag_seq = 0;
+    diag_seq++;
+    if (diag_seq % 50 == 1) {
+      int clustered_count = (int)local_frontier_->size();
+      ROS_INFO("[DSV_FRONTIER_DIAG]"
+               " checked=%d free=%d occ=%d"
+               " unknown=%d z_reject=%d boundary_reject=%d"
+               " frontier_pass=%d frontier_reject=%d"
+               " clustered=%d"
+               " search_z=%.2f robot_z=%.2f"
+               " raw_z_range=[%.2f, %.2f]"
+               " gb_z=[%.2f, %.2f]",
+               diag_nodes_checked, diag_free_nodes, diag_occupied_nodes,
+               diag_unknown_candidates, diag_z_bound_reject, diag_boundary_reject,
+               diag_frontier_pass, diag_frontier_reject,
+               clustered_count,
+               getZvalue(0.0, 0.0), center.z(),
+               diag_raw_frontier_z_min < 1e8 ? diag_raw_frontier_z_min : -1.0,
+               diag_raw_frontier_z_max > -1e8 ? diag_raw_frontier_z_max : -1.0,
+               kGlobalMinZ, kGlobalMaxZ);
+    }
+  }
 }
 
 bool DualStateFrontier::frontierDetect(octomap::point3d point) const
