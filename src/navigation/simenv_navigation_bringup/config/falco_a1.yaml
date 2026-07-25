@@ -57,6 +57,16 @@ sharpTurnSpeed: 0.30
 maxErrorSpeed: 0.20
 maxYawAccel: 1.0
 inputTimeout: 0.5
+
+# Turn-before-forward for A1: rear goals handled by turning in place.
+# When |heading_error| > turnInPlaceThresholdDeg, linear.x is forced to 0
+# and only yaw rotation is allowed.  This prevents persistent reverse driving.
+turnInPlaceThresholdDeg: 90.0
+forwardEnableThresholdDeg: 35.0
+rearGoalSlowSpeed: 0.05
+allowReverse: false
+reverseEscapeEnabled: true
+reverseEscapeMaxDuration: 1.5
 useInclRateToSlow: false
 inclRateThre: 120.0
 slowRate1: 0.25

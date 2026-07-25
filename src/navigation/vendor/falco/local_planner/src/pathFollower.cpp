@@ -73,6 +73,19 @@ double maxErrorSpeed = 0.2;
 double maxYawAccel = 1.0;
 double inputTimeout = 0.5;
 
+// Turn-before-forward for A1: rear goals are handled by turning in place
+// rather than reversing.  Only applies in autonomy mode.
+double turnInPlaceThresholdDeg = 90.0;    // |heading| above this → linear=0, turn only
+double forwardEnableThresholdDeg = 35.0;  // |heading| below this → normal forward speed
+double rearGoalSlowSpeed = 0.05;          // linear speed cap in the 60°–90° band
+bool allowReverse = false;                // false = turn in place for rear goals
+bool reverseEscapeEnabled = true;         // allow brief reverse to escape being stuck
+double reverseEscapeMaxDuration = 1.5;    // max seconds of reverse escape
+
+// Internal state for reverse-escape tracking
+double reverseEscapeStartTime = 0.0;
+bool inReverseEscape = false;
+
 float joySpeed = 0;
 float joySpeedRaw = 0;
 float joyYaw = 0;
@@ -126,15 +139,33 @@ double scheduledSpeedForHeading(double absHeadingError)
   const double straightHeading = straightHeadingDeg * PI / 180.0;
   const double normalTurnHeading = normalTurnHeadingDeg * PI / 180.0;
   const double sharpTurnHeading = sharpTurnHeadingDeg * PI / 180.0;
+  const double turnInPlaceRad = turnInPlaceThresholdDeg * PI / 180.0;
+  const double forwardEnableRad = forwardEnableThresholdDeg * PI / 180.0;
 
+  // Turn-in-place band: |heading| > turnInPlaceThreshold → zero linear speed
+  if (absHeadingError > turnInPlaceRad) {
+    return 0.0;
+  }
+  // Near-rear band: 60° < |heading| <= turnInPlaceThreshold → crawl speed
+  if (absHeadingError > sharpTurnHeading) {
+    return rearGoalSlowSpeed;
+  }
+  // Slowed forward band: forwardEnableRad < |heading| <= sharpTurnHeading
+  if (absHeadingError > forwardEnableRad) {
+    return interpolateSpeed(absHeadingError, forwardEnableRad, sharpTurnSpeed,
+                            sharpTurnHeading, rearGoalSlowSpeed);
+  }
+  // Normal bands below forwardEnableRad
   if (absHeadingError <= straightHeading) {
     return straightSpeed;
   }
   if (absHeadingError <= normalTurnHeading) {
-    return interpolateSpeed(absHeadingError, straightHeading, straightSpeed, normalTurnHeading, turnSpeed);
+    return interpolateSpeed(absHeadingError, straightHeading, straightSpeed,
+                            normalTurnHeading, turnSpeed);
   }
-  if (absHeadingError <= sharpTurnHeading) {
-    return interpolateSpeed(absHeadingError, normalTurnHeading, turnSpeed, sharpTurnHeading, sharpTurnSpeed);
+  if (absHeadingError <= forwardEnableRad) {
+    return interpolateSpeed(absHeadingError, normalTurnHeading, turnSpeed,
+                            forwardEnableRad, sharpTurnSpeed);
   }
   return maxErrorSpeed;
 }
@@ -285,6 +316,19 @@ int main(int argc, char** argv)
   nhPrivate.getParam("maxYawAccel", maxYawAccel);
   nhPrivate.getParam("inputTimeout", inputTimeout);
 
+  // Turn-before-forward parameters for A1 rear-goal handling
+  nhPrivate.getParam("turnInPlaceThresholdDeg", turnInPlaceThresholdDeg);
+  nhPrivate.getParam("forwardEnableThresholdDeg", forwardEnableThresholdDeg);
+  nhPrivate.getParam("rearGoalSlowSpeed", rearGoalSlowSpeed);
+  nhPrivate.getParam("allowReverse", allowReverse);
+  nhPrivate.getParam("reverseEscapeEnabled", reverseEscapeEnabled);
+  nhPrivate.getParam("reverseEscapeMaxDuration", reverseEscapeMaxDuration);
+
+  // Clamp new params to reasonable bounds
+  turnInPlaceThresholdDeg = clampValue(turnInPlaceThresholdDeg, 60.0, 135.0);
+  forwardEnableThresholdDeg = clampValue(forwardEnableThresholdDeg, 15.0, turnInPlaceThresholdDeg - 10.0);
+  rearGoalSlowSpeed = clampValue(rearGoalSlowSpeed, 0.0, 0.15);
+
   straightSpeed = clampValue(straightSpeed, 0.0, maxSpeed);
   turnSpeed = clampValue(turnSpeed, 0.0, straightSpeed);
   sharpTurnSpeed = clampValue(sharpTurnSpeed, 0.0, turnSpeed);
@@ -350,14 +394,35 @@ int main(int argc, char** argv)
       if (dirDiff > PI) dirDiff -= 2 * PI;
       else if (dirDiff < -PI) dirDiff += 2 * PI;
 
+      // Save original heading error before twoWayDrive modifies it
+      const float originalDirDiff = dirDiff;
+      const float absOriginalDirDiff = fabs(originalDirDiff);
+      const double turnInPlaceRad = turnInPlaceThresholdDeg * PI / 180.0;
+
       if (twoWayDrive) {
         double time = ros::Time::now().toSec();
         if (fabs(dirDiff) > PI / 2 && navFwd && time - switchTime > switchTimeThre) {
-          navFwd = false;
-          switchTime = time;
+          if (allowReverse) {
+            navFwd = false;
+            switchTime = time;
+          } else if (reverseEscapeEnabled && !inReverseEscape) {
+            // Enter brief reverse escape only when stuck and reverse is enabled
+            inReverseEscape = true;
+            reverseEscapeStartTime = time;
+            navFwd = false;
+            switchTime = time;
+          }
         } else if (fabs(dirDiff) < PI / 2 && !navFwd && time - switchTime > switchTimeThre) {
           navFwd = true;
           switchTime = time;
+          inReverseEscape = false;
+        }
+
+        // Exit reverse escape after max duration
+        if (inReverseEscape && time - reverseEscapeStartTime > reverseEscapeMaxDuration) {
+          navFwd = true;
+          switchTime = time;
+          inReverseEscape = false;
         }
       }
 
@@ -370,6 +435,15 @@ int main(int argc, char** argv)
         dirDiff += PI;
         if (dirDiff > PI) dirDiff -= 2 * PI;
         joySpeed2 *= -1;
+      }
+
+      // Turn-in-place for rear goals: when reverse is not allowed and the
+      // waypoint is behind the robot, force linear speed to zero and only
+      // allow yaw rotation.  The speed schedule already returns 0 for
+      // |heading| > turnInPlaceThreshold, but this is a hard gate.
+      if (!allowReverse && autonomyMode && !inReverseEscape &&
+          absOriginalDirDiff > turnInPlaceRad) {
+        joySpeed2 = 0.0;
       }
 
       double desiredYawRate;
@@ -433,10 +507,14 @@ int main(int argc, char** argv)
           else if (absDirDiff > straightHeadingDeg * PI / 180.0) speedStage = "turn";
           ROS_INFO_THROTTLE(diagnosticThrottleSec,
                             "falco_follower_diag heading_error_deg=%.1f stage=%s target_linear=%.3f raw_linear=%.3f "
-                            "raw_angular=%.3f max_angular=%.3f end_dis=%.3f waypoint_dis=%.3f input_fresh=%d safety_stop=%d",
+                            "raw_angular=%.3f max_angular=%.3f end_dis=%.3f waypoint_dis=%.3f input_fresh=%d safety_stop=%d "
+                            "turn_in_place=%d allow_reverse=%d reverse_escape=%d",
                             absDirDiff * 180.0 / PI, speedStage, joySpeed3, cmd_vel.twist.linear.x,
                             cmd_vel.twist.angular.z, maxYawRate * PI / 180.0, endDis, dis, inputFresh ? 1 : 0,
-                            safetyStop);
+                            safetyStop,
+                            (!allowReverse && absOriginalDirDiff > turnInPlaceRad) ? 1 : 0,
+                            allowReverse ? 1 : 0,
+                            inReverseEscape ? 1 : 0);
         }
 
         pubSkipCount = pubSkipNum;
