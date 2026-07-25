@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-07-25 — FALCO turn-before-forward + waypoint body-frame monitor
+
+- **fix(falco)**: Added turn-in-place logic to pathFollower for A1 rear goals.
+  When `|heading_error| > turnInPlaceThresholdDeg` (90°) and `allowReverse=false`,
+  linear speed is forced to zero and only yaw rotation is allowed. Added
+  `reverseEscapeEnabled` for brief (1.5s) reverse escape when stuck.
+  Added params: `turnInPlaceThresholdDeg`, `forwardEnableThresholdDeg`,
+  `rearGoalSlowSpeed`, `allowReverse`, `reverseEscapeEnabled`,
+  `reverseEscapeMaxDuration`.
+- **fix(dsv)**: Gated standalone `octomap_manager` behind
+  `start_debug_octomap_manager:=false` (default OFF). Production chain uses only
+  the DSV-internal OctoMapManager.
+- **test(navigation)**: Added `waypoint_frame_monitor.py` — transforms DSV
+  waypoints from map to robot body frame via real TF, classifies as
+  FRONT/SIDE/REAR, and records to CSV.
+- **chore(build)**: Registered `waypoint_frame_monitor.py` in
+  `simenv_navigation_bridge` CMakeLists.txt install target.
+
 ## 2026-07-24 — External Livox-SDK prefix retry
 
 - Extended `tools/prepare_shared_ros_deps.sh` to prepare an independent
