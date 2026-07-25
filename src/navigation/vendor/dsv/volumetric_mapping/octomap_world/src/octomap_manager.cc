@@ -43,7 +43,11 @@ OctomapManager::OctomapManager(const ros::NodeHandle &nh,
       velodyne_cloud_topic_("/velodyne_cloud_topic"), robot_frame_("velodyne"),
       use_tf_transforms_(true), latch_topics_(true),
       timestamp_tolerance_ns_(10000000), Q_initialized_(false),
-      Q_(Eigen::Matrix4d::Identity()), map_publish_frequency_(0.0) {
+      Q_(Eigen::Matrix4d::Identity()), map_publish_frequency_(0.0),
+      diag_callback_count_(0), diag_tf_attempt_(0), diag_tf_success_(0),
+      diag_insert_attempt_(0), diag_insert_success_(0),
+      diag_last_cloud_stamp_(0.0), diag_last_cloud_frame_(""),
+      diag_last_cloud_points_(0), diag_last_tf_error_("") {
   setParametersFromROS();
   subscribe();
   advertiseServices();
@@ -61,6 +65,14 @@ OctomapManager::OctomapManager(const ros::NodeHandle &nh,
       ROS_ERROR_STREAM("Could not load octomap from path: " << octomap_file);
     }
   }
+
+  // DSV diagnostic: periodic callback/TF/insert summary (throttled ~1 Hz).
+  diag_timer_ = nh_private_.createTimer(
+      ros::Duration(1.0), &OctomapManager::diagPrint, this);
+  ROS_INFO("[DSV_OCTOMAP_DIAG] OctomapManager constructed. "
+           "cloud_topic=%s world=%s robot=%s use_tf=%d",
+           velodyne_cloud_topic_.c_str(), world_frame_.c_str(),
+           robot_frame_.c_str(), use_tf_transforms_);
 }
 
 void OctomapManager::setParametersFromROS() {
@@ -370,11 +382,26 @@ bool OctomapManager::setDisplayBoundsCallback(
 
 void OctomapManager::insertPointcloudWithTf(
     const sensor_msgs::PointCloud2::ConstPtr &pointcloud) {
+  diag_callback_count_++;
+  diag_last_cloud_stamp_ = pointcloud->header.stamp.toSec();
+  diag_last_cloud_frame_ = pointcloud->header.frame_id;
+  diag_last_cloud_points_ = pointcloud->width;
+
   // Look up transform from sensor frame to world frame.
   Transformation sensor_to_world;
+  diag_tf_attempt_++;
   if (lookupTransform(pointcloud->header.frame_id, world_frame_,
                       pointcloud->header.stamp, &sensor_to_world)) {
+    diag_tf_success_++;
+    diag_insert_attempt_++;
+    size_t before = octree_ ? octree_->size() : 0;
     insertPointcloud(sensor_to_world, pointcloud);
+    size_t after = octree_ ? octree_->size() : 0;
+    if (after > before) {
+      diag_insert_success_++;
+    }
+  } else {
+    diag_last_tf_error_ = "lookupTransform returned false";
   }
 }
 
@@ -476,6 +503,39 @@ bool OctomapManager::lookupTransformQueue(const std::string &from_frame,
     }
   }
   return match_found;
+}
+
+void OctomapManager::diagPrint(const ros::TimerEvent&) {
+  size_t map_nodes = octree_ ? octree_->size() : 0;
+  size_t map_leaves = octree_ ? octree_->getNumLeafNodes() : 0;
+
+  std::string reason;
+  if (diag_callback_count_ == 0) {
+    reason = "NO_CALLBACK";
+  } else if (diag_tf_success_ == 0) {
+    reason = diag_last_tf_error_.empty() ? "TF_LOOKUP_FAILED"
+                                          : diag_last_tf_error_;
+  } else if (diag_insert_success_ == 0) {
+    reason = "INSERT_NOT_CALLED_OR_FILTERED_EMPTY";
+  } else if (map_nodes == 0) {
+    reason = "MAP_NOT_GROWING";
+  } else {
+    reason = "MAP_READY";
+  }
+
+  ROS_INFO_THROTTLE(1.0,
+    "[DSV_OCTOMAP_DIAG] "
+    "callback=%u points=%u frame=%s cloud_stamp=%.3f "
+    "tf_attempt=%u tf_ok=%u "
+    "insert_attempt=%u insert_ok=%u "
+    "map_nodes=%zu map_leaves=%zu "
+    "reason=%s",
+    diag_callback_count_, diag_last_cloud_points_,
+    diag_last_cloud_frame_.c_str(), diag_last_cloud_stamp_,
+    diag_tf_attempt_, diag_tf_success_,
+    diag_insert_attempt_, diag_insert_success_,
+    map_nodes, map_leaves,
+    reason.c_str());
 }
 
 } // namespace volumetric_mapping
