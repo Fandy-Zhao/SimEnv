@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
 """Navigation State Supervisor — persistent latched state owner.
 
-Accepts user requests on dedicated request topics, publishes authoritative
-latched state on output topics.  Survives bridge / navigation sub-stack
-restarts.  State is persisted to ROS parameter server for cross-restart
-recovery.
+Mirrors the output topics it publishes on — when external tools
+(auto.sh, manual rostopic pub, etc.) publish directly to the output
+topics (/navigation/enabled, /fsm/state_cmd), the supervisor learns
+the state and latches it.  Dedicated /navigation/request_* topics
+are also supported for explicit user control.
 
-Request topics (user-facing):
+Output topics (latched — consumed by bridge, exploration, controller):
+  /navigation/enabled               std_msgs/Bool
+  /navigation/start_exploring       std_msgs/Bool
+  /fsm/state_cmd                    std_msgs/Int8
+
+Request topics (optional, for explicit user control):
   /navigation/request_enabled       std_msgs/Bool
   /navigation/request_exploring     std_msgs/Bool
   /navigation/request_fsm_state     std_msgs/Int8
 
-Output topics (consumed by bridge, exploration, controller):
-  /navigation/enabled               std_msgs/Bool   (latch)
-  /navigation/start_exploring       std_msgs/Bool   (latch)
-  /fsm/state_cmd                    std_msgs/Int8   (latch)
-
 Safety semantics:
   - Default disabled on first start (enabled=false, exploring=false, fsm=2)
-  - Only user-explicit request changes the remembered state
+  - Mirrors direct publishes to output topics — learns state from auto.sh
   - State persisted to ROS param server for true cross-restart recovery
   - Periodic re-publish (1 Hz) ensures late-joining subscribers always
     see current state — no reliance on rostopic pub one-shots
   - On restart, recovers previous state from param server
-  - FSM=Trotting(4) is re-published only after a short readiness delay
 """
 
 import rospy
@@ -58,6 +58,17 @@ class NavStateSupervisor:
         rospy.Subscriber("/navigation/request_exploring", Bool,
                          self._req_exploring_cb, queue_size=1)
         rospy.Subscriber("/navigation/request_fsm_state", Int8,
+                         self._req_fsm_cb, queue_size=5)
+
+        # ── Mirror subscribers: learn state from direct output-topic publishes ──
+        # auto.sh publishes /navigation/enabled and /fsm/state_cmd directly
+        # (one-shot rostopic pub).  By subscribing to the same output topics
+        # we publish on, the supervisor learns correct state without needing
+        # auto.sh to know about request topics.  Callbacks are idempotent
+        # (skip when value unchanged) → no feedback loop.
+        rospy.Subscriber("/navigation/enabled", Bool,
+                         self._req_enabled_cb, queue_size=5)
+        rospy.Subscriber("/fsm/state_cmd", Int8,
                          self._req_fsm_cb, queue_size=5)
 
         # ── Publish initial state immediately ──
