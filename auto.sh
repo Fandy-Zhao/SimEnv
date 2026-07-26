@@ -990,12 +990,18 @@ if [ "$ENABLE_EXPLORATION_RECORDING" = "true" ] && [ "$ENABLE_NAVIGATION" = "tru
 
   mkdir -p "$EXPLORATION_OUTPUT_DIR"
 
+  # Minimal map validation flags (diagnostic only, not for production exploration)
+  EXPLORATION_MINIMAL_MAP_VALIDATION="${EXPLORATION_MINIMAL_MAP_VALIDATION:-false}"
+  EXPLORATION_STOP_AFTER_MAP_UPDATES="${EXPLORATION_STOP_AFTER_MAP_UPDATES:-3}"
+
   roslaunch simenv_navigation_bringup exploration_recorder.launch \
     output_dir:="$EXPLORATION_OUTPUT_DIR" \
     run_id:="$EXPLORATION_RUN_ID" \
     max_sim_time:="$EXPLORATION_MAX_SIM_TIME" \
     finish_quiet_time:="$EXPLORATION_FINISH_QUIET_TIME" \
     map_stable_wait:="$EXPLORATION_MAP_STABLE_WAIT" \
+    minimal_map_validation:="$EXPLORATION_MINIMAL_MAP_VALIDATION" \
+    stop_after_map_updates:="$EXPLORATION_STOP_AFTER_MAP_UPDATES" \
     > "$EXPLORATION_OUTPUT_DIR/logs/recorder.log" 2>&1 &
   RECORDER_PID=$!
   echo "$RECORDER_PID" > "$EXPLORATION_OUTPUT_DIR/logs/recorder.pid"

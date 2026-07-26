@@ -44,12 +44,14 @@ def bold(s):
 
 
 class ResultValidator:
-    def __init__(self, output_dir, strict=False):
+    def __init__(self, output_dir, strict=False, scope="full"):
         self.output_dir = output_dir
         self.strict = strict
+        self.scope = scope  # "full" | "minimal-map-runtime"
         self.errors = []
         self.warnings = []
         self.passes = []
+        self._scope_skip = set()  # checks to skip based on scope
 
     def error(self, msg):
         self.errors.append(msg)
@@ -69,7 +71,16 @@ class ResultValidator:
         else:
             self.error(fail_msg)
 
-    def check_file_exists(self, rel_path):
+    def skip(self, msg):
+        """Log a skipped check (informational, not a failure)."""
+        print(f"  {Colors.YELLOW}SKIP{Colors.RESET} [{self.scope}] {msg}")
+
+    def check_scope(self, condition, ok_msg, fail_msg, required_scopes=None):
+        """Check if scope allows this validation; skip if not in required_scopes."""
+        if required_scopes and self.scope not in required_scopes:
+            self.skip(ok_msg)
+            return True  # don't fail for out-of-scope checks
+        return self.check(condition, ok_msg, fail_msg)
         fpath = os.path.join(self.output_dir, rel_path)
         exists = os.path.isfile(fpath)
         non_empty = exists and os.path.getsize(fpath) > 0
@@ -221,9 +232,11 @@ class ResultValidator:
                 with open(os.path.join(self.output_dir, "goals/goals.csv")) as f:
                     reader = csv.DictReader(f)
                     rows = list(reader)
-                self.check(len(rows) > 0,
+                # Goals may be 0 in minimal-map-runtime scope (no exploration needed)
+                self.check_scope(len(rows) > 0,
                             f"Goals CSV has {len(rows)} entries",
-                            "Goals CSV is empty")
+                            "Goals CSV is empty",
+                            required_scopes={"full"})
                 if len(rows) > 0:
                     for field in ["goal_index", "x", "y", "z", "status"]:
                         self.check(field in rows[0],
@@ -236,12 +249,14 @@ class ResultValidator:
             try:
                 with open(os.path.join(self.output_dir, "goals/goals.yaml")) as f:
                     goals_meta = yaml.safe_load(f)
-                self.check(goals_meta.get("raw_message_count", 0) > 0,
+                self.check_scope(goals_meta.get("raw_message_count", 0) > 0,
                             f"Raw goal count: {goals_meta.get('raw_message_count')}",
-                            "No raw goals recorded")
-                self.check(goals_meta.get("unique_goal_count", 0) > 0,
+                            "No raw goals recorded",
+                            required_scopes={"full"})
+                self.check_scope(goals_meta.get("unique_goal_count", 0) > 0,
                             f"Unique goal count: {goals_meta.get('unique_goal_count')}",
-                            "No unique goals recorded")
+                            "No unique goals recorded",
+                            required_scopes={"full"})
             except Exception as e:
                 self.warn(f"Cannot parse goals.yaml: {e}")
 
@@ -347,13 +362,17 @@ def main():
     parser.add_argument("output_dir", help="Path to the output directory")
     parser.add_argument("--strict", action="store_true",
                         help="Treat warnings as failures")
+    parser.add_argument("--scope", default="full",
+                        choices=["full", "minimal-map-runtime"],
+                        help="Validation scope (full=all checks, "
+                             "minimal-map-runtime=map-only, skip goals/exploration)")
     args = parser.parse_args()
 
     if not os.path.isdir(args.output_dir):
         print(f"ERROR: Directory not found: {args.output_dir}")
         sys.exit(1)
 
-    validator = ResultValidator(args.output_dir, strict=args.strict)
+    validator = ResultValidator(args.output_dir, strict=args.strict, scope=args.scope)
     sys.exit(validator.validate())
 
 

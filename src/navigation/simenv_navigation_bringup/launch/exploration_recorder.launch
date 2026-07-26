@@ -12,6 +12,8 @@
   <arg name="max_sim_time" default="1800.0"/>
   <arg name="finish_quiet_time" default="60.0"/>
   <arg name="map_stable_wait" default="5.0"/>
+  <arg name="minimal_map_validation" default="false"/>
+  <arg name="stop_after_map_updates" default="3"/>
 
   <!-- 2D map projector: terrain point cloud -> OccupancyGrid -->
   <node pkg="simenv_navigation_bridge" type="terrain_to_2d_map.py"
@@ -45,5 +47,7 @@
     <param name="cmd_vel_topic" value="/cmd_vel"/>
     <param name="stop_signal_topic" value="/navigation/stop_exploring"/>
     <param name="start_signal_topic" value="/navigation/start_exploring"/>
+    <param name="minimal_map_validation" value="$(arg minimal_map_validation)"/>
+    <param name="stop_after_map_updates" value="$(arg stop_after_map_updates)"/>
   </node>
 </launch>

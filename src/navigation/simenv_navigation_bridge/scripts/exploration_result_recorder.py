@@ -57,11 +57,13 @@ COMPLETION_METHOD_DSV_NATIVE = "dsv_native_stop_signal"
 COMPLETION_METHOD_COMPOSITE = "composite_quiet_window"
 COMPLETION_METHOD_TIMEOUT = "exploration_timeout"
 COMPLETION_METHOD_MANUAL = "manual_stop"
+COMPLETION_METHOD_MINIMAL_MAP = "minimal_map_validation"
 
 VERDICT_COMPLETE = "COMPLETE"
 VERDICT_TIMEOUT = "EXPLORATION_TIMEOUT"
 VERDICT_FAILURE = "EXPLORATION_FAILURE"
 VERDICT_PARTIAL = "PARTIAL_RESULTS_SAVED"
+VERDICT_MINIMAL_MAP = "MINIMAL_MAP_VALIDATION"
 
 
 # ---------------------------------------------------------------------------
@@ -94,6 +96,10 @@ class ExplorationResultRecorder:
         self.map_growth_threshold = float(rospy.get_param("~map_growth_threshold", 0.1))
         self.robot_motion_threshold = float(rospy.get_param("~robot_motion_threshold", 0.2))
         self.odom_timeout = float(rospy.get_param("~odom_timeout", 10.0))
+
+        # ── Minimal map validation mode (diagnostic only, not for production) ──
+        self.minimal_map_validation = rospy.get_param("~minimal_map_validation", False)
+        self.stop_after_map_updates = int(rospy.get_param("~stop_after_map_updates", 3))
 
         # Topic names (configurable via ROS params)
         self.clock_topic = rospy.get_param("~clock_topic", "/clock")
@@ -687,6 +693,16 @@ class ExplorationResultRecorder:
             # ── Prerequisite: exploration must have started ──
             if not self._exploration_started:
                 return
+
+            # ── Method 0: Minimal map validation (diagnostic mode) ──
+            if self.minimal_map_validation:
+                if (self._map_is_occupancy_grid
+                        and self._map_count >= self.stop_after_map_updates):
+                    self._complete_exploration(
+                        COMPLETION_METHOD_MINIMAL_MAP,
+                        f"Minimal map validation: received {self._map_count} "
+                        f"OccupancyGrid updates (threshold={self.stop_after_map_updates})")
+                    return
 
             # ── Method 1: DSV native stop signal ──
             if self._dvs_native_stop_received:
@@ -1427,6 +1443,8 @@ class ExplorationResultRecorder:
             return VERDICT_FAILURE
         if self._odom_nan_detected:
             return VERDICT_FAILURE
+        if self._completion_method == COMPLETION_METHOD_MINIMAL_MAP:
+            return VERDICT_MINIMAL_MAP
         if self._completion_method in (COMPLETION_METHOD_DSV_NATIVE,
                                         COMPLETION_METHOD_COMPOSITE):
             return VERDICT_COMPLETE
