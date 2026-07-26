@@ -123,7 +123,7 @@ class ExplorationResultRecorder:
                                                         "/cloud_registered")
 
         # ── Internal state ──
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
         self._start_wall = wall_now()
         self._process_start_wall = self._start_wall
 
