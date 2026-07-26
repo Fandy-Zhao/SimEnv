@@ -946,8 +946,11 @@ if [ "$ENABLE_NAVIGATION" = "true" ]; then
   # bridge / navigation sub-stack restarts.  Launched independently so
   # that killing the navigation roslaunch does not lose user-commanded
   # state (enabled, exploring, fsm_state).
+  # NOTE: must use system /usr/bin/python3 (3.10), NOT the workspace venv
+  # (3.13) — ROS Noetic rospy is compiled for Python 3.10 and the venv
+  # python causes a 100%-CPU silent hang with no topic publishing.
   echo "Launching navigation state supervisor..."
-  rosrun simenv_navigation_bridge nav_state_supervisor.py \
+  /usr/bin/python3 "$WORKSPACE_DIR/src/navigation/simenv_navigation_bridge/scripts/nav_state_supervisor.py" \
     > "$WORKSPACE_DIR/logs/nav_state_supervisor.log" 2>&1 &
   SUPERVISOR_PID=$!
   echo "$SUPERVISOR_PID" > "$WORKSPACE_DIR/logs/nav_state_supervisor.pid"
@@ -969,6 +972,12 @@ if [ "$ENABLE_NAVIGATION" = "true" ]; then
   echo "Setting default safe navigation state (enabled=false, start_exploring=false)..."
   rostopic pub /navigation/enabled       std_msgs/Bool  "data: false" -1 2>/dev/null || true
   rostopic pub /navigation/start_exploring std_msgs/Bool "data: false" -1 2>/dev/null || true
+  # Also publish to request topics so the supervisor tracks correct state and
+  # its periodic re-publish (1 Hz) does not fight this one-shot with stale
+  # defaults.  Without this, the supervisor's latched /navigation/enabled
+  # stays at false and bridge restarts miss the enabled transition.
+  rostopic pub /navigation/request_enabled       std_msgs/Bool  "data: false" -1 2>/dev/null || true
+  rostopic pub /navigation/request_exploring     std_msgs/Bool  "data: false" -1 2>/dev/null || true
   echo "Navigation nodes are running but motion is DISABLED."
   echo "  Enable motion manually:"
   echo "    rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\" -1"
@@ -979,16 +988,22 @@ if [ "$ENABLE_NAVIGATION" = "true" ]; then
     sleep 2
     echo "NAV_AUTO_TROTTING=true: commanding Trotting via /fsm/state_cmd..."
     rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 4" -1 2>/dev/null || true
+    # Also notify supervisor so its latched /fsm/state_cmd publisher and
+    # periodic re-publish are correct — otherwise the supervisor continues
+    # to emit fsm=2 and fights this one-shot.
+    rostopic pub /navigation/request_fsm_state std_msgs/Int8 "data: 4" -1 2>/dev/null || true
   fi
   if [ "$NAV_AUTO_ENABLE" = "true" ]; then
     sleep 2
     echo "NAV_AUTO_ENABLE=true: publishing /navigation/enabled=true..."
     rostopic pub /navigation/enabled std_msgs/Bool "data: true" -1 2>/dev/null || true
+    rostopic pub /navigation/request_enabled std_msgs/Bool "data: true" -1 2>/dev/null || true
   fi
   if [ "$NAV_AUTO_START_EXPLORATION" = "true" ]; then
     sleep 2
     echo "NAV_AUTO_START_EXPLORATION=true: publishing /navigation/start_exploring=true..."
     rostopic pub /navigation/start_exploring std_msgs/Bool "data: true" -1 2>/dev/null || true
+    rostopic pub /navigation/request_exploring std_msgs/Bool "data: true" -1 2>/dev/null || true
   fi
 fi
 
