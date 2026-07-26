@@ -532,23 +532,43 @@ class ExplorationResultRecorder:
         pass
 
     def _map_any_cb(self, msg):
-        """Handle map topic — OccupancyGrid or PointCloud2."""
+        """Handle map topic — AnyMsg (deserialize to OccupancyGrid or PointCloud2)."""
         with self._lock:
             self._map_count += 1
         self._last_map_sim_time = self._current_sim_time
 
         try:
-            # Try OccupancyGrid
-            if hasattr(msg, 'info') and hasattr(msg, 'data'):
-                self._last_map_msg = msg
-                self._map_is_occupancy_grid = True
-                known = sum(1 for v in msg.data if v >= 0)
-                total = len(msg.data)
-                self._map_known_area_series.append({
-                    "sim_time": self._current_sim_time.to_sec(),
-                    "known_cells": known,
-                    "total_cells": total,
-                })
+            # rospy.AnyMsg exposes _connection_header with the topic type
+            conn_header = getattr(msg, '_connection_header', {})
+            msg_type = conn_header.get('type', '')
+
+            if 'OccupancyGrid' in msg_type:
+                # Deserialize AnyMsg → nav_msgs/OccupancyGrid
+                from nav_msgs.msg import OccupancyGrid
+                try:
+                    og = OccupancyGrid()
+                    og.deserialize(msg._buff)
+                    self._last_map_msg = og
+                    self._map_is_occupancy_grid = True
+                    known = sum(1 for v in og.data if v >= 0)
+                    total = len(og.data)
+                    self._map_known_area_series.append({
+                        "sim_time": self._current_sim_time.to_sec(),
+                        "known_cells": known,
+                        "total_cells": total,
+                    })
+                except Exception:
+                    pass
+            elif 'PointCloud2' in msg_type:
+                # Store point cloud message directly
+                try:
+                    from sensor_msgs.msg import PointCloud2
+                    pc = PointCloud2()
+                    pc.deserialize(msg._buff)
+                    self._last_map_msg = pc
+                except Exception:
+                    pass
+            # else: unknown type — not stored as map
         except Exception:
             pass
 
@@ -711,8 +731,15 @@ class ExplorationResultRecorder:
             if time_since_last_goal < self.finish_quiet_time:
                 return False
         else:
-            # No goals recorded at all
-            return False
+            # No goals recorded at all — only allow composite completion
+            # after the exploration has run for at least finish_quiet_time,
+            # confirming the environment is genuinely frontier-less.
+            if self._exploration_start_sim_time is not None:
+                elapsed = sim_now - self._exploration_start_sim_time.to_sec()
+                if elapsed < self.finish_quiet_time:
+                    return False
+            else:
+                return False
 
         # Check: map growth below threshold
         map_stagnant = self._check_map_stagnant(sim_now)

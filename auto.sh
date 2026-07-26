@@ -548,6 +548,12 @@ if [ ! -f "$WORKSPACE_DIR/devel/setup.bash" ]; then
   exit 1
 fi
 source "$WORKSPACE_DIR/devel/setup.bash"
+# Also source root workspace devel for packages not yet merged into this branch
+# (e.g. fast_lio, livox_ros_driver)
+_ROOT_WS=/home/zzf/search_ws/SimEnv
+if [ -f "$_ROOT_WS/devel/setup.bash" ] && [ "$_ROOT_WS" != "$WORKSPACE_DIR" ]; then
+  source "$_ROOT_WS/devel/setup.bash" --extend
+fi
 export ROS_PACKAGE_PATH="$WORKSPACE_DIR/src:${ROS_PACKAGE_PATH:-}"
 export CMAKE_PREFIX_PATH="$WORKSPACE_DIR/devel:${CMAKE_PREFIX_PATH:-}"
 export PYTHONPATH="$WORKSPACE_DIR/src/building_generator_classic:$WORKSPACE_DIR/src/building_generator_core:${PYTHONPATH:-}"
