@@ -946,8 +946,11 @@ if [ "$ENABLE_NAVIGATION" = "true" ]; then
   # bridge / navigation sub-stack restarts.  Launched independently so
   # that killing the navigation roslaunch does not lose user-commanded
   # state (enabled, exploring, fsm_state).
+  # NOTE: must use system /usr/bin/python3 (3.10), NOT the workspace venv
+  # (3.13) — ROS Noetic rospy is compiled for Python 3.10 and the venv
+  # python causes a 100%-CPU silent hang with no topic publishing.
   echo "Launching navigation state supervisor..."
-  rosrun simenv_navigation_bridge nav_state_supervisor.py \
+  /usr/bin/python3 "$WORKSPACE_DIR/src/navigation/simenv_navigation_bridge/scripts/nav_state_supervisor.py" \
     > "$WORKSPACE_DIR/logs/nav_state_supervisor.log" 2>&1 &
   SUPERVISOR_PID=$!
   echo "$SUPERVISOR_PID" > "$WORKSPACE_DIR/logs/nav_state_supervisor.pid"
