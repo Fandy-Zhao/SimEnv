@@ -1057,12 +1057,20 @@ class ExplorationResultRecorder:
 
     def _save_map_metadata(self):
         """Save map metadata YAML."""
+        placeholder_map_used = (
+            not self._map_is_occupancy_grid
+            or self._last_map_msg is None
+        )
         meta = {
             "map_topic": self.map_topic,
             "map_is_occupancy_grid": self._map_is_occupancy_grid,
+            "placeholder_map_used": placeholder_map_used,
+            "real_map_received": (not placeholder_map_used
+                                  and self._map_count > 0),
             "map_sim_time": (self._last_map_sim_time.to_sec()
                               if self._last_map_sim_time.to_sec() > 0 else 0),
             "map_message_count": self._map_count,
+            "map_update_count": self._map_count,
             "octomap_node_samples": len(self._octomap_node_count_series),
         }
 
@@ -1268,6 +1276,8 @@ class ExplorationResultRecorder:
             f"",
             f"## Health",
             f"- **NoEff count**: {self._noeff_count}",
+            f"- **NoEff source**: cmd_vel_stall_heuristic (navigation_enabled && fsm_state==4 && cmd_vel≈0; "
+            f"NOT a hardware NoEff diagnostic)",
             f"- **Robot fall detected**: {self._robot_fall_detected}",
             f"- **Clock reset detected**: {self._clock_reset_detected}",
             f"- **Odom NaN detected**: {self._odom_nan_detected}",

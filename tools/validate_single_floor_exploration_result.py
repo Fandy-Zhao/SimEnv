@@ -127,6 +127,23 @@ class ResultValidator:
             try:
                 with open(meta_yaml) as f:
                     meta = yaml.safe_load(f)
+                # ── CRITICAL: Placeholder map detection ──
+                placeholder = meta.get("placeholder_map_used", True)
+                real_map = meta.get("real_map_received", False)
+                map_updates = meta.get("map_update_count", 0)
+                known_cells = meta.get("known_area_m2", 0)
+                self.check(not placeholder,
+                            "Real map received (not placeholder)",
+                            "PLACEHOLDER MAP USED — real OccupancyGrid NOT received")
+                self.check(real_map,
+                            "real_map_received = True",
+                            "real_map_received = False")
+                self.check(map_updates > 0,
+                            f"Map update count > 0 ({map_updates})",
+                            "No map updates received (map_update_count=0)")
+                self.check(known_cells > 0,
+                            f"Known map area > 0 ({known_cells:.2f} m²)",
+                            "Known map area is 0 (blank map)")
                 self.check(meta.get("width", 0) > 0,
                             f"Map width > 0 ({meta.get('width')})",
                             "Map width invalid")
