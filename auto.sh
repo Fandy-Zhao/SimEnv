@@ -143,6 +143,22 @@ NAV_AUTO_START_EXPLORATION="$(as_ros_bool "${NAV_AUTO_START_EXPLORATION:-0}")"
 NAV_WAIT_ODOM_TIMEOUT="${NAV_WAIT_ODOM_TIMEOUT:-60}"
 NAV_WAIT_CLOUD_TIMEOUT="${NAV_WAIT_CLOUD_TIMEOUT:-60}"
 NAV_WAIT_TERRAIN_TIMEOUT="${NAV_WAIT_TERRAIN_TIMEOUT:-60}"
+# ---------------------------------------------------------------------------
+# Exploration result recording — save map, route, goals, timing, and summary.
+# Default: OFF.  Set ENABLE_EXPLORATION_RECORDING=1 to activate.
+#
+#   ENABLE_EXPLORATION_RECORDING=1
+#   EXPLORATION_RUN_ID=run_01
+#   EXPLORATION_OUTPUT_DIR=<workspace>/experiments/runs/<date>/<run_id>
+#   EXPLORATION_MAX_SIM_TIME=1800
+#   EXPLORATION_FINISH_QUIET_TIME=60
+# ---------------------------------------------------------------------------
+ENABLE_EXPLORATION_RECORDING="$(as_ros_bool "${ENABLE_EXPLORATION_RECORDING:-0}")"
+EXPLORATION_RUN_ID="${EXPLORATION_RUN_ID:-default_run}"
+EXPLORATION_OUTPUT_DIR="${EXPLORATION_OUTPUT_DIR:-$WORKSPACE_DIR/experiments/runs/$(date +%Y%m%d)_single_floor_exploration/$EXPLORATION_RUN_ID}"
+EXPLORATION_MAX_SIM_TIME="${EXPLORATION_MAX_SIM_TIME:-1800}"
+EXPLORATION_FINISH_QUIET_TIME="${EXPLORATION_FINISH_QUIET_TIME:-60}"
+EXPLORATION_MAP_STABLE_WAIT="${EXPLORATION_MAP_STABLE_WAIT:-5}"
 TIMING_DIAGNOSTICS_ENABLED="$(as_ros_bool "${TIMING_DIAGNOSTICS_ENABLED:-0}")"
 TIMING_DIAGNOSTICS_PATH="${TIMING_DIAGNOSTICS_PATH:-$WORKSPACE_DIR/logs/unitree_timing.csv}"
 TERMINAL_BACKEND="${TERMINAL_BACKEND:-tmux}"
@@ -669,6 +685,14 @@ echo "  Auto navigation enable: $NAV_AUTO_ENABLE"
 echo "  Auto exploration start: $NAV_AUTO_START_EXPLORATION"
 echo "  Navigation log: $WORKSPACE_DIR/logs/navigation.log"
 fi
+	if [ "$ENABLE_EXPLORATION_RECORDING" = "true" ]; then
+	echo "  ---- Exploration Recording ----"
+	echo "  Recording enabled: $ENABLE_EXPLORATION_RECORDING"
+	echo "  Run ID: $EXPLORATION_RUN_ID"
+	echo "  Output dir: $EXPLORATION_OUTPUT_DIR"
+	echo "  Max sim time: $EXPLORATION_MAX_SIM_TIME s"
+	echo "  Finish quiet time: $EXPLORATION_FINISH_QUIET_TIME s"
+	fi
 echo "  Building controller: $START_BUILDING_CONTROL"
 echo "  Virtual joystick: $START_VIRTUAL_JOY"
 echo "  Timing diagnostics: $TIMING_DIAGNOSTICS_ENABLED"
@@ -942,6 +966,37 @@ if [ "$ENABLE_NAVIGATION" = "true" ]; then
     echo "NAV_AUTO_START_EXPLORATION=true: publishing /navigation/start_exploring=true..."
     rostopic pub /navigation/start_exploring std_msgs/Bool "data: true" -1 2>/dev/null || true
   fi
+fi
+
+# ---------------------------------------------------------------------------
+# Exploration result recording — launched after navigation bringup.
+# Only active when ENABLE_EXPLORATION_RECORDING=1 AND navigation is enabled.
+# ---------------------------------------------------------------------------
+if [ "$ENABLE_EXPLORATION_RECORDING" = "true" ] && [ "$ENABLE_NAVIGATION" = "true" ]; then
+  echo ""
+  echo "=== Exploration Result Recording ==="
+  echo "  Run ID:        $EXPLORATION_RUN_ID"
+  echo "  Output dir:    $EXPLORATION_OUTPUT_DIR"
+  echo "  Max sim time:  $EXPLORATION_MAX_SIM_TIME s"
+  echo "  Quiet time:    $EXPLORATION_FINISH_QUIET_TIME s"
+  echo "  Map stable:    $EXPLORATION_MAP_STABLE_WAIT s"
+  echo ""
+
+  mkdir -p "$EXPLORATION_OUTPUT_DIR"
+
+  roslaunch simenv_navigation_bringup exploration_recorder.launch \
+    output_dir:="$EXPLORATION_OUTPUT_DIR" \
+    run_id:="$EXPLORATION_RUN_ID" \
+    max_sim_time:="$EXPLORATION_MAX_SIM_TIME" \
+    finish_quiet_time:="$EXPLORATION_FINISH_QUIET_TIME" \
+    map_stable_wait:="$EXPLORATION_MAP_STABLE_WAIT" \
+    > "$EXPLORATION_OUTPUT_DIR/logs/recorder.log" 2>&1 &
+  RECORDER_PID=$!
+  echo "$RECORDER_PID" > "$EXPLORATION_OUTPUT_DIR/logs/recorder.pid"
+  echo "Exploration recorder launched (pid=$RECORDER_PID)."
+elif [ "$ENABLE_EXPLORATION_RECORDING" = "true" ] && [ "$ENABLE_NAVIGATION" != "true" ]; then
+  echo "[WARN] Exploration recording requested but navigation is not enabled." >&2
+  echo "[WARN] Set ENABLE_NAVIGATION=1 to use recording." >&2
 fi
 
 # ---------------------------------------------------------------------------
