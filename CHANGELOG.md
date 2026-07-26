@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-07-26 — cmd_vel_bridge gate initialization race fix
+
+- **fix(navigation)**: Fixed race condition where `cmd_vel_bridge`'s safety gate
+  never opened because `auto.sh` published state transitions directly to output
+  topics, bypassing `nav_state_supervisor`'s REQUEST topics. The supervisor's
+  periodic 1 Hz re-publish overwrote the correct one-shot states with stale
+  defaults (enabled=false, fsm=2). Now `auto.sh` also publishes to
+  `/navigation/request_enabled`, `/navigation/request_fsm_state`, and
+  `/navigation/request_exploring` so the supervisor tracks correct state and
+  its latched publishers and periodic re-publish reinforce (not fight) the
+  commanded state.
+- **fix(navigation)**: Added unified `_gate_is_open()` method, gate transition
+  logging (OPENED/CLOSED edges), and throttled rejection diagnostics (reason
+  reporting every 5s) to `cmd_vel_bridge.py`.
+- **fix(navigation)**: Reduced `nav_state_supervisor` deferred FSM publish from
+  4.0s to 0.5s to minimize the latch-empty window for late subscribers.
+- **test(navigation)**: Added 25 standalone unit tests for gate logic in
+  `test_gate_logic.py` (no ROS deps required).
+
 ## 2026-07-25 — DSV/FALCO single-floor startup smoke
 
 - **test(navigation)**: Ran the real `auto.sh` single-floor DSV/FALCO startup

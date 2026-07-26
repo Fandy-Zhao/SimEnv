@@ -1,5 +1,18 @@
 # Module Status
 
+> **2026-07-26 `cmd_vel_bridge` gate initialization race fix**:
+> `fix/0726-cmd-vel-bridge-gate-race` — Root cause: `auto.sh` published state
+> transitions directly to output topics (`/navigation/enabled`, `/fsm/state_cmd`)
+> as one-shots, bypassing `nav_state_supervisor`'s REQUEST topics. The supervisor
+> never learned the correct state, so its periodic 1 Hz re-publish overwrote the
+> one-shots with stale defaults (enabled=false, fsm=2). Fix: `auto.sh` also
+> publishes to `/navigation/request_enabled`, `/navigation/request_fsm_state`,
+> `/navigation/request_exploring`. `cmd_vel_bridge.py` gained unified
+> `_gate_is_open()`, gate transition logging, and throttled rejection diagnostics.
+> `nav_state_supervisor.py` deferred FSM publish reduced from 4.0s to 0.5s.
+> 25 gate logic unit tests added. Build PASS. Runtime cold-start validation
+> pending (requires Gazebo display environment).
+
 > **2026-07-24 shared dependency SDK prefix retry**:
 > shared public resources are fixed at FAST_LIO
 > `7cc4175de6f8ba2edf34bab02a42195b141027e9`, ikd-Tree
