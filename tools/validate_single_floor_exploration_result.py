@@ -81,6 +81,8 @@ class ResultValidator:
             self.skip(ok_msg)
             return True  # don't fail for out-of-scope checks
         return self.check(condition, ok_msg, fail_msg)
+
+    def check_file_exists(self, rel_path):
         fpath = os.path.join(self.output_dir, rel_path)
         exists = os.path.isfile(fpath)
         non_empty = exists and os.path.getsize(fpath) > 0

@@ -905,8 +905,8 @@ class ExplorationResultRecorder:
             self._save_map()
             self._save_timing()
             self._save_config()
-            self._save_manifest()
             self._save_summary()
+            self._save_manifest()
             self._save_health_log()
             if HAS_MPL:
                 self._save_plot()
