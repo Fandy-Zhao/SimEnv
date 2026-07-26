@@ -38,6 +38,12 @@ class CmdVelBridge:
         self._trotting_commanded = not self.require_trotting_state_cmd
         self._last_published_zero = False
 
+        # Gate transition tracking for diagnostic logging.
+        self._gate_was_open = self._gate_is_open()
+        self._first_forward_logged = False
+        self._last_rejection_log_time = 0.0
+        self._rejection_log_interval = 5.0  # throttle rejection logs
+
         self._pub = rospy.Publisher(self.output_topic, Twist, queue_size=1)
         rospy.Subscriber(self.input_topic, TwistStamped, self._cmd_cb, queue_size=1)
         rospy.Subscriber(self.enabled_topic, Bool, self._enabled_cb, queue_size=1)
@@ -45,16 +51,50 @@ class CmdVelBridge:
         rospy.Subscriber(self.state_cmd_topic, Int8, self._state_cmd_cb, queue_size=5)
         rospy.on_shutdown(self._publish_zero)
 
+        rospy.loginfo("CmdVelBridge: initialised nav_enabled=%s trotting=%s "
+                       "(require_nav=%s require_trot=%s trot_val=%d)",
+                       self._navigation_enabled, self._trotting_commanded,
+                       self.require_navigation_enabled, self.require_trotting_state_cmd,
+                       self.trotting_state_value)
+
+    # ── Unified gate check ────────────────────────────────────────────────
+
+    def _gate_is_open(self):
+        """Return True when all required safety conditions are satisfied."""
+        nav_ok = (not self.require_navigation_enabled) or self._navigation_enabled
+        fsm_ok = (not self.require_trotting_state_cmd) or self._trotting_commanded
+        return nav_ok and fsm_ok
+
+    def _log_gate_transition(self, now_open, reason=""):
+        """Log gate open/close transitions once per edge."""
+        if now_open and not self._gate_was_open:
+            rospy.loginfo("CmdVelBridge: GATE OPENED (nav=%s, fsm_trot=%s) %s",
+                           self._navigation_enabled, self._trotting_commanded,
+                           reason)
+        elif not now_open and self._gate_was_open:
+            rospy.loginfo("CmdVelBridge: GATE CLOSED (nav=%s, fsm_trot=%s) %s",
+                           self._navigation_enabled, self._trotting_commanded,
+                           reason)
+        self._gate_was_open = now_open
+
+    # ── Callbacks ─────────────────────────────────────────────────────────
+
     def _cmd_cb(self, msg):
         with self._lock:
             self._last_cmd = msg.twist
             self._last_cmd_time = time.monotonic()
 
     def _enabled_cb(self, msg):
+        prev = self._navigation_enabled
         with self._lock:
             self._navigation_enabled = bool(msg.data)
+        if self._navigation_enabled != prev:
+            rospy.loginfo("CmdVelBridge: /navigation/enabled <- %s",
+                           self._navigation_enabled)
         if not msg.data and self.publish_zero_when_disabled:
             self._publish_zero()
+        self._log_gate_transition(self._gate_is_open(),
+                                   "enabled_cb(%s)" % self._navigation_enabled)
 
     def _stop_cb(self, msg):
         if msg.data:
@@ -62,12 +102,19 @@ class CmdVelBridge:
                 self._navigation_enabled = False if self.require_navigation_enabled else self._navigation_enabled
             if self.publish_zero_when_disabled:
                 self._publish_zero()
+            self._log_gate_transition(self._gate_is_open(), "stop_cb")
 
     def _state_cmd_cb(self, msg):
+        prev = self._trotting_commanded
         with self._lock:
             self._trotting_commanded = msg.data == self.trotting_state_value
+        if self._trotting_commanded != prev:
+            rospy.loginfo("CmdVelBridge: /fsm/state_cmd <- %d (trotting=%s)",
+                           msg.data, self._trotting_commanded)
         if msg.data != self.trotting_state_value and self.publish_zero_when_disabled:
             self._publish_zero()
+        self._log_gate_transition(self._gate_is_open(),
+                                   "state_cmd_cb(%d)" % msg.data)
 
     def _clamp(self, value, limit):
         if not math.isfinite(value):
@@ -100,13 +147,34 @@ class CmdVelBridge:
                 trotting = self._trotting_commanded
 
             fresh = cmd is not None and (now - last_cmd_time) <= self.command_timeout
-            allowed = enabled and trotting and fresh
+            gate_open = self._gate_is_open()
+            allowed = gate_open and fresh
 
             if allowed:
-                self._pub.publish(self._safe_twist(cmd))
+                out = self._safe_twist(cmd)
+                self._pub.publish(out)
+                if not self._first_forward_logged:
+                    self._first_forward_logged = True
+                    rospy.loginfo("CmdVelBridge: first cmd_vel forwarded "
+                                   "(lx=%.3f az=%.3f)",
+                                   out.linear.x, out.angular.z)
                 self._last_published_zero = False
             elif self.publish_zero_when_disabled and not self._last_published_zero:
                 self._publish_zero()
+                # Throttled rejection diagnostics.
+                if (now - self._last_rejection_log_time) >= self._rejection_log_interval:
+                    self._last_rejection_log_time = now
+                    reasons = []
+                    if not gate_open:
+                        if self.require_navigation_enabled and not enabled:
+                            reasons.append("nav_enabled=false")
+                        if self.require_trotting_state_cmd and not trotting:
+                            reasons.append("fsm_trot=false")
+                    if not fresh:
+                        reasons.append("cmd_stale(%.1fs)" % (now - last_cmd_time)
+                                       if cmd is not None else "no_cmd")
+                    rospy.loginfo("CmdVelBridge: gate blocking — %s",
+                                   ", ".join(reasons) if reasons else "unknown")
 
             time.sleep(sleep_period)
 

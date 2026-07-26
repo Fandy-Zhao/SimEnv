@@ -67,8 +67,11 @@ class NavStateSupervisor:
         if self._fsm_state != FSM_TROTTING:
             self._pub_fsm.publish(Int8(data=self._fsm_state))
         else:
-            # Defer Trotting re-publish — safety gate after restart
-            rospy.Timer(rospy.Duration(4.0),
+            # Defer Trotting re-publish — safety gate after restart.
+            # Use a short delay (0.5 s) so that new subscribers (bridge)
+            # receive the latched value promptly; the periodic re-publish
+            # at 1 Hz covers the steady state.
+            rospy.Timer(rospy.Duration(0.5),
                         self._deferred_fsm_publish, oneshot=True)
 
         # ── Periodic re-publish at 1 Hz — keeps subscriber connections alive ──
