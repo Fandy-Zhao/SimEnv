@@ -548,12 +548,30 @@ if [ ! -f "$WORKSPACE_DIR/devel/setup.bash" ]; then
   exit 1
 fi
 source "$WORKSPACE_DIR/devel/setup.bash"
-# Also source root workspace devel for packages not yet merged into this branch
-# (e.g. fast_lio, livox_ros_driver)
-_ROOT_WS=/home/zzf/search_ws/SimEnv
-if [ -f "$_ROOT_WS/devel/setup.bash" ] && [ "$_ROOT_WS" != "$WORKSPACE_DIR" ]; then
-  source "$_ROOT_WS/devel/setup.bash" --extend
+
+# ── Verify external dependencies ──
+# FAST_LIO and livox_ros_driver are external ROS packages not committed to
+# this repository.  They must be prepared before the first build via:
+#
+#   tools/prepare_shared_ros_deps.sh --prepare
+#
+# The script validates shared source checkouts, wires symlinks under
+# src/external/, and prepares the Livox-SDK prefix.
+_MISSING_EXTERNAL=0
+if [ "$ENABLE_FAST_LIO2" = "true" ] || [ "$ENABLE_NAVIGATION" = "true" ]; then
+  if ! rospack find fast_lio >/dev/null 2>&1; then
+    echo "ERROR: FAST_LIO package not found.  Run: tools/prepare_shared_ros_deps.sh --prepare" >&2
+    _MISSING_EXTERNAL=1
+  fi
+  if ! rospack find livox_ros_driver >/dev/null 2>&1; then
+    echo "ERROR: livox_ros_driver package not found.  Run: tools/prepare_shared_ros_deps.sh --prepare" >&2
+    _MISSING_EXTERNAL=1
+  fi
+  if [ "$_MISSING_EXTERNAL" -ne 0 ]; then
+    exit 1
+  fi
 fi
+
 export ROS_PACKAGE_PATH="$WORKSPACE_DIR/src:${ROS_PACKAGE_PATH:-}"
 export CMAKE_PREFIX_PATH="$WORKSPACE_DIR/devel:${CMAKE_PREFIX_PATH:-}"
 export PYTHONPATH="$WORKSPACE_DIR/src/building_generator_classic:$WORKSPACE_DIR/src/building_generator_core:${PYTHONPATH:-}"
