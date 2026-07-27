@@ -12,6 +12,12 @@ from geometry_msgs.msg import Twist, TwistStamped
 from std_msgs.msg import Bool, Int8
 
 
+def command_is_fresh(last_cmd_sim_time, now_sim_time, timeout):
+    """Return whether a command is fresh on the ROS/simulation clock."""
+    age = now_sim_time - last_cmd_sim_time
+    return last_cmd_sim_time > 0.0 and 0.0 <= age <= timeout
+
+
 class CmdVelBridge:
     def __init__(self):
         self.input_topic = rospy.get_param("~input_topic", "/navigation/falco/cmd_vel_stamped")
@@ -33,7 +39,7 @@ class CmdVelBridge:
 
         self._lock = threading.Lock()
         self._last_cmd = None
-        self._last_cmd_time = rospy.Time(0)
+        self._last_cmd_time = 0.0
         self._navigation_enabled = not self.require_navigation_enabled
         self._trotting_commanded = not self.require_trotting_state_cmd
         self._last_published_zero = False
@@ -82,7 +88,7 @@ class CmdVelBridge:
     def _cmd_cb(self, msg):
         with self._lock:
             self._last_cmd = msg.twist
-            self._last_cmd_time = time.monotonic()
+            self._last_cmd_time = rospy.Time.now().to_sec()
 
     def _enabled_cb(self, msg):
         prev = self._navigation_enabled
@@ -139,14 +145,16 @@ class CmdVelBridge:
     def spin(self):
         sleep_period = 1.0 / self.publish_rate if self.publish_rate > 0.0 else 0.05
         while not rospy.is_shutdown():
-            now = time.monotonic()
+            wall_now = time.monotonic()
+            sim_now = rospy.Time.now().to_sec()
             with self._lock:
                 cmd = self._last_cmd
                 last_cmd_time = self._last_cmd_time
                 enabled = self._navigation_enabled
                 trotting = self._trotting_commanded
 
-            fresh = cmd is not None and (now - last_cmd_time) <= self.command_timeout
+            fresh = cmd is not None and command_is_fresh(
+                last_cmd_time, sim_now, self.command_timeout)
             gate_open = self._gate_is_open()
             allowed = gate_open and fresh
 
@@ -162,8 +170,8 @@ class CmdVelBridge:
             elif self.publish_zero_when_disabled and not self._last_published_zero:
                 self._publish_zero()
                 # Throttled rejection diagnostics.
-                if (now - self._last_rejection_log_time) >= self._rejection_log_interval:
-                    self._last_rejection_log_time = now
+                if (wall_now - self._last_rejection_log_time) >= self._rejection_log_interval:
+                    self._last_rejection_log_time = wall_now
                     reasons = []
                     if not gate_open:
                         if self.require_navigation_enabled and not enabled:
@@ -171,7 +179,7 @@ class CmdVelBridge:
                         if self.require_trotting_state_cmd and not trotting:
                             reasons.append("fsm_trot=false")
                     if not fresh:
-                        reasons.append("cmd_stale(%.1fs)" % (now - last_cmd_time)
+                        reasons.append("cmd_stale(%.3fs sim)" % (sim_now - last_cmd_time)
                                        if cmd is not None else "no_cmd")
                     rospy.loginfo("CmdVelBridge: gate blocking — %s",
                                    ", ".join(reasons) if reasons else "unknown")

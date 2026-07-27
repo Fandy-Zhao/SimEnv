@@ -505,7 +505,7 @@ pkill -9 -f "roslaunch.*simenv_navigation_bringup" 2>/dev/null || true
 pkill -9 -f "cmd_vel_bridge"         2>/dev/null || true
 pkill -9 -f "localPlanner"           2>/dev/null || true
 pkill -9 -f "pathFollower"           2>/dev/null || true
-pkill -9 -f "exploration"           2>/dev/null || true
+pkill -9 -x "exploration"           2>/dev/null || true
 pkill -9 -f "dsvplanner"            2>/dev/null || true
 pkill -9 -f "graph_planner"         2>/dev/null || true
 pkill -9 -f "navigation_boundary"   2>/dev/null || true
@@ -970,39 +970,28 @@ if [ "$ENABLE_NAVIGATION" = "true" ]; then
   sleep 6
 
   echo "Setting default safe navigation state (enabled=false, start_exploring=false)..."
-  rostopic pub /navigation/enabled       std_msgs/Bool  "data: false" -1 2>/dev/null || true
-  rostopic pub /navigation/start_exploring std_msgs/Bool "data: false" -1 2>/dev/null || true
-  # Also publish to request topics so the supervisor tracks correct state and
-  # its periodic re-publish (1 Hz) does not fight this one-shot with stale
-  # defaults.  Without this, the supervisor's latched /navigation/enabled
-  # stays at false and bridge restarts miss the enabled transition.
   rostopic pub /navigation/request_enabled       std_msgs/Bool  "data: false" -1 2>/dev/null || true
   rostopic pub /navigation/request_exploring     std_msgs/Bool  "data: false" -1 2>/dev/null || true
+  rostopic pub /navigation/request_fsm_state     std_msgs/Int8  "data: 2" -1 2>/dev/null || true
   echo "Navigation nodes are running but motion is DISABLED."
   echo "  Enable motion manually:"
-  echo "    rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\" -1"
-  echo "    rostopic pub /navigation/enabled std_msgs/Bool \"data: true\" -1"
-  echo "    rostopic pub /navigation/start_exploring std_msgs/Bool \"data: true\" -1"
+  echo "    rostopic pub /navigation/request_fsm_state std_msgs/Int8 \"data: 4\" -1"
+  echo "    rostopic pub /navigation/request_enabled std_msgs/Bool \"data: true\" -1"
+  echo "    rostopic pub /navigation/request_exploring std_msgs/Bool \"data: true\" -1"
 
   if [ "$NAV_AUTO_TROTTING" = "true" ]; then
     sleep 2
-    echo "NAV_AUTO_TROTTING=true: commanding Trotting via /fsm/state_cmd..."
-    rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 4" -1 2>/dev/null || true
-    # Also notify supervisor so its latched /fsm/state_cmd publisher and
-    # periodic re-publish are correct — otherwise the supervisor continues
-    # to emit fsm=2 and fights this one-shot.
+    echo "NAV_AUTO_TROTTING=true: requesting Trotting via supervisor..."
     rostopic pub /navigation/request_fsm_state std_msgs/Int8 "data: 4" -1 2>/dev/null || true
   fi
   if [ "$NAV_AUTO_ENABLE" = "true" ]; then
     sleep 2
-    echo "NAV_AUTO_ENABLE=true: publishing /navigation/enabled=true..."
-    rostopic pub /navigation/enabled std_msgs/Bool "data: true" -1 2>/dev/null || true
+    echo "NAV_AUTO_ENABLE=true: requesting /navigation/enabled=true..."
     rostopic pub /navigation/request_enabled std_msgs/Bool "data: true" -1 2>/dev/null || true
   fi
   if [ "$NAV_AUTO_START_EXPLORATION" = "true" ]; then
     sleep 2
-    echo "NAV_AUTO_START_EXPLORATION=true: publishing /navigation/start_exploring=true..."
-    rostopic pub /navigation/start_exploring std_msgs/Bool "data: true" -1 2>/dev/null || true
+    echo "NAV_AUTO_START_EXPLORATION=true: requesting exploration start..."
     rostopic pub /navigation/request_exploring std_msgs/Bool "data: true" -1 2>/dev/null || true
   fi
 fi
@@ -1021,7 +1010,10 @@ if [ "$ENABLE_EXPLORATION_RECORDING" = "true" ] && [ "$ENABLE_NAVIGATION" = "tru
   echo "  Map stable:    $EXPLORATION_MAP_STABLE_WAIT s"
   echo ""
 
-  mkdir -p "$EXPLORATION_OUTPUT_DIR"
+  # The shell opens redirections before roslaunch starts, so the recorder
+  # cannot create its own log directory in time.  Create it explicitly to
+  # keep set -e from aborting an otherwise healthy navigation startup.
+  mkdir -p "$EXPLORATION_OUTPUT_DIR/logs"
 
   # Minimal map validation flags (diagnostic only, not for production exploration)
   EXPLORATION_MINIMAL_MAP_VALIDATION="${EXPLORATION_MINIMAL_MAP_VALIDATION:-false}"
@@ -1052,15 +1044,15 @@ if [ "$ENABLE_NAVIGATION" = "true" ]; then
   echo ""
   echo "  ---- Navigation Control ----"
   echo "  Nodes: DSV=$START_DSV  FALCO=true  Bridge=true"
-  echo "  State: nodes alive, motion DISABLED (safe)"
+  echo "  Requested state: enabled=$NAV_AUTO_ENABLE  trotting=$NAV_AUTO_TROTTING  exploring=$NAV_AUTO_START_EXPLORATION"
   echo ""
   echo "  To enable exploration:"
-  echo "    rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\" -1"
-  echo "    rostopic pub /navigation/enabled std_msgs/Bool \"data: true\" -1"
-  echo "    rostopic pub /navigation/start_exploring std_msgs/Bool \"data: true\" -1"
+  echo "    rostopic pub /navigation/request_fsm_state std_msgs/Int8 \"data: 4\" -1"
+  echo "    rostopic pub /navigation/request_enabled std_msgs/Bool \"data: true\" -1"
+  echo "    rostopic pub /navigation/request_exploring std_msgs/Bool \"data: true\" -1"
   echo ""
   echo "  To stop motion immediately:"
-  echo "    rostopic pub /navigation/enabled std_msgs/Bool \"data: false\" -1"
+  echo "    rostopic pub /navigation/request_enabled std_msgs/Bool \"data: false\" -1"
 else
   echo "Publish geometry_msgs/Twist to /cmd_vel for velocity control (Trotting/RL mode only;"
   echo "  Trotting and RL require a Torch-enabled build: set UNITREE_ENABLE_TORCH_POLICY=ON)."
@@ -1093,7 +1085,7 @@ cleanup() {
 
   # ── Disable navigation motion before killing nodes ──
   if [ "${ENABLE_NAVIGATION:-false}" = "true" ]; then
-    rostopic pub /navigation/enabled std_msgs/Bool "data: false" -1 2>/dev/null || true
+    rostopic pub /navigation/request_enabled std_msgs/Bool "data: false" -1 2>/dev/null || true
     sleep 0.5
   fi
 
@@ -1103,7 +1095,7 @@ cleanup() {
   pkill -9 -f "cmd_vel_bridge"         2>/dev/null || true
   pkill -9 -f "localPlanner"           2>/dev/null || true
   pkill -9 -f "pathFollower"           2>/dev/null || true
-  pkill -9 -f "exploration"           2>/dev/null || true
+  pkill -9 -x "exploration"           2>/dev/null || true
   pkill -9 -f "dsvplanner"            2>/dev/null || true
   pkill -9 -f "graph_planner"         2>/dev/null || true
   pkill -9 -f "navigation_boundary"   2>/dev/null || true

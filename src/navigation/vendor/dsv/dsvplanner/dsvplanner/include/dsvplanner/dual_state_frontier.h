@@ -70,6 +70,7 @@ public:
   double kFrontierNeighbourSearchRadius;
   int kEffectiveUnknownNumAroundFrontier;
   bool kEliminateFrontiersAroundRobots;
+  bool single_floor_enabled_;
 
   StateVec robot_bounding;
   StateVec search_bounding;

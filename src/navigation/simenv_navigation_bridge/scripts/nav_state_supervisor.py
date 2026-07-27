@@ -9,6 +9,7 @@ are also supported for explicit user control.
 
 Output topics (latched — consumed by bridge, exploration, controller):
   /navigation/enabled               std_msgs/Bool
+  /navigation/exploring             std_msgs/Bool
   /navigation/start_exploring       std_msgs/Bool
   /fsm/state_cmd                    std_msgs/Int8
 
@@ -41,8 +42,10 @@ class NavStateSupervisor:
         # ── Output publishers (latched — every subscriber sees current state) ──
         self._pub_enabled = rospy.Publisher(
             "/navigation/enabled", Bool, latch=True, queue_size=1)
-        self._pub_exploring = rospy.Publisher(
+        self._pub_start_exploring = rospy.Publisher(
             "/navigation/start_exploring", Bool, latch=True, queue_size=1)
+        self._pub_exploring = rospy.Publisher(
+            "/navigation/exploring", Bool, latch=True, queue_size=1)
         self._pub_fsm = rospy.Publisher(
             "/fsm/state_cmd", Int8, latch=True, queue_size=1)
 
@@ -73,7 +76,7 @@ class NavStateSupervisor:
 
         # ── Publish initial state immediately ──
         self._pub_enabled.publish(Bool(data=self._enabled))
-        self._pub_exploring.publish(Bool(data=self._exploring))
+        self._publish_exploring()
 
         if self._fsm_state != FSM_TROTTING:
             self._pub_fsm.publish(Int8(data=self._fsm_state))
@@ -112,7 +115,7 @@ class NavStateSupervisor:
         if new_val == self._exploring:
             return
         self._exploring = new_val
-        self._pub_exploring.publish(Bool(data=self._exploring))
+        self._publish_exploring()
         rospy.set_param(_PARAM_NS + "/exploring", self._exploring)
         rospy.loginfo("NavStateSupervisor: request exploring <- %s",
                        self._exploring)
@@ -138,8 +141,13 @@ class NavStateSupervisor:
 
     def _publish_all(self):
         self._pub_enabled.publish(Bool(data=self._enabled))
-        self._pub_exploring.publish(Bool(data=self._exploring))
+        self._publish_exploring()
         self._pub_fsm.publish(Int8(data=self._fsm_state))
+
+    def _publish_exploring(self):
+        msg = Bool(data=self._exploring)
+        self._pub_start_exploring.publish(msg)
+        self._pub_exploring.publish(msg)
 
     def _republish_cb(self, _event):
         self._publish_all()

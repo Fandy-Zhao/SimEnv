@@ -456,7 +456,10 @@ void dsvplanner_ns::Drrt::plannerIterate()
   {
     count++;
     if (count > 1000)
+    {
+      diag_candidate_reject_++;
       return;  // Plan fail if cannot find a required node in 1000 iterations
+    }
 
     if (((double)rand()) / ((double)RAND_MAX) > 0.75 && localThreeFrontier_->size() > 0)
     {
@@ -521,6 +524,7 @@ void dsvplanner_ns::Drrt::plannerIterate()
   StateVec direction(newState[0] - origin[0], newState[1] - origin[1], 0);
   if (direction.norm() < params_.kMinextensionRange)
   {
+    diag_short_edge_reject_++;
     return;
   }
   else if (direction.norm() > params_.kExtensionRange)
@@ -537,6 +541,7 @@ void dsvplanner_ns::Drrt::plannerIterate()
 
   if (newState[2] >= 1000)  // the sampled position is above the untraversed area
   {
+    diag_height_reject_++;
     return;
   }
   // Check if the new node is too close to any existing nodes after extension
@@ -557,18 +562,21 @@ void dsvplanner_ns::Drrt::plannerIterate()
   direction[2] = newState[2] - newParent->state_[2];
   if (direction.norm() < params_.kMinextensionRange || direction[2] > params_.kMaxExtensionAlongZ)
   {
+    diag_height_reject_++;
     return;
   }
   // check collision if the new node is in the planning boundary
   if (!inPlanningBoundary(newState))
   {
+    diag_boundary_reject_++;
     return;
   }
   else
   {
-    if (volumetric_mapping::OctomapManager::CellStatus::kFree ==
-            manager_->getLineStatusBoundingBox(origin, newState, params_.boundingBox) &&
-        (!grid_->collisionCheckByTerrainWithVector(origin, newState)))
+    const bool octomap_free = volumetric_mapping::OctomapManager::CellStatus::kFree ==
+                              manager_->getLineStatusBoundingBox(origin, newState, params_.boundingBox);
+    const bool terrain_free = !grid_->collisionCheckByTerrainWithVector(origin, newState);
+    if (octomap_free && terrain_free)
     {  // connection is free
       // Create new node and insert into tree
 
@@ -598,6 +606,13 @@ void dsvplanner_ns::Drrt::plannerIterate()
       }
       nodeCounter_++;
     }
+    else
+    {
+      if (!octomap_free)
+        diag_octomap_reject_++;
+      if (!terrain_free)
+        diag_terrain_reject_++;
+    }
   }
 }
 
@@ -605,6 +620,12 @@ void dsvplanner_ns::Drrt::plannerInit()
 {
   // This function is to initialize the tree
   kdTree_ = kd_create(3);
+  diag_candidate_reject_ = 0;
+  diag_short_edge_reject_ = 0;
+  diag_height_reject_ = 0;
+  diag_boundary_reject_ = 0;
+  diag_octomap_reject_ = 0;
+  diag_terrain_reject_ = 0;
 
   node_array.clear();
   rootNode_ = new Node;

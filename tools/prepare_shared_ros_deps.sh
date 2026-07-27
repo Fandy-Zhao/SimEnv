@@ -23,6 +23,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 FAST_LIO_SRC="/home/zzf/search_ws/FAST_LIO"
 LIVOX_SRC="/home/zzf/search_ws/livox_ros_driver"
 EXTERNAL_DIR="${REPO_ROOT}/src/external"
+STAGING_PREP_SCRIPT="${REPO_ROOT}/tools/external_deps/prepare_fast_lio2_deps.sh"
 SHARED_DEPS_ROOT="/home/zzf/search_ws/shared_ros_deps"
 LIVOX_SDK_ROOT="${SHARED_DEPS_ROOT}/Livox-SDK/${LIVOX_SDK_EXPECTED}"
 LIVOX_SDK_SRC="${LIVOX_SDK_ROOT}/src"
@@ -212,56 +213,39 @@ echo "  path: ${IKD_TREE_DIR}"
 echo "  HEAD: ${IKD_ACTUAL}"
 echo ""
 
-# 3. Create src/external/ symlinks
-echo "=== Creating symlinks under src/external/ ==="
-mkdir -p "${EXTERNAL_DIR}"
-
-remove_legacy_link "${REPO_ROOT}/src/FAST_LIO"
-remove_legacy_link "${REPO_ROOT}/src/livox_ros_driver"
-
-ln -sfn "${FAST_LIO_SRC}" "${EXTERNAL_DIR}/FAST_LIO"
-echo "  ${EXTERNAL_DIR}/FAST_LIO -> ${FAST_LIO_SRC}"
-
-ln -sfn "${LIVOX_SRC}" "${EXTERNAL_DIR}/livox_ros_driver"
-echo "  ${EXTERNAL_DIR}/livox_ros_driver -> ${LIVOX_SRC}"
-echo ""
-
-# 4. Verify package.xml files exist (find maxdepth 2)
-echo "=== Verifying package.xml presence ==="
-FAST_LIO_PKGS="$(find -L "${EXTERNAL_DIR}/FAST_LIO" -maxdepth 2 -name package.xml | sort)"
-LIVOX_PKGS="$(find -L "${EXTERNAL_DIR}/livox_ros_driver" -maxdepth 2 -name package.xml | sort)"
-
-if [[ -z "${FAST_LIO_PKGS}" ]]; then
-  echo "ERROR: no package.xml found in FAST_LIO (maxdepth 2)" >&2
+# 3. Validate or prepare patched staging copies.  The shared source trees are
+# intentionally not built directly: their upstream CMake files force C++14
+# and build the hardware Livox node.  SimEnv's existing staging helper applies
+# the tracked C++17 and message-only patches to disposable copies.
+if [[ ! -x "${STAGING_PREP_SCRIPT}" ]]; then
+  echo "ERROR: staging helper is missing or not executable: ${STAGING_PREP_SCRIPT}" >&2
   exit 1
 fi
-echo "  FAST_LIO package.xml:"
-echo "${FAST_LIO_PKGS}" | while read -r f; do echo "    ${f}"; done
 
-if [[ -z "${LIVOX_PKGS}" ]]; then
-  echo "ERROR: no package.xml found in livox_ros_driver (maxdepth 2)" >&2
-  exit 1
+if [[ "${MODE}" == "--check-only" ]]; then
+  echo "=== Checking patched FAST-LIO2 staging inputs ==="
+  "${STAGING_PREP_SCRIPT}" --check
+else
+  echo "=== Removing obsolete raw-source links ==="
+  remove_legacy_link "${EXTERNAL_DIR}/FAST_LIO"
+  remove_legacy_link "${EXTERNAL_DIR}/livox_ros_driver"
+  echo ""
+
+  echo "=== Preparing patched FAST-LIO2 staging copies ==="
+  "${STAGING_PREP_SCRIPT}" --prepare
 fi
-echo "  livox_ros_driver package.xml:"
-echo "${LIVOX_PKGS}" | while read -r f; do echo "    ${f}"; done
 echo ""
 
-# 5. Verify both symlinks are git-ignored
-echo "=== Verifying git ignore coverage ==="
-verify_git_ignore "src/external/FAST_LIO"
-verify_git_ignore "src/external/livox_ros_driver"
-echo ""
-
-# 6. Prepare independent Livox-SDK prefix
+# 4. Prepare independent Livox-SDK prefix
 prepare_livox_sdk
 echo ""
 
-# 7. Summary
+# 5. Summary
 echo "=== Summary ==="
-echo "FAST_LIO:        $(readlink -f "${EXTERNAL_DIR}/FAST_LIO")"
+echo "FAST_LIO:        $(readlink -f "${REPO_ROOT}/src/FAST_LIO" 2>/dev/null || echo NOT_PREPARED)"
 echo "  commit:         $(git -C "${FAST_LIO_SRC}" rev-parse HEAD)"
 echo "  ikd-Tree:       $(git -C "${IKD_TREE_DIR}" rev-parse HEAD)"
-echo "livox_ros_driver: $(readlink -f "${EXTERNAL_DIR}/livox_ros_driver")"
+echo "livox_ros_driver: $(readlink -f "${REPO_ROOT}/src/livox_ros_driver" 2>/dev/null || echo NOT_PREPARED)"
 echo "  commit:         $(git -C "${LIVOX_SRC}" rev-parse HEAD)"
 echo "Livox-SDK:       ${LIVOX_SDK_INSTALL}"
 echo "  source:         ${LIVOX_SDK_SRC}"

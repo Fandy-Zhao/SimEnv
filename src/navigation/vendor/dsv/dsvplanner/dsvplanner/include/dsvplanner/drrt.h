@@ -48,6 +48,12 @@ public:
   pcl::PointXYZ selectedGlobalFrontier_;
   geometry_msgs::Polygon boundary_polygon_;
   StateVec root_;
+  int diag_candidate_reject_;
+  int diag_short_edge_reject_;
+  int diag_height_reject_;
+  int diag_boundary_reject_;
+  int diag_octomap_reject_;
+  int diag_terrain_reject_;
 
   void init();
   void clear();

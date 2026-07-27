@@ -11,6 +11,33 @@ from sensor_msgs.msg import PointCloud2, PointField
 from sensor_msgs.point_cloud2 import read_points, create_cloud
 
 
+def filter_terrain_points(points, odom, local_radius,
+                          robot_self_filter_radius, min_relative_z,
+                          max_relative_z, voxel_size):
+    """Keep local floor and obstacle samples needed by DSV terrain analysis."""
+    ox, oy, oz = odom[:3]
+    inv_voxel = 1.0 / voxel_size
+    r2_local = local_radius ** 2
+    r2_self = robot_self_filter_radius ** 2
+    voxel = {}
+
+    for x, y, z in points:
+        if not (math.isfinite(x) and math.isfinite(y) and math.isfinite(z)):
+            continue
+        dx, dy, dz = x - ox, y - oy, z - oz
+        d2 = dx * dx + dy * dy
+        if d2 > r2_local or d2 < r2_self:
+            continue
+        if dz < min_relative_z or dz > max_relative_z:
+            continue
+        vk = (math.floor(x * inv_voxel), math.floor(y * inv_voxel),
+              math.floor(z * inv_voxel))
+        if vk not in voxel:
+            voxel[vk] = (x, y, z)
+
+    return list(voxel.values())
+
+
 class RegisteredCloudToTerrainMap:
     def __init__(self):
         # --- topics ---
@@ -22,9 +49,8 @@ class RegisteredCloudToTerrainMap:
         # --- filter parameters ---
         self._local_radius = float(rospy.get_param("~local_radius", 15.0))
         self._robot_self_filter_radius = float(rospy.get_param("~robot_self_filter_radius", 0.32))
-        self._min_relative_z = float(rospy.get_param("~min_relative_z", -0.20))
+        self._min_relative_z = float(rospy.get_param("~min_relative_z", -0.35))
         self._max_relative_z = float(rospy.get_param("~max_relative_z", 1.00))
-        self._ground_rejection_height = float(rospy.get_param("~ground_rejection_height", 0.10))
         self._max_input_age = float(rospy.get_param("~max_input_age", 0.5))
         self._voxel_size = float(rospy.get_param("~voxel_size", 0.12))
         self._publish_rate = float(rospy.get_param("~publish_rate", 8.0))
@@ -72,29 +98,10 @@ class RegisteredCloudToTerrainMap:
         return transformed
 
     def _filter(self, points, odom):
-        ox, oy, oz = odom[:3]
-        inv_voxel = 1.0 / self._voxel_size
-        r2_local = self._local_radius ** 2
-        r2_self = self._robot_self_filter_radius ** 2
-        voxel = {}
-        filtered = []
-
-        for x, y, z in points:
-            if not (math.isfinite(x) and math.isfinite(y) and math.isfinite(z)):
-                continue
-            dx, dy, dz = x - ox, y - oy, z - oz
-            d2 = dx * dx + dy * dy
-            if d2 > r2_local or d2 < r2_self:
-                continue
-            if dz < self._min_relative_z or dz > self._max_relative_z:
-                continue
-            if dz < self._ground_rejection_height:
-                continue
-            vk = (math.floor(x * inv_voxel), math.floor(y * inv_voxel), math.floor(z * inv_voxel))
-            if vk not in voxel:
-                voxel[vk] = (x, y, z)
-
-        return list(voxel.values())
+        return filter_terrain_points(
+            points, odom, self._local_radius,
+            self._robot_self_filter_radius, self._min_relative_z,
+            self._max_relative_z, self._voxel_size)
 
     def spin(self):
         sleep_period = 1.0 / self._publish_rate if self._publish_rate > 0.0 else 0.125

@@ -115,7 +115,11 @@ bool dsvplanner_ns::drrtPlanner::plannerServiceCallback(dsvplanner::dsvplanner_s
   drrt_->publishNode();
   std::cout << "     New node number is " << drrt_->getNodeCounter() << "\n"
             << "     Current local RRT size is " << dual_state_graph_->getLocalVertexSize() << "\n"
-            << "     Current global graph size is " << dual_state_graph_->getGlobalVertexSize() << std::endl;
+            << "     Current global graph size is " << dual_state_graph_->getGlobalVertexSize() << "\n"
+            << "     Reject diag candidate/short/height/boundary/octomap/terrain="
+            << drrt_->diag_candidate_reject_ << "/" << drrt_->diag_short_edge_reject_ << "/"
+            << drrt_->diag_height_reject_ << "/" << drrt_->diag_boundary_reject_ << "/"
+            << drrt_->diag_octomap_reject_ << "/" << drrt_->diag_terrain_reject_ << std::endl;
   RRT_generate_over_ = std::chrono::steady_clock::now();
   time_span = RRT_generate_over_ - plan_start_;
   double rrtGenerateTime =

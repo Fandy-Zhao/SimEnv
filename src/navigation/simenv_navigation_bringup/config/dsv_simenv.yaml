@@ -91,7 +91,8 @@ rm:
   kBoundX: 0.35
   kBoundY: 0.30
   kBoundZ: 0.35
-  kVehicleHeight: 0.65
+  # FAST-LIO odometry tracks the A1 body about 0.30 m above the mapped floor.
+  kVehicleHeight: 0.30
 
 elevation:
   kTerrainVoxelHalfWidth: 50
@@ -204,9 +205,8 @@ terrain_map:
   publish_rate: 8.0
   voxel_size: 0.12
   local_radius: 15.0
-  min_relative_z: -0.20
+  min_relative_z: -0.35
   max_relative_z: 1.00
-  ground_rejection_height: 0.10
   robot_self_filter_radius: 0.32
   max_input_age: 0.5
 

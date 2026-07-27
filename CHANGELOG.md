@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-07-28 — Single-floor exploration chain diagnostics
+
+- **fix(build)**: Prepared worktree-local FAST-LIO/Livox staging dependencies
+  without modifying the shared source checkouts.
+- **fix(navigation)**: Preserved floor points in the terrain adapter, flattened
+  unknown single-floor terrain cells to the robot plane, and transformed
+  FAST-LIO odometry into the `map` frame before DSV/FALCO consumption.
+- **fix(navigation)**: Routed automatic state changes exclusively through the
+  supervisor request topics, published the missing `/navigation/exploring`
+  status, used simulation time for bridge command freshness, and avoided a
+  competing recorder `/cmd_vel` publisher during normal exploration.
+- **fix(control)**: Unified command/contact freshness with Gazebo time and
+  lowered the pure-yaw gait trigger deadband so valid FALCO turns reach the A1.
+- **test(navigation)**: Added terrain filtering, odometry frame conversion, and
+  bridge simulation-time freshness unit tests plus throttled DSV/controller
+  diagnostics.
+- Formal build and the repaired A-U chain reached a real map, DSV goal,
+  waypoint, FALCO path, single `/cmd_vel` owner, Trotting, and 0.24 m measured
+  trajectory. The complete exploration gate remained blocked: only 14.0 s of
+  simulation elapsed in 463.1 s wall time (RTF 0.0303), no goal was reached,
+  and no natural completion criterion fired. Changes were not merged.
+
 ## 2026-07-26 — cmd_vel_bridge gate initialization race fix
 
 - **fix(navigation)**: Fixed race condition where `cmd_vel_bridge`'s safety gate

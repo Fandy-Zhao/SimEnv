@@ -60,6 +60,7 @@ bool DualStateFrontier::readParameters()
   nh_private_.getParam("/rm/kSensorVertical", kSensorVerticalView);
   nh_private_.getParam("/rm/kSensorHorizontal", kSensorHorizontalView);
   nh_private_.getParam("/rm/kVehicleHeight", kVehicleHeight);
+  nh_private_.param("/single_floor/enabled", single_floor_enabled_, false);
   nh_private_.getParam("/elevation/kTerrainVoxelSize", kTerrainVoxelSize);
   nh_private_.getParam("/elevation/kTerrainVoxelHalfWidth", kTerrainVoxelHalfWidth);
   nh_private_.getParam("/elevation/kTerrainVoxelWidth", kTerrainVoxelWidth);
@@ -642,11 +643,7 @@ void DualStateFrontier::updateTerrainElevationForUnknow()
   kdtree.setInputCloud(terrain_elev_cloud_);
 
   pcl::PointXYZI point;
-  if (terrain_voxel_points_num_[0] <= 0)
-  {
-    terrain_voxel_elev_[0] = robot_position_[2] - kVehicleHeight;
-  }
-  for (int i = 1; i < kTerrainVoxelWidth * kTerrainVoxelWidth; i++)
+  for (int i = 0; i < kTerrainVoxelWidth * kTerrainVoxelWidth; i++)
   {
     if (terrain_voxel_points_num_[i] <= 0)
     {
@@ -656,7 +653,16 @@ void DualStateFrontier::updateTerrainElevationForUnknow()
       point.y = (indY - kTerrainVoxelHalfWidth) * kTerrainVoxelSize - kTerrainVoxelSize / 2 + robot_position_[1];
       point.z = 0;
 
-      if (terrain_elev_cloud_->points.size() > 0)
+      if (single_floor_enabled_)
+      {
+        // A single-floor run has no slope to infer.  Nearest-neighbour
+        // extrapolation can otherwise copy a nearby wall's Z into unseen
+        // cells and lift RRT samples far above the robot.
+        point.intensity = robot_position_[2] - kVehicleHeight;
+        terrain_voxel_elev_[i] = point.intensity;
+        terrain_elev_cloud_->push_back(point);
+      }
+      else if (terrain_elev_cloud_->points.size() > 0)
       {
         if (kdtree.nearestKSearch(point, 1, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
         {

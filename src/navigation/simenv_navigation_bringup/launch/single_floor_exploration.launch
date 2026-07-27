@@ -25,9 +25,12 @@
 
   <rosparam command="load" file="$(arg dsv_config)"/>
 
-  <node pkg="topic_tools" type="relay" name="navigation_state_estimation_relay"
-        args="$(arg state_estimation_source) $(arg state_estimation_topic)"
-        output="screen"/>
+  <node pkg="simenv_navigation_bridge" type="odometry_to_map.py"
+        name="navigation_odometry_to_map" output="screen" launch-prefix="/usr/bin/python3">
+    <param name="input" value="$(arg state_estimation_source)"/>
+    <param name="output" value="$(arg state_estimation_topic)"/>
+    <param name="target_frame" value="map"/>
+  </node>
   <node pkg="topic_tools" type="relay" name="navigation_registered_scan_relay"
         args="$(arg registered_scan_source) $(arg registered_scan_topic)"
         output="screen"/>
@@ -41,9 +44,8 @@
     <param name="publish_rate" value="8.0"/>
     <param name="voxel_size" value="0.12"/>
     <param name="local_radius" value="15.0"/>
-    <param name="min_relative_z" value="-0.20"/>
+    <param name="min_relative_z" value="-0.35"/>
     <param name="max_relative_z" value="1.00"/>
-    <param name="ground_rejection_height" value="0.10"/>
     <param name="robot_self_filter_radius" value="0.32"/>
     <param name="max_input_age" value="0.5"/>
     <param name="diagnostic_throttle_sec" value="$(arg diagnostic_throttle_sec)"/>

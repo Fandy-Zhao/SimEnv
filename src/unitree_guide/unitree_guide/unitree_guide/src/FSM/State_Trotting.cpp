@@ -334,7 +334,11 @@ bool State_Trotting::checkStepOrNot(){
         (fabs(_posError(1)) > 0.08) ||
         (fabs(_velError(0)) > 0.05) ||
         (fabs(_velError(1)) > 0.05) ||
-        (fabs(_dYawCmd) > 0.20) ){
+        // FALCO commonly requests 0.18--0.20 rad/s while the navigation
+        // bridge is capped at 0.22 rad/s.  A 0.20 deadband made valid pure
+        // rotation commands repeatedly stop the gait.  Use the same small
+        // command deadband as translational motion.
+        (fabs(_dYawCmd) > 0.03) ){
         return true;
     }else{
         return false;
@@ -354,13 +358,15 @@ void State_Trotting::setHighCmd(double vx, double vy, double wz){
 }
 
 void State_Trotting::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
+    const ros::Time callbackControlTime = _ctrlComp->controlTime.isZero() ?
+        ros::Time::now() : _ctrlComp->controlTime;
     if(!msg || !std::isfinite(msg->linear.x) || !std::isfinite(msg->linear.y) ||
        !std::isfinite(msg->angular.z)){
         _cmdVelActive = true;
         _cmdVx = 0.0;
         _cmdVy = 0.0;
         _cmdWz = 0.0;
-        _lastCmdVelTime = ros::Time::now();
+        _lastCmdVelTime = callbackControlTime;
         ROS_WARN_THROTTLE(1.0, "Trotting rejected a non-finite /cmd_vel and commanded a stop.");
         return;
     }
@@ -368,7 +374,10 @@ void State_Trotting::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
     _cmdVx = msg->linear.x;
     _cmdVy = msg->linear.y;
     _cmdWz = msg->angular.z;
-    _lastCmdVelTime = ros::Time::now();
+    // Use the same accepted Gazebo time as getUserCmd().  Under a heavy DSV
+    // planning load, ros::Time::now() can lag the controller's queued state
+    // timestamp enough to make a live command appear older than the timeout.
+    _lastCmdVelTime = callbackControlTime;
 }
 
 void State_Trotting::getUserCmd(){
@@ -557,6 +566,17 @@ void State_Trotting::updateWaveReadiness(){
     d.roll_deg = rpyDiag(0) * 180.0 / M_PI;
     d.pitch_deg = rpyDiag(1) * 180.0 / M_PI;
     d.model_height = _posBody(2);
+
+    ROS_INFO_THROTTLE(
+        1.0,
+        "[TROTTING_READINESS] height=%d stance=%d contact=%d linear=%d angular=%d tilt=%d hold=%.3f ready=%d "
+        "speed=%.3f gyro=%.3f rpy=[%.2f %.2f] force=[%.1f %.1f %.1f %.1f]",
+        d.height_ready, d.stance_ready, d.contact_ready,
+        d.linear_speed_ready, d.angular_speed_ready, d.tilt_ready,
+        d.readiness_hold_elapsed, d.readiness_hold_complete,
+        d.linear_speed, d.angular_speed, d.roll_deg, d.pitch_deg,
+        d.contact_force[0], d.contact_force[1],
+        d.contact_force[2], d.contact_force[3]);
 
     // First block latch: set once on first detected failure condition
     if(d.first_block_reason == 0 && !_waveReady){

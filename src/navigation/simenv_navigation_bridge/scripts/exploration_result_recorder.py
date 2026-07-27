@@ -273,7 +273,7 @@ class ExplorationResultRecorder:
         # ── Publishers ──
         self._stop_repub = rospy.Publisher("/navigation/stop_exploring", Bool,
                                             queue_size=1, latch=True)
-        self._zero_vel_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
+        self._zero_vel_pub = None
 
         # ── Timer for health monitoring (1 Hz) ──
         self._health_timer = rospy.Timer(rospy.Duration(1.0), self._health_check)
@@ -870,6 +870,7 @@ class ExplorationResultRecorder:
 
         # Send zero velocity continuously for 2 wall seconds
         zero_twist = Twist()
+        self._zero_vel_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
         stop_start = wall_now()
         while wall_elapsed(stop_start) < 2.0 and not rospy.is_shutdown():
             try:
@@ -1508,16 +1509,20 @@ def main():
 
     recorder = ExplorationResultRecorder()
 
-    # Spin until exploration completes
-    rate = rospy.Rate(10)
-    while not rospy.is_shutdown() and not recorder._exploration_completed:
-        rate.sleep()
+    try:
+        # Spin until exploration completes
+        rate = rospy.Rate(10)
+        while not rospy.is_shutdown() and not recorder._exploration_completed:
+            rate.sleep()
 
-    # After completion, extra time for final data
-    rospy.loginfo("[Recorder] Exploration recording phase complete. "
-                   "Waiting for final data flush...")
-    extra_wait = rospy.Duration(3.0)
-    rospy.sleep(extra_wait)
+        # After completion, extra time for final data
+        rospy.loginfo("[Recorder] Exploration recording phase complete. "
+                      "Waiting for final data flush...")
+        rospy.sleep(rospy.Duration(3.0))
+    except rospy.ROSInterruptException:
+        # rospy.Rate.sleep raises during an ordinary rosnode/roslaunch stop.
+        # The registered shutdown callback has already persisted partial data.
+        pass
 
     rospy.loginfo("[Recorder] Recording finished.")
 

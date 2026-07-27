@@ -17,6 +17,7 @@ catkin_install_python(PROGRAMS
   scripts/cmd_vel_bridge.py
   scripts/exploration_result_recorder.py
   scripts/nav_state_supervisor.py
+  scripts/odometry_to_map.py
   scripts/registered_cloud_to_terrain_map.py
   scripts/simenv_navigation_boundary.py
   scripts/terrain_to_2d_map.py
