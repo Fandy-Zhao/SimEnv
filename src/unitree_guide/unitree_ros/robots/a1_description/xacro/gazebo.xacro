@@ -354,7 +354,7 @@
                     </ray>
                     <visualize>${'$(arg ENABLE_LIDAR_VISUALIZATION)' == 'true'}</visualize>
                     <samples>24000</samples>
-                    <downsample>1</downsample>
+                    <downsample>3</downsample>
                     <csv_file_name>package://a1_description/scan_mode/mid360.csv</csv_file_name>
                     <ros_topic>/scan</ros_topic>
                     <frameName>laser_livox</frameName>

@@ -28,6 +28,10 @@ Thumbs.db
 # Gazebo
 *.log
 
+# Perf profiling data (may be root-owned)
+perf.data
+perf.data.old
+
 # Large per-run diagnostics
 experiments/runs/*/M*/timing.csv
 experiments/runs/*/M*/rl_deploy.csv

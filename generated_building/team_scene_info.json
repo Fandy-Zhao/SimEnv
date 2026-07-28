@@ -1,6 +1,6 @@
 {
   "allowed_interfaces": {
-    "result_file": "/home/ros/Guoyulun/Competition/SimEnv/results/detected_danger.json",
+    "result_file": "/home/zzf/search_ws/SimEnv/results/detected_danger.json",
     "services": [
       "/set_door_state",
       "/call_elevator"
@@ -34,18 +34,6 @@
         "id": "elevator_floor_0",
         "initial_open": true,
         "kind": "elevator"
-      },
-      {
-        "floor_index": 1,
-        "id": "elevator_floor_1",
-        "initial_open": false,
-        "kind": "elevator"
-      },
-      {
-        "floor_index": 2,
-        "id": "elevator_floor_2",
-        "initial_open": false,
-        "kind": "elevator"
       }
     ],
     "elevators": [
@@ -53,9 +41,7 @@
         "current_floor": 0,
         "id": "elevator_main",
         "served_floors": [
-          0,
-          1,
-          2
+          0
         ]
       }
     ]
