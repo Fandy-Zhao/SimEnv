@@ -1,5 +1,18 @@
 # Project State
 
+> **2026-07-28 event-driven startup / RTF cleanup**: branch
+> `refactor/0728-auto-event-driven-rtf-cleanup` replaces arbitrary startup
+> delays with bounded wall-time readiness stages and confirmed supervisor
+> transitions. The legacy PointCloud/Livox converter and Livox visualization
+> now default off, with explicit compatibility switches retained; RealSense
+> behavior and physics are unchanged. Formal build, runtime Cases A-D, and a
+> missing-`/scan` cleanup injection pass. Full DSV/FALCO dependencies and the
+> `FSM=4 -> navigation=true -> exploring=true` state chain passed; actual
+> waypoint/motion was not required by the user's final merge instruction. A
+> standalone 20-second FixedStand smoke measured mean RTF `0.0371` at seed
+> `20260728`; matched baseline quantification remains inconclusive because the
+> old launcher failed to produce `/clock` under a concurrent external run.
+
 > **2026-07-24 external Livox-SDK prefix retry**: fixed shared resources remain
 > `/home/zzf/search_ws/FAST_LIO`
 > `7cc4175de6f8ba2edf34bab02a42195b141027e9`,

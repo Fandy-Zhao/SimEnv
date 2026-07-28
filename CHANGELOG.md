@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-07-28 — Event-driven simulation startup and optional LiDAR load
+
+- **refactor(runtime)**: Replaced fixed-delay `auto.sh` startup with bounded
+  wall-time stages that validate ROS/Gazebo, the A1 model and controllers,
+  FixedStand ownership, live sensors, FAST-LIO2 outputs, navigation inputs,
+  DSV/FALCO nodes, and confirmed supervisor state transitions.
+- **fix(runtime)**: Cleanup now restores safe navigation/FSM commands and
+  zero velocity, then stops only tracked process trees and scoped tmux
+  sessions; it no longer globally kills unrelated ROS/Gazebo processes.
+- **perf(simulation)**: Disabled the legacy PointCloud/Livox converter and A1
+  Livox visualization by default. Both remain explicit opt-ins; the legacy
+  converter uses ROS Noetic's system Python when enabled.
+- **test(runtime)**: Cases A-D, a controlled missing-`/scan` failure, clean
+  shutdown, FAST-LIO2 mapping, DSV/FALCO readiness/state enablement, XML/launch
+  parsing, and the formal build passed. A final 20-second FixedStand smoke at
+  seed `20260728` measured mean RTF `0.0371`; quantitative baseline comparison
+  was inconclusive because the concurrent baseline run did not publish
+  `/clock`. The user authorized merge after this simple RTF validation.
+
 ## 2026-07-28 — Single-floor exploration chain diagnostics
 
 - **fix(build)**: Prepared worktree-local FAST-LIO/Livox staging dependencies
