@@ -12,5 +12,9 @@ seconds in 463.149 wall seconds (RTF 0.0303), reached zero goals, recorded no
 natural completion method, and did not establish explicit frontier generation
 or repeatability. The branch therefore was not eligible for local master merge.
 
+On 2026-07-28, the user explicitly requested a local fast-forward merge despite
+the blocked exploration verdict. The merge does not reclassify the test as a
+pass and does not authorize a remote push.
+
 Artifacts remain under the absolute directory:
 `/home/zzf/search_ws/SimEnv_worktrees/single-floor-exploration-artifacts-0727/experiments/runs/0727_single_floor_exploration/artifacts/`.

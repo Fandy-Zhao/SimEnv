@@ -5,7 +5,9 @@
 `SINGLE_FLOOR_EXPLORATION_BLOCKED`
 
 The formal build passed and the runtime chain reached real robot motion, but a
-complete exploration did not finish. No merge to local `master` was permitted.
+complete exploration did not finish. Automated acceptance therefore blocked
+the original merge. On 2026-07-28, the user explicitly authorized merging the
+diagnostic fixes into local `master` with this blocked verdict preserved.
 
 ## First broken stages and repairs
 
@@ -44,5 +46,7 @@ complete exploration did not finish. No merge to local `master` was permitted.
 
 The dirty root worktree was backed up before task work, and all changes were
 made on `test/0727-single-floor-exploration-artifacts` in the suffixed isolated
-worktree. Because blocking gates failed, the branch was not merged, the dirty
-root workspace was not modified, and nothing was pushed.
+worktree. Blocking gates initially prevented the automatic merge. A later,
+explicit user instruction authorized a local fast-forward merge despite those
+known limitations. The pre-existing dirty root files remain protected and
+nothing is pushed.

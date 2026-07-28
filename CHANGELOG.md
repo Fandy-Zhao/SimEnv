@@ -20,7 +20,10 @@
   waypoint, FALCO path, single `/cmd_vel` owner, Trotting, and 0.24 m measured
   trajectory. The complete exploration gate remained blocked: only 14.0 s of
   simulation elapsed in 463.1 s wall time (RTF 0.0303), no goal was reached,
-  and no natural completion criterion fired. Changes were not merged.
+  and no natural completion criterion fired. Automated governance initially
+  blocked the merge; on 2026-07-28 the user explicitly authorized a local
+  fast-forward merge with these validation limitations retained. No push was
+  requested or performed.
 
 ## 2026-07-26 — cmd_vel_bridge gate initialization race fix
 

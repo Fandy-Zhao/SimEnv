@@ -25,12 +25,14 @@
   the observed window, and the rear-waypoint heading remained unstable across
   replans. These are blocking, not residual non-blocking risks.
 - Because full exploration and repeatability gates did not pass, governance
-  prohibited local `master` merge and post-merge root validation.
+  initially prohibited local `master` merge. On 2026-07-28, the user explicitly
+  overrode that merge decision while accepting the documented limitations.
 
 ## Skill evidence
 
 - `project-governance` created the isolated branch/worktree, backed up the
-  dirty root state, constrained the diff, and enforced the no-merge decision.
+  dirty root state, constrained the diff, enforced the initial no-merge
+  decision, and recorded the later explicit manual merge authorization.
 - `cheap-code-worker` was invoked through its required local Claude CLI flow.
   Its usable patch proposal was manually audited; proposed tests/patch details
   were not accepted blindly, and the final runtime acceptance remained FAIL.
