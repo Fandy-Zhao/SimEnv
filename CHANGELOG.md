@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-07-28 — DSV single-floor goal bootstrap and liveness repair
+
+- **fix(navigation)**: Moved exploration start ownership to the supervisor,
+  added a measured same-floor bootstrap motion, and reject non-finite,
+  mono-vertex, non-positive-gain, or near-zero DSV goals before publication.
+- **fix(navigation)**: Replaced the unbounded map warm-up loop with three
+  bounded retries, one measured recovery motion, and an explicit fail-closed
+  result; Graph Planner now diagnoses degenerate goal inputs.
+- **fix(dsv)**: Split RRT Octomap rejection diagnostics into unknown and
+  occupied cells, and calibrated the A1 vertical collision box from 0.35 m to
+  0.25 m so its lower sample does not alias into the occupied floor voxel at
+  0.20 m map resolution. XY clearance and collision checking remain enabled.
+- **fix(falco)**: Disabled the timed reverse escape in the A1 profile while
+  reverse driving is disabled; rear DSV goals now retain a consistent
+  turn-in-place direction instead of alternating yaw targets. Speed, stop
+  distance, obstacle checking, and controller code are unchanged.
+- **test(navigation)**: Formal build passes. The deterministic single-floor
+  runtime reached supervisor-gated exploration, a 0.962 m bootstrap, local RRT
+  growth from one root to 31 vertices, a four-pose Graph Planner path, and
+  non-zero FALCO plus `/cmd_vel`; final post-goal displacement validation is
+  recorded in the governed experiment report.
+
 ## 2026-07-28 — Single-floor exploration final visualization
 
 - **feat(exploration)**: Added offline renderer `tools/render_single_floor_exploration.py`

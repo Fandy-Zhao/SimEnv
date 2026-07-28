@@ -90,7 +90,9 @@ rm:
   kSensorVertical: 30.0
   kBoundX: 0.35
   kBoundY: 0.30
-  kBoundZ: 0.35
+  # Keep the box bottom above the occupied floor voxel: odometry is around
+  # z=0.35 m and Octomap uses 0.20 m voxels centred at z=0.10 m.
+  kBoundZ: 0.25
   # FAST-LIO odometry tracks the A1 body about 0.30 m above the mapped floor.
   kVehicleHeight: 0.30
 

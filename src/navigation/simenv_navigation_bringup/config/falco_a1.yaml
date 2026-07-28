@@ -65,7 +65,9 @@ turnInPlaceThresholdDeg: 90.0
 forwardEnableThresholdDeg: 35.0
 rearGoalSlowSpeed: 0.05
 allowReverse: false
-reverseEscapeEnabled: true
+# With reverse driving disabled, the timed escape repeatedly flips the heading
+# target by pi for rear DSV goals and prevents turn-in-place convergence.
+reverseEscapeEnabled: false
 reverseEscapeMaxDuration: 1.5
 useInclRateToSlow: false
 inclRateThre: 120.0
