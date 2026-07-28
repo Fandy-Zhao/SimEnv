@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-28 — Single-floor exploration final visualization
+
+- **feat(exploration)**: Added offline renderer `tools/render_single_floor_exploration.py`
+  that produces a 4-layer composite PNG (`final_exploration_overview.png`) from
+  saved exploration artifacts — ground truth layout, explored area, robot trajectory,
+  and DSV goals. Requires no ROS/Gazebo/roscore.
+- **docs(exploration)**: Added `docs/navigation/exploration-visualization.md` covering
+  usage, output format, coordinate transform derivation, and limitations.
+
 ## 2026-07-28 — Event-driven simulation startup and optional LiDAR load
 
 - **refactor(runtime)**: Replaced fixed-delay `auto.sh` startup with bounded
