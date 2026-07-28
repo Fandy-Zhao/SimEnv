@@ -17,6 +17,7 @@ Modified and maintained by Hongbiao Zhu (hongbiaz@andrew.cmu.edu)
 #include <tf/transform_datatypes.h>
 
 #include <string>
+#include <cmath>
 
 namespace graph_planner_ns
 {
@@ -103,6 +104,8 @@ bool GraphPlanner::readParameters()
     ROS_ERROR("Cannot read parameter: kExecuteFrequency");
     return false;
   }
+  nh_.param("/single_floor/min_useful_goal_distance", minimumUsefulGoalDistance,
+            minimumUsefulGoalDistance);
 
   return true;
 }
@@ -325,6 +328,17 @@ bool GraphPlanner::goToPoint(geometry_msgs::Point point)
 
   // find closest goal vertex
   int goal_vertex_idx = graph_utils_ns::GetClosestVertexIdxToPoint(planned_graph_, point);
+
+  const double requested_goal_distance = std::hypot(point.x - robot_pos_.x, point.y - robot_pos_.y);
+  if (current_vertex_idx == goal_vertex_idx || !std::isfinite(requested_goal_distance) ||
+      requested_goal_distance <= minimumUsefulGoalDistance)
+  {
+    ROS_WARN_THROTTLE(1.0,
+                      "GRAPH_PLANNER_DEGENERATE_GOAL robot=(%.3f,%.3f,%.3f) requested_goal=(%.3f,%.3f,%.3f) goal_distance=%.3f min_distance=%.3f current_vertex=%d goal_vertex=%d graph_vertices=%zu",
+                      robot_pos_.x, robot_pos_.y, robot_pos_.z, point.x, point.y, point.z,
+                      requested_goal_distance, minimumUsefulGoalDistance, current_vertex_idx,
+                      goal_vertex_idx, planned_graph_.vertices.size());
+  }
 
   // Set the waypoint
   return goToVertex(current_vertex_idx, goal_vertex_idx);
