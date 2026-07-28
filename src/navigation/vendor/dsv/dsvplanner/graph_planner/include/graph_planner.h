@@ -85,7 +85,6 @@ private:
   double kCollisionCheckDistace;
   double kNextVertexMaintainTime;
   int kExecuteFrequency;
-  double minimumUsefulGoalDistance = 0.4;
 
   // "State" variables
   enum GraphPlannerState

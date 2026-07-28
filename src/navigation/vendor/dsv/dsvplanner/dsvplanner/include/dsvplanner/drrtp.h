@@ -67,7 +67,6 @@ private:
   std::string shutDownTopic;
   std::string plannerServiceName;
   std::string cleanFrontierServiceName;
-  double minimumUsefulGoalDistance_ = 0.4;
 
   std::chrono::steady_clock::time_point plan_start_;
   std::chrono::steady_clock::time_point RRT_generate_over_;

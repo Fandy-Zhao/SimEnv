@@ -8,8 +8,6 @@ Created by Hongbiao Zhu (hongbiaz@andrew.cmu.edu)
 
 #include <eigen3/Eigen/Dense>
 
-#include <cmath>
-
 #include <visualization_msgs/Marker.h>
 
 #include <dsvplanner/drrtp.h>
@@ -121,10 +119,7 @@ bool dsvplanner_ns::drrtPlanner::plannerServiceCallback(dsvplanner::dsvplanner_s
             << "     Reject diag candidate/short/height/boundary/octomap/terrain="
             << drrt_->diag_candidate_reject_ << "/" << drrt_->diag_short_edge_reject_ << "/"
             << drrt_->diag_height_reject_ << "/" << drrt_->diag_boundary_reject_ << "/"
-            << drrt_->diag_octomap_reject_ << "/" << drrt_->diag_terrain_reject_ << "\n"
-            << "     Reject diag octomap_unknown/octomap_occupied="
-            << drrt_->diag_octomap_unknown_reject_ << "/" << drrt_->diag_octomap_occupied_reject_
-            << std::endl;
+            << drrt_->diag_octomap_reject_ << "/" << drrt_->diag_terrain_reject_ << std::endl;
   RRT_generate_over_ = std::chrono::steady_clock::now();
   time_span = RRT_generate_over_ - plan_start_;
   double rrtGenerateTime =
@@ -176,21 +171,14 @@ bool dsvplanner_ns::drrtPlanner::plannerServiceCallback(dsvplanner::dsvplanner_s
 
   // Extract next goal.
   geometry_msgs::Point next_goal_position;
-  const char* planner_stage = "local_graph";
-  bool require_positive_gain = true;
-  double selected_gain = dual_state_graph_->best_gain_;
   if (drrt_->nextNodeFound_)
   {
-    planner_stage = "global_frontier";
-    require_positive_gain = false;
     dual_state_graph_->best_vertex_id_ = drrt_->NextBestNodeIdx_;
     dual_state_graph_->updateExploreDirection();
     next_goal_position = dual_state_graph_->getBestGlobalVertexPosition();
   }
   else if (drrt_->global_plan_pre_ == true && drrt_->gainFound())
   {
-    planner_stage = "retained_local_gain";
-    selected_gain = drrt_->getBestGain();
     dual_state_graph_->best_vertex_id_ = drrt_->bestNodeId_;
     dual_state_graph_->updateExploreDirection();
     next_goal_position = dual_state_graph_->getBestLocalVertexPosition();
@@ -200,22 +188,6 @@ bool dsvplanner_ns::drrtPlanner::plannerServiceCallback(dsvplanner::dsvplanner_s
     dual_state_graph_->updateGlobalGraph();
     dual_state_graph_->updateExploreDirection();
     next_goal_position = dual_state_graph_->getBestLocalVertexPosition();
-  }
-
-  const double goal_distance = std::hypot(next_goal_position.x - robot_position.x,
-                                          next_goal_position.y - robot_position.y);
-  const bool finite_goal = std::isfinite(next_goal_position.x) && std::isfinite(next_goal_position.y) &&
-                           std::isfinite(next_goal_position.z);
-  const int local_vertices = dual_state_graph_->getLocalVertexSize();
-  if (!finite_goal || local_vertices <= 1 || goal_distance <= minimumUsefulGoalDistance_ ||
-      (require_positive_gain && selected_gain <= 0.0))
-  {
-    ROS_ERROR("DSV_DEGENERATE_GOAL planner_stage=%s graph_vertices=%d selected_vertex=%d goal=(%.3f,%.3f,%.3f) robot=(%.3f,%.3f,%.3f) goal_distance=%.3f min_distance=%.3f best_gain=%.3f finite=%d",
-              planner_stage, local_vertices, dual_state_graph_->best_vertex_id_, next_goal_position.x,
-              next_goal_position.y, next_goal_position.z, robot_position.x, robot_position.y,
-              robot_position.z, goal_distance, minimumUsefulGoalDistance_, selected_gain, finite_goal ? 1 : 0);
-    res.mode.data = 0;
-    return true;
   }
   dual_state_graph_->setCurrentPlannerStatus(drrt_->global_plan_pre_);
   res.goal.push_back(next_goal_position);
@@ -324,8 +296,6 @@ bool dsvplanner_ns::drrtPlanner::setParams()
   nh_private_.getParam("/planner/shutDownTopic", shutDownTopic);
   nh_private_.getParam("/planner/plannerServiceName", plannerServiceName);
   nh_private_.getParam("/planner/cleanFrontierServiceName", cleanFrontierServiceName);
-  nh_private_.param("/single_floor/min_useful_goal_distance", minimumUsefulGoalDistance_,
-                    minimumUsefulGoalDistance_);
 
   return true;
 }

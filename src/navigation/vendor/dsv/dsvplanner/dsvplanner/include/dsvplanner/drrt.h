@@ -53,8 +53,6 @@ public:
   int diag_height_reject_;
   int diag_boundary_reject_;
   int diag_octomap_reject_;
-  int diag_octomap_unknown_reject_;
-  int diag_octomap_occupied_reject_;
   int diag_terrain_reject_;
 
   void init();
@@ -72,7 +70,6 @@ public:
   void publishPlanningHorizon();
   void gotoxy(int x, int y);
   bool gainFound();
-  double getBestGain() const { return bestGain_; }
   bool remainingLocalFrontier();
   bool generateRrtNodeToLocalFrontier(StateVec& newNode);
   bool inSensorRange(StateVec& node);

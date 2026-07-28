@@ -67,8 +67,7 @@ double return_home_threshold = 1.5;
 double robot_moving_threshold = 6;
 bool skip_initial_motion = false;
 double initialization_timeout = 5.0;
-double initialization_distance_tolerance = 0.25;
-double bootstrap_min_displacement = 0.5;
+double initialization_distance_tolerance = 0.15;
 bool continue_after_initialization_timeout = true;
 double movement_window = 2.0;
 double movement_distance_threshold = 0.08;
@@ -81,10 +80,6 @@ bool floor_reference_initialized = false;
 int min_exploration_iterations = 5;
 int valid_goal_count = 0;
 bool map_warmed_up = false;
-double min_useful_goal_distance = 0.4;
-int max_premature_completion_retries = 3;
-int consecutive_planner_unready_count = 0;
-bool bootstrap_recovery_attempted = false;
 std::string map_frame = "map";
 std::string waypoint_topic = "/way_point";
 std::string cmd_vel_topic = "/cmd_vel";
@@ -195,45 +190,16 @@ void enforceSingleFloor(geometry_msgs::Point& point)
   else if (point.z > max_z) point.z = max_z;
 }
 
-double goalDistanceXY(const geometry_msgs::Point& goal)
+bool initilization()
 {
-  return hypot(goal.x - current_odom_x, goal.y - current_odom_y);
-}
-
-bool isUsefulGoal(const geometry_msgs::Point& goal)
-{
-  return std::isfinite(goal.x) && std::isfinite(goal.y) && std::isfinite(goal.z) &&
-         goalDistanceXY(goal) > min_useful_goal_distance;
-}
-
-void publishBootstrapFailure(const std::string& reason)
-{
-  ROS_ERROR("BOOTSTRAP_EXPLORATION_FAILED reason=%s valid_goals=%d unready_count=%d recovery_attempted=%d",
-            reason.c_str(), valid_goal_count, consecutive_planner_unready_count,
-            bootstrap_recovery_attempted ? 1 : 0);
-  std_msgs::Bool stop_exploring;
-  stop_exploring.data = true;
-  stop_signal_pub.publish(stop_exploring);
-}
-
-bool initializationMotion(bool capture_home, const char* stage)
-{
-  if (capture_home)
-  {
-    home_point.x = current_odom_x;
-    home_point.y = current_odom_y;
-    home_point.z = current_odom_z;
-  }
-
-  geometry_msgs::Point motion_start;
-  motion_start.x = current_odom_x;
-  motion_start.y = current_odom_y;
-  motion_start.z = current_odom_z;
+  home_point.x = current_odom_x;
+  home_point.y = current_odom_y;
+  home_point.z = current_odom_z;
 
   const double init_distance = sqrt(init_x * init_x + init_y * init_y + init_z * init_z);
   if (skip_initial_motion || init_distance <= initialization_distance_tolerance) {
-    ROS_INFO("DSV initialization skipped: stage=%s skip=%d init_distance=%.3f tolerance=%.3f",
-             stage, skip_initial_motion ? 1 : 0, init_distance, initialization_distance_tolerance);
+    ROS_INFO("DSV initialization skipped: skip=%d init_distance=%.3f tolerance=%.3f",
+             skip_initial_motion ? 1 : 0, init_distance, initialization_distance_tolerance);
     return true;
   }
 
@@ -247,9 +213,6 @@ bool initializationMotion(bool capture_home, const char* stage)
   wp.point.y = vec_goal.y();
   wp.point.z = vec_goal.z();
   enforceSingleFloor(wp.point);
-  ROS_INFO("DSV_BOOTSTRAP_START stage=%s start=(%.3f,%.3f,%.3f) waypoint=(%.3f,%.3f,%.3f) required_displacement=%.3f",
-           stage, motion_start.x, motion_start.y, motion_start.z, wp.point.x, wp.point.y, wp.point.z,
-           bootstrap_min_displacement);
 
   ros::Duration(0.5).sleep();  // wait for sometime to make sure waypoint can be
                                // published properly
@@ -262,53 +225,27 @@ bool initializationMotion(bool capture_home, const char* stage)
     // reaches that point
     ros::Duration(0.1).sleep();
     ros::spinOnce();
-    wp.header.stamp = ros::Time::now();
+    vec_goal = transformToMap * vec_init;
+    wp.point.x = vec_goal.x();
+    wp.point.y = vec_goal.y();
+    wp.point.z = vec_goal.z();
+    enforceSingleFloor(wp.point);
     waypoint_pub.publish(wp);
     double dist = sqrt((wp.point.x - current_odom_x) * (wp.point.x - current_odom_x) +
                        (wp.point.y - current_odom_y) * (wp.point.y - current_odom_y));
-    double displacement = hypot(motion_start.x - current_odom_x, motion_start.y - current_odom_y);
-    if (dist <= initialization_distance_tolerance && displacement >= bootstrap_min_displacement)
+    double dist_to_home = sqrt((home_point.x - current_odom_x) * (home_point.x - current_odom_x) +
+                               (home_point.y - current_odom_y) * (home_point.y - current_odom_y));
+    if (dist < 0.5 && dist_to_home > 0.5)
       wp_ongoing = false;
-    if (ros::Time::now().toSec() - init_start_time >= init_time && displacement >= bootstrap_min_displacement)
+    if (ros::Time::now().toSec() - init_start_time >= init_time && dist_to_home > 0.5)
       wp_ongoing = false;
     if (ros::Time::now().toSec() - init_start_time >= initialization_timeout) {
-      ROS_ERROR("DSV_BOOTSTRAP_TIMEOUT stage=%s timeout=%.2f dist=%.3f displacement=%.3f required=%.3f continue=%d",
-                stage, initialization_timeout, dist, displacement, bootstrap_min_displacement,
-                continue_after_initialization_timeout ? 1 : 0);
+      ROS_WARN("DSV initialization timed out after %.2fs; dist=%.3f dist_to_home=%.3f continue=%d",
+               initialization_timeout, dist, dist_to_home, continue_after_initialization_timeout ? 1 : 0);
       return continue_after_initialization_timeout;
     }
   }
-  const double displacement = hypot(motion_start.x - current_odom_x, motion_start.y - current_odom_y);
-  ROS_INFO("DSV_BOOTSTRAP_SUCCESS stage=%s pose=(%.3f,%.3f,%.3f) displacement=%.3f",
-           stage, current_odom_x, current_odom_y, current_odom_z, displacement);
   return true;
-}
-
-bool retryOrRecoverBootstrap(const std::string& reason)
-{
-  consecutive_planner_unready_count++;
-  if (consecutive_planner_unready_count <= max_premature_completion_retries)
-  {
-    ROS_WARN("DSV_MAP_WARMUP_RETRY reason=%s retry=%d/%d valid_goals=%d min=%d",
-             reason.c_str(), consecutive_planner_unready_count, max_premature_completion_retries,
-             valid_goal_count, min_exploration_iterations);
-    return true;
-  }
-
-  if (!bootstrap_recovery_attempted)
-  {
-    bootstrap_recovery_attempted = true;
-    ROS_WARN("DSV_MAP_WARMUP_RECOVERY reason=%s retries_exhausted=%d",
-             reason.c_str(), max_premature_completion_retries);
-    if (initializationMotion(false, "warmup_recovery"))
-    {
-      consecutive_planner_unready_count = 0;
-      return true;
-    }
-  }
-
-  publishBootstrapFailure(reason);
-  return false;
 }
 
 int main(int argc, char** argv)
@@ -328,7 +265,6 @@ int main(int argc, char** argv)
   nhPrivate.getParam("/interface/skipInitialMotion", skip_initial_motion);
   nhPrivate.getParam("/interface/initializationTimeout", initialization_timeout);
   nhPrivate.getParam("/interface/initializationDistanceTolerance", initialization_distance_tolerance);
-  nhPrivate.getParam("/interface/bootstrapMinDisplacement", bootstrap_min_displacement);
   nhPrivate.getParam("/interface/continueAfterInitializationTimeout", continue_after_initialization_timeout);
   nhPrivate.getParam("/interface/movementWindow", movement_window);
   nhPrivate.getParam("/interface/movementDistanceThreshold", movement_distance_threshold);
@@ -350,8 +286,6 @@ int main(int argc, char** argv)
   nhPrivate.getParam("/single_floor/enabled", single_floor_enabled);
   nhPrivate.getParam("/single_floor/max_goal_z_deviation", max_goal_z_deviation);
   nhPrivate.getParam("/single_floor/min_exploration_iterations", min_exploration_iterations);
-  nhPrivate.getParam("/single_floor/min_useful_goal_distance", min_useful_goal_distance);
-  nhPrivate.getParam("/single_floor/max_premature_completion_retries", max_premature_completion_retries);
 
   waypoint_pub = nh.advertise<geometry_msgs::PointStamped>(waypoint_topic, 5);
   gp_command_pub = nh.advertise<graph_planner::GraphPlannerCommand>(gp_command_topic, 1);
@@ -381,8 +315,11 @@ int main(int argc, char** argv)
   }
 
   ROS_INFO("Starting the planner: Performing initialization motion");
-  if (!initializationMotion(true, "startup")) {
-    publishBootstrapFailure("startup_motion_timeout");
+  if (!initilization()) {
+    ROS_ERROR("DSV initialization failed and configuration requires safety stop");
+    std_msgs::Bool stop_exploring;
+    stop_exploring.data = true;
+    stop_signal_pub.publish(stop_exploring);
     return 1;
   }
   ros::Duration(1.0).sleep();
@@ -415,8 +352,6 @@ int main(int argc, char** argv)
       {
         if (planSrv.response.goal.size() == 0)
         {  // usually the size should be 1 if planning successfully
-          if (!retryOrRecoverBootstrap("planner_no_goal"))
-            return 2;
           ros::Duration(1.0).sleep();
           continue;
         }
@@ -425,8 +360,9 @@ int main(int argc, char** argv)
         {
           if (!map_warmed_up && valid_goal_count < min_exploration_iterations)
           {
-            if (!retryOrRecoverBootstrap("premature_mode2"))
-              return 2;
+            ROS_WARN("DSV map warming: ignoring exploration-complete (mode=2)."
+                     " valid_goals=%d min=%d",
+                     valid_goal_count, min_exploration_iterations);
             ros::Duration(0.5).sleep();
             continue;
           }
@@ -440,21 +376,11 @@ int main(int argc, char** argv)
         else
         {
           return_home = false;
-          goal_point = planSrv.response.goal[0];
-          enforceSingleFloor(goal_point);
-          if (!isUsefulGoal(goal_point))
-          {
-            ROS_ERROR("DSV_DEGENERATE_GOAL planner_stage=exploration goal=(%.3f,%.3f,%.3f) robot=(%.3f,%.3f,%.3f) goal_distance=%.3f min_distance=%.3f",
-                      goal_point.x, goal_point.y, goal_point.z, current_odom_x, current_odom_y, current_odom_z,
-                      goalDistanceXY(goal_point), min_useful_goal_distance);
-            if (!retryOrRecoverBootstrap("degenerate_mode1_goal"))
-              return 2;
-            continue;
-          }
-          consecutive_planner_unready_count = 0;
           valid_goal_count++;
           if (valid_goal_count >= min_exploration_iterations)
             map_warmed_up = true;
+          goal_point = planSrv.response.goal[0];
+          enforceSingleFloor(goal_point);
           plan_over = steady_clock::now();
           time_span = plan_over - plan_start;
           effective_time.data = float(time_span.count()) * steady_clock::period::num / steady_clock::period::den;

@@ -573,9 +573,8 @@ void dsvplanner_ns::Drrt::plannerIterate()
   }
   else
   {
-    const volumetric_mapping::OctomapManager::CellStatus octomap_status =
-        manager_->getLineStatusBoundingBox(origin, newState, params_.boundingBox);
-    const bool octomap_free = volumetric_mapping::OctomapManager::CellStatus::kFree == octomap_status;
+    const bool octomap_free = volumetric_mapping::OctomapManager::CellStatus::kFree ==
+                              manager_->getLineStatusBoundingBox(origin, newState, params_.boundingBox);
     const bool terrain_free = !grid_->collisionCheckByTerrainWithVector(origin, newState);
     if (octomap_free && terrain_free)
     {  // connection is free
@@ -610,13 +609,7 @@ void dsvplanner_ns::Drrt::plannerIterate()
     else
     {
       if (!octomap_free)
-      {
         diag_octomap_reject_++;
-        if (octomap_status == volumetric_mapping::OctomapManager::CellStatus::kUnknown)
-          diag_octomap_unknown_reject_++;
-        else if (octomap_status == volumetric_mapping::OctomapManager::CellStatus::kOccupied)
-          diag_octomap_occupied_reject_++;
-      }
       if (!terrain_free)
         diag_terrain_reject_++;
     }
@@ -632,8 +625,6 @@ void dsvplanner_ns::Drrt::plannerInit()
   diag_height_reject_ = 0;
   diag_boundary_reject_ = 0;
   diag_octomap_reject_ = 0;
-  diag_octomap_unknown_reject_ = 0;
-  diag_octomap_occupied_reject_ = 0;
   diag_terrain_reject_ = 0;
 
   node_array.clear();

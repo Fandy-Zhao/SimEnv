@@ -42,27 +42,21 @@ planner:
 
 interface:
   dtime: 1
-  # Body-frame bootstrap target: twice kMinVertexDist, yet local enough for an
-  # indoor corridor and the 1.2 m graph-planner lookahead scale.
-  initX: 1.2
+  initX: 0
   initY: 0
   initZ: 0
-  initTime: 20
-  skipInitialMotion: false
-  initializationTimeout: 30.0
-  # FALCO stops within 0.2 m; add 5 cm margin so a safely reached bootstrap
-  # waypoint does not wait for initTime to expire.
-  initializationDistanceTolerance: 0.25
-  bootstrapMinDisplacement: 0.5
-  continueAfterInitializationTimeout: false
+  initTime: 1
+  skipInitialMotion: true
+  initializationTimeout: 5.0
+  initializationDistanceTolerance: 0.15
+  continueAfterInitializationTimeout: true
   returnHomeThres: 1.0
   robotMovingThres: 0.08
   movementWindow: 2.0
   movementDistanceThreshold: 0.08
   stuckTimeout: 15.0
   maxReplansBeforeFrontierClean: 2
-  # auto.sh requests exploration only after FSM=4 and navigation gate=true.
-  autoExp: false
+  autoExp: true
   tfFrame: map
   waypointTopic: /navigation/way_point
   cmdVelTopic: /navigation/falco/cmd_vel_stamped
@@ -205,9 +199,6 @@ single_floor:
   max_extension_along_z: 0.08
   search_bounding_z: 0.25
   min_exploration_iterations: 5
-  # FALCO stopDisThre is 0.2 m; keep exploration goals at least twice as far.
-  min_useful_goal_distance: 0.4
-  max_premature_completion_retries: 3
 
 terrain_map:
   output_frame: map
