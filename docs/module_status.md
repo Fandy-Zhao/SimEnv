@@ -1,5 +1,14 @@
 # Module Status
 
+> **2026-07-28 `auto.sh` startup and A1 sensor load**: startup is now staged on
+> functional ROS/Gazebo/controller/sensor/mapping/navigation conditions with
+> configurable wall-time limits. Supervisor request topics own all state
+> changes and outputs are confirmed before advancing. Cleanup is scoped to
+> tracked task process trees. The legacy converter and LiDAR visualization are
+> default-off and re-enableable; `/scan`, FAST-LIO2 input, LiDAR geometry/rate,
+> and the RealSense block are unchanged. Cases A-D, failure cleanup, launch
+> parsing, and formal build pass.
+
 > **2026-07-26 `cmd_vel_bridge` gate initialization race fix**:
 > `fix/0726-cmd-vel-bridge-gate-race` — Root cause: `auto.sh` published state
 > transitions directly to output topics (`/navigation/enabled`, `/fsm/state_cmd`)

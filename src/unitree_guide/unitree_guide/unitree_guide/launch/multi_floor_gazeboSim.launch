@@ -11,6 +11,7 @@
     <arg name="debug" default="false"/>
     <arg name="user_debug" default="false"/>
     <arg name="enable_sensor_data" default="true"/>
+    <arg name="enable_lidar_visualization" default="false"/>
     <arg name="enable_front_camera" default="false"/>
     <arg name="enable_referee_odom" default="true"/>
     <arg name="enable_ground_truth" default="true"/>
@@ -40,6 +41,7 @@
            command="$(find xacro)/xacro --inorder '$(arg dollar)$(arg robot_path)/xacro/robot.xacro'
            DEBUG:=$(arg user_debug)
            ENABLE_SENSOR_DATA:=$(arg enable_sensor_data)
+           ENABLE_LIDAR_VISUALIZATION:=$(arg enable_lidar_visualization)
            ENABLE_FRONT_CAMERA:=$(arg enable_front_camera)
            ENABLE_GROUND_TRUTH:=$(arg enable_ground_truth)
            ENABLE_FOOT_FORCE_VISUAL:=$(arg enable_foot_force_visual)"/>
@@ -80,7 +82,7 @@
     </include>
 
     <group if="$(arg enable_sensor_data)">
-        <node if="$(arg enable_pointcloud_converter)" pkg="unitree_guide" type="pointcloud2livox.py" name="pointcloud2livox" output="screen">
+        <node if="$(arg enable_pointcloud_converter)" pkg="unitree_guide" type="pointcloud2livox.py" name="pointcloud2livox" output="screen" launch-prefix="/usr/bin/python3">
             <param name="laser_blind" value="0.5" />
             <param name="min_angle" value="-7"/>
             <param name="max_angle" value="55"/>

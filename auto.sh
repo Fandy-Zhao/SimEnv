@@ -120,7 +120,8 @@ ENABLE_REFEREE_ODOM="$(as_ros_bool "${ENABLE_REFEREE_ODOM:-1}")"
 ENABLE_GROUND_TRUTH="$(as_ros_bool "${ENABLE_GROUND_TRUTH:-1}")"
 ENABLE_FOOT_FORCE_VISUAL="$(as_ros_bool "${ENABLE_FOOT_FORCE_VISUAL:-0}")"
 ENABLE_JOY_NODE="$(as_ros_bool "${ENABLE_JOY_NODE:-0}")"
-ENABLE_POINTCLOUD_CONVERTER="$(as_ros_bool "${ENABLE_POINTCLOUD_CONVERTER:-1}")"
+ENABLE_POINTCLOUD_CONVERTER="$(as_ros_bool "${ENABLE_POINTCLOUD_CONVERTER:-0}")"
+ENABLE_LIDAR_VISUALIZATION="$(as_ros_bool "${ENABLE_LIDAR_VISUALIZATION:-0}")"
 POINTCLOUD_USE_GROUND_TRUTH_ODOM="$(as_ros_bool "${POINTCLOUD_USE_GROUND_TRUTH_ODOM:-1}")"
 WRITE_GENERATED_TRUTH_COPY="$(as_ros_bool "${WRITE_GENERATED_TRUTH_COPY:-1}")"
 ENABLE_FAST_LIO2="$(as_ros_bool "${ENABLE_FAST_LIO2:-1}")"
@@ -137,12 +138,24 @@ NAV_MAX_LINEAR_X="${NAV_MAX_LINEAR_X:-0.80}"
 NAV_MAX_LINEAR_Y="${NAV_MAX_LINEAR_Y:-0.00}"
 NAV_MAX_ANGULAR_Z="${NAV_MAX_ANGULAR_Z:-0.22}"
 NAV_COMMAND_TIMEOUT="${NAV_COMMAND_TIMEOUT:-0.50}"
-NAV_AUTO_TROTTING="$(as_ros_bool "${NAV_AUTO_TROTTING:-0}")"
-NAV_AUTO_ENABLE="$(as_ros_bool "${NAV_AUTO_ENABLE:-0}")"
-NAV_AUTO_START_EXPLORATION="$(as_ros_bool "${NAV_AUTO_START_EXPLORATION:-0}")"
+NAV_AUTO_TROTTING="$(as_ros_bool "${NAV_AUTO_TROTTING:-${AUTO_COMMAND_TROTTING:-0}}")"
+NAV_AUTO_ENABLE="$(as_ros_bool "${NAV_AUTO_ENABLE:-${AUTO_ENABLE_NAVIGATION:-0}}")"
+NAV_AUTO_START_EXPLORATION="$(as_ros_bool "${NAV_AUTO_START_EXPLORATION:-${AUTO_START_EXPLORATION:-0}}")"
 NAV_WAIT_ODOM_TIMEOUT="${NAV_WAIT_ODOM_TIMEOUT:-60}"
 NAV_WAIT_CLOUD_TIMEOUT="${NAV_WAIT_CLOUD_TIMEOUT:-60}"
 NAV_WAIT_TERRAIN_TIMEOUT="${NAV_WAIT_TERRAIN_TIMEOUT:-60}"
+ROS_MASTER_TIMEOUT="${ROS_MASTER_TIMEOUT:-30}"
+GAZEBO_READY_TIMEOUT="${GAZEBO_READY_TIMEOUT:-90}"
+ROBOT_READY_TIMEOUT="${ROBOT_READY_TIMEOUT:-60}"
+CONTROLLER_READY_TIMEOUT="${CONTROLLER_READY_TIMEOUT:-45}"
+SENSOR_READY_TIMEOUT="${SENSOR_READY_TIMEOUT:-60}"
+FAST_LIO2_READY_TIMEOUT="${FAST_LIO2_READY_TIMEOUT:-120}"
+NAV_SUPERVISOR_READY_TIMEOUT="${NAV_SUPERVISOR_READY_TIMEOUT:-30}"
+NAVIGATION_READY_TIMEOUT="${NAVIGATION_READY_TIMEOUT:-120}"
+STATE_TRANSITION_TIMEOUT="${STATE_TRANSITION_TIMEOUT:-20}"
+RECORDER_READY_TIMEOUT="${RECORDER_READY_TIMEOUT:-30}"
+STARTUP_POLL_INTERVAL="${STARTUP_POLL_INTERVAL:-0.25}"
+TOPIC_MESSAGE_TIMEOUT="${TOPIC_MESSAGE_TIMEOUT:-12}"
 # ---------------------------------------------------------------------------
 # Exploration result recording — save map, route, goals, timing, and summary.
 # Default: OFF.  Set ENABLE_EXPLORATION_RECORDING=1 to activate.
@@ -204,126 +217,283 @@ if [ "$START_CONTROLLER" = "1" ] && [ ! -x "$CONTROLLER_BIN" ]; then
   exit 1
 fi
 
-schedule_unpause_physics() {
-  if [ "$AUTO_UNPAUSE" != "true" ]; then
-    return
-  fi
+CURRENT_STAGE="STAGE_0_ENV_VALIDATION"
+STAGE_STARTED_AT=0
+LAST_OBSERVATION="not checked"
+CLEANUP_DONE=0
+EXIT_STATUS=0
+LAUNCH_PID=""
+BUILDING_CONTROL_PID=""
+CONTROLLER_PID=""
+ADAPTER_PID=""
+FAST_LIO2_PID=""
+SUPERVISOR_PID=""
+NAVIGATION_PID=""
+RECORDER_PID=""
 
-  (
-    sleep "$AUTO_UNPAUSE_DELAY"
-    for _ in $(seq 1 40); do
-      if rosservice list 2>/dev/null | grep -q '^/gazebo/unpause_physics$'; then
-        rosservice call /gazebo/unpause_physics >/dev/null 2>&1 || true
-        exit 0
-      fi
-      sleep 0.25
-    done
-  ) &
+wall_now() {
+  date +%s
 }
 
-# ---------------------------------------------------------------------------
-# GAZEBO_FINAL_UNPAUSE — call AFTER all nodes, controllers, and navigation
-# are fully initialised.  Verifies that /clock is advancing before returning.
-# ---------------------------------------------------------------------------
-gazebo_final_unpause() {
-  local unpause_max_retries="${GAZEBO_UNPAUSE_MAX_RETRIES:-3}"
-  local clock_stale_timeout="${GAZEBO_CLOCK_STALE_TIMEOUT:-3.0}"
-  local attempt
+stage_enter() {
+  CURRENT_STAGE="$1"
+  STAGE_STARTED_AT="$(wall_now)"
+  echo "[STARTUP][$CURRENT_STAGE][ENTER]"
+}
 
-  # ── Unpause ──
-  for attempt in $(seq 1 "$unpause_max_retries"); do
-    if rosservice list 2>/dev/null | grep -q '^/gazebo/unpause_physics$'; then
-      rosservice call /gazebo/unpause_physics >/dev/null 2>&1 || true
-      echo "[GAZEBO_FINAL_UNPAUSE] unpause called (attempt $attempt/$unpause_max_retries)"
-    else
-      echo "[GAZEBO_FINAL_UNPAUSE] /gazebo/unpause_physics not available (attempt $attempt)" >&2
-      sleep 1.0
-      continue
+stage_pass() {
+  echo "[STARTUP][$CURRENT_STAGE][PASS] elapsed_wall=$(( $(wall_now) - STAGE_STARTED_AT ))s${1:+ detail=$1}"
+}
+
+startup_fail() {
+  local reason="$1"
+  echo "[STARTUP][$CURRENT_STAGE][FAIL] reason=$reason last_observation=$(shell_quote "$LAST_OBSERVATION")" >&2
+  EXIT_STATUS=1
+  exit 1
+}
+
+wait_until() {
+  local timeout_sec="$1"
+  local condition="$2"
+  shift 2
+  local started now
+  started="$(wall_now)"
+  echo "[STARTUP][$CURRENT_STAGE][WAIT] condition=$condition timeout=${timeout_sec}s"
+  while true; do
+    if "$@"; then
+      return 0
     fi
-
-    # ── Verify /clock is advancing ──
-    sleep 0.5
-    local clock1_sec clock1_nsec clock2_sec clock2_nsec clock1 clock2
-    read -r clock1_sec clock1_nsec < <(
-      rostopic echo /clock -n 1 2>/dev/null \
-        | grep -E "^[[:space:]]*(secs|nsecs):" | head -2 \
-        | awk '{sec=$2; getline; nsec=$2; print sec, nsec}'
-    ) || true
-    sleep 1.0
-    read -r clock2_sec clock2_nsec < <(
-      rostopic echo /clock -n 1 2>/dev/null \
-        | grep -E "^[[:space:]]*(secs|nsecs):" | head -2 \
-        | awk '{sec=$2; getline; nsec=$2; print sec, nsec}'
-    ) || true
-
-    clock1="${clock1_sec:-?}.${clock1_nsec:-?}"
-    clock2="${clock2_sec:-?}.${clock2_nsec:-?}"
-    if [ -n "$clock1_sec" ] && [ -n "$clock1_nsec" ] && [ -n "$clock2_sec" ] && [ -n "$clock2_nsec" ]; then
-      if [ "$clock2_sec" -gt "$clock1_sec" ] 2>/dev/null || \
-         { [ "$clock2_sec" -eq "$clock1_sec" ] 2>/dev/null && \
-           [ "$clock2_nsec" -gt "$clock1_nsec" ] 2>/dev/null; }; then
-        echo "[GAZEBO_FINAL_UNPAUSE] PASS: /clock advancing ($clock1 → $clock2)"
-        return 0
-      fi
+    now="$(wall_now)"
+    if [ $((now - started)) -ge "$timeout_sec" ]; then
+      return 1
     fi
-
-    echo "[GAZEBO_FINAL_UNPAUSE] WARNING: /clock appears stalled (clock1=$clock1 clock2=$clock2)" >&2
+    sleep "$STARTUP_POLL_INTERVAL"
   done
+}
 
-  echo "[GAZEBO_FINAL_UNPAUSE] FAILED: /clock not advancing after $unpause_max_retries attempts" >&2
+ros_master_ready() {
+  LAST_OBSERVATION="ROS master unavailable"
+  if timeout 2 rosparam list >/dev/null 2>&1; then
+    LAST_OBSERVATION="ROS master reachable"
+    return 0
+  fi
   return 1
 }
 
-# ---------------------------------------------------------------------------
-# Helper: wait for a ROS topic to publish at least two consecutive messages
-# with incrementing timestamps (proves the publisher is alive, not a stale
-# latched message).
-# Usage: wait_for_topic <topic> [timeout_sec]
-# Returns: 0 on success, 1 on timeout.
-# ---------------------------------------------------------------------------
-wait_for_topic() {
-  local topic="$1"
-  local timeout_sec="${2:-30}"
-  local start_time prev_sec prev_nsec cur_sec cur_nsec
+service_ready() {
+  local service="$1"
+  LAST_OBSERVATION="service $service unavailable"
+  if timeout 2 rosservice info "$service" >/dev/null 2>&1; then
+    LAST_OBSERVATION="service $service available"
+    return 0
+  fi
+  return 1
+}
 
-  start_time="$(date +%s)"
-  prev_sec="" prev_nsec=""
+node_ready() {
+  local node="$1"
+  LAST_OBSERVATION="node $node unavailable"
+  if timeout 2 rosnode ping -c 1 "$node" >/dev/null 2>&1; then
+    LAST_OBSERVATION="node $node responsive"
+    return 0
+  fi
+  return 1
+}
 
-  while true; do
-    cur_sec=""
-    cur_nsec=""
-    read -r cur_sec cur_nsec < <(
-      timeout --kill-after=2s 8 rostopic echo -n 1 "$topic" 2>/dev/null \
-        | grep -E "^[[:space:]]*(secs|nsecs):" | head -2 \
-        | awk '{sec=$2; getline; nsec=$2; print sec, nsec}'
-    ) 2>/dev/null || true
+topic_has_endpoint() {
+  local topic="$1" section="$2" info
+  info="$(timeout 2 rostopic info "$topic" 2>/dev/null || true)"
+  LAST_OBSERVATION="$topic has no ${section,,}"
+  if printf '%s\n' "$info" | awk -v section="$section" '
+      $0 ~ ("^" section ":") { active=1; next }
+      active && /^[A-Za-z]+:/ { active=0 }
+      active && /^[[:space:]]*\*/ { found=1 }
+      END { exit(found ? 0 : 1) }'; then
+    LAST_OBSERVATION="$topic has ${section,,}"
+    return 0
+  fi
+  return 1
+}
 
-    if [ -n "$cur_sec" ] && [ -n "$cur_nsec" ]; then
-      if [ -z "$prev_sec" ]; then
-        # First valid message captured
-        prev_sec="$cur_sec"
-        prev_nsec="$cur_nsec"
-      else
-        # Check timestamp is incrementing (proves live publisher)
-        if [ "$cur_sec" -gt "$prev_sec" ] 2>/dev/null || \
-           { [ "$cur_sec" -eq "$prev_sec" ] 2>/dev/null && \
-             [ "$cur_nsec" -gt "$prev_nsec" ] 2>/dev/null; }; then
-          echo "[READY] topic: $topic (timestamps incrementing)"
-          return 0
-        fi
-        # Timestamp not incrementing: reset and retry
-        prev_sec="$cur_sec"
-        prev_nsec="$cur_nsec"
-      fi
+topic_has_publisher() {
+  topic_has_endpoint "$1" Publishers
+}
+
+topic_has_subscriber() {
+  topic_has_endpoint "$1" Subscribers
+}
+
+topic_message() {
+  timeout --kill-after=1s "$TOPIC_MESSAGE_TIMEOUT" rostopic echo -n 1 "$1" 2>/dev/null
+}
+
+topic_fresh() {
+  local topic="$1" sample first second
+  sample="$(timeout --kill-after=1s "$TOPIC_MESSAGE_TIMEOUT" rostopic echo -n 2 "$topic" 2>/dev/null || true)"
+  first="$(printf '%s\n' "$sample" | awk '/^[[:space:]]*secs:/{s=$2} /^[[:space:]]*nsecs:/{print s "." $2}' | sed -n '1p')"
+  second="$(printf '%s\n' "$sample" | awk '/^[[:space:]]*secs:/{s=$2} /^[[:space:]]*nsecs:/{print s "." $2}' | sed -n '2p')"
+  LAST_OBSERVATION="$topic stamps first=${first:-missing} second=${second:-missing}"
+  [ -n "$first" ] && [ -n "$second" ] && [ "$first" != "$second" ]
+}
+
+pointcloud_nonempty() {
+  local topic="$1" sample topic_type count
+  topic_type="$(timeout 2 rostopic type "$topic" 2>/dev/null || true)"
+  LAST_OBSERVATION="$topic empty or unavailable"
+  case "$topic_type" in
+    sensor_msgs/PointCloud2)
+      count="$(topic_message "$topic" | awk '/^width:/{print $2; exit}' || true)"
+      ;;
+    sensor_msgs/PointCloud)
+      sample="$(topic_message "$topic/points" || true)"
+      count="$(printf '%s\n' "$sample" | grep -c '^- ' || true)"
+      ;;
+    *CustomMsg)
+      count="$(topic_message "$topic" | awk '/^point_num:/{print $2; exit}' || true)"
+      ;;
+    *)
+      sample="$(topic_message "$topic" || true)"
+      count="$(printf '%s\n' "$sample" | grep -Ec '^points:|^data: \[[^]]|^width: [1-9]' || true)"
+      ;;
+  esac
+  if [ -n "$count" ] && [ "$count" -gt 0 ] 2>/dev/null; then
+    LAST_OBSERVATION="$topic has non-empty message"
+    return 0
+  fi
+  return 1
+}
+
+imu_finite_upright() {
+  local sample z
+  sample="$(topic_message /trunk_imu || true)"
+  z="$(printf '%s\n' "$sample" | awk '/linear_acceleration:/{in_acc=1; next} in_acc && /^[[:space:]]+z:/{print $2; exit}')"
+  LAST_OBSERVATION="/trunk_imu linear_acceleration.z=${z:-missing}"
+  [ -n "$z" ] && awk -v value="$z" 'BEGIN { exit(value == value && value > 7.0 && value < 12.5 ? 0 : 1) }'
+}
+
+odom_finite() {
+  local topic="$1" sample
+  sample="$(topic_message "$topic" || true)"
+  LAST_OBSERVATION="$topic missing finite pose"
+  if printf '%s\n' "$sample" | grep -q 'position:' && \
+     ! printf '%s\n' "$sample" | grep -Eqi '(^|[^a-z])(nan|inf)([^a-z]|$)'; then
+    LAST_OBSERVATION="$topic finite pose observed"
+    return 0
+  fi
+  return 1
+}
+
+topic_value_is() {
+  local topic="$1" expected="$2" value
+  value="$(topic_message "$topic" | awk '/^data:/{print $2; exit}' || true)"
+  value="${value,,}"
+  expected="${expected,,}"
+  LAST_OBSERVATION="$topic data=${value:-missing}, expected=$expected"
+  [ "$value" = "$expected" ]
+}
+
+clock_value_ns() {
+  topic_message /clock | awk '/^[[:space:]]*secs:/{s=$2} /^[[:space:]]*nsecs:/{printf "%.0f\n", s * 1000000000 + $2; exit}'
+}
+
+clock_advancing() {
+  local first second
+  first="$(clock_value_ns || true)"
+  sleep 0.5
+  second="$(clock_value_ns || true)"
+  LAST_OBSERVATION="/clock first=${first:-missing} second=${second:-missing}"
+  [ -n "$first" ] && [ -n "$second" ] && [ "$second" -gt "$first" ]
+}
+
+robot_model_ready() {
+  local response
+  response="$(timeout 3 rosservice call /gazebo/get_model_properties a1_gazebo 2>/dev/null || true)"
+  LAST_OBSERVATION="Gazebo model a1_gazebo unavailable"
+  if printf '%s\n' "$response" | grep -q 'success: True'; then
+    LAST_OBSERVATION="Gazebo model a1_gazebo present"
+    return 0
+  fi
+  return 1
+}
+
+controllers_ready() {
+  local response count
+  response="$(timeout 4 rosservice call /a1_gazebo/controller_manager/list_controllers 2>/dev/null || true)"
+  count="$(printf '%s\n' "$response" | grep -c 'state:.*running' || true)"
+  LAST_OBSERVATION="running joint controllers=$count/13"
+  [ "$count" -ge 13 ]
+}
+
+tf_ready() {
+  local target="$1" source="$2" sample
+  LAST_OBSERVATION="TF $target <- $source unavailable"
+  sample="$(timeout 4 rosrun tf tf_echo "$target" "$source" 2>/dev/null || true)"
+  if printf '%s\n' "$sample" | grep -q 'Translation:'; then
+    LAST_OBSERVATION="TF $target <- $source resolved"
+    return 0
+  fi
+  return 1
+}
+
+request_state() {
+  local request_topic="$1" type="$2" value="$3" output_topic="$4" timeout_sec="$5"
+  local started publisher_pid result=1
+  started="$(wall_now)"
+  if ! wait_until "$timeout_sec" "subscriber:$request_topic" topic_has_subscriber "$request_topic"; then
+    return 1
+  fi
+  rostopic pub -r 10 "$request_topic" "$type" "data: $value" >/dev/null 2>&1 &
+  publisher_pid=$!
+  while [ $(( $(wall_now) - started )) -lt "$timeout_sec" ]; do
+    if topic_value_is "$output_topic" "$value"; then
+      result=0
+      break
     fi
-
-    if [ $(( $(date +%s) - start_time )) -ge "$timeout_sec" ]; then
-      echo "[ERROR] timed out waiting for topic: $topic" >&2
-      return 1
-    fi
-
-    sleep 0.5
   done
+  kill -INT "$publisher_pid" 2>/dev/null || true
+  wait "$publisher_pid" 2>/dev/null || true
+  return "$result"
+}
+
+state_stable() {
+  local topic="$1" expected="$2" samples="${3:-3}" count=0
+  while [ "$count" -lt "$samples" ]; do
+    topic_value_is "$topic" "$expected" || return 1
+    count=$((count + 1))
+    sleep 0.35
+  done
+}
+
+tracked_process_alive() {
+  local pid="$1" label="$2"
+  LAST_OBSERVATION="$label pid=${pid:-missing} not alive"
+  if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+    LAST_OBSERVATION="$label pid=$pid alive"
+    return 0
+  fi
+  return 1
+}
+
+topic_receives_messages() {
+  local topic="$1" count="${2:-2}" sample observed
+  sample="$(timeout --kill-after=1s 6 rostopic echo -n "$count" "$topic" 2>/dev/null || true)"
+  observed="$(printf '%s\n' "$sample" | grep -c '^---$' || true)"
+  LAST_OBSERVATION="$topic received_messages=$observed/$count"
+  [ "$observed" -ge "$count" ]
+}
+
+controller_runtime_alive() {
+  if [ -n "$CONTROLLER_PID" ]; then
+    tracked_process_alive "$CONTROLLER_PID" junior_ctrl
+    return
+  fi
+  if [ "$TERMINAL_BACKEND" = "tmux" ] && command -v tmux >/dev/null 2>&1 && \
+     tmux has-session -t "${TMUX_SESSION_PREFIX}-junior_ctrl" 2>/dev/null; then
+    LAST_OBSERVATION="junior_ctrl tmux session alive"
+    return 0
+  fi
+  LAST_OBSERVATION="junior_ctrl terminal wrapper/session unavailable"
+  return 1
 }
 
 # ---------------------------------------------------------------------------
@@ -471,61 +641,72 @@ cleanup_tmux_sessions() {
   done
 }
 
-if [ "$SKIP_GLOBAL_PROCESS_CLEANUP" = "true" ]; then
-  echo "Skipping global process cleanup (SKIP_GLOBAL_PROCESS_CLEANUP=true)."
-else
-  echo "Cleaning up all leftover processes from previous runs..."
+stop_tracked_pid() {
+  local pid="${1:-}" label="${2:-process}" attempt signal tree_pid
+  local -a tree_pids
+  [ -n "$pid" ] || return 0
+  kill -0 "$pid" 2>/dev/null || return 0
+  echo "[CLEANUP] stopping $label pid=$pid"
+  for signal in INT TERM KILL; do
+    # Snapshot the complete tree before roslaunch exits and reparents its
+    # grandchildren; direct pkill -P only covers one level.
+    mapfile -t tree_pids < <(
+      local -a queue=("$pid")
+      local current child
+      while [ "${#queue[@]}" -gt 0 ]; do
+        current="${queue[0]}"
+        queue=("${queue[@]:1}")
+        printf '%s\n' "$current"
+        while read -r child; do
+          [ -n "$child" ] && queue+=("$child")
+        done < <(ps -o pid= --ppid "$current" 2>/dev/null | tr -d ' ')
+      done
+    )
+    for tree_pid in "${tree_pids[@]}"; do
+      kill -"$signal" "$tree_pid" 2>/dev/null || true
+    done
+    for attempt in $(seq 1 20); do
+      kill -0 "$pid" 2>/dev/null || return 0
+      sleep 0.1
+    done
+  done
+}
+
+pid_from_owned_file() {
+  local file="$1" pid cmdline
+  [ -f "$file" ] || return 1
+  pid="$(tr -dc '0-9' < "$file")"
+  [ -n "$pid" ] && [ -r "/proc/$pid/cmdline" ] || return 1
+  cmdline="$(tr '\0' ' ' < "/proc/$pid/cmdline")"
+  if [[ "$cmdline" == *"$WORKSPACE_DIR"* ]]; then
+    printf '%s' "$pid"
+    return 0
+  fi
+  echo "[CLEANUP] refusing unowned stale pid=$pid file=$file cmd=$(shell_quote "$cmdline")" >&2
+  return 1
+}
+
+cleanup_previous_owned_run() {
+  local file pid
+  echo "Checking for processes owned by a previous run in this worktree..."
+  for file in \
+    "$WORKSPACE_DIR/logs/navigation.pid" \
+    "$WORKSPACE_DIR/logs/nav_state_supervisor.pid" \
+    "$WORKSPACE_DIR/logs/fast_lio2.pid" \
+    "$WORKSPACE_DIR/logs/scan_adapter.pid" \
+    "$WORKSPACE_DIR/logs/building_control.pid" \
+    "$WORKSPACE_DIR/logs/competition_gazebo.pid"; do
+    pid="$(pid_from_owned_file "$file" || true)"
+    [ -z "$pid" ] || stop_tracked_pid "$pid" "stale $(basename "$file")"
+  done
   cleanup_tmux_sessions
+}
 
-# ---- Gazebo & ROS core ----
-pkill -9 -f "gzserver"     2>/dev/null || true
-pkill -9 -f "gzclient"     2>/dev/null || true
-pkill -9 -f "gazebo"       2>/dev/null || true
-pkill -9 -f "rosmaster"    2>/dev/null || true
-pkill -9 -f "rosout"       2>/dev/null || true
-
-# ---- SimEnv launch & control ----
-pkill -9 -f "roslaunch.*multi_floor_gazeboSim"       2>/dev/null || true
-pkill -9 -f "roslaunch.*simenv_fast_lio2_mapping"    2>/dev/null || true
-pkill -9 -f "building_generator_classic_control"      2>/dev/null || true
-pkill -9 -f "generate_competition_scene"              2>/dev/null || true
-
-# ---- Unitree controller ----
-pkill -9 -f "junior_ctrl"          2>/dev/null || true
-pkill -9 -f "unitree_gazebo_servo" 2>/dev/null || true
-pkill -9 -f "virtual_joy"          2>/dev/null || true
-
-# ---- FAST-LIO2 ----
-pkill -9 -f "fastlio_mapping"       2>/dev/null || true
-pkill -9 -f "scan_to_pointcloud2"   2>/dev/null || true
-pkill -9 -f "laserMapping"          2>/dev/null || true
-
-# ---- Navigation bringup ----
-pkill -9 -f "roslaunch.*simenv_navigation_bringup" 2>/dev/null || true
-pkill -9 -f "cmd_vel_bridge"         2>/dev/null || true
-pkill -9 -f "localPlanner"           2>/dev/null || true
-pkill -9 -f "pathFollower"           2>/dev/null || true
-pkill -9 -x "exploration"           2>/dev/null || true
-pkill -9 -f "dsvplanner"            2>/dev/null || true
-pkill -9 -f "graph_planner"         2>/dev/null || true
-pkill -9 -f "navigation_boundary"   2>/dev/null || true
-pkill -9 -f "registered_cloud_to_terrain_map" 2>/dev/null || true
-pkill -9 -f "navigation_registered_scan_relay" 2>/dev/null || true
-pkill -9 -f "navigation_state_estimation_relay" 2>/dev/null || true
-
-# ---- Sensor / state bridge nodes ----
-pkill -9 -f "pointcloud2livox"      2>/dev/null || true
-pkill -9 -f "state_from_gazebo"     2>/dev/null || true
-pkill -9 -f "robot_state_publisher" 2>/dev/null || true
-pkill -9 -f "controller_spawner"    2>/dev/null || true
-
-# ---- Stale rostopic processes ----
-pkill -9 -f "rostopic.*/cmd_vel"    2>/dev/null || true
-pkill -9 -f "rostopic.*echo"        2>/dev/null || true
+if [ "$SKIP_GLOBAL_PROCESS_CLEANUP" = "true" ]; then
+  echo "Skipping previous-run cleanup (SKIP_GLOBAL_PROCESS_CLEANUP=true)."
+else
+  cleanup_previous_owned_run
 fi
-
-# Give the OS a moment to reclaim ports and shared memory
-sleep 2
 
 echo "Checking ROS Python environment for Conda contamination..."
 ROS_PYTHON_INFO="$(
@@ -687,10 +868,17 @@ else
   echo "  Result:  disabled"
 fi
 echo "  Sensor data: $ENABLE_SENSOR_DATA"
-echo "  PointCloud2 converter: $ENABLE_POINTCLOUD_CONVERTER"
+if [ "$ENABLE_POINTCLOUD_CONVERTER" = "true" ]; then
+  echo "  Legacy PointCloud/Livox converter: enabled"
+else
+  echo "  Legacy PointCloud/Livox converter: disabled"
+fi
+echo "  LiDAR visualization: $ENABLE_LIDAR_VISUALIZATION"
 echo "  Ground truth topics: $ENABLE_GROUND_TRUTH"
 echo "  Referee odom: $ENABLE_REFEREE_ODOM"
 echo "  FAST-LIO2 mapping: $ENABLE_FAST_LIO2"
+echo "  FAST-LIO2 adapter: $ENABLE_FAST_LIO2"
+echo "  FAST-LIO2 lidar input: /scan_pointcloud2"
 echo "  RViz: $ENABLE_RVIZ"
 if [ "$ENABLE_NAVIGATION" = "true" ]; then
 echo "  ---- Navigation ----"
@@ -737,7 +925,7 @@ for thread_env_name in OMP_NUM_THREADS MKL_NUM_THREADS OPENBLAS_NUM_THREADS NUME
   fi
 done
 echo "  Gazebo starts paused: $PAUSED"
-echo "  Auto unpause: $AUTO_UNPAUSE after ${AUTO_UNPAUSE_DELAY}s"
+echo "  Auto unpause: $AUTO_UNPAUSE (as soon as Gazebo unpause service is ready)"
 echo "  Gazebo physics:"
 echo "    max_step_size:            $GAZEBO_PHYSICS_MAX_STEP_SIZE"
 echo "    real_time_update_rate:    $GAZEBO_PHYSICS_REAL_TIME_UPDATE_RATE"
@@ -745,383 +933,263 @@ echo "    ode_iters:                $GAZEBO_PHYSICS_ODE_ITERS"
 echo "    contact_max_correcting_vel: $GAZEBO_PHYSICS_CONTACT_MAX_CORRECTING_VEL"
 echo "    theoretical target RTF:   $_GAZEBO_PHYSICS_RTF_PRODUCT"
 echo "  Gazebo plugin path: $GAZEBO_PLUGIN_PATH"
+echo "  Startup wall-time timeouts:"
+echo "    ROS master: $ROS_MASTER_TIMEOUT s"
+echo "    Gazebo: $GAZEBO_READY_TIMEOUT s  robot: $ROBOT_READY_TIMEOUT s"
+echo "    controller: $CONTROLLER_READY_TIMEOUT s  sensor: $SENSOR_READY_TIMEOUT s"
+echo "    FAST-LIO2: $FAST_LIO2_READY_TIMEOUT s  supervisor: $NAV_SUPERVISOR_READY_TIMEOUT s"
+echo "    navigation: $NAVIGATION_READY_TIMEOUT s  state transition: $STATE_TRANSITION_TIMEOUT s"
 echo "=========================================="
 
+cleanup() {
+  [ "$CLEANUP_DONE" = "0" ] || return 0
+  CLEANUP_DONE=1
+  trap - EXIT INT TERM
+  echo ""
+  echo "[CLEANUP] begin status=$EXIT_STATUS stage=$CURRENT_STAGE"
+  if command -v rostopic >/dev/null 2>&1 && ros_master_ready; then
+    timeout 1 rostopic pub -r 10 /navigation/request_exploring std_msgs/Bool "data: false" >/dev/null 2>&1 || true
+    timeout 1 rostopic pub -r 10 /navigation/request_enabled std_msgs/Bool "data: false" >/dev/null 2>&1 || true
+    timeout 1 rostopic pub -r 10 /navigation/request_fsm_state std_msgs/Int8 "data: 2" >/dev/null 2>&1 || true
+    timeout 1 rostopic pub -r 20 /cmd_vel geometry_msgs/Twist \
+      '{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}' >/dev/null 2>&1 || true
+  fi
+  stop_tracked_pid "$RECORDER_PID" recorder
+  stop_tracked_pid "$NAVIGATION_PID" navigation
+  stop_tracked_pid "$FAST_LIO2_PID" fast_lio2
+  stop_tracked_pid "$ADAPTER_PID" scan_adapter
+  stop_tracked_pid "$SUPERVISOR_PID" nav_state_supervisor
+  stop_tracked_pid "$CONTROLLER_PID" controller_terminal
+  stop_tracked_pid "$BUILDING_CONTROL_PID" building_control
+  cleanup_tmux_sessions
+  stop_tracked_pid "$LAUNCH_PID" gazebo_roslaunch
+  echo "[CLEANUP] complete"
+}
+
+trap 'EXIT_STATUS=$?; cleanup' EXIT
+trap 'EXIT_STATUS=130; exit 130' INT TERM
+
+stage_enter STAGE_0_ENV_VALIDATION
+stage_pass "workspace=$WORKSPACE_DIR"
+
 if [ "$START_VIRTUAL_JOY" = "1" ]; then
-  echo "Starting virtual joystick. This may require uinput permissions."
   rosrun unitree_guide virtual_joy.py > "$WORKSPACE_DIR/logs/virtual_joy.log" 2>&1 &
   echo $! > "$WORKSPACE_DIR/logs/virtual_joy.pid"
 fi
 
+stage_enter STAGE_1_ROS_MASTER_READY
 echo "Launching Gazebo, Unitree A1 model, sensors, and ROS interfaces..."
-roslaunch unitree_guide multi_floor_gazeboSim.launch \
-  gui:="$GUI" \
-  paused:="$PAUSED" \
-  user_debug:=False \
-  rname:=a1 \
-  robot_x:="$ROBOT_X" \
-  robot_y:="$ROBOT_Y" \
-  robot_z:="$ROBOT_Z" \
-  robot_yaw:="$ROBOT_YAW" \
+setsid roslaunch unitree_guide multi_floor_gazeboSim.launch \
+  gui:="$GUI" paused:="$PAUSED" user_debug:=False rname:=a1 \
+  robot_x:="$ROBOT_X" robot_y:="$ROBOT_Y" robot_z:="$ROBOT_Z" robot_yaw:="$ROBOT_YAW" \
   enable_sensor_data:="$ENABLE_SENSOR_DATA" \
-  enable_referee_odom:="$ENABLE_REFEREE_ODOM" \
-  enable_ground_truth:="$ENABLE_GROUND_TRUTH" \
-  enable_foot_force_visual:="$ENABLE_FOOT_FORCE_VISUAL" \
-  enable_joy_node:="$ENABLE_JOY_NODE" \
+  enable_lidar_visualization:="$ENABLE_LIDAR_VISUALIZATION" \
+  enable_referee_odom:="$ENABLE_REFEREE_ODOM" enable_ground_truth:="$ENABLE_GROUND_TRUTH" \
+  enable_foot_force_visual:="$ENABLE_FOOT_FORCE_VISUAL" enable_joy_node:="$ENABLE_JOY_NODE" \
   enable_pointcloud_converter:="$ENABLE_POINTCLOUD_CONVERTER" \
   pointcloud_use_ground_truth_odom:="$POINTCLOUD_USE_GROUND_TRUTH_ODOM" \
   > "$WORKSPACE_DIR/logs/competition_gazebo.log" 2>&1 &
 LAUNCH_PID=$!
 echo "$LAUNCH_PID" > "$WORKSPACE_DIR/logs/competition_gazebo.pid"
-sleep 25
-if ! kill -0 "$LAUNCH_PID" 2>/dev/null; then
-  echo "roslaunch exited during startup. Last log lines:" >&2
-  tail -n 80 "$WORKSPACE_DIR/logs/competition_gazebo.log" >&2
-  exit 1
+wait_until "$ROS_MASTER_TIMEOUT" "ROS master reachable" ros_master_ready || startup_fail "ROS master timeout=${ROS_MASTER_TIMEOUT}s"
+stage_pass
+
+stage_enter STAGE_2_GAZEBO_READY
+wait_until "$GAZEBO_READY_TIMEOUT" "service:/gazebo/get_world_properties" service_ready /gazebo/get_world_properties || startup_fail "Gazebo service timeout"
+if [ "$PAUSED" = "true" ]; then
+  if [ "$AUTO_UNPAUSE" != "true" ]; then
+    startup_fail "PAUSED=true requires AUTO_UNPAUSE=true for state-driven startup"
+  fi
+  rosservice call /gazebo/unpause_physics >/dev/null 2>&1 || startup_fail "unpause service call failed"
 fi
+wait_until "$GAZEBO_READY_TIMEOUT" "/clock advancing" clock_advancing || startup_fail "/clock did not advance"
+wait_until "$GAZEBO_READY_TIMEOUT" "robot model a1_gazebo" robot_model_ready || startup_fail "robot model missing"
+stage_pass
+
+stage_enter STAGE_3_ROBOT_READY
+wait_until "$ROBOT_READY_TIMEOUT" "13 joint controllers running" controllers_ready || startup_fail "joint controllers not ready"
+wait_until "$ROBOT_READY_TIMEOUT" "publisher:/a1_gazebo/joint_states" topic_has_publisher /a1_gazebo/joint_states || startup_fail "joint-state publisher missing"
+wait_until "$ROBOT_READY_TIMEOUT" "live:/a1_gazebo/joint_states" topic_receives_messages /a1_gazebo/joint_states 2 || startup_fail "joint states stale"
+wait_until "$ROBOT_READY_TIMEOUT" "publisher:/trunk_imu" topic_has_publisher /trunk_imu || startup_fail "trunk IMU publisher missing"
+stage_pass
 
 if [ "$START_BUILDING_CONTROL" = "1" ]; then
-  echo "Starting building door/elevator control service..."
-  python3 "$BUILDING_CONTROL_SCRIPT" \
-    --door-config "$SCENE_OUTPUT_DIR/door_config.yaml" \
+  python3 "$BUILDING_CONTROL_SCRIPT" --door-config "$SCENE_OUTPUT_DIR/door_config.yaml" \
     --elevator-config "$SCENE_OUTPUT_DIR/elevator_config.yaml" \
     > "$WORKSPACE_DIR/logs/building_control.log" 2>&1 &
-  echo $! > "$WORKSPACE_DIR/logs/building_control.pid"
+  BUILDING_CONTROL_PID=$!
+  echo "$BUILDING_CONTROL_PID" > "$WORKSPACE_DIR/logs/building_control.pid"
 fi
 
-# ---------------------------------------------------------------------------
-# Controller startup — always in a dedicated terminal so keyboard input works.
-# ---------------------------------------------------------------------------
+if [ "$START_CONTROLLER" = "1" ] || [ "$ENABLE_NAVIGATION" = "true" ]; then
+  stage_enter STAGE_4_NAV_SUPERVISOR_READY
+  /usr/bin/python3 "$WORKSPACE_DIR/src/navigation/simenv_navigation_bridge/scripts/nav_state_supervisor.py" \
+    > "$WORKSPACE_DIR/logs/nav_state_supervisor.log" 2>&1 &
+  SUPERVISOR_PID=$!
+  echo "$SUPERVISOR_PID" > "$WORKSPACE_DIR/logs/nav_state_supervisor.pid"
+  wait_until "$NAV_SUPERVISOR_READY_TIMEOUT" "node:/nav_state_supervisor" node_ready /nav_state_supervisor || startup_fail "supervisor node timeout"
+  for request_topic in /navigation/request_enabled /navigation/request_exploring /navigation/request_fsm_state; do
+    wait_until "$NAV_SUPERVISOR_READY_TIMEOUT" "subscriber:$request_topic" topic_has_subscriber "$request_topic" || startup_fail "supervisor request subscriber missing: $request_topic"
+  done
+  for output_topic in /navigation/enabled /navigation/start_exploring /fsm/state_cmd; do
+    wait_until "$NAV_SUPERVISOR_READY_TIMEOUT" "publisher:$output_topic" topic_has_publisher "$output_topic" || startup_fail "supervisor output publisher missing: $output_topic"
+  done
+  request_state /navigation/request_exploring std_msgs/Bool false /navigation/start_exploring "$STATE_TRANSITION_TIMEOUT" || startup_fail "safe exploring=false rejected"
+  request_state /navigation/request_enabled std_msgs/Bool false /navigation/enabled "$STATE_TRANSITION_TIMEOUT" || startup_fail "safe navigation=false rejected"
+  request_state /navigation/request_fsm_state std_msgs/Int8 2 /fsm/state_cmd "$STATE_TRANSITION_TIMEOUT" || startup_fail "safe FSM=2 rejected"
+  stage_pass "enabled=false exploring=false fsm=2"
+fi
+
 if [ "$START_CONTROLLER" = "1" ]; then
-  echo "Starting junior_ctrl in a dedicated terminal..."
-  echo "UNITREE_CTRL_DT=$UNITREE_CTRL_DT seconds."
-  echo "Keyboard input in the controller terminal: 2=stand (4=trot, 6=RL need Torch build)."
+  stage_enter STAGE_5_CONTROLLER_READY
   if [ "$TIMING_DIAGNOSTICS_ENABLED" = "true" ]; then
     rosparam set /timing_diagnostics_enabled true
     rosparam set /timing_diagnostics_path "$TIMING_DIAGNOSTICS_PATH"
   fi
   launch_in_terminal "junior_ctrl" "$CONTROLLER_BIN"
-  sleep 2
-  schedule_unpause_physics
-else
-  schedule_unpause_physics
+  CONTROLLER_PID="$(tr -dc '0-9' < "$WORKSPACE_DIR/logs/junior_ctrl.pid" 2>/dev/null || true)"
+  wait_until "$CONTROLLER_READY_TIMEOUT" "controller process/session" controller_runtime_alive || startup_fail "controller process exited"
+  wait_until "$CONTROLLER_READY_TIMEOUT" "node:/unitree_gazebo_servo" node_ready /unitree_gazebo_servo || startup_fail "junior_ctrl node timeout"
+  wait_until "$CONTROLLER_READY_TIMEOUT" "subscriber:/fsm/state_cmd" topic_has_subscriber /fsm/state_cmd || startup_fail "FSM subscriber missing"
+  wait_until "$CONTROLLER_READY_TIMEOUT" "live joint feedback" topic_receives_messages /a1_gazebo/FR_hip_controller/state 2 || startup_fail "joint feedback stale"
+  stage_pass
+
+  stage_enter STAGE_6_FIXED_STAND_READY
+  wait_until "$CONTROLLER_READY_TIMEOUT" "finite upright /trunk_imu" imu_finite_upright || startup_fail "IMU invalid or robot not upright"
+  request_state /navigation/request_fsm_state std_msgs/Int8 2 /fsm/state_cmd "$STATE_TRANSITION_TIMEOUT" || startup_fail "FixedStand request rejected"
+  state_stable /fsm/state_cmd 2 3 || startup_fail "FSM=2 did not remain stable"
+  stage_pass "fsm=2 stable"
 fi
 
-# ── Command FixedStand (always, before any FAST-LIO2 / navigation) ──
-if [ "$START_CONTROLLER" = "1" ]; then
-  # Wait for the controller node and its /fsm/state_cmd subscriber.
-  sleep 3
-
-  # Apply any user-requested extra delay before commanding FixedStand.
-  FAST_LIO2_DELAY="${FAST_LIO2_DELAY:-0}"
-  if [ "$FAST_LIO2_DELAY" -gt 0 ]; then
-    echo "Waiting additional ${FAST_LIO2_DELAY}s (FAST_LIO2_DELAY)..."
-    sleep "$FAST_LIO2_DELAY"
+if [ "$ENABLE_SENSOR_DATA" = "true" ]; then
+  stage_enter STAGE_7_SENSOR_READY
+  wait_until "$SENSOR_READY_TIMEOUT" "publisher:/scan" topic_has_publisher /scan || startup_fail "/scan publisher missing"
+  wait_until "$SENSOR_READY_TIMEOUT" "non-empty:/scan" pointcloud_nonempty /scan || startup_fail "/scan empty"
+  wait_until "$SENSOR_READY_TIMEOUT" "fresh:/scan" topic_fresh /scan || startup_fail "/scan stale"
+  wait_until "$SENSOR_READY_TIMEOUT" "finite:/trunk_imu" imu_finite_upright || startup_fail "/trunk_imu invalid"
+  wait_until "$SENSOR_READY_TIMEOUT" "fresh:/trunk_imu" topic_fresh /trunk_imu || startup_fail "/trunk_imu stale"
+  if [ "$ENABLE_POINTCLOUD_CONVERTER" = "true" ]; then
+    wait_until "$SENSOR_READY_TIMEOUT" "publisher:/livox/lidar2" topic_has_publisher /livox/lidar2 || startup_fail "legacy CustomMsg publisher missing"
+    wait_until "$SENSOR_READY_TIMEOUT" "publisher:/livox/Pointcloud2" topic_has_publisher /livox/Pointcloud2 || startup_fail "legacy PointCloud2 publisher missing"
   fi
-
-  # Wait for /fsm/state_cmd subscriber before publishing (avoid lost message).
-  echo "Waiting for /fsm/state_cmd subscriber..."
-  for i in $(seq 1 15); do
-    if rostopic info /fsm/state_cmd 2>/dev/null | grep -q 'Subscribers.*http'; then
-      echo "  /fsm/state_cmd has subscriber(s)"
-      break
-    fi
-    sleep 1
-  done
-
-  # Auto-command FixedStand: rostopic pub … std_msgs/Int8 "data: 2"
-  echo "Commanding FixedStand via /fsm/state_cmd..."
-  rostopic pub /fsm/state_cmd std_msgs/Int8 "data: 2" -1 2>/dev/null || true
+  stage_pass
 fi
 
-# ── FAST-LIO2 preflight: wait for upright robot ──
-if [ "$ENABLE_FAST_LIO2" = "true" ] && [ "$START_CONTROLLER" = "1" ]; then
-
-  # Wait for the IMU to report gravity aligned with Z (≥ 9 m/s²).
-  # This confirms the robot is upright before FAST-LIO2 initialises.
-  echo "Waiting for IMU stabilisation (robot upright)..."
-  IMU_STABLE=0
-  for i in $(seq 1 6); do
-    sleep 0.5
-    IMU_Z=$(timeout 5 rostopic echo /trunk_imu/linear_acceleration -n 1 2>/dev/null \
-      | grep "z:" | head -1 | awk '{print $2}' || true)
-    if [ -n "$IMU_Z" ]; then
-      IMU_Z_INT=$(echo "$IMU_Z" | cut -d. -f1)
-      if [ "$IMU_Z_INT" -ge 9 ] 2>/dev/null; then
-        echo "  IMU stabilised: linear_acceleration.z ≈ ${IMU_Z} m/s²"
-        IMU_STABLE=1
-        break
-      fi
-    fi
-    echo "  waiting for upright pose ... IMU z = ${IMU_Z:-N/A}"
-  done
-  if [ "$IMU_STABLE" != "1" ]; then
-    echo "WARNING: IMU did not stabilise within 20 s." >&2
-    echo "  FAST-LIO2 may initialise with incorrect gravity, causing Z drift." >&2
-  fi
-fi
-
-# ---------------------------------------------------------------------------
-# FAST-LIO2 (after the robot is confirmed standing)
-# ---------------------------------------------------------------------------
 if [ "$ENABLE_FAST_LIO2" = "true" ]; then
-  if [ "$START_CONTROLLER" != "1" ]; then
-    echo "WARNING: ENABLE_FAST_LIO2=1 but START_CONTROLLER=$START_CONTROLLER" >&2
-    echo "  The robot will NOT be standing when FAST-LIO2 initialises." >&2
-    echo "  FAST-LIO2 needs a stationary, upright robot for correct EKF convergence." >&2
-    echo "  Either set START_CONTROLLER=1 or start the controller manually (FixedStand)." >&2
-    echo "" >&2
-  fi
-
-  echo "Starting FAST-LIO2 mapping (scan adapter + fastlio_mapping)..."
-  # Run with Noetic's system Python even when a catkin wrapper was generated
-  # from an active Conda environment.
-  /usr/bin/python3 "$WORKSPACE_DIR/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py" \
+  [ "$ENABLE_SENSOR_DATA" = "true" ] || startup_fail "FAST-LIO2 requires ENABLE_SENSOR_DATA=true"
+  stage_enter STAGE_8_FAST_LIO2_ADAPTER_READY
+  wait_until "$SENSOR_READY_TIMEOUT" "TF base<-laser_livox" tf_ready base laser_livox || startup_fail "LiDAR TF unavailable"
+  setsid /usr/bin/python3 "$WORKSPACE_DIR/src/simenv_fast_lio2_integration/scripts/scan_to_pointcloud2.py" \
     > "$WORKSPACE_DIR/logs/scan_adapter.log" 2>&1 &
-  echo $! > "$WORKSPACE_DIR/logs/scan_adapter.pid"
-  sleep 2
-  # enable_adapter:=false avoids a duplicate scan_to_pointcloud2 node
-  # (auto.sh already started one above).
-  roslaunch simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch \
-    enable_adapter:=false \
-    > "$WORKSPACE_DIR/logs/fast_lio2.log" 2>&1 &
-  echo $! > "$WORKSPACE_DIR/logs/fast_lio2.pid"
-  echo "FAST-LIO2 mapping launched in background (logs: logs/fast_lio2.log)"
+  ADAPTER_PID=$!
+  echo "$ADAPTER_PID" > "$WORKSPACE_DIR/logs/scan_adapter.pid"
+  wait_until "$SENSOR_READY_TIMEOUT" "publisher:/scan_pointcloud2" topic_has_publisher /scan_pointcloud2 || startup_fail "adapter publisher missing"
+  wait_until "$SENSOR_READY_TIMEOUT" "non-empty:/scan_pointcloud2" pointcloud_nonempty /scan_pointcloud2 || startup_fail "adapter output empty"
+  wait_until "$SENSOR_READY_TIMEOUT" "fresh:/scan_pointcloud2" topic_fresh /scan_pointcloud2 || startup_fail "adapter output stale"
+  LAST_OBSERVATION="/scan_pointcloud2 frame_id mismatch"
+  topic_message /scan_pointcloud2 | grep -q 'frame_id:.*laser_livox' || startup_fail "adapter frame_id is not laser_livox"
+  stage_pass
 
-  # ── RVIZ ──
+  stage_enter STAGE_9_FAST_LIO2_READY
+  setsid roslaunch simenv_fast_lio2_integration simenv_fast_lio2_mapping.launch enable_adapter:=false \
+    > "$WORKSPACE_DIR/logs/fast_lio2.log" 2>&1 &
+  FAST_LIO2_PID=$!
+  echo "$FAST_LIO2_PID" > "$WORKSPACE_DIR/logs/fast_lio2.pid"
+  wait_until "$FAST_LIO2_READY_TIMEOUT" "node:/laserMapping" node_ready /laserMapping || startup_fail "laserMapping node timeout"
+  wait_until "$FAST_LIO2_READY_TIMEOUT" "finite:/Odometry" odom_finite /Odometry || startup_fail "/Odometry invalid"
+  wait_until "$FAST_LIO2_READY_TIMEOUT" "fresh:/Odometry" topic_fresh /Odometry || startup_fail "/Odometry stale"
+  wait_until "$FAST_LIO2_READY_TIMEOUT" "non-empty:/cloud_registered" pointcloud_nonempty /cloud_registered || startup_fail "/cloud_registered empty"
+  wait_until "$FAST_LIO2_READY_TIMEOUT" "fresh:/cloud_registered" topic_fresh /cloud_registered || startup_fail "/cloud_registered stale"
+  if [ "$(grep -Eic 'No Effective Points|\bnan\b|EKF.*diverg' "$WORKSPACE_DIR/logs/fast_lio2.log" 2>/dev/null || true)" -gt 20 ]; then
+    LAST_OBSERVATION="sustained FAST-LIO2 invalid-point/divergence diagnostics"
+    startup_fail "FAST-LIO2 health check failed"
+  fi
+  stage_pass
+
   RVIZ_CONFIG="$WORKSPACE_DIR/src/simenv_fast_lio2_integration/config/fast_lio2.rviz"
   if [ "$ENABLE_RVIZ" = "true" ] && [ -f "$RVIZ_CONFIG" ]; then
-    echo "Starting rviz in a dedicated terminal..."
     launch_in_terminal "rviz" "rosrun rviz rviz -d ${RVIZ_CONFIG}"
   elif [ "$ENABLE_RVIZ" = "true" ]; then
-    echo "WARNING: rviz config not found at $RVIZ_CONFIG" >&2
+    echo "[WARN] RViz config missing: $RVIZ_CONFIG" >&2
   fi
 fi
 
-# ---------------------------------------------------------------------------
-# Navigation bringup -- DSV + FALCO exploration stack.
-# Launched after FAST-LIO2 is confirmed ready.  Nodes are started but
-# motion is NOT enabled until the user explicitly commands it.
-# ---------------------------------------------------------------------------
 if [ "$ENABLE_NAVIGATION" = "true" ]; then
-  if [ "$ENABLE_FAST_LIO2" != "true" ]; then
-    echo "[ERROR] Navigation requires ENABLE_FAST_LIO2=1 (currently ENABLE_FAST_LIO2=$ENABLE_FAST_LIO2)." >&2
-    exit 1
-  fi
-
+  [ "$ENABLE_FAST_LIO2" = "true" ] || startup_fail "navigation requires FAST-LIO2"
   case "$NAV_MODE" in
-    falco)     START_DSV="false" ;;
-    dsv_falco) START_DSV="true"  ;;
-    *)
-      echo "[ERROR] Unsupported NAV_MODE='$NAV_MODE'. Allowed: falco, dsv_falco" >&2
-      exit 1
-      ;;
+    falco) START_DSV=false ;;
+    dsv_falco) START_DSV=true ;;
+    *) startup_fail "unsupported NAV_MODE=$NAV_MODE" ;;
   esac
-
-  if [ "$NAV_AUTO_START_EXPLORATION" = "true" ]; then
-    if [ "$NAV_AUTO_ENABLE" != "true" ] || [ "$NAV_MODE" != "dsv_falco" ]; then
-      echo "[ERROR] NAV_AUTO_START_EXPLORATION=true requires:" >&2
-      echo "  NAV_AUTO_ENABLE=true (currently $NAV_AUTO_ENABLE)" >&2
-      echo "  NAV_MODE=dsv_falco (currently $NAV_MODE)" >&2
-      exit 1
-    fi
-    if [ "$NAV_AUTO_TROTTING" != "true" ]; then
-      echo "NAV_AUTO_START_EXPLORATION=true with NAV_AUTO_TROTTING=false:"
-      echo "  DSV exploration will plan goals but robot will NOT auto-trot."
-      echo "  To enable auto-trotting, set NAV_AUTO_TROTTING=true."
-    fi
+  if [ "$NAV_AUTO_START_EXPLORATION" = "true" ] && { [ "$NAV_AUTO_ENABLE" != "true" ] || [ "$NAV_MODE" != "dsv_falco" ]; }; then
+    startup_fail "auto exploration requires NAV_AUTO_ENABLE=true and NAV_MODE=dsv_falco"
   fi
 
-  echo "Waiting for navigation prerequisites..."
-  wait_for_topic /Odometry "$NAV_WAIT_ODOM_TIMEOUT" || exit 1
-  wait_for_topic /cloud_registered "$NAV_WAIT_CLOUD_TIMEOUT" || exit 1
-
-  # Export speed limits so navigation_bridge.launch picks them up via $(optenv).
-  export NAV_MAX_LINEAR_X
-  export NAV_MAX_LINEAR_Y
-  export NAV_MAX_ANGULAR_Z
-  export NAV_COMMAND_TIMEOUT
-
-  # Navigation state supervisor — latched state owner that survives
-  # bridge / navigation sub-stack restarts.  Launched independently so
-  # that killing the navigation roslaunch does not lose user-commanded
-  # state (enabled, exploring, fsm_state).
-  # NOTE: must use system /usr/bin/python3 (3.10), NOT the workspace venv
-  # (3.13) — ROS Noetic rospy is compiled for Python 3.10 and the venv
-  # python causes a 100%-CPU silent hang with no topic publishing.
-  echo "Launching navigation state supervisor..."
-  /usr/bin/python3 "$WORKSPACE_DIR/src/navigation/simenv_navigation_bridge/scripts/nav_state_supervisor.py" \
-    > "$WORKSPACE_DIR/logs/nav_state_supervisor.log" 2>&1 &
-  SUPERVISOR_PID=$!
-  echo "$SUPERVISOR_PID" > "$WORKSPACE_DIR/logs/nav_state_supervisor.pid"
-  echo "Navigation state supervisor launched (pid=$SUPERVISOR_PID)"
-
-  echo "Launching navigation bringup (mode=$NAV_MODE, dsv=$START_DSV)..."
-  roslaunch simenv_navigation_bringup single_floor_exploration.launch \
-    start_falco:=true \
-    start_dsv:="$START_DSV" \
-    start_bridge:=true \
+  stage_enter STAGE_10_NAVIGATION_READY
+  export NAV_MAX_LINEAR_X NAV_MAX_LINEAR_Y NAV_MAX_ANGULAR_Z NAV_COMMAND_TIMEOUT
+  setsid roslaunch simenv_navigation_bringup single_floor_exploration.launch \
+    start_falco:=true start_dsv:="$START_DSV" start_bridge:=true \
     > "$WORKSPACE_DIR/logs/navigation.log" 2>&1 &
-
   NAVIGATION_PID=$!
   echo "$NAVIGATION_PID" > "$WORKSPACE_DIR/logs/navigation.pid"
-  echo "Navigation bringup launched (pid=$NAVIGATION_PID, logs: logs/navigation.log)"
+  for nav_node in /localPlanner /pathFollower /cmd_vel_bridge; do
+    wait_until "$NAVIGATION_READY_TIMEOUT" "node:$nav_node" node_ready "$nav_node" || startup_fail "navigation node missing: $nav_node"
+  done
+  wait_until "$NAVIGATION_READY_TIMEOUT" "finite:/navigation/state_estimation" odom_finite /navigation/state_estimation || startup_fail "navigation odometry invalid"
+  wait_until "$NAVIGATION_READY_TIMEOUT" "fresh:/navigation/state_estimation" topic_fresh /navigation/state_estimation || startup_fail "navigation odometry stale"
+  wait_until "$NAVIGATION_READY_TIMEOUT" "non-empty:/navigation/registered_scan" pointcloud_nonempty /navigation/registered_scan || startup_fail "navigation scan invalid"
+  wait_until "$NAVIGATION_READY_TIMEOUT" "fresh:/navigation/registered_scan" topic_fresh /navigation/registered_scan || startup_fail "navigation scan stale"
+  state_stable /navigation/enabled false 2 || startup_fail "bridge gate initial state is not closed"
+  if [ "$START_DSV" = "true" ]; then
+    for nav_node in /navigation/dsvplanner /navigation/graph_planner /navigation/exploration; do
+      wait_until "$NAVIGATION_READY_TIMEOUT" "node:$nav_node" node_ready "$nav_node" || startup_fail "DSV node missing: $nav_node"
+    done
+    wait_until "$NAVIGATION_READY_TIMEOUT" "service:/navigation/drrtPlannerSrv" service_ready /navigation/drrtPlannerSrv || startup_fail "DSV planner service missing"
+    wait_until "$NAV_WAIT_TERRAIN_TIMEOUT" "non-empty:/navigation/terrain_map" pointcloud_nonempty /navigation/terrain_map || startup_fail "terrain map invalid"
+  fi
+  stage_pass "mode=$NAV_MODE gate=closed"
 
-  sleep 6
-
-  echo "Setting default safe navigation state (enabled=false, start_exploring=false)..."
-  rostopic pub /navigation/request_enabled       std_msgs/Bool  "data: false" -1 2>/dev/null || true
-  rostopic pub /navigation/request_exploring     std_msgs/Bool  "data: false" -1 2>/dev/null || true
-  rostopic pub /navigation/request_fsm_state     std_msgs/Int8  "data: 2" -1 2>/dev/null || true
-  echo "Navigation nodes are running but motion is DISABLED."
-  echo "  Enable motion manually:"
-  echo "    rostopic pub /navigation/request_fsm_state std_msgs/Int8 \"data: 4\" -1"
-  echo "    rostopic pub /navigation/request_enabled std_msgs/Bool \"data: true\" -1"
-  echo "    rostopic pub /navigation/request_exploring std_msgs/Bool \"data: true\" -1"
-
+  stage_enter STAGE_11_EXPLORATION_STATE
   if [ "$NAV_AUTO_TROTTING" = "true" ]; then
-    sleep 2
-    echo "NAV_AUTO_TROTTING=true: requesting Trotting via supervisor..."
-    rostopic pub /navigation/request_fsm_state std_msgs/Int8 "data: 4" -1 2>/dev/null || true
+    request_state /navigation/request_fsm_state std_msgs/Int8 4 /fsm/state_cmd "$STATE_TRANSITION_TIMEOUT" || startup_fail "Trotting transition failed"
+    state_stable /fsm/state_cmd 4 3 || startup_fail "FSM=4 unstable"
   fi
   if [ "$NAV_AUTO_ENABLE" = "true" ]; then
-    sleep 2
-    echo "NAV_AUTO_ENABLE=true: requesting /navigation/enabled=true..."
-    rostopic pub /navigation/request_enabled std_msgs/Bool "data: true" -1 2>/dev/null || true
+    request_state /navigation/request_enabled std_msgs/Bool true /navigation/enabled "$STATE_TRANSITION_TIMEOUT" || startup_fail "navigation enable failed"
+    state_stable /navigation/enabled true 3 || startup_fail "navigation enabled state unstable"
   fi
   if [ "$NAV_AUTO_START_EXPLORATION" = "true" ]; then
-    sleep 2
-    echo "NAV_AUTO_START_EXPLORATION=true: requesting exploration start..."
-    rostopic pub /navigation/request_exploring std_msgs/Bool "data: true" -1 2>/dev/null || true
+    request_state /navigation/request_exploring std_msgs/Bool true /navigation/start_exploring "$STATE_TRANSITION_TIMEOUT" || startup_fail "exploration enable failed"
+    state_stable /navigation/start_exploring true 3 || startup_fail "exploration state unstable"
   fi
+  stage_pass "trotting=$NAV_AUTO_TROTTING enabled=$NAV_AUTO_ENABLE exploring=$NAV_AUTO_START_EXPLORATION"
 fi
 
-# ---------------------------------------------------------------------------
-# Exploration result recording — launched after navigation bringup.
-# Only active when ENABLE_EXPLORATION_RECORDING=1 AND navigation is enabled.
-# ---------------------------------------------------------------------------
-if [ "$ENABLE_EXPLORATION_RECORDING" = "true" ] && [ "$ENABLE_NAVIGATION" = "true" ]; then
-  echo ""
-  echo "=== Exploration Result Recording ==="
-  echo "  Run ID:        $EXPLORATION_RUN_ID"
-  echo "  Output dir:    $EXPLORATION_OUTPUT_DIR"
-  echo "  Max sim time:  $EXPLORATION_MAX_SIM_TIME s"
-  echo "  Quiet time:    $EXPLORATION_FINISH_QUIET_TIME s"
-  echo "  Map stable:    $EXPLORATION_MAP_STABLE_WAIT s"
-  echo ""
-
-  # The shell opens redirections before roslaunch starts, so the recorder
-  # cannot create its own log directory in time.  Create it explicitly to
-  # keep set -e from aborting an otherwise healthy navigation startup.
+if [ "$ENABLE_EXPLORATION_RECORDING" = "true" ]; then
+  [ "$ENABLE_NAVIGATION" = "true" ] || startup_fail "recording requires navigation"
+  stage_enter STAGE_12_RECORDER_READY
+  [ -d "$EXPLORATION_OUTPUT_DIR" ] || mkdir -p "$EXPLORATION_OUTPUT_DIR"
+  [ -w "$EXPLORATION_OUTPUT_DIR" ] || startup_fail "recorder output directory not writable"
+  wait_until "$RECORDER_READY_TIMEOUT" "finite recorder odometry" odom_finite /Odometry || startup_fail "recorder odometry missing"
+  wait_until "$RECORDER_READY_TIMEOUT" "registered cloud" pointcloud_nonempty /cloud_registered || startup_fail "recorder cloud missing"
   mkdir -p "$EXPLORATION_OUTPUT_DIR/logs"
-
-  # Minimal map validation flags (diagnostic only, not for production exploration)
   EXPLORATION_MINIMAL_MAP_VALIDATION="${EXPLORATION_MINIMAL_MAP_VALIDATION:-false}"
   EXPLORATION_STOP_AFTER_MAP_UPDATES="${EXPLORATION_STOP_AFTER_MAP_UPDATES:-3}"
-
-  roslaunch simenv_navigation_bringup exploration_recorder.launch \
-    output_dir:="$EXPLORATION_OUTPUT_DIR" \
-    run_id:="$EXPLORATION_RUN_ID" \
-    max_sim_time:="$EXPLORATION_MAX_SIM_TIME" \
-    finish_quiet_time:="$EXPLORATION_FINISH_QUIET_TIME" \
-    map_stable_wait:="$EXPLORATION_MAP_STABLE_WAIT" \
-    minimal_map_validation:="$EXPLORATION_MINIMAL_MAP_VALIDATION" \
+  setsid roslaunch simenv_navigation_bringup exploration_recorder.launch \
+    output_dir:="$EXPLORATION_OUTPUT_DIR" run_id:="$EXPLORATION_RUN_ID" \
+    max_sim_time:="$EXPLORATION_MAX_SIM_TIME" finish_quiet_time:="$EXPLORATION_FINISH_QUIET_TIME" \
+    map_stable_wait:="$EXPLORATION_MAP_STABLE_WAIT" minimal_map_validation:="$EXPLORATION_MINIMAL_MAP_VALIDATION" \
     stop_after_map_updates:="$EXPLORATION_STOP_AFTER_MAP_UPDATES" \
     > "$EXPLORATION_OUTPUT_DIR/logs/recorder.log" 2>&1 &
   RECORDER_PID=$!
   echo "$RECORDER_PID" > "$EXPLORATION_OUTPUT_DIR/logs/recorder.pid"
-  echo "Exploration recorder launched (pid=$RECORDER_PID)."
-elif [ "$ENABLE_EXPLORATION_RECORDING" = "true" ] && [ "$ENABLE_NAVIGATION" != "true" ]; then
-  echo "[WARN] Exploration recording requested but navigation is not enabled." >&2
-  echo "[WARN] Set ENABLE_NAVIGATION=1 to use recording." >&2
+  wait_until "$RECORDER_READY_TIMEOUT" "recorder process" tracked_process_alive "$RECORDER_PID" recorder || startup_fail "recorder exited"
+  stage_pass "mode=$NAV_MODE"
 fi
 
-# ---------------------------------------------------------------------------
-# Post-startup summary
-# ---------------------------------------------------------------------------
-echo "Simulation startup command completed."
-if [ "$ENABLE_NAVIGATION" = "true" ]; then
-  echo ""
-  echo "  ---- Navigation Control ----"
-  echo "  Nodes: DSV=$START_DSV  FALCO=true  Bridge=true"
-  echo "  Requested state: enabled=$NAV_AUTO_ENABLE  trotting=$NAV_AUTO_TROTTING  exploring=$NAV_AUTO_START_EXPLORATION"
-  echo ""
-  echo "  To enable exploration:"
-  echo "    rostopic pub /navigation/request_fsm_state std_msgs/Int8 \"data: 4\" -1"
-  echo "    rostopic pub /navigation/request_enabled std_msgs/Bool \"data: true\" -1"
-  echo "    rostopic pub /navigation/request_exploring std_msgs/Bool \"data: true\" -1"
-  echo ""
-  echo "  To stop motion immediately:"
-  echo "    rostopic pub /navigation/request_enabled std_msgs/Bool \"data: false\" -1"
-else
-  echo "Publish geometry_msgs/Twist to /cmd_vel for velocity control (Trotting/RL mode only;"
-  echo "  Trotting and RL require a Torch-enabled build: set UNITREE_ENABLE_TORCH_POLICY=ON)."
-  echo "Use rostopic to switch FSM states:"
-  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 2\"  # FixedStand"
-  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 4\"  # Trotting   (needs Torch)"
-  echo "  rostopic pub /fsm/state_cmd std_msgs/Int8 \"data: 6\"  # RL         (needs Torch)"
-fi
-
-# Keep the script alive so the user can read the summary and press Ctrl-C to
-# stop all processes.  The controller and rviz run in their own terminals.
-echo ""
-echo "=============================================="
-echo "  auto.sh startup complete."
-echo "  The controller and rviz are in separate ${TERMINAL_BACKEND} sessions."
-if [ "$TERMINAL_BACKEND" = "tmux" ]; then
-  echo "  Reattach if a GUI terminal closes: tmux attach-session -t ${TMUX_SESSION_PREFIX}-junior_ctrl"
-  echo "                                 tmux attach-session -t ${TMUX_SESSION_PREFIX}-rviz"
-fi
-echo "  Press Ctrl-C in THIS terminal to stop all ROS processes."
-echo "=============================================="
-
-# ── GAZEBO_FINAL_UNPAUSE: ensure simulation clock is running ──
-gazebo_final_unpause || true
-
-# Cleanup trap: kill ROS processes when the user presses Ctrl-C.
-cleanup() {
-  echo ""
-  echo "Shutting down..."
-
-  # ── Disable navigation motion before killing nodes ──
-  if [ "${ENABLE_NAVIGATION:-false}" = "true" ]; then
-    rostopic pub /navigation/request_enabled std_msgs/Bool "data: false" -1 2>/dev/null || true
-    sleep 0.5
-  fi
-
-  # ── Navigation bringup ──
-  pkill -9 -f "roslaunch.*simenv_navigation_bringup" 2>/dev/null || true
-  pkill -9 -f "nav_state_supervisor"  2>/dev/null || true
-  pkill -9 -f "cmd_vel_bridge"         2>/dev/null || true
-  pkill -9 -f "localPlanner"           2>/dev/null || true
-  pkill -9 -f "pathFollower"           2>/dev/null || true
-  pkill -9 -x "exploration"           2>/dev/null || true
-  pkill -9 -f "dsvplanner"            2>/dev/null || true
-  pkill -9 -f "graph_planner"         2>/dev/null || true
-  pkill -9 -f "navigation_boundary"   2>/dev/null || true
-  pkill -9 -f "registered_cloud_to_terrain_map" 2>/dev/null || true
-  pkill -9 -f "navigation_registered_scan_relay" 2>/dev/null || true
-  pkill -9 -f "navigation_state_estimation_relay" 2>/dev/null || true
-
-  # ── Gazebo and core infrastructure ──
-  pkill -9 -f "gzserver"     2>/dev/null || true
-  pkill -9 -f "gzclient"     2>/dev/null || true
-  pkill -9 -f "gazebo"       2>/dev/null || true
-  pkill -9 -f "rosmaster"    2>/dev/null || true
-  pkill -9 -f "rosout"       2>/dev/null || true
-  pkill -9 -f "junior_ctrl"  2>/dev/null || true
-  pkill -9 -f "fastlio_mapping" 2>/dev/null || true
-  pkill -9 -f "laserMapping" 2>/dev/null || true
-  pkill -9 -f "scan_to_pointcloud2" 2>/dev/null || true
-  pkill -9 -f "building_generator_classic_control" 2>/dev/null || true
-  pkill -9 -f "rviz"         2>/dev/null || true
-  cleanup_tmux_sessions
-  echo "Cleanup complete."
-  exit 0
-}
-trap cleanup INT TERM
-
-# Wait indefinitely — the user stops the simulation with Ctrl-C.
+stage_enter RUNTIME_ACTIVE
+stage_pass
+echo "Simulation startup command completed. Press Ctrl-C for safe shutdown."
 while true; do
   sleep 1
 done
