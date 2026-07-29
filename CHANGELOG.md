@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-29 — Exploration trajectory frame and route metric consistency
+
+- **fix(recording)**: Record trajectory poses in the `map` frame, transform
+  non-map inputs through TF, and count/drop samples when TF is unavailable
+  instead of mixing unconverted frames into map artifacts.
+- **fix(visualization)**: Share one finite/frame/time/speed/step route policy
+  between recorder and renderer, expose rejection counters, and suppress unsafe
+  legacy non-map trajectory overlays.
+- **test(recording)**: Add unit and offline fixture coverage for frame
+  normalization, transform drops, route reject reasons, and recorder/renderer
+  metric equivalence.
+
 ## 2026-07-28 — DSV single-floor goal bootstrap and liveness repair
 
 - **fix(navigation)**: Moved exploration start ownership to the supervisor,

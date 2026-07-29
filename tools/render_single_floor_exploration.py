@@ -31,6 +31,29 @@ import os
 import sys
 from typing import Any, Optional
 
+
+try:
+    from simenv_navigation_bridge.exploration_metrics import (
+        DEFAULT_ROUTE_MAX_SPEED_MPS,
+        DEFAULT_ROUTE_MAX_STEP_M,
+        DEFAULT_TARGET_FRAME,
+        RoutePolicy,
+        compute_route_length,
+    )
+except ModuleNotFoundError:
+    # Support direct execution from an unbuilt source checkout.
+    _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    _BRIDGE_SRC = os.path.join(
+        _REPO_ROOT, "src", "navigation", "simenv_navigation_bridge", "src")
+    sys.path.insert(0, _BRIDGE_SRC)
+    from simenv_navigation_bridge.exploration_metrics import (
+        DEFAULT_ROUTE_MAX_SPEED_MPS,
+        DEFAULT_ROUTE_MAX_STEP_M,
+        DEFAULT_TARGET_FRAME,
+        RoutePolicy,
+        compute_route_length,
+    )
+
 # ---------------------------------------------------------------------------
 # Coordinate transform: world (truth) ⇄ map (odom) frame
 # ---------------------------------------------------------------------------
@@ -111,34 +134,83 @@ def load_layout_metadata(path: str):
 def load_trajectory(run_dir: str):
     """Load robot trajectory from route/trajectory.csv.
 
-    Returns (points, meta): points is list of (x, y, sim_time, valid),
-    meta is a dict with summary info.
+    Returns (points, meta). Non-map legacy rows remain available for diagnostics,
+    but ``meta['overlay_allowed']`` is false so they are not plotted on a map.
     """
     csv_path = os.path.join(run_dir, "route", "trajectory.csv")
     points = []
     meta = {"point_count": 0, "valid_point_count": 0,
-            "length_m": 0.0, "nan_detected": False}
+            "length_m": 0.0, "nan_detected": False,
+            "overlay_allowed": False}
     if not os.path.isfile(csv_path):
         meta["error"] = f"trajectory.csv not found: {csv_path}"
         return points, meta
 
+    samples = []
+    frames = set()
     with open(csv_path, "r") as fh:
         reader = csv.DictReader(fh)
-        prev_x = prev_y = None
+        meta["columns"] = list(reader.fieldnames or [])
         for row in reader:
             x = _safe_float(row.get("x"))
             y = _safe_float(row.get("y"))
+            z = _safe_float(row.get("z"), 0.0)
             t = _safe_float(row.get("sim_time"))
-            valid = math.isfinite(x) and math.isfinite(y)
+            frame_id = str(row.get("frame_id", "")).strip()
+            valid = all(math.isfinite(value) for value in (x, y, z, t))
             meta["point_count"] += 1
+            samples.append({
+                "x": x, "y": y, "z": z, "sim_time": t,
+                "frame_id": frame_id,
+            })
             if not valid:
                 meta["nan_detected"] = True
                 continue
             meta["valid_point_count"] += 1
-            if prev_x is not None:
-                meta["length_m"] += math.hypot(x - prev_x, y - prev_y)
-            prev_x, prev_y = x, y
+            frames.add(frame_id or "<missing>")
             points.append((x, y, t, valid))
+
+    config = load_recorder_config(run_dir) or {}
+    target_frame = str(config.get(
+        "trajectory_target_frame", DEFAULT_TARGET_FRAME)).strip()
+    policy = RoutePolicy(
+        target_frame=target_frame,
+        max_speed_mps=float(config.get(
+            "route_max_speed_mps", DEFAULT_ROUTE_MAX_SPEED_MPS)),
+        max_step_m=float(config.get(
+            "route_max_step_m", DEFAULT_ROUTE_MAX_STEP_M)),
+    )
+    computed = compute_route_length(samples, policy).to_dict()
+    metrics_path = os.path.join(run_dir, "route", "metrics.yaml")
+    authoritative = None
+    if os.path.isfile(metrics_path):
+        loaded = _load_yaml(metrics_path)
+        required = {
+            "route_length_m", "route_total_segments",
+            "route_accepted_segments", "route_rejected_segments",
+            "route_reject_reasons",
+        }
+        if isinstance(loaded, dict) and required.issubset(loaded):
+            authoritative = loaded
+
+    route_metrics = authoritative or computed
+    meta.update(route_metrics)
+    meta["length_m"] = float(route_metrics["route_length_m"])
+    meta["route_metrics_source"] = (
+        "route/metrics.yaml" if authoritative is not None
+        else "shared_policy_recalculation")
+    meta["route_max_speed_mps"] = policy.max_speed_mps
+    meta["route_max_step_m"] = policy.max_step_m
+    meta["target_frame"] = policy.target_frame
+    meta["frames"] = sorted(frames)
+    meta["overlay_allowed"] = frames == {policy.target_frame}
+    if not meta["overlay_allowed"]:
+        meta["frame_warning"] = (
+            "TRAJECTORY_FRAME_MISMATCH: trajectory frames "
+            f"{sorted(frames)} cannot be safely overlaid on "
+            f"{policy.target_frame}; trajectory layer suppressed"
+        )
+        print(f"[render] WARNING: {meta['frame_warning']}")
 
     # Supplement from trajectory.yaml if present
     yaml_path = os.path.join(run_dir, "route", "trajectory.yaml")
@@ -514,7 +586,7 @@ def render_overview(run_dir: str, layout: dict, spawn: tuple,
     # ----------------------------------------------------------------
     # Layer 3: ROBOT TRAJECTORY
     # ----------------------------------------------------------------
-    if traj_pts:
+    if traj_pts and traj_meta.get("overlay_allowed", False):
         xs = [p[0] for p in traj_pts]
         ys = [p[1] for p in traj_pts]
         ax.plot(xs, ys, "-", color="royalblue", linewidth=1.0, alpha=0.8,
@@ -528,7 +600,9 @@ def render_overview(run_dir: str, layout: dict, spawn: tuple,
                 markeredgecolor="darkred", markeredgewidth=1.5,
                 zorder=7, label="END")
     else:
-        ax.text(0.5, 0.5, "NO TRAJECTORY DATA", transform=ax.transAxes,
+        trajectory_message = traj_meta.get(
+            "frame_warning", "NO TRAJECTORY DATA")
+        ax.text(0.5, 0.5, trajectory_message, transform=ax.transAxes,
                 ha="center", va="center", fontsize=14, color="gray", alpha=0.5)
 
     # ----------------------------------------------------------------
@@ -582,6 +656,14 @@ def render_overview(run_dir: str, layout: dict, spawn: tuple,
         subtitle_parts.append(
             f"Route: {traj_meta.get('length_m', 0):.1f}m "
             f"({traj_meta['valid_point_count']} pts)")
+        subtitle_parts.append(
+            "Segments: "
+            f"{traj_meta.get('route_accepted_segments', 0)} accepted / "
+            f"{traj_meta.get('route_rejected_segments', 0)} rejected")
+    if traj_meta.get("route_rejected_segments", 0) > 0:
+        subtitle_parts.append(
+            "Trajectory quality warning: "
+            f"{traj_meta['route_rejected_segments']} route segments rejected")
     if goal_meta.get("total", 0) > 0:
         subtitle_parts.append(
             f"Goals: {goal_meta['reached']}/{goal_meta['total']} reached")
@@ -652,11 +734,24 @@ def render_overview(run_dir: str, layout: dict, spawn: tuple,
             },
         },
         "trajectory": {
-            "source": "route/trajectory.csv (/Odometry topic)",
+            "source": "route/trajectory.csv",
             "point_count": traj_meta.get("point_count", 0),
             "valid_point_count": traj_meta.get("valid_point_count", 0),
             "length_m": round(traj_meta.get("length_m", 0.0), 3),
             "nan_detected": traj_meta.get("nan_detected", False),
+            "frames": traj_meta.get("frames", []),
+            "target_frame": traj_meta.get("target_frame", DEFAULT_TARGET_FRAME),
+            "overlay_allowed": traj_meta.get("overlay_allowed", False),
+            "frame_warning": traj_meta.get("frame_warning"),
+            "route_metrics_source": traj_meta.get("route_metrics_source"),
+            "route_total_segments": traj_meta.get("route_total_segments", 0),
+            "route_accepted_segments": traj_meta.get(
+                "route_accepted_segments", 0),
+            "route_rejected_segments": traj_meta.get(
+                "route_rejected_segments", 0),
+            "route_reject_reasons": traj_meta.get("route_reject_reasons", {}),
+            "route_max_speed_mps": traj_meta.get("route_max_speed_mps"),
+            "route_max_step_m": traj_meta.get("route_max_step_m"),
         },
         "goals": {
             "total": goal_meta.get("total", 0),

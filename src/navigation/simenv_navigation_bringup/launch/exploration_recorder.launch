@@ -14,6 +14,12 @@
   <arg name="map_stable_wait" default="5.0"/>
   <arg name="minimal_map_validation" default="false"/>
   <arg name="stop_after_map_updates" default="3"/>
+  <arg name="trajectory_pose_topic" default="/navigation/state_estimation"/>
+  <arg name="trajectory_target_frame" default="map"/>
+  <!-- 2.0 m/s is above the 0.8 m/s planner limit but below known divergence. -->
+  <arg name="route_max_speed_mps" default="2.0"/>
+  <arg name="route_max_step_m" default="2.0"/>
+  <arg name="transform_timeout" default="0.05"/>
 
   <!-- 2D map projector: terrain point cloud -> OccupancyGrid -->
   <node pkg="simenv_navigation_bridge" type="terrain_to_2d_map.py"
@@ -41,7 +47,11 @@
     <param name="max_sim_time" value="$(arg max_sim_time)"/>
     <param name="finish_quiet_time" value="$(arg finish_quiet_time)"/>
     <param name="map_stable_wait" value="$(arg map_stable_wait)"/>
-    <param name="odometry_topic" value="/Odometry"/>
+    <param name="trajectory_pose_topic" value="$(arg trajectory_pose_topic)"/>
+    <param name="trajectory_target_frame" value="$(arg trajectory_target_frame)"/>
+    <param name="route_max_speed_mps" value="$(arg route_max_speed_mps)"/>
+    <param name="route_max_step_m" value="$(arg route_max_step_m)"/>
+    <param name="transform_timeout" value="$(arg transform_timeout)"/>
     <param name="goal_topic" value="/navigation/dsv/next_goal"/>
     <param name="map_topic" value="/navigation/occupancy_grid_2d"/>
     <param name="cmd_vel_topic" value="/cmd_vel"/>
