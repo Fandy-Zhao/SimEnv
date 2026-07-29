@@ -29,11 +29,24 @@ from datetime import datetime, timezone
 
 import numpy as np
 import rospy
+import tf2_geometry_msgs  # noqa: F401 - registers PoseStamped with tf2
+import tf2_ros
 import yaml
-from geometry_msgs.msg import PointStamped, Twist
+from geometry_msgs.msg import PointStamped, PoseStamped, Twist
 from nav_msgs.msg import Odometry, OccupancyGrid, Path
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import Bool, Float32, Int8
+
+from simenv_navigation_bridge.exploration_metrics import (
+    DEFAULT_ROUTE_MAX_SPEED_MPS,
+    DEFAULT_ROUTE_MAX_STEP_M,
+    DEFAULT_TARGET_FRAME,
+    REJECT_SPEED_EXCEEDED,
+    REJECT_STEP_EXCEEDED,
+    RouteAccumulator,
+    RoutePolicy,
+    compute_route_length,
+)
 
 try:
     import matplotlib
@@ -103,7 +116,34 @@ class ExplorationResultRecorder:
 
         # Topic names (configurable via ROS params)
         self.clock_topic = rospy.get_param("~clock_topic", "/clock")
-        self.odometry_topic = rospy.get_param("~odometry_topic", "/Odometry")
+        legacy_odometry_topic = str(
+            rospy.get_param("~odometry_topic", "")).strip()
+        configured_trajectory_topic = str(
+            rospy.get_param("~trajectory_pose_topic", "")).strip()
+        self.trajectory_pose_topic = (
+            configured_trajectory_topic
+            or legacy_odometry_topic
+            or "/navigation/state_estimation"
+        )
+        # Backward-compatible alias for existing reports and direct callers.
+        self.odometry_topic = self.trajectory_pose_topic
+        if legacy_odometry_topic and not configured_trajectory_topic:
+            rospy.logwarn(
+                "[Recorder] ~odometry_topic is deprecated; use "
+                "~trajectory_pose_topic instead")
+        self.trajectory_target_frame = str(rospy.get_param(
+            "~trajectory_target_frame", DEFAULT_TARGET_FRAME)).strip()
+        self.route_max_speed_mps = float(rospy.get_param(
+            "~route_max_speed_mps", DEFAULT_ROUTE_MAX_SPEED_MPS))
+        self.route_max_step_m = float(rospy.get_param(
+            "~route_max_step_m", DEFAULT_ROUTE_MAX_STEP_M))
+        self.transform_timeout = float(rospy.get_param(
+            "~transform_timeout", 0.05))
+        self._route_policy = RoutePolicy(
+            target_frame=self.trajectory_target_frame,
+            max_speed_mps=self.route_max_speed_mps,
+            max_step_m=self.route_max_step_m,
+        )
         self.goal_topic = rospy.get_param("~goal_topic", "/navigation/dsv/next_goal")
         self.map_topic = rospy.get_param("~map_topic", "/navigation/dsv/occupancy_grid_map")
         self.octomap_binary_topic = rospy.get_param("~octomap_binary_topic",
@@ -151,9 +191,15 @@ class ExplorationResultRecorder:
         self._odom_nan_detected = False
         self._odom_jump_detected = False
         self._last_position = None
-        self._total_path_length_2d = 0.0
+        self._route_accumulator = RouteAccumulator(self._route_policy)
+        self._final_route_metrics = None
+        self._trajectory_transform_drop_count = 0
+        self._trajectory_source_frames = set()
         self._robot_fall_detected = False
         self._robot_height_history = deque(maxlen=50)
+
+        self._tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(30.0))
+        self._tf_listener = tf2_ros.TransformListener(self._tf_buffer)
 
         # Goals
         self._raw_goal_count = 0
@@ -229,7 +275,7 @@ class ExplorationResultRecorder:
         self._subs = []
         self._subs.append(rospy.Subscriber(self.clock_topic, rospy.AnyMsg,
                                             self._clock_cb, queue_size=10))
-        self._subs.append(rospy.Subscriber(self.odometry_topic, Odometry,
+        self._subs.append(rospy.Subscriber(self.trajectory_pose_topic, Odometry,
                                             self._odom_cb, queue_size=10))
         self._subs.append(rospy.Subscriber(self.goal_topic, PointStamped,
                                             self._goal_cb, queue_size=20))
@@ -245,8 +291,6 @@ class ExplorationResultRecorder:
                                             self._enabled_cb, queue_size=5))
         self._subs.append(rospy.Subscriber(self.path_topic, Path,
                                             self._path_cb, queue_size=5))
-        self._subs.append(rospy.Subscriber(self.odometry_topic, Odometry,
-                                            self._odom_health_cb, queue_size=10))
         self._subs.append(rospy.Subscriber(self.cloud_registered_topic, PointCloud2,
                                             self._cloud_cb, queue_size=3))
 
@@ -349,16 +393,60 @@ class ExplorationResultRecorder:
             self._current_sim_time = sim_t
             self._sim_clock_history.append(sim_t.to_sec())
 
+    def _normalize_trajectory_pose(self, msg):
+        """Return a target-frame PoseStamped, or ``None`` when TF is missing."""
+        source_frame = str(msg.header.frame_id).strip()
+        with self._lock:
+            self._trajectory_source_frames.add(source_frame or "<empty>")
+        if not source_frame:
+            with self._lock:
+                self._trajectory_transform_drop_count += 1
+            rospy.logwarn_throttle(
+                5.0, "[Recorder] Dropping trajectory pose with empty frame_id")
+            return None, False, source_frame
+
+        source_pose = PoseStamped()
+        source_pose.header = msg.header
+        source_pose.pose = msg.pose.pose
+        if source_frame == self.trajectory_target_frame:
+            source_pose.header.frame_id = self.trajectory_target_frame
+            return source_pose, False, source_frame
+
+        try:
+            target_pose = self._tf_buffer.transform(
+                source_pose,
+                self.trajectory_target_frame,
+                rospy.Duration(self.transform_timeout),
+            )
+        except (tf2_ros.LookupException, tf2_ros.ConnectivityException,
+                tf2_ros.ExtrapolationException, tf2_ros.TransformException) as exc:
+            with self._lock:
+                self._trajectory_transform_drop_count += 1
+            rospy.logwarn_throttle(
+                5.0,
+                "[Recorder] Dropping trajectory pose: cannot transform %s -> %s: %s",
+                source_frame, self.trajectory_target_frame, exc)
+            return None, False, source_frame
+
+        target_pose.header.frame_id = self.trajectory_target_frame
+        return target_pose, True, source_frame
+
     def _odom_cb(self, msg):
-        """Record odometry for trajectory."""
+        """Record one pose after enforcing the configured target frame."""
         with self._lock:
             if not self._sim_time_started:
                 return
 
+        normalized, transform_applied, source_frame = (
+            self._normalize_trajectory_pose(msg))
+        if normalized is None:
+            return
+
+        with self._lock:
             sim_t = msg.header.stamp
             w = wall_now()
-            pos = msg.pose.pose.position
-            orient = msg.pose.pose.orientation
+            pos = normalized.pose.position
+            orient = normalized.pose.orientation
             vel = msg.twist.twist.linear
 
             # NaN/Inf check
@@ -379,22 +467,6 @@ class ExplorationResultRecorder:
             # Compute roll/pitch from quaternion
             roll, pitch, yaw = self._quat_to_rpy(orient)
 
-            # Path length
-            if self._last_position is not None:
-                dx = pos.x - self._last_position[0]
-                dy = pos.y - self._last_position[1]
-                dist = math.sqrt(dx * dx + dy * dy)
-                if dist < 2.0:  # Ignore teleportation jumps
-                    self._total_path_length_2d += dist
-                else:
-                    self._odom_jump_detected = True
-                    self._health_events.append({
-                        "wall_time": wall_iso(w),
-                        "sim_time": sim_t.to_sec(),
-                        "event": "ODOM_JUMP",
-                        "detail": f"Position jump: {dist:.3f}m"
-                    })
-
             self._last_position = (pos.x, pos.y, pos.z)
 
             sample = {
@@ -410,17 +482,33 @@ class ExplorationResultRecorder:
                 "angular_velocity_x": msg.twist.twist.angular.x,
                 "angular_velocity_y": msg.twist.twist.angular.y,
                 "angular_velocity_z": msg.twist.twist.angular.z,
-                "frame_id": msg.header.frame_id,
+                "frame_id": self.trajectory_target_frame,
                 "child_frame_id": msg.child_frame_id,
+                "source_frame_id": source_frame,
+                "target_frame_id": self.trajectory_target_frame,
+                "source_topic": self.trajectory_pose_topic,
+                "transform_applied": transform_applied,
             }
+            evaluation = self._route_accumulator.add(sample)
+            if (evaluation is not None and not evaluation.accepted
+                    and evaluation.reject_reason in
+                    (REJECT_SPEED_EXCEEDED, REJECT_STEP_EXCEEDED)):
+                self._odom_jump_detected = True
+                self._health_events.append({
+                    "wall_time": wall_iso(w),
+                    "sim_time": sim_t.to_sec(),
+                    "event": "ODOM_ROUTE_SEGMENT_REJECTED",
+                    "detail": (
+                        f"reason={evaluation.reject_reason} "
+                        f"distance={evaluation.distance_m:.3f}m "
+                        f"dt={evaluation.dt:.3f}s "
+                        f"speed={evaluation.speed_mps:.3f}m/s"
+                    ),
+                })
             self._odom_samples.append(sample)
             self._odom_count += 1
             self._last_odom_sim_time = sim_t
             self._last_odom_wall_time = w
-
-    def _odom_health_cb(self, msg):
-        """Lightweight callback for health check (separate from trajectory recording)."""
-        pass  # Health checks done in _health_check using shared state
 
     def _goal_cb(self, msg):
         """Record DSV next_goal."""
@@ -663,16 +751,21 @@ class ExplorationResultRecorder:
     def _status_log(self, _event):
         """Periodic status report."""
         with self._lock:
+            route_metrics = self._route_accumulator.metrics
             rospy.loginfo(
                 "[Recorder] Status: sim=%.1f odom=%d goals=%d(raw)/%d(unq) "
-                "map=%d octo=%d path=%.1fm noeff=%d started=%s fsm=%d fall=%s",
+                "map=%d octo=%d path=%.1fm route_segments=%d/%d "
+                "tf_drops=%d noeff=%d started=%s fsm=%d fall=%s",
                 self._current_sim_time.to_sec(),
                 self._odom_count,
                 self._raw_goal_count,
                 len(self._unique_goals),
                 self._map_count,
                 len(self._octomap_node_count_series),
-                self._total_path_length_2d,
+                route_metrics.route_length_m,
+                route_metrics.route_accepted_segments,
+                route_metrics.route_rejected_segments,
+                self._trajectory_transform_drop_count,
                 self._noeff_count,
                 self._exploration_started,
                 self._fsm_state,
@@ -933,17 +1026,13 @@ class ExplorationResultRecorder:
             rospy.logwarn("[Recorder] No trajectory data to save.")
             return
 
-        # Remove exact time duplicates
-        seen_times = set()
-        deduped = []
-        for s in samples:
-            t = s["sim_time"]
-            if t not in seen_times:
-                seen_times.add(t)
-                deduped.append(s)
-
-        # Sort by sim time
-        deduped.sort(key=lambda s: s["sim_time"])
+        # Preserve callback order, including duplicate or backward timestamps.
+        # The shared policy rejects those segments and reports why; silently
+        # sorting/deduplicating here would erase the diagnostic evidence.
+        saved_samples = samples
+        route_metrics = compute_route_length(saved_samples, self._route_policy)
+        with self._lock:
+            self._final_route_metrics = route_metrics
 
         csv_path = os.path.join(self.output_dir, "route", "trajectory.csv")
         fieldnames = [
@@ -954,30 +1043,53 @@ class ExplorationResultRecorder:
             "linear_velocity_x", "linear_velocity_y", "linear_velocity_z",
             "angular_velocity_x", "angular_velocity_y", "angular_velocity_z",
             "frame_id", "child_frame_id",
+            "source_frame_id", "target_frame_id", "source_topic",
+            "transform_applied",
         ]
         with open(csv_path, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerows(deduped)
+            writer.writerows(saved_samples)
 
         # YAML summary
         yaml_path = os.path.join(self.output_dir, "route", "trajectory.yaml")
         with open(yaml_path, "w") as f:
             yaml.dump({
-                "source_topic": self.odometry_topic,
-                "total_points": len(deduped),
+                "source_topic": self.trajectory_pose_topic,
+                "total_points": len(saved_samples),
                 "total_points_raw": len(samples),
-                "trajectory_length_m_2d": self._total_path_length_2d,
+                "trajectory_length_m_2d": route_metrics.route_length_m,
+                **route_metrics.to_dict(),
+                **self._route_policy.to_dict(),
                 "has_nan": self._odom_nan_detected,
                 "has_jump": self._odom_jump_detected,
-                "frame_id": deduped[0]["frame_id"] if deduped else "",
-                "child_frame_id": deduped[0]["child_frame_id"] if deduped else "",
-                "start_sim_time": deduped[0]["sim_time"] if deduped else 0,
-                "end_sim_time": deduped[-1]["sim_time"] if deduped else 0,
+                "frame_id": self.trajectory_target_frame,
+                "child_frame_id": (saved_samples[0]["child_frame_id"]
+                                   if saved_samples else ""),
+                "source_frames": sorted(self._trajectory_source_frames),
+                "transform_drop_count": self._trajectory_transform_drop_count,
+                "start_sim_time": (saved_samples[0]["sim_time"]
+                                   if saved_samples else 0),
+                "end_sim_time": (saved_samples[-1]["sim_time"]
+                                 if saved_samples else 0),
             }, f)
 
-        rospy.loginfo("[Recorder] Trajectory saved: %d points, %.1fm",
-                       len(deduped), self._total_path_length_2d)
+        metrics_path = os.path.join(self.output_dir, "route", "metrics.yaml")
+        with open(metrics_path, "w") as f:
+            yaml.dump({
+                **route_metrics.to_dict(),
+                **self._route_policy.to_dict(),
+                "trajectory_source_topic": self.trajectory_pose_topic,
+                "trajectory_source_frames": sorted(self._trajectory_source_frames),
+                "trajectory_target_frame": self.trajectory_target_frame,
+                "transform_drop_count": self._trajectory_transform_drop_count,
+            }, f)
+
+        rospy.loginfo(
+            "[Recorder] Trajectory saved: %d points, %.1fm, segments=%d/%d",
+            len(saved_samples), route_metrics.route_length_m,
+            route_metrics.route_accepted_segments,
+            route_metrics.route_rejected_segments)
 
     def _save_goals(self):
         """Save DSV goals as CSV and YAML."""
@@ -1191,9 +1303,16 @@ class ExplorationResultRecorder:
             "map_growth_threshold": self.map_growth_threshold,
             "robot_motion_threshold": self.robot_motion_threshold,
             "odom_timeout": self.odom_timeout,
+            "trajectory_target_frame": self.trajectory_target_frame,
+            "route_max_speed_mps": self.route_max_speed_mps,
+            "route_max_step_m": self.route_max_step_m,
+            "transform_timeout": self.transform_timeout,
+            "trajectory_transform_drop_count": self._trajectory_transform_drop_count,
+            "trajectory_source_frames": sorted(self._trajectory_source_frames),
             "topic_config": {
                 "clock": self.clock_topic,
-                "odometry": self.odometry_topic,
+                "odometry": self.trajectory_pose_topic,
+                "trajectory_pose": self.trajectory_pose_topic,
                 "goal": self.goal_topic,
                 "map": self.map_topic,
                 "octomap_binary": self.octomap_binary_topic,
@@ -1278,6 +1397,12 @@ class ExplorationResultRecorder:
         avg_rtf = duration_sim / duration_wall if duration_wall > 0 else 0.0
 
         verdict = self._determine_verdict()
+        with self._lock:
+            route_metrics = (self._final_route_metrics
+                             or self._route_accumulator.metrics)
+        reject_reasons = ", ".join(
+            f"{reason}={count}"
+            for reason, count in route_metrics.route_reject_reasons.items())
 
         lines = [
             f"# Exploration Run Summary",
@@ -1301,7 +1426,8 @@ class ExplorationResultRecorder:
             f"",
             f"## Topics",
             f"- **Map topic**: {self.map_topic}",
-            f"- **Odometry topic**: {self.odometry_topic}",
+            f"- **Trajectory pose topic**: {self.trajectory_pose_topic}",
+            f"- **Trajectory target frame**: {self.trajectory_target_frame}",
             f"- **Goal topic**: {self.goal_topic}",
             f"",
             f"## Map",
@@ -1310,7 +1436,17 @@ class ExplorationResultRecorder:
             f"",
             f"## Trajectory",
             f"- **Total points**: {self._odom_count}",
-            f"- **Path length (2D)**: {self._total_path_length_2d:.2f} m",
+            f"- **Route length (2D)**: {route_metrics.route_length_m:.2f} m",
+            f"- **Route policy**: finite map-frame poses, increasing time, "
+            f"speed <= {self.route_max_speed_mps:.2f} m/s, "
+            f"step <= {self.route_max_step_m:.2f} m",
+            f"- **Route total segments**: {route_metrics.route_total_segments}",
+            f"- **Route accepted segments**: {route_metrics.route_accepted_segments}",
+            f"- **Route rejected segments**: {route_metrics.route_rejected_segments}",
+            f"- **Route reject reasons**: {reject_reasons}",
+            f"- **Trajectory source frames**: "
+            f"{', '.join(sorted(self._trajectory_source_frames)) or 'none'}",
+            f"- **Transform drops**: {self._trajectory_transform_drop_count}",
             f"",
             f"## Goals",
             f"- **Raw goal messages**: {self._raw_goal_count}",

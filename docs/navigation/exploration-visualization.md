@@ -12,7 +12,7 @@ The renderer produces one composite plot with four core layers:
 |-------|--------|-------------|
 | **Ground Truth Layout** | `layout_metadata.json` | Building walls, rooms, lobby, corridor, stairs, elevator, furniture — in the Gazebo world frame, transformed to the map frame |
 | **Explored Area** | `map/occupancy_grid.csv` | Known (free + occupied) cells overlaid as a semi-transparent mask; unknown areas shown in gray |
-| **Robot Trajectory** | `route/trajectory.csv` | Full `/Odometry` path with START (green circle) and END (red square) markers |
+| **Robot Trajectory** | `route/trajectory.csv` | Map-frame trajectory with START (green circle) and END (red square) markers |
 | **DSV Goals** | `goals/goals_unique.csv` | Reached goals (green circles) and unreached goals (red X marks), each numbered |
 
 **Important**: The ground truth layout is used **only** for offline visualization
@@ -72,6 +72,23 @@ Default values: `spawn_x=0.0`, `spawn_y=2.3`, `spawn_yaw=π/2 (90°)`.
 
 Override with `--spawn-x`, `--spawn-y`, `--spawn-yaw-deg` if the scene
 configuration differs.
+
+Recorder trajectory poses default to `/navigation/state_estimation` and must be
+stored in `map`. A non-map input is transformed through TF before it enters the
+trajectory buffer; samples are dropped and counted when that transform is not
+available. Legacy `camera_init` CSV files are diagnosed but are not silently
+overlaid on map, goal, or building layers.
+
+## Route Metrics
+
+The recorder and renderer share one segment policy. A segment contributes to
+route length only when both poses are finite and in `map`, simulation time is
+strictly increasing, XY speed is at most 2.0 m/s, and XY step is at most 2.0 m.
+The speed limit intentionally exceeds the current 0.8 m/s planner limit to
+allow estimator noise while rejecting known high-speed divergence. Each run
+stores accepted/rejected counts and reject reasons in `route/metrics.yaml`.
+The renderer uses that file when present and otherwise applies the same shared
+implementation to legacy CSV data.
 
 ## Coverage Ratio
 
