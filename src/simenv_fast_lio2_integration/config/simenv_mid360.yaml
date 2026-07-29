@@ -60,19 +60,37 @@ mapping:
   # The 45° tilt is applied exactly ONCE: FAST-LIO2 maps LiDAR-frame points to
   # the body frame. Do NOT add any compensating rotation in the bridge.
 
-  # Output
-  publish:
-    path_en: true
-    scan_publish_en: true
-    dense_publish_en: true
-    scan_bodyframe_pub_en: true
+# ── Root-level parameters (laserMapping.cpp reads these from the root
+#    namespace — using nh.param("key", …) without a "mapping/" prefix).
+#    Values correspond to the SimEnv Mid-360 simulation.
+# ──────────────────────────────────────────────────────────────────────
 
-  # Map saving
-  pcd_save:
-    pcd_save_en: true
-    interval: -1                # save at end only
+# Voxel down-sampling leaf sizes (metres)
+filter_size_corner: 0.5
+filter_size_surf: 0.5
+filter_size_map: 0.5
+cube_side_length: 1000.0
 
-  filter_size_surf: 0.5
-  filter_size_map: 0.5
-  cube_side_length: 1000.0
-  runtime_pos_log_enable: true
+# Point skipping before feature extraction (MARSIM sim_handler ignores this)
+point_filter_num: 2
+
+# Per-scan feature extraction (AVIA only; MARSIM ignores this)
+feature_extract_enable: false
+
+# IKFoM iteration count
+max_iteration: 4
+
+# Runtime position log (1=on, 0=off)
+runtime_pos_log_enable: true
+
+# Output topic publishing (root namespace)
+publish:
+  path_en: true
+  scan_publish_en: true
+  dense_publish_en: true
+  scan_bodyframe_pub_en: true
+
+# PCD map saving (root namespace)
+pcd_save:
+  pcd_save_en: true
+  interval: -1                # save at end only
